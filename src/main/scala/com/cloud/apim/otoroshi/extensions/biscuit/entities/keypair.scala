@@ -16,7 +16,7 @@ import otoroshi.security.IdGenerator
 case class BiscuitKeyPair (
                             id: String,
                             name: String,
-                            desc: String,
+                            description: String,
                             privKey: String,
                             pubKey: String,
                             tags: Seq[String],
@@ -25,7 +25,7 @@ case class BiscuitKeyPair (
                           ) extends EntityLocationSupport {
   def json: JsValue                    = BiscuitKeyPair.format.writes(this)
   def internalId: String               = id
-  def theDescription: String           = desc
+  def theDescription: String           = description
   def theMetadata: Map[String, String] = metadata
   def theName: String                  = name
   def theTags: Seq[String]             = tags
@@ -37,7 +37,7 @@ object BiscuitKeyPair{
       Json.obj(
         "id"            -> o.id,
         "name"          -> o.name,
-        "desc"          -> o.desc,
+        "description"          -> o.description,
         "metadata"      -> o.metadata,
         "pubKey"        -> o.pubKey,
         "privKey"       -> o.privKey,
@@ -51,7 +51,7 @@ object BiscuitKeyPair{
           location = EntityLocation.readFromKey(json),
           id = (json \ "id").as[String],
           name = (json \ "name").as[String],
-          desc = (json \ "desc").asOpt[String].getOrElse("--"),
+          description = (json \ "description").asOpt[String].getOrElse("--"),
           pubKey = (json \ "pubKey").asOpt[String].getOrElse("--"),
           privKey = (json \ "privKey").asOpt[String].getOrElse("--"),
           metadata = (json \ "metadata").asOpt[Map[String, String]].getOrElse(Map.empty),
@@ -90,7 +90,7 @@ trait BiscuitKeyPairDataStore extends BasicStore[BiscuitKeyPair]{
     val defaultBiscuitKeyPair = BiscuitKeyPair(
       id = IdGenerator.namedId("biscuit_keypair", env),
       name = "New biscuit keypair",
-      desc = "New biscuit keypair",
+      description = "New biscuit keypair",
       pubKey = "",
       privKey = "",
       metadata = Map.empty,
