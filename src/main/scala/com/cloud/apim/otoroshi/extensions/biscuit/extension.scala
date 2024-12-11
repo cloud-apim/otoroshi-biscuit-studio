@@ -139,65 +139,65 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          description: 'All your Biscuit KeyPairs',
              |          link: '/extensions/cloud-apim/biscuit/keypairs',
              |          display: () => true,
-             |          icon: () => 'fa-brain',
+             |          icon: () => 'fa-key',
              |        },
              |         {
              |          title: 'Biscuit Verifiers',
              |          description: 'All your Biscuit Verifiers',
              |          link: '/extensions/cloud-apim/biscuit/verifiers',
              |          display: () => true,
-             |          icon: () => 'fa-brain',
+             |          icon: () => 'fa-circle-check',
              |        },
              |        {
              |          title: 'Biscuit Attenuators',
              |          description: 'All your Biscuit Attenuators',
              |          link: '/extensions/cloud-apim/biscuit/attenuators',
              |          display: () => true,
-             |          icon: () => 'fa-brain',
+             |          icon: () => 'fa-volume-low',
              |        },
              |        ]
              |      }],
              |      features: [
              |        {
-             |          title: 'Biscuit Key Pairs',
+             |          title: 'Biscuit KeyPairs',
              |          description: 'All your Biscuit KeyPairs',
              |          link: '/extensions/cloud-apim/biscuit/keypairs',
              |          display: () => true,
-             |          icon: () => 'fa-brain',
+             |          icon: () => 'fa-key',
              |        },
              |         {
              |          title: 'Biscuit Verifiers',
              |          description: 'All your Biscuit Verifiers',
              |          link: '/extensions/cloud-apim/biscuit/verifiers',
              |          display: () => true,
-             |          icon: () => 'fa-brain',
+             |          icon: () => 'fa-circle-check',
              |        },
              |        {
              |          title: 'Biscuit Attenuators',
              |          description: 'All your Biscuit Attenuators',
              |          link: '/extensions/cloud-apim/biscuit/attenuators',
              |          display: () => true,
-             |          icon: () => 'fa-brain',
+             |          icon: () => 'fa-volume-low',
              |        },
              |      ],
              |      sidebarItems: [
              |        {
-             |          title: 'Biscuit Key Pairs',
+             |          title: 'Biscuit KeyPairs',
              |          text: 'All your Biscuit KeyPairs',
              |          path: 'extensions/cloud-apim/biscuit/keypairs',
-             |          icon: 'brain'
+             |          icon: 'key'
              |        },
              |         {
              |          title: 'Biscuit Verifiers',
              |          text: 'All your Biscuit Verifiers',
              |          path: 'extensions/cloud-apim/biscuit/verifiers',
-             |          icon: 'brain'
+             |          icon: 'circle-check'
              |        },
              |        {
              |          title: 'Biscuit Attenuators',
              |          text: 'All your Biscuit Attenuators',
              |          path: 'extensions/cloud-apim/biscuit/attenuators',
-             |          icon: 'brain'
+             |          icon: 'volume-low'
              |        },
              |      ],
              |      searchItems: [

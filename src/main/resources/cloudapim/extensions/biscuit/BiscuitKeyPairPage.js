@@ -58,12 +58,12 @@ class BiscuitKeyPairPage extends Component {
 		"description",
 		"tags",
 		"metadata",
-		">>>KeyPair parameters",
+		"<<<KeyPair parameters",
 		"keypair_generator",
 	];
 
 	componentDidMount() {
-		this.props.setTitle(`Biscuit Key Pairs`);
+		this.props.setTitle(`Biscuit KeyPairs`);
 	}
 
 	client = BackOfficeServices.apisClient(
@@ -78,15 +78,15 @@ class BiscuitKeyPairPage extends Component {
 			{
 				parentProps: this.props,
 				selfUrl: "extensions/cloud-apim/biscuit/keypairs",
-				defaultTitle: "All Biscuit Key Pairs",
+				defaultTitle: "All Biscuit KeyPairs",
 				defaultValue: () => ({
 					id: "biscuit_keypair_" + uuid(),
 					name: "Biscuit Key Pair",
-					description: "A simple ED25519 Biscuit Key Pair",
+					description: "A simple ED25519 Biscuit KeyPair",
 					tags: [],
 					metadata: {},
 				}),
-				itemName: "Biscuit Key Pair",
+				itemName: "Biscuit KeyPair",
 				formSchema: this.formSchema,
 				formFlow: this.formFlow,
 				columns: this.columns,
