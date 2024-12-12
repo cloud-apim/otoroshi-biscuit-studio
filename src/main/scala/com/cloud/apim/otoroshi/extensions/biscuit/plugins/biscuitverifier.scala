@@ -19,7 +19,7 @@ import scala.util.Try
 
 class BiscuitTokenValidator extends NgAccessValidator {
 
-  override def name: String                                = "Cloud APIM - Biscuit tokens validator"
+  override def name: String                                = "Cloud APIM - Biscuit Tokens Verifier"
   override def description: Option[String]                 = "This plugin validates a Biscuit token".some
   override def defaultConfigObject: Option[NgPluginConfig] = Some(BiscuitVerifierConfig.default)
   override def core: Boolean                               = false

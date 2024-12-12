@@ -83,7 +83,7 @@ class BiscuitAttenuatorPage extends Component {
 			{
 				parentProps: this.props,
 				selfUrl: "extensions/cloud-apim/biscuit/attenuators",
-				defaultTitle: "All Biscuit Verifiers",
+				defaultTitle: "All Biscuit Attenuators",
 				defaultValue: () => ({
 					id: "biscuit_attenuator_" + uuid(),
 					name: "Biscuit Attenuator",
@@ -92,11 +92,7 @@ class BiscuitAttenuatorPage extends Component {
 					metadata: {},
 					keypair_ref: "",
 					config: {
-						checks: [],
-						facts: [],
-						resources: [],
-						rules: [],
-						revocation_ids: [],
+						checks: []
 					},
 				}),
 				itemName: "Biscuit Attenuator",

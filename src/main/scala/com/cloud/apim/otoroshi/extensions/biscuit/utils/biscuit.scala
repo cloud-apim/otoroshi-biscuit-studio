@@ -5,7 +5,7 @@ import org.biscuitsec.biscuit.crypto._
 import org.biscuitsec.biscuit.error.Error
 import org.biscuitsec.biscuit.token.builder.Utils.{fact, string}
 import org.biscuitsec.biscuit.token.builder.parser.Parser
-import org.biscuitsec.biscuit.token.{Authorizer, Biscuit, RevocationIdentifier}
+import org.biscuitsec.biscuit.token.{Authorizer, Biscuit}
 import otoroshi.env.Env
 import otoroshi.plugins.biscuit.{BiscuitConfig, VerificationContext}
 import play.api.libs.json.Json
@@ -54,16 +54,16 @@ object BiscuitUtils {
       .build();
   }
 
-  def attenuateToken(token: Biscuit, checkConfig: Seq[String]) : Biscuit = {
-    val newAttenuatedToken = token.create_block()
+  def attenuateToken(biscuitToken: Biscuit, checkConfig: Seq[String]) : Biscuit = {
+    var block = biscuitToken.create_block()
 
-    checkConfig
-      .map(Parser.check)
-      .filter(_.isRight)
-      .map(_.get()._2)
-      .foreach(r => newAttenuatedToken.add_check(r))
+     checkConfig
+       .map(Parser.check)
+       .filter(_.isRight)
+       .map(_.get()._2)
+       .foreach(r => block.add_check(r))
 
-    return token.attenuate(newAttenuatedToken)
+    return biscuitToken.attenuate(block);
   }
 
 //  def sealToken(token: Biscuit) : Either[Error, Biscuit]  = {
