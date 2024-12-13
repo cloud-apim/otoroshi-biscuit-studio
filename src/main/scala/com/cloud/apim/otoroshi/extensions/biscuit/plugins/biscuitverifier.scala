@@ -67,17 +67,19 @@ class BiscuitTokenValidator extends NgAccessValidator {
           case Some(keypair) => {
             val publicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)
 
+            logger.info(s"made publicKey = ${publicKey}")
+
             biscuitVerifier.config match {
               case Some(verifierConfig) => {
                 BiscuitUtils.extractToken(ctx.request, config.extractorType, config.extractorName) match {
                   case Some(PubKeyBiscuitToken(token)) => {
 
                     Try(Biscuit.from_b64url(token, publicKey)).toEither match {
-                      case Left(_)        => forbidden(ctx)
+                      case Left(err) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Unable to deserialize Biscuit token : ${err}"))).vfuture
                       case Right(biscuitUnverified) =>
 
                         Try(biscuitUnverified.verify(publicKey)).toEither match {
-                          case Left(_)         => forbidden(ctx)
+                          case Left(err) =>  NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Biscuit token is not valid : ${err}"))).vfuture
                           case Right(biscuitToken) => {
 
                             BiscuitUtils.verify(biscuitToken, verifierConfig, AccessValidatorContext(ctx)) match {

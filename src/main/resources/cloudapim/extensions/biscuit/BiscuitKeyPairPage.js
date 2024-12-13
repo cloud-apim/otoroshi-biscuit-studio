@@ -31,6 +31,9 @@ class BiscuitKeyPairPage extends Component {
 		keypair_generator: {
 			type: KeyPairGenerator,
 		},
+		biscuit_generator: {
+			type: BiscuitGeneratorPlayground,
+		},
 	};
 
 	columns = [
@@ -60,6 +63,8 @@ class BiscuitKeyPairPage extends Component {
 		"metadata",
 		"<<<KeyPair parameters",
 		"keypair_generator",
+		"<<<Biscuit generator playground",
+		"biscuit_generator",
 	];
 
 	componentDidMount() {
@@ -110,6 +115,24 @@ class BiscuitKeyPairPage extends Component {
 			},
 			null
 		);
+	}
+}
+
+class BiscuitGeneratorPlayground extends Component {
+	render() {
+		return [
+			React.createElement(
+				"bc-datalog-playground",
+				{
+					showBlocks: "true",
+				},
+				React.createElement(
+					"pre",
+					null,
+					React.createElement("code", { className: "block" }, 'user("1234");')
+				)
+			),
+		];
 	}
 }
 

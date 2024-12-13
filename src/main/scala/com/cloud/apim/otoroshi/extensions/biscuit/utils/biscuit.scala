@@ -6,13 +6,50 @@ import org.biscuitsec.biscuit.error.Error
 import org.biscuitsec.biscuit.token.builder.Utils.{fact, string}
 import org.biscuitsec.biscuit.token.builder.parser.Parser
 import org.biscuitsec.biscuit.token.{Authorizer, Biscuit}
+import org.biscuitsec.biscuit.token.builder.Block
 import otoroshi.env.Env
-import otoroshi.plugins.biscuit.{BiscuitConfig, VerificationContext}
-import play.api.libs.json.Json
-import play.api.mvc.{RequestHeader, Results}
+import otoroshi.plugins.biscuit.VerificationContext
+import play.api.libs.json.{Format, JsError, JsResult, JsSuccess, JsValue, Json}
+import play.api.mvc.RequestHeader
 
+import java.security.SecureRandom
 import scala.jdk.CollectionConverters.{iterableAsScalaIterableConverter, seqAsJavaListConverter}
-import scala.util.Try
+import scala.util.{Failure, Success, Try}
+
+case class BiscuitForgeConfig(
+                           checks: Seq[String],
+                           facts: Seq[String],
+                           resources: Seq[String],
+                           rules: Seq[String],
+                         ){
+  def json: JsValue = BiscuitForgeConfig.format.writes(this)
+}
+
+object BiscuitForgeConfig {
+  val format = new Format[BiscuitForgeConfig] {
+    override def writes(o: BiscuitForgeConfig): JsValue = {
+      Json.obj(
+        "checks" -> o.checks,
+        "facts" -> o.facts,
+        "resources" -> o.resources,
+        "rules" -> o.rules
+      )
+    }
+
+    override def reads(json: JsValue): JsResult[BiscuitForgeConfig] =
+      Try {
+        BiscuitForgeConfig(
+          checks = (json \ "checks").asOpt[Seq[String]].getOrElse(Seq.empty),
+          facts = (json \ "facts").asOpt[Seq[String]].getOrElse(Seq.empty),
+          resources = (json \ "resources").asOpt[Seq[String]].getOrElse(Seq.empty),
+          rules = (json \ "rules").asOpt[Seq[String]].getOrElse(Seq.empty),
+        )
+      } match {
+        case Failure(e) => JsError(e.getMessage)
+        case Success(e) => JsSuccess(e)
+      }
+  }
+}
 
 sealed trait BiscuitToken {
   def token: String
@@ -49,9 +86,33 @@ object BiscuitUtils {
     }
   }
 
-  def createToken(keyPair: KeyPair, facts: Seq[String]) : Biscuit = {
-    return Biscuit.builder(keyPair)
-      .build();
+  def createToken(privKeyValue: String, config: BiscuitForgeConfig) : Biscuit = {
+
+    val keypair      = new KeyPair(privKeyValue)
+    val rng          = new SecureRandom()
+    val authority_builder = new Block()
+
+    // Resources
+    config.resources.foreach(r => authority_builder.add_fact(s"""resource("${r}")"""))
+
+    // Checks
+    config.checks
+      .map(Parser.check)
+      .filter(_.isRight)
+      .map(_.get()._2)
+      .foreach(r => authority_builder.add_check(r))
+
+    // Facts
+    config.facts.map(Parser.fact).filter(_.isRight).map(_.get()._2).foreach(r => authority_builder.add_fact(r))
+
+    // Rules
+    config.rules
+      .map(Parser.rule)
+      .filter(_.isRight)
+      .map(_.get()._2)
+      .foreach(r => authority_builder.add_rule(r))
+
+    return Biscuit.make(rng, keypair, authority_builder.build())
   }
 
   def attenuateToken(biscuitToken: Biscuit, checkConfig: Seq[String]) : Biscuit = {
