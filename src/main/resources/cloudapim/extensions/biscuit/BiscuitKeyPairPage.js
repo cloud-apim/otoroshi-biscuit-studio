@@ -31,9 +31,6 @@ class BiscuitKeyPairPage extends Component {
 		keypair_generator: {
 			type: KeyPairGenerator,
 		},
-		biscuit_generator: {
-			type: BiscuitGeneratorPlayground,
-		},
 	};
 
 	columns = [
@@ -63,8 +60,6 @@ class BiscuitKeyPairPage extends Component {
 		"metadata",
 		"<<<KeyPair parameters",
 		"keypair_generator",
-		"<<<Biscuit generator playground",
-		"biscuit_generator",
 	];
 
 	componentDidMount() {
@@ -117,32 +112,7 @@ class BiscuitKeyPairPage extends Component {
 		);
 	}
 }
-
-class BiscuitGeneratorPlayground extends Component {
-	render() {
-		return [
-			React.createElement(
-				"bc-datalog-playground",
-				{
-					showBlocks: "true",
-				},
-				React.createElement(
-					"pre",
-					null,
-					React.createElement("code", { className: "block" }, 'user("1234");')
-				)
-			),
-		];
-	}
-}
-
 class KeyPairGenerator extends Component {
-	keydown = (event) => {
-		if (event.keyCode === 13) {
-			this.send();
-		}
-	};
-
 	generateNewKeyPair = () => {
 		fetch("/extensions/assets/cloud-apim/extensions/biscuit/keypairs/generate")
 			.then((d) => d.json())
@@ -175,12 +145,10 @@ class KeyPairGenerator extends Component {
 							},
 						},
 						React.createElement("input", {
-							ref: (r) => (this.ref = r),
 							type: "text",
 							placeholder: "Your public key here",
 							className: "form-control",
 							value: this.props.rawValue?.pubKey,
-							onKeyDown: this.keydown,
 							onChange: (e) => this.props.changeValue("pubKey", e.target.value),
 						})
 					)
@@ -207,12 +175,10 @@ class KeyPairGenerator extends Component {
 							},
 						},
 						React.createElement("input", {
-							ref: (r) => (this.ref = r),
 							type: "text",
 							placeholder: "Your private key here",
 							className: "form-control",
 							value: this.props.rawValue?.privKey,
-							onKeyDown: this.keydown,
 							onChange: (e) =>
 								this.props.changeValue("privKey", e.target.value),
 						})

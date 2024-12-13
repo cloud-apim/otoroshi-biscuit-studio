@@ -172,12 +172,19 @@ class TokenGenerator extends Component {
 	};
 
 	render() {
-		if (!this.props.rawValue.keypair_ref) {
-			React.createElement(
-				"div",
-				{ className: "row mb-3" },
-				"Please select a KeyPair reference"
-			);
+		if (!this.props?.rawValue?.keypair_ref) {
+			return [
+        React.createElement(
+          "div",
+          { className: "row mb-3" },
+          React.createElement("div", 	{ className: "col-xs-12 col-sm-2 col-form-label" }),
+          React.createElement(
+            "label",
+            { className: "col-sm-10", style: { display: "flex" } },
+            "Please select a KeyPair reference before generating a new token"
+          ),
+        )
+      ]
 		}
 
 		return [
@@ -206,7 +213,7 @@ class TokenGenerator extends Component {
 							type: "text",
 							rows: 5,
 							disabled: true,
-							placeholder: "Your Generated token",
+							placeholder: "Your new generated token will be displayed here",
 							className: "form-control",
 							value: this.props.rawValue?.token,
 						})
@@ -242,7 +249,7 @@ class TokenGenerator extends Component {
 						onClick: this.generateNewToken,
 					},
 					React.createElement("i", { className: "fas fa-rotate-right" }),
-					React.createElement("span", null, " Generate new token")
+					React.createElement("span", {disabled : this?.props?.rawValue?.keypair_ref}, "Generate new token")
 				)
 			),
 		];
