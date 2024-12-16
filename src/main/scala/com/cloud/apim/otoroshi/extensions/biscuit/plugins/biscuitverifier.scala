@@ -66,9 +66,6 @@ class BiscuitTokenValidator extends NgAccessValidator {
           case None => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> "keypairRef not found"))).vfuture
           case Some(keypair) => {
             val publicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)
-
-            logger.info(s"made publicKey = ${publicKey}")
-
             biscuitVerifier.config match {
               case Some(verifierConfig) => {
                 BiscuitUtils.extractToken(ctx.request, config.extractorType, config.extractorName) match {

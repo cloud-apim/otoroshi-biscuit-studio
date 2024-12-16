@@ -97,6 +97,7 @@ object BiscuitUtils {
 
     // Checks
     config.checks
+      .map(_.stripSuffix(";"))
       .map(Parser.check)
       .filter(_.isRight)
       .map(_.get()._2)
@@ -107,6 +108,7 @@ object BiscuitUtils {
 
     // Rules
     config.rules
+      .map(_.stripSuffix(";"))
       .map(Parser.rule)
       .filter(_.isRight)
       .map(_.get()._2)
@@ -119,51 +121,13 @@ object BiscuitUtils {
     var block = biscuitToken.create_block()
 
      checkConfig
+       .map(_.stripSuffix(";"))
        .map(Parser.check)
        .filter(_.isRight)
        .map(_.get()._2)
        .foreach(r => block.add_check(r))
 
     return biscuitToken.attenuate(block);
-  }
-
-//  def sealToken(token: Biscuit) : Either[Error, Biscuit]  = {
-//    val sealed_token = token.seal();
-//  }
-
-  def checkVerifierConfig(config: VerifierConfig)(implicit env: Env): Either[org.biscuitsec.biscuit.error.Error, Unit] = {
-    val verifier = new Authorizer()
-
-    try{
-      // Resources
-      config.resources.foreach(r => verifier.add_fact(s"""resource("${r}")"""))
-
-      // Checks
-      config.checks
-        .map(Parser.check)
-        .filter(_.isRight)
-        .map(_.get()._2)
-        .foreach(r => verifier.add_check(r))
-
-      // Facts
-      config.facts.map(Parser.fact).filter(_.isRight).map(_.get()._2).foreach(r => verifier.add_fact(r))
-
-      // Rules
-      config.rules
-        .map(Parser.rule)
-        .filter(_.isRight)
-        .map(_.get()._2)
-        .foreach(r => verifier.add_rule(r))
-
-      env.logger.info(s"authorizer valide = ${verifier.print_world()}")
-      Right()
-    } catch {
-      case e: Throwable => {
-        e.printStackTrace()
-        env.logger.info(s"authorizer PAS valide - ${e.getMessage}")
-        Left(new Error.FormatError.DeserializationError("revoked token"))
-      }
-    }
   }
 
   def verify(biscuitToken: Biscuit, config: VerifierConfig, ctx: VerificationContext)(implicit
@@ -200,20 +164,29 @@ object BiscuitUtils {
     }
 
     // Resources
-    config.resources.foreach(r => verifier.add_fact(s"""resource("${r}")"""))
+    config.resources
+      .map(_.stripSuffix(";"))
+      .foreach(r => verifier.add_fact(s"""resource("${r}")"""))
 
     // Checks
     config.checks
+      .map(_.stripSuffix(";"))
       .map(Parser.check)
       .filter(_.isRight)
       .map(_.get()._2)
       .foreach(r => verifier.add_check(r))
 
     // Facts
-    config.facts.map(Parser.fact).filter(_.isRight).map(_.get()._2).foreach(r => verifier.add_fact(r))
+    config.facts
+      .map(_.stripSuffix(";"))
+      .map(Parser.fact)
+      .filter(_.isRight)
+      .map(_.get()._2)
+      .foreach(r => verifier.add_fact(r))
 
     // Rules
     config.rules
+      .map(_.stripSuffix(";"))
       .map(Parser.rule)
       .filter(_.isRight)
       .map(_.get()._2)
@@ -226,8 +199,8 @@ object BiscuitUtils {
         .map(r => r.toHex)
         .toList
 
+
     if (config.revocation_ids.nonEmpty && config.revocation_ids.exists(id => recocationIds.contains(id))) {
-      env.logger.info("token is revoked")
       Left(new Error.FormatError.DeserializationError("revoked token"))
     } else {
       // TODO: here, add rules from config, query some stuff, etc ..
