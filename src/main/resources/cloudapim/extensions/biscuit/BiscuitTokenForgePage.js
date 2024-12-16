@@ -37,9 +37,25 @@ class BiscuitTokenForge extends Component {
 				transformer: (item) => ({ label: item.name, value: item.id }),
 			},
 		},
-		config: {
-			type: "jsonobjectcode",
-			props: { label: "Configuration" },
+    'config.facts': {
+			type: "array",
+			props: { label: "Facts" },
+		},
+		'config.checks': {
+			type: "array",
+			props: { label: "Checks" },
+		},
+		'config.resources': {
+			type: "array",
+			props: { label: "Resources" },
+		},
+		'config.rules': {
+			type: "array",
+			props: { label: "Rules" },
+		},
+		'config.revocation_ids': {
+			type: "array",
+			props: { label: "Revocation IDs" },
 		},
 		tokengen: {
 			type: TokenGenerator,
@@ -69,8 +85,16 @@ class BiscuitTokenForge extends Component {
 		"metadata",
 		"<<<KeyPair",
 		"keypair_ref",
-		">>>Configuration",
-		"config",
+		">>>Facts",
+		"config.facts",
+		">>>Checks",
+		"config.checks",
+		">>>Resources",
+		"config.resources",
+		">>>Rules",
+		"config.rules",
+		">>>Revocation IDs",
+		"config.revocation_ids",
 		"<<<Token generator",
 		"tokengen",
 	];

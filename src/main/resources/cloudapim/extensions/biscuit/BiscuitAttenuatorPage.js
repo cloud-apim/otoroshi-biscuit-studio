@@ -37,9 +37,9 @@ class BiscuitAttenuatorPage extends Component {
 				transformer: (item) => ({ label: item.name, value: item.id }),
 			},
 		},
-		config: {
-			type: "jsonobjectcode",
-			props: { label: "Configuration" },
+		'config.checks': {
+			type: "array",
+			props: { label: "Checks" },
 		},
 	};
 
@@ -64,7 +64,8 @@ class BiscuitAttenuatorPage extends Component {
 		"tags",
 		"metadata",
 		"keypair_ref",
-		"config",
+		"<<<Checks",
+		"config.checks",
 	];
 
 	componentDidMount() {
