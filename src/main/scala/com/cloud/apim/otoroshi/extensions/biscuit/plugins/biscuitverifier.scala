@@ -61,7 +61,6 @@ class BiscuitTokenValidator extends NgAccessValidator {
     env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitVerifier(config.verifierRef)) match {
       case None => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> "verifierRef not found"))).vfuture
       case Some(biscuitVerifier) => {
-
         env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(biscuitVerifier.keypairRef)) match {
           case None => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> "keypairRef not found"))).vfuture
           case Some(keypair) => {
@@ -89,10 +88,11 @@ class BiscuitTokenValidator extends NgAccessValidator {
                         }
                     }
                   }
-                  case None => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> "biscuit token not found"))).vfuture
+                  case None if config.enforce => forbidden(ctx)
+                  case None if !config.enforce =>  NgAccess.NgAllowed.vfuture
                 }
               }
-              case None => forbidden(ctx)
+              case None =>  NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Bad biscuit verifier configuration"))).vfuture
             }
           }
         }
