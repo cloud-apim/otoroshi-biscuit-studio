@@ -37,13 +37,26 @@ class BiscuitVerifiersPage extends Component {
 				transformer: (item) => ({ label: item.name, value: item.id }),
 			},
 		},
-		config: {
-			type: "jsonobjectcode",
-			props: { label: "Configuration" },
+		'config.facts': {
+			type: "array",
+			props: { label: "Facts" },
 		},
-		// tester: {
-		//     type: BiscuitVerifierTester,
-		// }
+		'config.checks': {
+			type: "array",
+			props: { label: "Checks" },
+		},
+		'config.resources': {
+			type: "array",
+			props: { label: "Resources" },
+		},
+		'config.rules': {
+			type: "array",
+			props: { label: "Rules" },
+		},
+		'config.revocation_ids': {
+			type: "array",
+			props: { label: "Revocation IDs" },
+		},
 	};
 
 	columns = [
@@ -69,10 +82,16 @@ class BiscuitVerifiersPage extends Component {
 		"metadata",
 		"<<<KeyPair",
 		"keypair_ref",
-		">>>Configuration",
-		"config",
-		// '>>>Configuration Tester',
-		// 'tester',
+		">>>Facts",
+		"config.facts",
+		">>>Checks",
+		"config.checks",
+		">>>Resources",
+		"config.resources",
+		">>>Rules",
+		"config.rules",
+		">>>Revocation IDs",
+		"config.revocation_ids",
 	];
 
 	componentDidMount() {
@@ -99,13 +118,13 @@ class BiscuitVerifiersPage extends Component {
 					tags: [],
 					metadata: {},
 					keypair_ref: "",
-					config: {
-						checks: [],
-						facts: [],
-						resources: [],
-						rules: [],
-						revocation_ids: [],
-					},
+          config : {
+            checks: [],
+            facts: [],
+            resources: [],
+            rules: [],
+            revocation_ids: [],
+          }
 				}),
 				itemName: "Biscuit Verifier",
 				formSchema: this.formSchema,
