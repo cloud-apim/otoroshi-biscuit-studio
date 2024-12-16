@@ -1,0 +1,23 @@
+---
+sidebar_position: 2
+---
+
+import Terminal from '@site/src/components/Terminal';
+
+# Installation
+
+## Download Otoroshi
+
+curl -L -o otoroshi.jar 'https://github.com/MAIF/otoroshi/releases/download/v16.21.0/otoroshi.jar'
+
+## Download the Biscuit Studio extension
+  
+You can download the latest release of `otoroshi-biscuit-studio` from https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/latest
+
+## Run Otoroshi with the Biscuit Studio Extension
+
+java -cp "/path/to/biscuit-studio-library.jar:$/path/to/otoroshi.jar" -Dotoroshi.adminLogin=admin -Dotoroshi.adminPassword=password -Dotoroshi.storage=file play.core.server.ProdServerStart 
+
+Open http://otoroshi.oto.tools:8080/ in your browser
+
+Default Otoroshi UI credentials : admin / password
