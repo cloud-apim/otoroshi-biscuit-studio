@@ -53,10 +53,6 @@ class BiscuitTokenForge extends Component {
 			type: "array",
 			props: { label: "Rules" },
 		},
-		'config.revocation_ids': {
-			type: "array",
-			props: { label: "Revocation IDs" },
-		},
 		tokengen: {
 			type: TokenGenerator,
 		},
@@ -93,8 +89,6 @@ class BiscuitTokenForge extends Component {
 		"config.resources",
 		">>>Rules",
 		"config.rules",
-		">>>Revocation IDs",
-		"config.revocation_ids",
 		"<<<Token generator",
 		"tokengen",
 	];
