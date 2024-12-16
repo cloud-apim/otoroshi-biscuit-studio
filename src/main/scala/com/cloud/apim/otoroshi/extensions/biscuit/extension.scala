@@ -23,6 +23,7 @@ class BiscuitExtensionDatastores(env: Env, extensionId: AdminExtensionId) {
   val biscuitVerifierDataStore: BiscuitVerifierDataStore = new KvBiscuitVerifierDataStore(extensionId, env.datastores.redis, env)
   val biscuitAttenuatorDataStore: BiscuitAttenuatorDataStore = new KvBiscuitAttenuatorDataStore(extensionId, env.datastores.redis, env)
   val biscuitTokenForgeDataStore: BiscuitTokenForgeDataStore = new KvBiscuitTokenForgeDataStore(extensionId, env.datastores.redis, env)
+  val biscuitRbacPolicyDataStore: BiscuitRbacPolicyDataStore = new KvBiscuitRbacPolicyDataStore(extensionId, env.datastores.redis, env)
 }
 
 class BiscuitExtensionState(env: Env) {
@@ -53,6 +54,13 @@ class BiscuitExtensionState(env: Env) {
   def allBiscuitTokenForge(): Seq[BiscuitTokenForge] = _tokenforge.values.toSeq
   def updateBiscuitTokenForge(values: Seq[BiscuitTokenForge]): Unit = {
     _tokenforge.addAll(values.map(v => (v.id, v))).remAll(_tokenforge.keySet.toSeq.diff(values.map(_.id)))
+  }
+
+  private val _rbacpolicies = new UnboundedTrieMap[String, BiscuitRbacPolicy]()
+  def biscuitRbacPolicy(id: String): Option[BiscuitRbacPolicy] = _rbacpolicies.get(id)
+  def allbiscuitRbacPolicies(): Seq[BiscuitRbacPolicy] = _rbacpolicies.values.toSeq
+  def updateBiscuitRbacPolicy(values: Seq[BiscuitRbacPolicy]): Unit = {
+    _rbacpolicies.addAll(values.map(v => (v.id, v))).remAll(_rbacpolicies.keySet.toSeq.diff(values.map(_.id)))
   }
 }
 
@@ -91,6 +99,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
   lazy val biscuitVerifiersPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitVerifiersPage.js")
   lazy val biscuitAttenuatorsPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitAttenuatorPage.js")
   lazy val biscuitTokenForgePage = getResourceCode("cloudapim/extensions/biscuit/BiscuitTokenForgePage.js")
+  lazy val biscuitRbacPoliciesPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitRbacPoliciesPage.js")
 
   def handleGenerateTokenFromForge(ctx: AdminExtensionRouterContext[AdminExtensionBackofficeAuthRoute], req: RequestHeader, user: Option[BackOfficeUser], body:  Option[Source[ByteString, _]]): Future[Result] = {
     implicit val ec = env.otoroshiExecutionContext
@@ -193,6 +202,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |    ${biscuitVerifiersPage}
              |    ${biscuitAttenuatorsPage}
              |    ${biscuitTokenForgePage}
+             |    ${biscuitRbacPoliciesPage}
              |
              |    return {
              |      id: extensionId,
@@ -228,6 +238,13 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          display: () => true,
              |          icon: () => 'fa-hammer',
              |        },
+             |         {
+             |          title: 'Biscuit RBAC Policies',
+             |          description: 'All your Biscuit RBAC Policies',
+             |          link: '/extensions/cloud-apim/biscuit/rbac',
+             |          display: () => true,
+             |          icon: () => 'fa-list-check'
+             |        },
              |        ]
              |      }],
              |      features: [
@@ -259,6 +276,13 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          display: () => true,
              |          icon: () => 'fa-hammer',
              |        },
+             |         {
+             |          title: 'Biscuit RBAC Policies',
+             |          description: 'All your Biscuit RBAC Policies',
+             |          link: '/extensions/cloud-apim/biscuit/rbac',
+             |          display: () => true,
+             |          icon: () => 'fa-list-check'
+             |        },
              |      ],
              |      sidebarItems: [
              |        {
@@ -285,13 +309,19 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          path: 'extensions/cloud-apim/biscuit/tokens-forge',
              |          icon: 'hammer'
              |        },
+             |         {
+             |          title: 'Biscuit RBAC Policies',
+             |          text: 'All your Biscuit RBAC Policies',
+             |          path: 'extensions/cloud-apim/biscuit/rbac',
+             |          icon: 'list-check'
+             |        },
              |      ],
              |      searchItems: [
              |        {
              |          action: () => {
              |            window.location.href = `/bo/dashboard/extensions/cloud-apim/biscuit/keypairs`
              |          },
-             |          env: React.createElement('span', { className: "fas fa-brain" }, null),
+             |          env: React.createElement('span', { className: "fas fa-key" }, null),
              |          label: 'Biscuit KeyPairs',
              |          value: 'biscuitkeypairs',
              |        },
@@ -299,7 +329,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          action: () => {
              |            window.location.href = `/bo/dashboard/extensions/cloud-apim/biscuit/verifiers`
              |          },
-             |          env: React.createElement('span', { className: "fas fa-brain" }, null),
+             |          env: React.createElement('span', { className: "fas fa-circle-check" }, null),
              |          label: 'Biscuit Verifiers',
              |          value: 'biscuitverifiers',
              |        },
@@ -307,7 +337,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          action: () => {
              |            window.location.href = `/bo/dashboard/extensions/cloud-apim/biscuit/attenuators`
              |          },
-             |          env: React.createElement('span', { className: "fas fa-brain" }, null),
+             |          env: React.createElement('span', { className: "fas fa-volume-low" }, null),
              |          label: 'Biscuit Attenuators',
              |          value: 'biscuitattenuators',
              |        },
@@ -315,9 +345,17 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          action: () => {
              |            window.location.href = `/bo/dashboard/extensions/cloud-apim/biscuit/tokens-forge`
              |          },
-             |          env: React.createElement('span', { className: "fas fa-brain" }, null),
+             |          env: React.createElement('span', { className: "fas fa-hammer" }, null),
              |          label: 'Biscuit Tokens Forge',
              |          value: 'tokens-forge',
+             |        },
+             |          {
+             |          action: () => {
+             |            window.location.href = `/bo/dashboard/extensions/cloud-apim/biscuit/rbac`
+             |          },
+             |          env: React.createElement('span', { className: "fas fa-list-check" }, null),
+             |          label: 'Biscuit RBAC Policies',
+             |          value: 'biscuit-rbac',
              |        },
              |      ],
              |      routes: [
@@ -392,6 +430,24 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          component: (props) => {
              |            return React.createElement(BiscuitAttenuatorPage, props, null)
              |          }
+             |        },
+             |        {
+             |          path: '/extensions/cloud-apim/biscuit/rbac/:taction/:titem',
+             |          component: (props) => {
+             |            return React.createElement(BiscuitRbacPoliciesPage, props, null)
+             |          }
+             |        },
+             |        {
+             |          path: '/extensions/cloud-apim/biscuit/rbac/:taction',
+             |          component: (props) => {
+             |            return React.createElement(BiscuitRbacPoliciesPage, props, null)
+             |          }
+             |        },
+             |        {
+             |          path: '/extensions/cloud-apim/biscuit/rbac',
+             |          component: (props) => {
+             |            return React.createElement(BiscuitRbacPoliciesPage, props, null)
+             |          }
              |        }
              |      ]
              |    }
@@ -410,11 +466,13 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       verifiers <- datastores.biscuitVerifierDataStore.findAllAndFillSecrets()
       attenuators <- datastores.biscuitAttenuatorDataStore.findAllAndFillSecrets()
       tokenForge <- datastores.biscuitTokenForgeDataStore.findAllAndFillSecrets()
+      rbacPolicies <- datastores.biscuitRbacPolicyDataStore.findAllAndFillSecrets()
     } yield {
       states.updateKeyPairs(keypairs)
       states.updateBiscuitVerifiers(verifiers)
       states.updateBiscuitAttenuators(attenuators)
       states.updateBiscuitTokenForge(tokenForge)
+      states.updateBiscuitRbacPolicy(rbacPolicies)
       ()
     }
   }
@@ -425,6 +483,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       AdminExtensionEntity(BiscuitVerifier.resource(env, datastores, states)),
       AdminExtensionEntity(BiscuitAttenuator.resource(env, datastores, states)),
       AdminExtensionEntity(BiscuitTokenForge.resource(env, datastores, states)),
+      AdminExtensionEntity(BiscuitRbacPolicy.resource(env, datastores, states)),
     )
   }
 }
