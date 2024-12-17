@@ -5,3 +5,27 @@ sidebar_position: 1
 import Terminal from '@site/src/components/Terminal';
 
 # KeyPairs
+
+Biscuit Auth tokens are flexible, decentralized, and cryptographically secure authorization tokens. 
+
+They use ED25519 keypairs for digital signature generation and verification, ensuring integrity and authenticity.
+
+Each token is signed with a private ED25519 key and can be verified using the corresponding public key. 
+
+This cryptographic mechanism guarantees that tokens cannot be tampered with or forged.
+
+## Example Keypair:
+
+### Private Key:
+This is a 64-byte (or 128-character hexadecimal) key combining a seed and an expanded key.
+
+```txt
+7e8f8e6e4d1a915d8473f104e2b3240a2f7853d2f3de5bc8451a6f59f31d16ab3a453bc617b31a1c59b10cd0f6e23ed2fa31338f3473ad648dc6a5f5563b3f1a
+````
+
+### Public Key:
+The public key is derived from the private key and is 32 bytes (64-character hexadecimal).
+
+```txt
+3a453bc617b31a1c59b10cd0f6e23ed2fa31338f3473ad648dc6a5f5563b3f1a
+```
