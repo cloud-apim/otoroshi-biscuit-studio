@@ -93,13 +93,15 @@ object BiscuitVerifierConfig {
 case class BiscuitAttenuatorConfig(
     ref: String,
     extractorType: String,
-    extractorName: String
+    extractorName: String,
+    tokenReplaceLoc: String,
+    tokenReplaceName: String
 ) extends NgPluginConfig {
   def json: JsValue = BiscuitAttenuatorConfig.format.writes(this)
 }
 
 object BiscuitAttenuatorConfig {
-  val configFlow: Seq[String] = Seq("ref", "extractor_type", "extractor_name")
+  val configFlow: Seq[String] = Seq("ref", "extractor_type", "extractor_name", "token_replace_loc", "token_replace_name")
   def configSchema(name: String): Option[JsObject] = Some(Json.obj(
     "ref" -> Json.obj(
       "type" -> "select",
@@ -126,12 +128,29 @@ object BiscuitAttenuatorConfig {
     "extractor_name" -> Json.obj(
       "type" -> "text",
       "label" -> "Biscuit field name"
+    ),
+    "token_replace_loc" -> Json.obj(
+      "type" -> "select",
+      "label" -> s"Replace location",
+      "props" -> Json.obj(
+        "options" -> Seq(
+          Json.obj("label" -> "Header", "value" -> "header"),
+          Json.obj("label" -> "Cookies", "value" -> "cookies"),
+          Json.obj("label" -> "Query params", "value" -> "query")
+        )
+      ),
+    ),
+    "token_replace_name" -> Json.obj(
+      "type" -> "text",
+      "label" -> "New Biscuit field name"
     )
   ))
 
   val default = BiscuitAttenuatorConfig(
     "",
-    "Header",
+    "header",
+    "Authorization",
+    "header",
     "Authorization"
   )
 
@@ -140,12 +159,16 @@ object BiscuitAttenuatorConfig {
       "ref" -> o.ref,
       "extractor_type" -> o.extractorType,
       "extractor_name" -> o.extractorName,
+      "token_replace_loc" -> o.tokenReplaceLoc,
+      "token_replace_name" -> o.tokenReplaceName,
     )
     override def reads(json: JsValue): JsResult[BiscuitAttenuatorConfig] = Try {
       BiscuitAttenuatorConfig(
         ref = json.select("ref").asOpt[String].getOrElse(""),
         extractorType = json.select("extractor_type").asOpt[String].getOrElse(""),
-        extractorName = json.select("extractor_name").asOpt[String].getOrElse("")
+        extractorName = json.select("extractor_name").asOpt[String].getOrElse(""),
+        tokenReplaceLoc = json.select("token_replace_loc").asOpt[String].getOrElse(""),
+        tokenReplaceName = json.select("token_replace_name").asOpt[String].getOrElse(""),
       )
     } match {
       case Failure(exception) => JsError(exception.getMessage)
