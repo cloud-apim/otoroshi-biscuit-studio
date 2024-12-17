@@ -78,9 +78,17 @@ object BiscuitUtils {
     }).map { token =>
       val tokenValue = token
         .replace("Bearer ", "")
+        .replace("Bearer: ", "")
+        .replace("Bearer:", "")
         .replace("Biscuit ", "")
+        .replace("Biscuit-Token ", "")
+        .replace("Biscuit-Token", "")
+        .replace("BiscuitToken ", "")
+        .replace("BiscuitToken", "")
         .replace("biscuit: ", "")
+        .replace("biscuit:", "")
         .replace("sealed-biscuit: ", "")
+        .replace("sealed-biscuit:", "")
         .trim
       PubKeyBiscuitToken(tokenValue)
     }
