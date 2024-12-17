@@ -55,7 +55,7 @@ class BiscuitRbacPoliciesPage extends Component {
 		">>>Metadata and tags",
 		"tags",
 		"metadata",
-		">>>Roles",
+		"<<<Roles",
 		"roles",
 	];
 

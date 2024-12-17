@@ -52,7 +52,7 @@ object VerifierConfig {
 case class BiscuitVerifier(
                             id: String,
                             name: String,
-                            desc: String,
+                            description: String,
                             strict: Boolean = true,
                             enabled: Boolean = true,
                             tags: Seq[String] = Seq.empty,
@@ -63,7 +63,7 @@ case class BiscuitVerifier(
                           ) extends EntityLocationSupport {
   def json: JsValue                    = BiscuitVerifier.format.writes(this)
   def internalId: String               = id
-  def theDescription: String           = desc
+  def theDescription: String           = description
   def theMetadata: Map[String, String] = metadata
   def theName: String                  = name
   def theTags: Seq[String]             = tags
@@ -78,7 +78,7 @@ object BiscuitVerifier{
         "id" -> o.id,
         "keypair_ref" -> o.keypairRef,
         "name" -> o.name,
-        "desc" -> o.desc,
+        "description" -> o.description,
         "metadata" -> o.metadata,
         "strict" -> o.strict,
         "tags" -> JsArray(o.tags.map(JsString.apply)),
@@ -93,7 +93,7 @@ object BiscuitVerifier{
           keypairRef = (json \ "keypair_ref").asOpt[String].getOrElse(""),
           id = (json \ "id").as[String],
           name = (json \ "name").as[String],
-          desc = (json \ "desc").asOpt[String].getOrElse("--"),
+          description = (json \ "description").asOpt[String].getOrElse("--"),
           enabled = (json \ "enabled").asOpt[Boolean].getOrElse(true),
           strict = (json \ "strict").asOpt[Boolean].getOrElse(true),
           metadata = (json \ "metadata").asOpt[Map[String, String]].getOrElse(Map.empty),
@@ -133,7 +133,7 @@ object BiscuitVerifier{
       val defaultBiscuitVerifier = BiscuitVerifier(
         id = IdGenerator.namedId("biscuit_verifier", env),
         name = "New biscuit verifier",
-        desc = "New biscuit verifier",
+        description = "New biscuit verifier",
         metadata = Map.empty,
         tags = Seq.empty,
         location = EntityLocation.default,

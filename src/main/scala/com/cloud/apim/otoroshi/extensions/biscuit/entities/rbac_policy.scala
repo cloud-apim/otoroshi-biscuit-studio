@@ -15,7 +15,7 @@ import scala.util.{Failure, Success, Try}
 case class BiscuitRbacPolicy(
                             id: String,
                             name: String,
-                            desc: String,
+                            description: String,
                             strict: Boolean = true,
                             enabled: Boolean = true,
                             tags: Seq[String] = Seq.empty,
@@ -25,7 +25,7 @@ case class BiscuitRbacPolicy(
                           ) extends EntityLocationSupport {
   def json: JsValue                    = BiscuitRbacPolicy.format.writes(this)
   def internalId: String               = id
-  def theDescription: String           = desc
+  def theDescription: String           = description
   def theMetadata: Map[String, String] = metadata
   def theName: String                  = name
   def theTags: Seq[String]             = tags
@@ -39,7 +39,7 @@ object BiscuitRbacPolicy{
         "enabled" -> o.enabled,
         "id" -> o.id,
         "name" -> o.name,
-        "desc" -> o.desc,
+        "description" -> o.description,
         "metadata" -> o.metadata,
         "strict" -> o.strict,
         "tags" -> JsArray(o.tags.map(JsString.apply)),
@@ -53,7 +53,7 @@ object BiscuitRbacPolicy{
           location = EntityLocation.readFromKey(json),
           id = (json \ "id").as[String],
           name = (json \ "name").as[String],
-          desc = (json \ "desc").asOpt[String].getOrElse("--"),
+          description = (json \ "description").asOpt[String].getOrElse("--"),
           enabled = (json \ "enabled").asOpt[Boolean].getOrElse(true),
           strict = (json \ "strict").asOpt[Boolean].getOrElse(true),
           metadata = (json \ "metadata").asOpt[Map[String, String]].getOrElse(Map.empty),
@@ -93,7 +93,7 @@ object BiscuitRbacPolicy{
       val defaultBiscuitRbacPolicy = BiscuitRbacPolicy(
         id = IdGenerator.namedId("biscuit_rbac_policy", env),
         name = "New biscuit RBAC Policy",
-        desc = "New biscuit RBAC Policy",
+        description = "New biscuit RBAC Policy",
         metadata = Map.empty,
         tags = Seq.empty,
         location = EntityLocation.default,
