@@ -6,6 +6,7 @@ import otoroshi.utils.syntax.implicits._
 import scala.util.{Failure, Success, Try}
 case class BiscuitVerifierConfig(
       verifierRef: String,
+      rbacPolicyRef: String,
       enforce: Boolean,
       extractorType: String,
       extractorName: String
@@ -14,13 +15,24 @@ case class BiscuitVerifierConfig(
 }
 
 object BiscuitVerifierConfig {
-  val configFlow: Seq[String] = Seq("verifier_ref", "enforce", "extractor_type", "extractor_name")
+  val configFlow: Seq[String] = Seq("verifier_ref", "rbac_ref", "enforce", "extractor_type", "extractor_name")
   def configSchema(name: String): Option[JsObject] = Some(Json.obj(
     "verifier_ref" -> Json.obj(
       "type" -> "select",
       "label" -> s"Biscuit Verifier",
       "props" -> Json.obj(
         "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/${name}",
+        "optionsTransformer" -> Json.obj(
+          "label" -> "name",
+          "value" -> "id",
+        ),
+      ),
+    ),
+    "rbac_ref" -> Json.obj(
+      "type" -> "select",
+      "label" -> s"RBAC Policy Reference",
+      "props" -> Json.obj(
+        "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-rbac",
         "optionsTransformer" -> Json.obj(
           "label" -> "name",
           "value" -> "id",
@@ -49,6 +61,7 @@ object BiscuitVerifierConfig {
   ))
   val default = BiscuitVerifierConfig(
     "",
+    "",
     false,
     "Header",
     "Authorization"
@@ -57,6 +70,7 @@ object BiscuitVerifierConfig {
   val format = new Format[BiscuitVerifierConfig] {
     override def writes(o: BiscuitVerifierConfig): JsValue = Json.obj(
       "verifier_ref" -> o.verifierRef,
+      "rbac_ref" -> o.rbacPolicyRef,
       "enforce" -> o.enforce,
       "extractor_type" -> o.extractorType,
       "extractor_name" -> o.extractorName,
@@ -64,6 +78,7 @@ object BiscuitVerifierConfig {
     override def reads(json: JsValue): JsResult[BiscuitVerifierConfig] = Try {
       BiscuitVerifierConfig(
         verifierRef = json.select("verifier_ref").asOpt[String].getOrElse(""),
+        rbacPolicyRef = json.select("rbac_ref").asOpt[String].getOrElse(""),
         enforce = json.select("enforce").asOpt[Boolean].getOrElse(false),
         extractorType = json.select("extractor_type").asOpt[String].getOrElse(""),
         extractorName = json.select("extractor_name").asOpt[String].getOrElse("")

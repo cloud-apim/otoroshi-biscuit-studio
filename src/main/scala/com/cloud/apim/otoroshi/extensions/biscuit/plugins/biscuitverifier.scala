@@ -67,29 +67,67 @@ class BiscuitTokenValidator extends NgAccessValidator {
             val publicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)
             biscuitVerifier.config match {
               case Some(verifierConfig) => {
-                BiscuitUtils.extractToken(ctx.request, config.extractorType, config.extractorName) match {
-                  case Some(PubKeyBiscuitToken(token)) => {
+                if(config.rbacPolicyRef.nonEmpty) {
+                  env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitRbacPolicy(config.rbacPolicyRef)) match {
+                    case None => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> "rbacPolicyRef not found"))).vfuture
+                    case Some(rbacPolicyConf) => {
+                      val rbacConf = rbacPolicyConf.roles
+                         .map(r => s"""role("${r._1}", ${r._2})""")
+                          .map(_.stripSuffix(";"))
+                          .toSeq
 
-                    Try(Biscuit.from_b64url(token, publicKey)).toEither match {
-                      case Left(err) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Unable to deserialize Biscuit token : ${err}"))).vfuture
-                      case Right(biscuitUnverified) =>
+                      BiscuitUtils.extractToken(ctx.request, config.extractorType, config.extractorName) match {
+                        case Some(PubKeyBiscuitToken(token)) => {
 
-                        Try(biscuitUnverified.verify(publicKey)).toEither match {
-                          case Left(err) =>  NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Biscuit token is not valid : ${err}"))).vfuture
-                          case Right(biscuitToken) => {
+                          Try(Biscuit.from_b64url(token, publicKey)).toEither match {
+                            case Left(err) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Unable to deserialize Biscuit token : ${err}"))).vfuture
+                            case Right(biscuitUnverified) =>
 
-                            BiscuitUtils.verify(biscuitToken, verifierConfig, AccessValidatorContext(ctx)) match {
-                              case Left(_)  => {
-                                forbidden(ctx)
+                              Try(biscuitUnverified.verify(publicKey)).toEither match {
+                                case Left(err) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Biscuit token is not valid : ${err}"))).vfuture
+                                case Right(biscuitToken) => {
+
+                                  BiscuitUtils.verify(biscuitToken, verifierConfig.copy(facts = verifierConfig.facts ++ rbacConf), AccessValidatorContext(ctx)) match {
+                                    case Left(verificationError)  => {
+                                      forbidden(ctx)
+                                    }
+                                    case Right(_) => NgAccess.NgAllowed.vfuture
+                                  }
+                                }
                               }
-                              case Right(_) => NgAccess.NgAllowed.vfuture
-                            }
                           }
                         }
+                        case None if config.enforce => forbidden(ctx)
+                        case None if !config.enforce =>  NgAccess.NgAllowed.vfuture
+                      }
+
                     }
                   }
-                  case None if config.enforce => forbidden(ctx)
-                  case None if !config.enforce =>  NgAccess.NgAllowed.vfuture
+                }else{
+                  BiscuitUtils.extractToken(ctx.request, config.extractorType, config.extractorName) match {
+                    case Some(PubKeyBiscuitToken(token)) => {
+
+                      Try(Biscuit.from_b64url(token, publicKey)).toEither match {
+                        case Left(err) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Unable to deserialize Biscuit token : ${err}"))).vfuture
+                        case Right(biscuitUnverified) =>
+
+                          Try(biscuitUnverified.verify(publicKey)).toEither match {
+                            case Left(err) =>  NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Biscuit token is not valid : ${err}"))).vfuture
+                            case Right(biscuitToken) => {
+
+                              BiscuitUtils.verify(biscuitToken, verifierConfig, AccessValidatorContext(ctx)) match {
+                                case Left(_)  => {
+                                  forbidden(ctx)
+                                }
+                                case Right(_) => NgAccess.NgAllowed.vfuture
+                              }
+                            }
+                          }
+                      }
+                    }
+                    case None if config.enforce => forbidden(ctx)
+                    case None if !config.enforce =>  NgAccess.NgAllowed.vfuture
+                  }
                 }
               }
               case None =>  NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Bad biscuit verifier configuration"))).vfuture

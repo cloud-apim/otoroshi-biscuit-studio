@@ -199,7 +199,6 @@ object BiscuitUtils {
         .map(r => r.toHex)
         .toList
 
-
     if (config.revocation_ids.nonEmpty && config.revocation_ids.exists(id => recocationIds.contains(id))) {
       Left(new Error.FormatError.DeserializationError("revoked token"))
     } else {
