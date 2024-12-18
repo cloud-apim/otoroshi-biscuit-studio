@@ -6,6 +6,16 @@ import Terminal from '@site/src/components/Terminal';
 
 # Attenuator plugin
 
+When attenuating a Biscuit token from sources such as headers, cookies, or query parameters, the process begins by extracting and validating the original token. 
+
+After validation, a new block is appended to enforce additional restrictions, such as limiting time, access rights, or endpoints.
+
+Once the token is attenuated, the request can be "cleaned" by removing the original token from its initial location. 
+
+The newly attenuated token can then be injected into the desired location, whether headers, cookies, or query parameters. 
+
+This approach ensures secure, context-aware token usage while maintaining flexibility across various layers of your application.
+
 ## Attenuator Plugin configuration
 
 Here is a demo configuration :
@@ -15,7 +25,53 @@ Here is a demo configuration :
     "ref": "YOUR_BISCUIT_ATTENUATOR_REF",
     "extractor_type": "header", // header, query or cookies
     "extractor_name": "Authorization"
-    "token_replace_loc": "header", // header, query or cookies
-    "token_replace_name": "biscuit_token"
+    "token_replace_loc": "query", // header, query or cookies
+    "token_replace_name": "auth"
   }
 ```
+
+## Example 
+
+### **Request Before Attenuation**
+
+#### **Original Request (Token in Header)**
+```http
+GET /api/resource HTTP/1.1
+Host: example.com
+Authorization: Biscuit BISCUIT_TOKEN...originalTokenData
+```
+
+---
+
+### **Process of Attenuation**
+1. **Extract Token**: The `Authorization` header contains the original Biscuit token.
+2. **Append Restrictions**: Add a new block to the token, restricting it (e.g., limit to `GET /api/resource` and expire in 30 minutes).
+3. **Generate New Token**: The new attenuated Biscuit token is created.
+
+---
+
+### **Request After Attenuation**
+
+#### **Attenuated Request (Token in Query Parameter)**
+```http
+GET /api/resource?auth=biscuit:NEW_ATTENUATED_BISCUIT_TOKEN...attenuatedTokenData HTTP/1.1
+Host: example.com
+```
+
+Alternatively:
+
+#### **Attenuated Request (Token in Cookie)**
+```http
+GET /api/resource HTTP/1.1
+Host: example.com
+Cookie: auth=biscuit:NEW_ATTENUATED_BISCUIT_TOKEN...attenuatedTokenData
+```
+
+---
+
+### **Explanation of Changes**
+- **Original Location**: The token was in the `Authorization` header.
+- **New Location**: The attenuated token was moved to either the query parameter (`auth`) or a cookie.
+- **Token Content**: The attenuated token now includes additional constraints, such as time-bound access or endpoint-specific restrictions. 
+
+This flexibility allows secure propagation of tokens while adapting to different application needs.
