@@ -2,7 +2,7 @@ package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
 import akka.stream.Materializer
 import com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitAttenuatorConfig
-import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitUtils, PubKeyBiscuitToken}
+import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils
 import org.biscuitsec.biscuit.crypto.PublicKey
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.env.Env
@@ -62,56 +62,59 @@ class BiscuitTokenAttenuator extends NgRequestTransformer {
                 val publicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)
                 BiscuitUtils.extractToken(ctx.request, config.extractorType, config.extractorName) match {
                   case None => Left(Results.InternalServerError(Json.obj("error" -> "token not found from header")))
-                  case Some(PubKeyBiscuitToken(token)) => {
+                  case Some(token) => {
                     Try(Biscuit.from_b64url(token, publicKey)).toEither match {
-                      case Left(errortoken) => Left(Results.InternalServerError(Json.obj("error" -> "unable to deserialize biscuit token")))
-                      case Right(biscuitUnverified) => Try(biscuitUnverified.verify(publicKey)).toEither match {
-                        case Left(_) => ctx.otoroshiRequest.right
-                        case Right(biscuitToken) => {
-                          val attenuatedToken = BiscuitUtils.attenuateToken(biscuitToken, attenuatorConfig.checks)
+                      case Left(error) => Left(Results.InternalServerError(Json.obj("error" -> s"Unable to deserialize biscuit token - ${error}")))
+                      case Right(biscuitUnverified) =>
+                        Try(biscuitUnverified.verify(publicKey)).toEither match {
+                          case Left(error) => Left(Results.InternalServerError(Json.obj("error" -> s"Unable to verify biscuit token - token is not valid : ${error}")))
+                          case Right(biscuitToken) => {
+                            val attenuatedToken = BiscuitUtils.attenuateToken(biscuitToken, attenuatorConfig.checks)
 
-                          var finalRequest = ctx.otoroshiRequest
+                            var finalRequest = ctx.otoroshiRequest
 
-                          config.extractorType match {
-                            case "header" => finalRequest = finalRequest.copy(headers = finalRequest.headers.filterNot(_._1.toLowerCase() == config.extractorName.toLowerCase()))
-                            case "query" => {
-                              val uri = finalRequest.uri
-                              val newQuery = uri.rawQueryString.map(_ => uri.query().filterNot(_._1.toLowerCase() == config.extractorName.toLowerCase()).toString())
-                              val newUrl = uri.copy(rawQueryString = newQuery).toString()
-                              finalRequest = finalRequest.copy(url = newUrl)
-                            }
-                            case "cookies" => {
-                              finalRequest = finalRequest.copy(cookies = ctx.otoroshiRequest.cookies.filterNot(_.name.toLowerCase() == config.extractorName.toLowerCase()))
-                            }
-                          }
+                            Try(biscuitToken.authorizer().allow().authorize()).toEither match {
+                              case Left(error) => Left(Results.InternalServerError(Json.obj("error" -> s"Token unvalid : Failed to verify your token")))
+                              case Right(_) => {
+                                config.extractorType match {
+                                  case "header" => finalRequest = finalRequest.copy(headers = finalRequest.headers.filterNot(_._1.toLowerCase() == config.extractorName.toLowerCase()))
+                                  case "query" => {
+                                    val uri = finalRequest.uri
+                                    val newQuery = uri.rawQueryString.map(_ => uri.query().filterNot(_._1.toLowerCase() == config.extractorName.toLowerCase()).toString())
+                                    val newUrl = uri.copy(rawQueryString = newQuery).toString()
+                                    finalRequest = finalRequest.copy(url = newUrl)
+                                  }
+                                  case "cookies" => {
+                                    finalRequest = finalRequest.copy(cookies = ctx.otoroshiRequest.cookies.filterNot(_.name.toLowerCase() == config.extractorName.toLowerCase()))
+                                  }
+                                }
 
-                          config.tokenReplaceLoc match {
-                            case "header" => finalRequest.copy(headers = finalRequest.headers ++ Map(config.tokenReplaceName -> s"biscuit:${attenuatedToken.serialize_b64url()}")).right
-                            case "query" => {
-                              val uri = finalRequest.uri
-                              val newQuery = uri.rawQueryString.map(_ => uri.query().filterNot(_._1.toLowerCase() == config.extractorName.toLowerCase()).toString()).getOrElse("") ++ s"${config.tokenReplaceName}=biscuit:${attenuatedToken.serialize_b64url()}"
-                              val newUrl = uri.copy(rawQueryString = newQuery.some).toString()
-                              finalRequest.copy(url = newUrl).right
-                            }
-                            case "cookies" => {
-                              val cookie = DefaultWSCookie(name = config.tokenReplaceName, value = s"biscuit:${attenuatedToken.serialize_b64url()}", maxAge = Some(360000), path = "/".some, domain = ctx.request.domain.some, httpOnly = false)
+                                config.tokenReplaceLoc match {
+                                  case "header" => finalRequest.copy(headers = finalRequest.headers ++ Map(config.tokenReplaceName -> s"biscuit:${attenuatedToken.serialize_b64url()}")).right
+                                  case "query" => {
+                                    val uri = finalRequest.uri
+                                    val newQuery = uri.rawQueryString.map(_ => uri.query().filterNot(_._1.toLowerCase() == config.extractorName.toLowerCase()).toString()).getOrElse("") ++ s"${config.tokenReplaceName}=biscuit:${attenuatedToken.serialize_b64url()}"
+                                    val newUrl = uri.copy(rawQueryString = newQuery.some).toString()
+                                    finalRequest.copy(url = newUrl).right
+                                  }
+                                  case "cookies" => {
+                                    val cookie = DefaultWSCookie(name = config.tokenReplaceName, value = s"biscuit:${attenuatedToken.serialize_b64url()}", maxAge = Some(360000), path = "/".some, domain = ctx.request.domain.some, httpOnly = false)
 
-                              finalRequest.copy(cookies = finalRequest.cookies ++ Seq(cookie)).right
+                                    finalRequest.copy(cookies = finalRequest.cookies ++ Seq(cookie)).right
+                                  }
+                                  case _ => finalRequest.right
+                                }
+                              }
                             }
-                            case _ => finalRequest.right
                           }
                         }
-                      }
                     }
                   }
                 }
               }
-              case None => ctx.otoroshiRequest.right
             }
-
           }
         }
-
       }
     }
   }

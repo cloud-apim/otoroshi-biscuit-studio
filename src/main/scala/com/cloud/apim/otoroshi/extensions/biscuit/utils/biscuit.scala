@@ -50,12 +50,6 @@ object BiscuitForgeConfig {
       }
   }
 }
-
-sealed trait BiscuitToken {
-  def token: String
-}
-case class PubKeyBiscuitToken(token: String) extends BiscuitToken
-case class SealedBiscuitToken(token: String) extends BiscuitToken
 object BiscuitUtils {
   def readOrWrite(method: String): String =
     method match {
@@ -69,7 +63,7 @@ object BiscuitUtils {
       case _         => "none"
     }
 
-  def extractToken(req: RequestHeader, extractorType: String, extractorName: String): Option[BiscuitToken] = {
+  def extractToken(req: RequestHeader, extractorType: String, extractorName: String): Option[String] = {
     (extractorType match {
       case "header" => req.headers.get(extractorName)
       case "query"  => req.getQueryString(extractorName)
@@ -90,7 +84,7 @@ object BiscuitUtils {
         .replace("sealed-biscuit: ", "")
         .replace("sealed-biscuit:", "")
         .trim
-      PubKeyBiscuitToken(tokenValue)
+      tokenValue
     }
   }
 
@@ -144,7 +138,6 @@ object BiscuitUtils {
 
     return biscuitToken.attenuate(block);
   }
-
   def verify(biscuitToken: Biscuit, config: VerifierConfig, ctx: VerificationContext)(implicit
                                                                                     env: Env
   ): Either[org.biscuitsec.biscuit.error.Error, Unit] = {

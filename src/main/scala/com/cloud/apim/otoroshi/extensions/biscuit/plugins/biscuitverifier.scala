@@ -1,7 +1,7 @@
 package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
 import com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitVerifierConfig
-import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitUtils, PubKeyBiscuitToken}
+import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils
 import org.biscuitsec.biscuit.crypto.PublicKey
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.env.Env
@@ -77,8 +77,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
                           .toSeq
 
                       BiscuitUtils.extractToken(ctx.request, config.extractorType, config.extractorName) match {
-                        case Some(PubKeyBiscuitToken(token)) => {
-
+                        case Some(token) => {
                           Try(Biscuit.from_b64url(token, publicKey)).toEither match {
                             case Left(err) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Unable to deserialize Biscuit token : ${err}"))).vfuture
                             case Right(biscuitUnverified) =>
@@ -88,9 +87,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
                                 case Right(biscuitToken) => {
 
                                   BiscuitUtils.verify(biscuitToken, verifierConfig.copy(facts = verifierConfig.facts ++ rbacConf), AccessValidatorContext(ctx)) match {
-                                    case Left(verificationError)  => {
-                                      forbidden(ctx)
-                                    }
+                                    case Left(verificationError) => forbidden(ctx)
                                     case Right(_) => NgAccess.NgAllowed.vfuture
                                   }
                                 }
@@ -100,25 +97,20 @@ class BiscuitTokenValidator extends NgAccessValidator {
                         case None if config.enforce => forbidden(ctx)
                         case None if !config.enforce =>  NgAccess.NgAllowed.vfuture
                       }
-
                     }
                   }
                 }else{
                   BiscuitUtils.extractToken(ctx.request, config.extractorType, config.extractorName) match {
-                    case Some(PubKeyBiscuitToken(token)) => {
-
+                    case Some(token) => {
                       Try(Biscuit.from_b64url(token, publicKey)).toEither match {
                         case Left(err) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Unable to deserialize Biscuit token : ${err}"))).vfuture
                         case Right(biscuitUnverified) =>
-
                           Try(biscuitUnverified.verify(publicKey)).toEither match {
                             case Left(err) =>  NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Biscuit token is not valid : ${err}"))).vfuture
                             case Right(biscuitToken) => {
 
                               BiscuitUtils.verify(biscuitToken, verifierConfig, AccessValidatorContext(ctx)) match {
-                                case Left(_)  => {
-                                  forbidden(ctx)
-                                }
+                                case Left(_)  => forbidden(ctx)
                                 case Right(_) => NgAccess.NgAllowed.vfuture
                               }
                             }

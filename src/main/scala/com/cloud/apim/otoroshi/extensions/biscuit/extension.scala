@@ -123,7 +123,6 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                     biscuitForgeConf match {
                       case None => Results.Ok(Json.obj("done" -> false, "error" -> "unable to parse biscuit forge configuration")).vfuture
                       case Some(biscuitForgeConfig) => {
-
                         val generatedToken = BiscuitUtils.createToken(keypairDb.privKey, biscuitForgeConfig)
 
                         Results.Ok(
