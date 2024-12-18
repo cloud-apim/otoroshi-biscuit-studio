@@ -6,7 +6,25 @@ import Terminal from '@site/src/components/Terminal';
 
 # Verifier plugin
 
-## Verifier Plugin configuration
+
+### **Example Request Before Using a Biscuit Verifier**
+
+#### **Original Request (Token in Header)**
+
+```http
+GET /api/resource HTTP/1.1
+Host: example.com
+Authorization: Biscuit BISCUIT_TOKEN...originalTokenData
+```
+
+---
+
+### **Using a Biscuit Verifier**
+1. **Extract Token**: The `Authorization` header contains the Biscuit token.
+2. **Create a Verifier**: Instantiate a Biscuit verifier and attach specific constraints (e.g., check user roles, request path, or expiration).
+3. **Validate the Token**: Use the verifier to validate the token against the attached constraints. If valid, proceed; otherwise, deny the request.
+
+## Example : Verifier Plugin configuration
 
 Here is a demo configuration :
 
