@@ -101,7 +101,9 @@ object BiscuitUtils {
     val authority_builder = new Block()
 
     // Resources
-    config.resources.foreach(r => authority_builder.add_fact(s"""resource("${r}")"""))
+    config.resources
+      .map(_.stripSuffix(";"))
+      .foreach(r => authority_builder.add_fact(s"""resource("${r}")"""))
 
     // Checks
     config.checks
@@ -112,7 +114,12 @@ object BiscuitUtils {
       .foreach(r => authority_builder.add_check(r))
 
     // Facts
-    config.facts.map(Parser.fact).filter(_.isRight).map(_.get()._2).foreach(r => authority_builder.add_fact(r))
+    config.facts
+      .map(_.stripSuffix(";"))
+      .map(Parser.fact)
+      .filter(_.isRight)
+      .map(_.get()._2)
+      .foreach(r => authority_builder.add_fact(r))
 
     // Rules
     config.rules
