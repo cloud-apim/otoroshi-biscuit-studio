@@ -14,18 +14,36 @@ Each token is signed with a private ED25519 key and can be verified using the co
 
 This cryptographic mechanism guarantees that tokens cannot be tampered with or forged.
 
-## Example Keypair:
+## Example Keypair :
 
 ### Private Key:
-This is a 64-byte (or 128-character hexadecimal) key combining a seed and an expanded key.
-
 ```txt
-7e8f8e6e4d1a915d8473f104e2b3240a2f7853d2f3de5bc8451a6f59f31d16ab3a453bc617b31a1c59b10cd0f6e23ed2fa31338f3473ad648dc6a5f5563b3f1a
-````
+0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619
+```
 
 ### Public Key:
-The public key is derived from the private key and is 32 bytes (64-character hexadecimal).
+The public key is derived from the private key.
 
 ```txt
-3a453bc617b31a1c59b10cd0f6e23ed2fa31338f3473ad648dc6a5f5563b3f1a
+cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb
+```
+
+## Example
+
+```javascript
+{
+  "id": "biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9",
+  "name": "My Biscuit KeyPair",
+  "description": "A simple ED25519 Biscuit KeyPair",
+  "metadata": {
+    "created_at": "2024-12-16T12:19:21.589+01:00"
+  },
+  "pubKey": "cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb",
+  "privKey": "0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619",
+  "tags": [],
+  "kind": "BiscuitKeyPair",
+  "_loc": {
+    "tenant": "default"
+  }
+}
 ```
