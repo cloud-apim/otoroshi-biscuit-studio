@@ -1,0 +1,51 @@
+---
+sidebar_position: 5
+---
+
+import Terminal from '@site/src/components/Terminal';
+
+# Biscuit Tokens Forge
+
+## Prerequisites
+
+- A [Biscuit KeyPair](/docs/entities/keypairs)
+
+- A datalog : 
+  - An array of biscuit Facts (could be empty)
+  - An array of biscuit Checks (could be empty)
+  - An array of biscuit Resources (could be empty)
+  - An array of biscuit Rules (could be empty)
+
+
+# Example : a Generated token with the Biscuit Forge
+
+```javascript
+{
+  "id": "biscuit_token_0531505a-ae44-4022-983d-9b035786f55a",
+  "name": "Biscuit Token Name",
+  "description": "A simple Biscuit Token",
+  "metadata": {
+    "created_at": "2024-12-18T10:41:31.489+01:00",
+    "updated_at": "2024-12-18T10:57:45.592+01:00"
+  },
+  "keypair_ref": "biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9",
+  "config": {
+    "checks": [
+      "check if time($date), $date <= 2021-03-30T19:00:10Z;"
+    ],
+    "facts": [
+      "user(\"demo\")",
+      "role(\"dev\")",
+      "time(2024-12-18T20:00:00Z)"
+    ],
+    "resources": [],
+    "rules": []
+  },
+  "token": "GENERATED_TOKEN_HERE",
+  "tags": [],
+  "kind": "BiscuitTokenForge",
+  "_loc": {
+    "tenant": "default"
+  }
+}
+```
