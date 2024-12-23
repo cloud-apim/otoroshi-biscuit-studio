@@ -1,0 +1,27 @@
+{
+	"name": "wc",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "rollup -c"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@babel/plugin-transform-async-to-generator": "^7.25.9",
+		"@biscuit-auth/web-components": "^0.5.0"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.26.0",
+		"@babel/plugin-transform-runtime": "^7.25.9",
+		"@babel/preset-env": "^7.26.0",
+		"@rollup/plugin-babel": "^6.0.4",
+		"@rollup/plugin-commonjs": "^21.1.0",
+		"@rollup/plugin-node-resolve": "^13.3.0",
+		"@web/rollup-plugin-import-meta-assets": "^1.0.8",
+		"rollup": "^2.60.0",
+		"rollup-plugin-copy": "^3.5.0"
+	}
+}
