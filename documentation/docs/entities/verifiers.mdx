@@ -24,30 +24,23 @@ Instead, constraints can be added at runtime when validating the token.
   "id": "biscuit_verifier_6f5f20a5-2c65-4860-8ad1-7b6495ee03bf",
   "keypair_ref": "biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9",
   "name": "Biscuit Verifier",
-  "description": "First Biscuit Verifier",
-  "metadata": {
-    "created_at": "2024-12-16T12:20:34.997+01:00",
-    "updated_at": "2024-12-18T14:49:33.026+01:00"
-  },
+  "description": "Biscuit Verifier",
   "strict": true,
   "tags": [],
   "config": {
     "checks": [
-      "check if time($date), $date <= 2024-12-19T19:00:10Z;"
+      "check if time($date), $date <= 2024-12-30T19:00:10Z;"
     ],
     "facts": [],
     "resources": [],
     "rules": [],
     "revocation_ids": []
   },
-  "kind": "BiscuitVerifier",
-  "_loc": {
-    "tenant": "default"
-  }
+  "kind": "biscuit.extensions.cloud-apim.com/BiscuitVerifier"
 }
 ```
 
-## Create a keypair from command line
+## Create a Biscuit Verifier from command line
 ```bash 
 curl -X POST -H 'Content-Type: application/json' 'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers' -u admin-api-apikey-id:admin-api-apikey-secret -d '{
   "enabled": true,
