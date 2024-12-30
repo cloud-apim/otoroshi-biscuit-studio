@@ -14,7 +14,9 @@ Using a verifier means you don’t need to modify or reissue tokens for every ne
 
 Instead, constraints can be added at runtime when validating the token.
 
-# Example 
+![](/screenshots/biscuit-verifier-creation.png)
+
+## Example 
 
 ```javascript
 {
@@ -43,4 +45,27 @@ Instead, constraints can be added at runtime when validating the token.
     "tenant": "default"
   }
 }
+```
+
+## Create a keypair from command line
+```bash 
+curl -X POST -H 'Content-Type: application/json' 'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers' -u admin-api-apikey-id:admin-api-apikey-secret -d '{
+  "enabled": true,
+  "id": "biscuit_verifier_6f5f20a5-2c65-4860-8ad1-7b6495ee03bf",
+  "keypair_ref": "biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9",
+  "name": "Biscuit Verifier CURL",
+  "description": "A Biscuit Verifier created from Otoroshi API",
+  "strict": true,
+  "tags": [],
+  "config": {
+    "checks": [
+      "check if time($date), $date <= 2024-12-30T19:00:10Z;"
+    ],
+    "facts": [],
+    "resources": [],
+    "rules": [],
+    "revocation_ids": []
+  },
+  "kind": "biscuit.extensions.cloud-apim.com/BiscuitVerifier"
+}'
 ```
