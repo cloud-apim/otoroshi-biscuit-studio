@@ -13,3 +13,41 @@ One of Biscuit's core strengths is its ability to attenuate tokens by appending 
 This allows developers to tailor token permissions to suit different use cases.
 
 See [this article](/docs/plugins/attenuators) to integrate your attenuator entity to your route's plugins.
+
+![](/screenshots/biscuit-attenuator-creation.png)
+
+## Attenuator Example
+```js
+{
+  "enabled": true,
+  "id": "biscuit_attenuator_0a8d24de-426a-4baf-9b53-e9e70f38d935",
+  "keypair_ref": "biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9",
+  "name": "Biscuit Attenuator",
+  "description": "A Biscuit Attenuator created from Otoroshi API",
+  "tags": [],
+  "config": {
+    "checks": [
+      "check if time($date), $date <= 2024-12-30T19:00:10Z;"
+    ]
+  },
+  "kind": "biscuit.extensions.cloud-apim.com/BiscuitAttenuator"
+}
+```
+
+## Create a Biscuit Attenuator from command line
+```bash 
+curl -X POST -H 'Content-Type: application/json' 'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-attenuators' -u admin-api-apikey-id:admin-api-apikey-secret -d '{
+  "enabled": true,
+  "id": "biscuit_attenuator_0a8d24de-426a-4baf-9b53-e9e70f38d935",
+  "keypair_ref": "biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9",
+  "name": "Biscuit Attenuator CURL",
+  "description": "A Biscuit Attenuator created from Otoroshi API",
+  "tags": [],
+  "config": {
+    "checks": [
+      "check if time($date), $date <= 2024-12-30T19:00:10Z;"
+    ]
+  },
+  "kind": "biscuit.extensions.cloud-apim.com/BiscuitAttenuator"
+}'
+```
