@@ -24,6 +24,25 @@ Authorization: Biscuit BISCUIT_TOKEN...originalTokenData
 2. **Create a Verifier**: Instantiate a Biscuit verifier and attach specific constraints (e.g., check user roles, request path, or expiration).
 3. **Validate the Token**: Use the verifier to validate the token against the attached constraints. If valid, proceed; otherwise, deny the request.
 
+
+### Step 1 : Create the Otoroshi Route
+![](/screenshots/biscuit-verifier-route-creation.png)
+
+### Step 2 : Select the Biscuit verifier plugin
+![](/screenshots/biscuit-verifier-route-add-plugin.png)
+
+### Step 3 : Add the plugin to your Route
+![](/screenshots/biscuit-verifier-route-add-to-flow.png)
+
+### Step 4 : Configure the Plugin
+![](/screenshots/biscuit-verifier-route-setup-flow.png)
+
+- Select a Biscuit Verifier entity you would like to use.
+
+- Choose the location of the Biscuit Token to be extracted (in headers, in query params or in cookies)
+
+- Finally, choose the name of the extractor (Example : could be `Authorization` for headers)
+
 ## Example : Verifier Plugin configuration
 
 Here is a demo configuration :
@@ -32,7 +51,7 @@ Here is a demo configuration :
   {
     "verifier_ref": "YOUR_BISCUIT_VERIFIER_ENTITY_REF",
     "rbac_ref": "RBAC_POLICY_ENTITY_REF" // optional
-    "enforce": false, // true or false
+    "enforce": true, // true or false
     "extractor_type": "header", // header, query or cookies
     "extractor_name": "Authorization"
   }
