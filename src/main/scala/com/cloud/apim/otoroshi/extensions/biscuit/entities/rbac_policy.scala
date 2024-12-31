@@ -13,26 +13,33 @@ import otoroshi.utils.syntax.implicits._
 import scala.util.{Failure, Success, Try}
 
 case class BiscuitRbacPolicy(
-                            id: String,
-                            name: String,
-                            description: String,
-                            strict: Boolean = true,
-                            enabled: Boolean = true,
-                            tags: Seq[String] = Seq.empty,
-                            metadata: Map[String, String] = Map.empty,
-                            location: EntityLocation,
-                            roles: Map[String, JsArray] = Map.empty,
-                          ) extends EntityLocationSupport {
-  def json: JsValue                    = BiscuitRbacPolicy.format.writes(this)
-  def internalId: String               = id
-  def theDescription: String           = description
+                              id: String,
+                              name: String,
+                              description: String,
+                              strict: Boolean = true,
+                              enabled: Boolean = true,
+                              tags: Seq[String] = Seq.empty,
+                              metadata: Map[String, String] = Map.empty,
+                              location: EntityLocation,
+                              roles: Map[String, JsArray] = Map.empty,
+                              remoteFactsRef: String,
+                              enableRemoteFacts: Boolean
+                            ) extends EntityLocationSupport {
+  def json: JsValue = BiscuitRbacPolicy.format.writes(this)
+
+  def internalId: String = id
+
+  def theDescription: String = description
+
   def theMetadata: Map[String, String] = metadata
-  def theName: String                  = name
-  def theTags: Seq[String]             = tags
+
+  def theName: String = name
+
+  def theTags: Seq[String] = tags
 }
 
 
-object BiscuitRbacPolicy{
+object BiscuitRbacPolicy {
   val format = new Format[BiscuitRbacPolicy] {
     override def writes(o: BiscuitRbacPolicy): JsValue = {
       Json.obj(
@@ -44,6 +51,8 @@ object BiscuitRbacPolicy{
         "strict" -> o.strict,
         "tags" -> JsArray(o.tags.map(JsString.apply)),
         "roles" -> o.roles,
+        "enableRemoteFacts" -> o.enableRemoteFacts,
+        "remoteFactsRef" -> o.remoteFactsRef
       )
     }
 
@@ -55,10 +64,12 @@ object BiscuitRbacPolicy{
           name = (json \ "name").as[String],
           description = (json \ "description").asOpt[String].getOrElse("--"),
           enabled = (json \ "enabled").asOpt[Boolean].getOrElse(true),
+          enableRemoteFacts = (json \ "enableRemoteFacts").asOpt[Boolean].getOrElse(true),
           strict = (json \ "strict").asOpt[Boolean].getOrElse(true),
           metadata = (json \ "metadata").asOpt[Map[String, String]].getOrElse(Map.empty),
           tags = (json \ "tags").asOpt[Seq[String]].getOrElse(Seq.empty[String]),
           roles = (json \ "roles").asOpt[Map[String, JsArray]].getOrElse(Map.empty),
+          remoteFactsRef = (json \ "remoteFactsRef").as[String],
         )
       } match {
         case Failure(e) => JsError(e.getMessage)
@@ -66,57 +77,62 @@ object BiscuitRbacPolicy{
       }
   }
 
-    def resource(env: Env, datastores: BiscuitExtensionDatastores, states: BiscuitExtensionState): Resource = {
-      Resource(
-        "BiscuitRBAC",
-        "biscuit-rbac",
-        "biscuit-rbac",
-        "biscuit.extensions.cloud-apim.com",
-        ResourceVersion("v1", true, false, true),
-        GenericResourceAccessApiWithState[BiscuitRbacPolicy](
-          BiscuitRbacPolicy.format,
-          classOf[BiscuitRbacPolicy],
-          datastores.biscuitRbacPolicyDataStore.key,
-          datastores.biscuitRbacPolicyDataStore.extractId,
-          json => json.select("id").asString,
-          () => "id",
-          (v, p) => datastores.biscuitRbacPolicyDataStore.template(env).json,
-          stateAll = () => states.allbiscuitRbacPolicies(),
-          stateOne = id => states.biscuitRbacPolicy(id),
-          stateUpdate = values => states.updateBiscuitRbacPolicy(values))
-      )
-    }
+  def resource(env: Env, datastores: BiscuitExtensionDatastores, states: BiscuitExtensionState): Resource = {
+    Resource(
+      "BiscuitRBAC",
+      "biscuit-rbac",
+      "biscuit-rbac",
+      "biscuit.extensions.cloud-apim.com",
+      ResourceVersion("v1", true, false, true),
+      GenericResourceAccessApiWithState[BiscuitRbacPolicy](
+        BiscuitRbacPolicy.format,
+        classOf[BiscuitRbacPolicy],
+        datastores.biscuitRbacPolicyDataStore.key,
+        datastores.biscuitRbacPolicyDataStore.extractId,
+        json => json.select("id").asString,
+        () => "id",
+        (v, p) => datastores.biscuitRbacPolicyDataStore.template(env).json,
+        stateAll = () => states.allbiscuitRbacPolicies(),
+        stateOne = id => states.biscuitRbacPolicy(id),
+        stateUpdate = values => states.updateBiscuitRbacPolicy(values))
+    )
+  }
 }
 
-  trait BiscuitRbacPolicyDataStore extends BasicStore[BiscuitRbacPolicy]{
-    def template(env: Env): BiscuitRbacPolicy = {
-      val defaultBiscuitRbacPolicy = BiscuitRbacPolicy(
-        id = IdGenerator.namedId("biscuit_rbac_policy", env),
-        name = "New biscuit RBAC Policy",
-        description = "New biscuit RBAC Policy",
-        metadata = Map.empty,
-        tags = Seq.empty,
-        location = EntityLocation.default,
-        roles = Map.empty
-      )
-      env.datastores.globalConfigDataStore
-        .latest()(env.otoroshiExecutionContext, env)
-        .templates
-        .apikey
-        .map { template =>
-          BiscuitRbacPolicy.format.reads(defaultBiscuitRbacPolicy.json.asObject.deepMerge(template)).get
-        }
-        .getOrElse {
-          defaultBiscuitRbacPolicy
-        }
-    }
+trait BiscuitRbacPolicyDataStore extends BasicStore[BiscuitRbacPolicy] {
+  def template(env: Env): BiscuitRbacPolicy = {
+    val defaultBiscuitRbacPolicy = BiscuitRbacPolicy(
+      id = IdGenerator.namedId("biscuit_rbac_policy", env),
+      name = "New biscuit RBAC Policy",
+      description = "New biscuit RBAC Policy",
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      roles = Map.empty,
+      remoteFactsRef = "",
+      enableRemoteFacts = false
+    )
+    env.datastores.globalConfigDataStore
+      .latest()(env.otoroshiExecutionContext, env)
+      .templates
+      .apikey
+      .map { template =>
+        BiscuitRbacPolicy.format.reads(defaultBiscuitRbacPolicy.json.asObject.deepMerge(template)).get
+      }
+      .getOrElse {
+        defaultBiscuitRbacPolicy
+      }
   }
+}
 
-  class KvBiscuitRbacPolicyDataStore(extensionId: AdminExtensionId, redisCli: RedisLike, _env: Env)
-    extends BiscuitRbacPolicyDataStore
-      with RedisLikeStore[BiscuitRbacPolicy] {
-    override def fmt: Format[BiscuitRbacPolicy]                  = BiscuitRbacPolicy.format
-    override def redisLike(implicit env: Env): RedisLike = redisCli
-    override def key(id: String): String                 = s"${_env.storageRoot}:extensions:${extensionId.cleanup}:biscuit:rbac-policy:$id"
-    override def extractId(value: BiscuitRbacPolicy): String    = value.id
-  }
+class KvBiscuitRbacPolicyDataStore(extensionId: AdminExtensionId, redisCli: RedisLike, _env: Env)
+  extends BiscuitRbacPolicyDataStore
+    with RedisLikeStore[BiscuitRbacPolicy] {
+  override def fmt: Format[BiscuitRbacPolicy] = BiscuitRbacPolicy.format
+
+  override def redisLike(implicit env: Env): RedisLike = redisCli
+
+  override def key(id: String): String = s"${_env.storageRoot}:extensions:${extensionId.cleanup}:biscuit:rbac-policy:$id"
+
+  override def extractId(value: BiscuitRbacPolicy): String = value.id
+}

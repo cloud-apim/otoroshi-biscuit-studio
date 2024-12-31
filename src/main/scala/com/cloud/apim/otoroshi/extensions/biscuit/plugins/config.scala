@@ -7,7 +7,7 @@ import scala.util.{Failure, Success, Try}
 case class BiscuitVerifierConfig(
       verifierRef: String,
       rbacPolicyRef: String,
-      enforce: Boolean,
+      enforce: Boolean = true,
       extractorType: String,
       extractorName: String
 ) extends NgPluginConfig {
@@ -62,7 +62,7 @@ object BiscuitVerifierConfig {
   val default = BiscuitVerifierConfig(
     "",
     "",
-    false,
+    true,
     "Header",
     "Authorization"
   )

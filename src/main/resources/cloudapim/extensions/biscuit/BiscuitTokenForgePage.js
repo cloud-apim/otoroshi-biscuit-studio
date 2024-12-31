@@ -111,7 +111,7 @@ class BiscuitTokenForge extends Component {
 				selfUrl: "extensions/cloud-apim/biscuit/tokens-forge",
 				defaultTitle: "Tokens forge",
 				defaultValue: () => ({
-					id: "biscuit_token_" + uuid(),
+					id: "biscuit-token_" + uuid(),
 					name: "Biscuit Token",
 					description: "A simple Biscuit Token",
 					tags: [],

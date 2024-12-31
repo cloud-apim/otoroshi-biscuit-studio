@@ -31,6 +31,9 @@ class BiscuitKeyPairPage extends Component {
 		keypair_generator: {
 			type: KeyPairGenerator,
 		},
+		// playground: {
+		// 	type: BiscuitPlayground,
+		// },
 	};
 
 	columns = [
@@ -49,6 +52,16 @@ class BiscuitKeyPairPage extends Component {
 			filterId: "pubKey",
 			content: (item) => item.pubKey,
 		},
+    {
+			title: "Created At",
+			filterId: "metadata.created_at",
+			content: (item) => item.metadata?.created_at,
+		},
+    {
+			title: "Updated At",
+			filterId: "metadata.updated_at",
+			content: (item) => item.metadata?.updated_at || "--",
+		}
 	];
 
 	formFlow = [
@@ -60,6 +73,8 @@ class BiscuitKeyPairPage extends Component {
 		"metadata",
 		"<<<KeyPair parameters",
 		"keypair_generator",
+    // "<<< Biscuit playground",
+    // 'playground'
 	];
 
 	componentDidMount() {
@@ -80,7 +95,7 @@ class BiscuitKeyPairPage extends Component {
 				selfUrl: "extensions/cloud-apim/biscuit/keypairs",
 				defaultTitle: "All Biscuit KeyPairs",
 				defaultValue: () => ({
-					id: "biscuit_keypair_" + uuid(),
+					id: 'biscuit-keypair_' + uuid(),
 					name: "Biscuit Key Pair",
 					description: "A simple ED25519 Biscuit KeyPair",
 					tags: [],
@@ -106,7 +121,7 @@ class BiscuitKeyPairPage extends Component {
 				rowNavigation: true,
 				extractKey: (item) => item.id,
 				export: true,
-				kubernetesKind: "BiscuitKeyPair",
+				kubernetesKind: "BiscuitKeyPair"
 			},
 			null
 		);
@@ -206,5 +221,11 @@ class KeyPairGenerator extends Component {
 				)
 			),
 		];
+	}
+}
+
+class BiscuitPlayground extends Component {
+	render() {
+		return [React.createElement("bc-token-printer", null, "")];
 	}
 }

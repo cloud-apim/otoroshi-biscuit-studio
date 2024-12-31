@@ -112,7 +112,7 @@ class BiscuitVerifiersPage extends Component {
 				selfUrl: "extensions/cloud-apim/biscuit/verifiers",
 				defaultTitle: "All Biscuit Verifiers",
 				defaultValue: () => ({
-					id: "biscuit_verifier_" + uuid(),
+					id: "biscuit-verifier_" + uuid(),
 					name: "Biscuit Verifier",
 					description: "A simple Biscuit Verifier",
 					tags: [],

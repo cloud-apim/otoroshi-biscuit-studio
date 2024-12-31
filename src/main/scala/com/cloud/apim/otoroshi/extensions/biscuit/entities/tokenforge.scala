@@ -13,37 +13,42 @@ import otoroshi.utils.syntax.implicits._
 import play.api.libs.json._
 import otoroshi.security.IdGenerator
 
-case class BiscuitTokenForge (
-                            id: String,
-                            name: String,
-                            description: String,
-                            token: String,
-                            keypairRef: String,
-                            config: Option[BiscuitForgeConfig],
-                            tags: Seq[String],
-                            metadata: Map[String, String],
-                            location: EntityLocation
-                          ) extends EntityLocationSupport {
-  def json: JsValue                    = BiscuitTokenForge.format.writes(this)
-  def internalId: String               = id
-  def theDescription: String           = description
+case class BiscuitTokenForge(
+                              id: String,
+                              name: String,
+                              description: String,
+                              token: String,
+                              keypairRef: String,
+                              config: Option[BiscuitForgeConfig],
+                              tags: Seq[String],
+                              metadata: Map[String, String],
+                              location: EntityLocation
+                            ) extends EntityLocationSupport {
+  def json: JsValue = BiscuitTokenForge.format.writes(this)
+
+  def internalId: String = id
+
+  def theDescription: String = description
+
   def theMetadata: Map[String, String] = metadata
-  def theName: String                  = name
-  def theTags: Seq[String]             = tags
+
+  def theName: String = name
+
+  def theTags: Seq[String] = tags
 }
 
-object BiscuitTokenForge{
+object BiscuitTokenForge {
   val format = new Format[BiscuitTokenForge] {
     override def writes(o: BiscuitTokenForge): JsValue = {
       Json.obj(
-        "id"            -> o.id,
-        "name"          -> o.name,
-        "description"   -> o.description,
-        "metadata"      -> o.metadata,
-        "keypair_ref"   -> o.keypairRef,
+        "id" -> o.id,
+        "name" -> o.name,
+        "description" -> o.description,
+        "metadata" -> o.metadata,
+        "keypair_ref" -> o.keypairRef,
         "config" -> o.config.map(_.json).getOrElse(JsNull).asValue,
-        "token"         -> o.token,
-        "tags"          -> JsArray(o.tags.map(JsString.apply))
+        "token" -> o.token,
+        "tags" -> JsArray(o.tags.map(JsString.apply))
       )
     }
 
@@ -88,7 +93,7 @@ object BiscuitTokenForge{
   }
 }
 
-trait BiscuitTokenForgeDataStore extends BasicStore[BiscuitTokenForge]{
+trait BiscuitTokenForgeDataStore extends BasicStore[BiscuitTokenForge] {
   def template(env: Env): BiscuitTokenForge = {
     val defaultBiscuitTokenForge = BiscuitTokenForge(
       id = IdGenerator.namedId("biscuit_token_", env),
@@ -118,7 +123,10 @@ class KvBiscuitTokenForgeDataStore(extensionId: AdminExtensionId, redisCli: Redi
   extends BiscuitTokenForgeDataStore
     with RedisLikeStore[BiscuitTokenForge] {
   override def fmt: Format[BiscuitTokenForge] = BiscuitTokenForge.format
+
   override def redisLike(implicit env: Env): RedisLike = redisCli
-  override def key(id: String): String                 = s"${_env.storageRoot}:extensions:${extensionId.cleanup}:biscuit:tokens:$id"
-  override def extractId(value: BiscuitTokenForge): String    = value.id
+
+  override def key(id: String): String = s"${_env.storageRoot}:extensions:${extensionId.cleanup}:biscuit:tokens:$id"
+
+  override def extractId(value: BiscuitTokenForge): String = value.id
 }

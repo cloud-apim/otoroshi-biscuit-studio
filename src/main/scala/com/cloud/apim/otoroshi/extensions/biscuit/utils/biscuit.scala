@@ -9,10 +9,13 @@ import org.biscuitsec.biscuit.token.{Authorizer, Biscuit}
 import org.biscuitsec.biscuit.token.builder.Block
 import otoroshi.env.Env
 import otoroshi.plugins.biscuit.VerificationContext
-import play.api.libs.json.{Format, JsError, JsResult, JsSuccess, JsValue, Json}
+import play.api.libs.json.{Format, JsError, JsResult, JsSuccess, JsValue, Json, Reads}
 import play.api.mvc.RequestHeader
+import play.api.libs.ws._
 
+import scala.concurrent.{ExecutionContext, Future}
 import java.security.SecureRandom
+import scala.concurrent.Future
 import scala.jdk.CollectionConverters.{iterableAsScalaIterableConverter, seqAsJavaListConverter}
 import scala.util.{Failure, Success, Try}
 
@@ -210,12 +213,62 @@ object BiscuitUtils {
     if (config.revocation_ids.nonEmpty && config.revocation_ids.exists(id => recocationIds.contains(id))) {
       Left(new Error.FormatError.DeserializationError("revoked token"))
     } else {
-      // TODO: here, add rules from config, query some stuff, etc ..
       Try(verifier.allow().authorize()).toEither match {
         case Left(err: org.biscuitsec.biscuit.error.Error) => Left(err)
         case Left(err)                                     => Left(new org.biscuitsec.biscuit.error.Error.InternalError())
         case Right(_)                                      => Right(())
       }
     }
+  }
+}
+
+
+case class Role(name: String, permissions: List[String])
+
+object BiscuitRbacUtils {
+
+  implicit val rolesReads: Reads[List[Role]] = Reads { json =>
+    (json \ "roles").validate[List[Map[String, List[String]]]].map { roles =>
+      roles.flatMap(_.toList.map { case (name, permissions) =>
+        Role(name, permissions)
+      })
+    }
+  }
+
+  def getRemoteFacts(
+                      apiUrl: String,
+                      headers: Map[String, String],
+                    )(implicit env: Env, ec: ExecutionContext): Future[Either[String, List[String]]] = {
+
+    env.Ws
+      .url(apiUrl)
+      .withHttpHeaders(
+        headers.toSeq: _*
+      )
+      .withRequestTimeout(scala.concurrent.duration.Duration("10s"))
+      .withMethod("GET")
+      .execute()
+      .map { resp =>
+        resp.status match {
+          case 200 =>
+            resp.json.validate[List[Role]] match {
+              case JsSuccess(roles, _) =>
+                val biscuitFacts = roles.map { role =>
+                  s"""role("${role.name}", [${role.permissions.map(p => s""""$p"""").mkString(", ")}]);"""
+                }
+                Right(biscuitFacts)
+
+              case JsError(errors) =>
+                Left(s"Failed to parse API response: $errors")
+            }
+
+          case _ =>
+            Left(s"API request failed with status ${resp.status}: ${resp.body}")
+        }
+      }
+      .recover {
+        case ex: Exception =>
+          Left(s"An error occurred during API request: ${ex.getMessage}")
+      }
   }
 }

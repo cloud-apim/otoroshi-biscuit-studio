@@ -24,6 +24,7 @@ class BiscuitExtensionDatastores(env: Env, extensionId: AdminExtensionId) {
   val biscuitAttenuatorDataStore: BiscuitAttenuatorDataStore = new KvBiscuitAttenuatorDataStore(extensionId, env.datastores.redis, env)
   val biscuitTokenForgeDataStore: BiscuitTokenForgeDataStore = new KvBiscuitTokenForgeDataStore(extensionId, env.datastores.redis, env)
   val biscuitRbacPolicyDataStore: BiscuitRbacPolicyDataStore = new KvBiscuitRbacPolicyDataStore(extensionId, env.datastores.redis, env)
+  val biscuitRemoteFactsLoaderDataStore: BiscuitRemoteFactsLoaderDataStore = new KvBiscuitRemoteFactsLoaderDataStore(extensionId, env.datastores.redis, env)
 }
 
 class BiscuitExtensionState(env: Env) {
@@ -61,6 +62,13 @@ class BiscuitExtensionState(env: Env) {
   def allbiscuitRbacPolicies(): Seq[BiscuitRbacPolicy] = _rbacpolicies.values.toSeq
   def updateBiscuitRbacPolicy(values: Seq[BiscuitRbacPolicy]): Unit = {
     _rbacpolicies.addAll(values.map(v => (v.id, v))).remAll(_rbacpolicies.keySet.toSeq.diff(values.map(_.id)))
+  }
+
+  private val _rfl = new UnboundedTrieMap[String, RemoteFactsLoader]()
+  def biscuitRemoteFactsLoader(id: String): Option[RemoteFactsLoader] = _rfl.get(id)
+  def allBiscuitRemoteFactsLoader(): Seq[RemoteFactsLoader] = _rfl.values.toSeq
+  def updatebiscuitRemoteFactsLoader(values: Seq[RemoteFactsLoader]): Unit = {
+    _rfl.addAll(values.map(v => (v.id, v))).remAll(_rfl.keySet.toSeq.diff(values.map(_.id)))
   }
 }
 
@@ -100,6 +108,14 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
   lazy val biscuitAttenuatorsPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitAttenuatorPage.js")
   lazy val biscuitTokenForgePage = getResourceCode("cloudapim/extensions/biscuit/BiscuitTokenForgePage.js")
   lazy val biscuitRbacPoliciesPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitRbacPoliciesPage.js")
+  lazy val biscuitRemoteFactsLoaderPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitRemoteFactsLoaderPage.js")
+  lazy val biscuitWebComponents = getResourceCode("cloudapim/extensions/biscuit/webcomponents/index.js")
+                                  .replace("/assets/tree-sitter.wasm", "/extensions/assets/cloud-apim/extensions/biscuit/assets/tree-sitter.wasm")
+                                  .replace("/assets/tree-sitter-biscuit.wasm", "/extensions/assets/cloud-apim/extensions/biscuit/assets/tree-sitter-biscuit.wasm")
+                                  .replace("assets/biscuit_bg-f81a6772.wasm", "/extensions/assets/cloud-apim/extensions/biscuit/assets/biscuit.wasm")
+  lazy val treeSitterComponent = getResourceBytes("cloudapim/extensions/biscuit/webcomponents/assets/tree-sitter.wasm")
+  lazy val treeSitterBiscuitComponent = getResourceBytes("cloudapim/extensions/biscuit/webcomponents/assets/tree-sitter-biscuit.wasm")
+  lazy val biscuitWasmComponents = getResourceBytes("cloudapim/extensions/biscuit/webcomponents/assets/biscuit.wasm")
 
   def handleGenerateTokenFromForge(ctx: AdminExtensionRouterContext[AdminExtensionBackofficeAuthRoute], req: RequestHeader, user: Option[BackOfficeUser], body:  Option[Source[ByteString, _]]): Future[Result] = {
     implicit val ec = env.otoroshiExecutionContext
@@ -155,6 +171,14 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       .getOrElse(s"'resource ${path} not found !'")
   }
 
+   def getResourceBytes(path: String): ByteString = {
+    implicit val ec = env.otoroshiExecutionContext
+    implicit val mat = env.otoroshiMaterializer
+    env.environment.resourceAsStream(path)
+      .map(stream => StreamConverters.fromInputStream(() => stream).runFold(ByteString.empty)(_++_).awaitf(10.seconds))
+      .get
+  }
+
   override def backofficeAuthRoutes(): Seq[AdminExtensionBackofficeAuthRoute] = Seq(
     AdminExtensionBackofficeAuthRoute(
       method = "POST",
@@ -176,6 +200,30 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
             "privateKey" -> generatedKeyPair.toHex.toLowerCase
           )
         ).as("application/json").vfuture
+      }
+    ),
+    AdminExtensionAssetRoute(
+      path = "/extensions/assets/cloud-apim/extensions/biscuit/assets/tree-sitter.wasm",
+      handle = (ctx: AdminExtensionRouterContext[AdminExtensionAssetRoute], req: RequestHeader) => {
+        Results.Ok(treeSitterComponent).future
+      }
+    ),
+       AdminExtensionAssetRoute(
+      path = "/extensions/assets/cloud-apim/extensions/biscuit/assets/tree-sitter-biscuit.wasm",
+      handle = (ctx: AdminExtensionRouterContext[AdminExtensionAssetRoute], req: RequestHeader) => {
+        Results.Ok(treeSitterBiscuitComponent).future
+      }
+    ),
+       AdminExtensionAssetRoute(
+      path = "/extensions/assets/cloud-apim/extensions/biscuit/assets/biscuit.wasm",
+      handle = (ctx: AdminExtensionRouterContext[AdminExtensionAssetRoute], req: RequestHeader) => {
+        Results.Ok(biscuitWasmComponents).future
+      }
+    ),
+       AdminExtensionAssetRoute(
+      path = "/extensions/assets/cloud-apim/extensions/biscuit/biscuit.js",
+      handle = (ctx: AdminExtensionRouterContext[AdminExtensionAssetRoute], req: RequestHeader) => {
+        Results.Ok(biscuitWebComponents).as("text/javascript").vfuture
       }
     ),
     AdminExtensionAssetRoute(
@@ -202,6 +250,13 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |    ${biscuitAttenuatorsPage}
              |    ${biscuitTokenForgePage}
              |    ${biscuitRbacPoliciesPage}
+             |    ${biscuitRemoteFactsLoaderPage}
+             |
+             |    const s = document.createElement("script")
+             |    s.setAttribute("type", "module")
+             |    s.setAttribute("src", "/extensions/assets/cloud-apim/extensions/biscuit/biscuit.js")
+             |
+             |    document.body.appendChild(s)
              |
              |    return {
              |      id: extensionId,
@@ -244,6 +299,13 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          display: () => true,
              |          icon: () => 'fa-list-check'
              |        },
+             |        {
+             |          title: 'Biscuit Remote Facts Loader',
+             |          description: 'All your Biscuit Remote Facts Loader',
+             |          link: '/extensions/cloud-apim/biscuit/remote-facts',
+             |          display: () => true,
+             |          icon: () => 'fa-laptop-file'
+             |        },
              |        ]
              |      }],
              |      features: [
@@ -282,6 +344,13 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          display: () => true,
              |          icon: () => 'fa-list-check'
              |        },
+             |         {
+             |          title: 'Biscuit Remote Facts Loader',
+             |          description: 'All your Biscuit Remote Facts Loader',
+             |          link: '/extensions/cloud-apim/biscuit/remote-facts',
+             |          display: () => true,
+             |          icon: () => 'fa-laptop-file'
+             |        },
              |      ],
              |      sidebarItems: [
              |        {
@@ -313,6 +382,13 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          text: 'All your Biscuit RBAC Policies',
              |          path: 'extensions/cloud-apim/biscuit/rbac',
              |          icon: 'list-check'
+             |        },
+             |         {
+             |          title: 'Biscuit Remote Facts Loader',
+             |          text: 'All your Biscuit Remote Facts Loader',
+             |          link: '/extensions/cloud-apim/biscuit/remote-facts',
+             |          display: () => true,
+             |          icon: () => 'fa-laptop-file'
              |        },
              |      ],
              |      searchItems: [
@@ -355,6 +431,14 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          env: React.createElement('span', { className: "fas fa-list-check" }, null),
              |          label: 'Biscuit RBAC Policies',
              |          value: 'biscuit-rbac',
+             |        },
+             |         {
+             |          action: () => {
+             |            window.location.href = `/bo/dashboard/extensions/cloud-apim/biscuit/remote-facts`
+             |          },
+             |          env: React.createElement('span', { className: "fas fa-laptop-file" }, null),
+             |          label: 'Biscuit Remote Facts Loader',
+             |          value: 'biscuit-facts-loader',
              |        },
              |      ],
              |      routes: [
@@ -447,6 +531,24 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          component: (props) => {
              |            return React.createElement(BiscuitRbacPoliciesPage, props, null)
              |          }
+             |        },
+             |        {
+             |          path: '/extensions/cloud-apim/biscuit/remote-facts/:taction/:titem',
+             |          component: (props) => {
+             |            return React.createElement(BiscuitRemoteFactsLoaderPage, props, null)
+             |          }
+             |        },
+             |        {
+             |          path: '/extensions/cloud-apim/biscuit/remote-facts/:taction',
+             |          component: (props) => {
+             |            return React.createElement(BiscuitRemoteFactsLoaderPage, props, null)
+             |          }
+             |        },
+             |        {
+             |          path: '/extensions/cloud-apim/biscuit/remote-facts',
+             |          component: (props) => {
+             |            return React.createElement(BiscuitRemoteFactsLoaderPage, props, null)
+             |          }
              |        }
              |      ]
              |    }
@@ -466,12 +568,14 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       attenuators <- datastores.biscuitAttenuatorDataStore.findAllAndFillSecrets()
       tokenForge <- datastores.biscuitTokenForgeDataStore.findAllAndFillSecrets()
       rbacPolicies <- datastores.biscuitRbacPolicyDataStore.findAllAndFillSecrets()
+      remoteFactsLoader <- datastores.biscuitRemoteFactsLoaderDataStore.findAllAndFillSecrets()
     } yield {
       states.updateKeyPairs(keypairs)
       states.updateBiscuitVerifiers(verifiers)
       states.updateBiscuitAttenuators(attenuators)
       states.updateBiscuitTokenForge(tokenForge)
       states.updateBiscuitRbacPolicy(rbacPolicies)
+      states.updatebiscuitRemoteFactsLoader(remoteFactsLoader)
       ()
     }
   }
@@ -483,6 +587,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       AdminExtensionEntity(BiscuitAttenuator.resource(env, datastores, states)),
       AdminExtensionEntity(BiscuitTokenForge.resource(env, datastores, states)),
       AdminExtensionEntity(BiscuitRbacPolicy.resource(env, datastores, states)),
+      AdminExtensionEntity(RemoteFactsLoader.resource(env, datastores, states)),
     )
   }
 }

@@ -13,35 +13,40 @@ import otoroshi.utils.syntax.implicits._
 import play.api.libs.json._
 import otoroshi.security.IdGenerator
 
-case class BiscuitKeyPair (
-                            id: String,
-                            name: String,
-                            description: String,
-                            privKey: String,
-                            pubKey: String,
-                            tags: Seq[String],
-                            metadata: Map[String, String],
-                            location: EntityLocation
-                          ) extends EntityLocationSupport {
-  def json: JsValue                    = BiscuitKeyPair.format.writes(this)
-  def internalId: String               = id
-  def theDescription: String           = description
+case class BiscuitKeyPair(
+                           id: String,
+                           name: String,
+                           description: String,
+                           privKey: String,
+                           pubKey: String,
+                           tags: Seq[String],
+                           metadata: Map[String, String],
+                           location: EntityLocation
+                         ) extends EntityLocationSupport {
+  def json: JsValue = BiscuitKeyPair.format.writes(this)
+
+  def internalId: String = id
+
+  def theDescription: String = description
+
   def theMetadata: Map[String, String] = metadata
-  def theName: String                  = name
-  def theTags: Seq[String]             = tags
+
+  def theName: String = name
+
+  def theTags: Seq[String] = tags
 }
 
-object BiscuitKeyPair{
+object BiscuitKeyPair {
   val format = new Format[BiscuitKeyPair] {
     override def writes(o: BiscuitKeyPair): JsValue = {
       Json.obj(
-        "id"            -> o.id,
-        "name"          -> o.name,
-        "description"          -> o.description,
-        "metadata"      -> o.metadata,
-        "pubKey"        -> o.pubKey,
-        "privKey"       -> o.privKey,
-        "tags"          -> JsArray(o.tags.map(JsString.apply)),
+        "id" -> o.id,
+        "name" -> o.name,
+        "description" -> o.description,
+        "metadata" -> o.metadata,
+        "pubKey" -> o.pubKey,
+        "privKey" -> o.privKey,
+        "tags" -> JsArray(o.tags.map(JsString.apply)),
       )
     }
 
@@ -71,50 +76,47 @@ object BiscuitKeyPair{
       "biscuit.extensions.cloud-apim.com",
       ResourceVersion("v1", true, false, true),
       GenericResourceAccessApiWithState[BiscuitKeyPair](
-        BiscuitKeyPair.format,
-        classOf[BiscuitKeyPair],
-        datastores.biscuitKeyPairDataStore.key,
-        datastores.biscuitKeyPairDataStore.extractId,
-        json => json.select("id").asString,
-        () => "id",
-        (v, p) => datastores.biscuitKeyPairDataStore.template(env).json,
+        format = BiscuitKeyPair.format,
+        clazz = classOf[BiscuitKeyPair],
+        keyf = id => datastores.biscuitKeyPairDataStore.key(id),
+        extractIdf = c => datastores.biscuitKeyPairDataStore.extractId(c),
+        extractIdJsonf = json => json.select("id").asString,
+        idFieldNamef = () => "id",
+        tmpl = (v, p) => {
+          BiscuitKeyPair(
+            id = IdGenerator.namedId("biscuit-keypair", env),
+            name = "Prompt",
+            description = "A new prompt",
+            metadata = Map.empty,
+            tags = Seq.empty,
+            location = EntityLocation.default,
+            privKey = "",
+            pubKey = ""
+          ).json
+        },
+        canRead = true,
+        canCreate = true,
+        canUpdate = true,
+        canDelete = true,
+        canBulk = true,
         stateAll = () => states.allKeypairs(),
         stateOne = id => states.keypair(id),
-        stateUpdate = values => states.updateKeyPairs(values))
+        stateUpdate = values => states.updateKeyPairs(values)
       )
+    )
   }
 }
 
-trait BiscuitKeyPairDataStore extends BasicStore[BiscuitKeyPair]{
-  def template(env: Env): BiscuitKeyPair = {
-    val defaultBiscuitKeyPair = BiscuitKeyPair(
-      id = IdGenerator.namedId("biscuit_keypair", env),
-      name = "New biscuit keypair",
-      description = "New biscuit keypair",
-      pubKey = "",
-      privKey = "",
-      metadata = Map.empty,
-      tags = Seq.empty,
-      location = EntityLocation.default
-    )
-    env.datastores.globalConfigDataStore
-      .latest()(env.otoroshiExecutionContext, env)
-      .templates
-      .apikey
-      .map { template =>
-        BiscuitKeyPair.format.reads(defaultBiscuitKeyPair.json.asObject.deepMerge(template)).get
-      }
-      .getOrElse {
-        defaultBiscuitKeyPair
-      }
-  }
-}
+trait BiscuitKeyPairDataStore extends BasicStore[BiscuitKeyPair]
 
 class KvBiscuitKeyPairDataStore(extensionId: AdminExtensionId, redisCli: RedisLike, _env: Env)
   extends BiscuitKeyPairDataStore
     with RedisLikeStore[BiscuitKeyPair] {
-  override def fmt: Format[BiscuitKeyPair]                  = BiscuitKeyPair.format
+  override def fmt: Format[BiscuitKeyPair] = BiscuitKeyPair.format
+
   override def redisLike(implicit env: Env): RedisLike = redisCli
-  override def key(id: String): String                 = s"${_env.storageRoot}:extensions:${extensionId.cleanup}:biscuit:keypairs:$id"
-  override def extractId(value: BiscuitKeyPair): String    = value.id
+
+  override def key(id: String): String = s"${_env.storageRoot}:extensions:${extensionId.cleanup}:biscuit:keypairs:$id"
+
+  override def extractId(value: BiscuitKeyPair): String = value.id
 }

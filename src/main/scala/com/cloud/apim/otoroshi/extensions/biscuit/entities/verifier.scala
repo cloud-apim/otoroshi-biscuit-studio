@@ -6,19 +6,23 @@ import otoroshi.models.{EntityLocation, EntityLocationSupport}
 import otoroshi.next.extensions.AdminExtensionId
 import otoroshi.security.IdGenerator
 import otoroshi.storage.{BasicStore, RedisLike, RedisLikeStore}
+import otoroshi.utils.syntax.implicits._
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionDatastores, BiscuitExtensionState}
 import play.api.libs.json._
-import otoroshi.utils.syntax.implicits._
 
 import scala.util.{Failure, Success, Try}
 
+case class ExternalFactsConfig(
+                                apiUrl: String
+                              )
+
 case class VerifierConfig(
-                          checks: Seq[String],
-                          facts: Seq[String],
-                          resources: Seq[String],
-                          rules: Seq[String],
-                          revocation_ids: Seq[String]
-                        ){
+                           checks: Seq[String],
+                           facts: Seq[String],
+                           resources: Seq[String],
+                           rules: Seq[String],
+                           revocation_ids: Seq[String]
+                         ) {
   def json: JsValue = VerifierConfig.format.writes(this)
 }
 
@@ -49,6 +53,7 @@ object VerifierConfig {
       }
   }
 }
+
 case class BiscuitVerifier(
                             id: String,
                             name: String,
@@ -61,16 +66,21 @@ case class BiscuitVerifier(
                             keypairRef: String,
                             config: Option[VerifierConfig]
                           ) extends EntityLocationSupport {
-  def json: JsValue                    = BiscuitVerifier.format.writes(this)
-  def internalId: String               = id
-  def theDescription: String           = description
+  def json: JsValue = BiscuitVerifier.format.writes(this)
+
+  def internalId: String = id
+
+  def theDescription: String = description
+
   def theMetadata: Map[String, String] = metadata
-  def theName: String                  = name
-  def theTags: Seq[String]             = tags
+
+  def theName: String = name
+
+  def theTags: Seq[String] = tags
 }
 
 
-object BiscuitVerifier{
+object BiscuitVerifier {
   val format = new Format[BiscuitVerifier] {
     override def writes(o: BiscuitVerifier): JsValue = {
       Json.obj(
@@ -106,58 +116,61 @@ object BiscuitVerifier{
       }
   }
 
-    def resource(env: Env, datastores: BiscuitExtensionDatastores, states: BiscuitExtensionState): Resource = {
-      Resource(
-        "BiscuitVerifier",
-        "biscuit-verifiers",
-        "biscuit-verifier",
-        "biscuit.extensions.cloud-apim.com",
-        ResourceVersion("v1", true, false, true),
-        GenericResourceAccessApiWithState[BiscuitVerifier](
-          BiscuitVerifier.format,
-          classOf[BiscuitVerifier],
-          datastores.biscuitVerifierDataStore.key,
-          datastores.biscuitVerifierDataStore.extractId,
-          json => json.select("id").asString,
-          () => "id",
-          (v, p) => datastores.biscuitVerifierDataStore.template(env).json,
-          stateAll = () => states.allBiscuitVerifiers(),
-          stateOne = id => states.biscuitVerifier(id),
-          stateUpdate = values => states.updateBiscuitVerifiers(values))
-      )
-    }
+  def resource(env: Env, datastores: BiscuitExtensionDatastores, states: BiscuitExtensionState): Resource = {
+    Resource(
+      "BiscuitVerifier",
+      "biscuit-verifiers",
+      "biscuit-verifier",
+      "biscuit.extensions.cloud-apim.com",
+      ResourceVersion("v1", true, false, true),
+      GenericResourceAccessApiWithState[BiscuitVerifier](
+        BiscuitVerifier.format,
+        classOf[BiscuitVerifier],
+        datastores.biscuitVerifierDataStore.key,
+        datastores.biscuitVerifierDataStore.extractId,
+        json => json.select("id").asString,
+        () => "id",
+        (v, p) => datastores.biscuitVerifierDataStore.template(env).json,
+        stateAll = () => states.allBiscuitVerifiers(),
+        stateOne = id => states.biscuitVerifier(id),
+        stateUpdate = values => states.updateBiscuitVerifiers(values))
+    )
+  }
 }
 
-  trait BiscuitVerifierDataStore extends BasicStore[BiscuitVerifier]{
-    def template(env: Env): BiscuitVerifier = {
-      val defaultBiscuitVerifier = BiscuitVerifier(
-        id = IdGenerator.namedId("biscuit_verifier", env),
-        name = "New biscuit verifier",
-        description = "New biscuit verifier",
-        metadata = Map.empty,
-        tags = Seq.empty,
-        location = EntityLocation.default,
-        keypairRef = "",
-        config = None
-      )
-      env.datastores.globalConfigDataStore
-        .latest()(env.otoroshiExecutionContext, env)
-        .templates
-        .apikey
-        .map { template =>
-          BiscuitVerifier.format.reads(defaultBiscuitVerifier.json.asObject.deepMerge(template)).get
-        }
-        .getOrElse {
-          defaultBiscuitVerifier
-        }
-    }
+trait BiscuitVerifierDataStore extends BasicStore[BiscuitVerifier] {
+  def template(env: Env): BiscuitVerifier = {
+    val defaultBiscuitVerifier = BiscuitVerifier(
+      id = IdGenerator.namedId("biscuit_verifier", env),
+      name = "New biscuit verifier",
+      description = "New biscuit verifier",
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      keypairRef = "",
+      config = None
+    )
+    env.datastores.globalConfigDataStore
+      .latest()(env.otoroshiExecutionContext, env)
+      .templates
+      .apikey
+      .map { template =>
+        BiscuitVerifier.format.reads(defaultBiscuitVerifier.json.asObject.deepMerge(template)).get
+      }
+      .getOrElse {
+        defaultBiscuitVerifier
+      }
   }
+}
 
-  class KvBiscuitVerifierDataStore(extensionId: AdminExtensionId, redisCli: RedisLike, _env: Env)
-    extends BiscuitVerifierDataStore
-      with RedisLikeStore[BiscuitVerifier] {
-    override def fmt: Format[BiscuitVerifier]                  = BiscuitVerifier.format
-    override def redisLike(implicit env: Env): RedisLike = redisCli
-    override def key(id: String): String                 = s"${_env.storageRoot}:extensions:${extensionId.cleanup}:biscuit:verifiers:$id"
-    override def extractId(value: BiscuitVerifier): String    = value.id
-  }
+class KvBiscuitVerifierDataStore(extensionId: AdminExtensionId, redisCli: RedisLike, _env: Env)
+  extends BiscuitVerifierDataStore
+    with RedisLikeStore[BiscuitVerifier] {
+  override def fmt: Format[BiscuitVerifier] = BiscuitVerifier.format
+
+  override def redisLike(implicit env: Env): RedisLike = redisCli
+
+  override def key(id: String): String = s"${_env.storageRoot}:extensions:${extensionId.cleanup}:biscuit:verifiers:$id"
+
+  override def extractId(value: BiscuitVerifier): String = value.id
+}

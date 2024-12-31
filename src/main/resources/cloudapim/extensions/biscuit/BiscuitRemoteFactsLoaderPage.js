@@ -1,4 +1,4 @@
-class BiscuitRbacPoliciesPage extends Component {
+class BiscuitRemoteFactsLoaderPage extends Component {
 	formSchema = {
 		_loc: {
 			type: "location",
@@ -28,23 +28,17 @@ class BiscuitRbacPoliciesPage extends Component {
 			type: "array",
 			props: { label: "Tags" },
 		},
-		roles: {
-			type: "object",
-			props: { label: "List of Roles" },
-		},
-        enableRemoteFacts: {
-            type: 'bool',
-            props: { label: "Enable remote facts loader" },
-        },
-        remoteFactsRef: {
-            type: "select",
+        'config.apiUrl': {
+            type: "string",
             props: {
-                label: "Remote facts Reference",
-                valuesFrom:
-                    "/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/remote-facts",
-                transformer: (item) => ({ label: item.name, value: item.id }),
+                label: "API URL",
+                placeholder: "Description of the Context",
             },
         },
+        'config.headers': {
+                    type: "object",
+         			props: { label: "Headers" },
+        }
 	};
 
 	columns = [
@@ -68,21 +62,19 @@ class BiscuitRbacPoliciesPage extends Component {
 		">>>Metadata and tags",
 		"tags",
 		"metadata",
-		"<<<Roles",
-		"roles",
-		"<<<Remote Facts",
-		"enableRemoteFacts",
-		"remoteFactsRef"
+		"<<<Configuration",
+		"config.apiUrl",
+		"config.headers"
 	];
 
 	componentDidMount() {
-		this.props.setTitle(`Biscuit RBAC Policies`);
+		this.props.setTitle(`Biscuit Remote Facts Loader`);
 	}
 
 	client = BackOfficeServices.apisClient(
 		"biscuit.extensions.cloud-apim.com",
 		"v1",
-		"biscuit-rbac"
+		"remote-facts"
 	);
 
 	render() {
@@ -90,35 +82,23 @@ class BiscuitRbacPoliciesPage extends Component {
 			Table,
 			{
 				parentProps: this.props,
-				selfUrl: "extensions/cloud-apim/biscuit/rbac",
-				defaultTitle: "All Biscuit RBAC Policies",
+				selfUrl: "extensions/cloud-apim/biscuit/remote-facts",
+				defaultTitle: "All Biscuit Remote Facts",
 				defaultValue: () => ({
-					id: "biscuit_rbac_policy_" + uuid(),
-					name: "Biscuit RBAC Policy " + uuid(),
-					description: "A simple Biscuit RBAC Policy",
+					id: "biscuit-remote-facts_" + uuid(),
+					name: "Remote fact loader",
+					description: "Biscuit Remote fact loader",
 					tags: [],
 					metadata: {},
-					enableRemoteFacts: false,
-					remoteFactsRef: "",
-					roles: {
-						admin: [
-							"billing:read",
-							"billing:write",
-							"address:read",
-							"address:write",
-						],
-						accounting: ["billing:read", "billing:write", "address:read"],
-						support: ["address:read", "address:write"],
-						pilot: ["spaceship:drive", "address:read"],
-						delivery: [
-							"address:read",
-							"package:load",
-							"package:unload",
-							"package:deliver",
-						],
-					},
+					config:{
+					    apiUrl: "https://api.domain.com/v1/roles",
+					    headers: {
+					        "Accept": "application/json",
+					        "Authorization": "Bearer: xxxxx"
+					    }
+					}
 				}),
-				itemName: "Biscuit RBAC Policy",
+				itemName: "Biscuit Remote Facts Loader",
 				formSchema: this.formSchema,
 				formFlow: this.formFlow,
 				columns: this.columns,
@@ -129,16 +109,16 @@ class BiscuitRbacPoliciesPage extends Component {
 				deleteItem: this.client.delete,
 				createItem: this.client.create,
 				navigateTo: (item) => {
-					window.location = `/bo/dashboard/extensions/cloud-apim/biscuit/rbac/edit/${item.id}`;
+					window.location = `/bo/dashboard/extensions/cloud-apim/biscuit/remote-facts/edit/${item.id}`;
 				},
 				itemUrl: (item) =>
-					`/bo/dashboard/extensions/cloud-apim/biscuit/rbac/edit/${item.id}`,
+					`/bo/dashboard/extensions/cloud-apim/biscuit/remote-facts/edit/${item.id}`,
 				showActions: true,
 				showLink: true,
 				rowNavigation: true,
 				extractKey: (item) => item.id,
 				export: true,
-				kubernetesKind: "BiscuitRBAC",
+				kubernetesKind: "BiscuitRemoteFactsLoader",
 			},
 			null
 		);
