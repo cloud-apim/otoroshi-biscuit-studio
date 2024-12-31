@@ -70,3 +70,4 @@ project/**/metals.sbt
 .bsp
 .history
 
+.DS_STORE
