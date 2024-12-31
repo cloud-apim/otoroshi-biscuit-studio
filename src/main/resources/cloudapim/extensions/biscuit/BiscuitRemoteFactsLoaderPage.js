@@ -74,7 +74,7 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 	client = BackOfficeServices.apisClient(
 		"biscuit.extensions.cloud-apim.com",
 		"v1",
-		"remote-facts"
+		"biscuit-remote-facts"
 	);
 
 	render() {
@@ -118,7 +118,7 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 				rowNavigation: true,
 				extractKey: (item) => item.id,
 				export: true,
-				kubernetesKind: "BiscuitRemoteFactsLoader",
+				kubernetesKind: "BiscuitRemoteFactsLoader"
 			},
 			null
 		);

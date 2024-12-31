@@ -101,8 +101,8 @@ object RemoteFactsLoader {
   def resource(env: Env, datastores: BiscuitExtensionDatastores, states: BiscuitExtensionState): Resource = {
     Resource(
       "BiscuitRemoteFactsLoader",
-      "remote-facts",
-      "remote-facts",
+      "biscuit-remote-facts",
+      "biscuit-remote-facts",
       "biscuit.extensions.cloud-apim.com",
       ResourceVersion("v1", true, false, true),
       GenericResourceAccessApiWithState[RemoteFactsLoader](
@@ -123,7 +123,7 @@ object RemoteFactsLoader {
 trait BiscuitRemoteFactsLoaderDataStore extends BasicStore[RemoteFactsLoader] {
   def template(env: Env): RemoteFactsLoader = {
     val defaultFactsLoader = RemoteFactsLoader(
-      id = IdGenerator.namedId("biscuit_remote_facts", env),
+      id = IdGenerator.namedId("biscuit-remote-facts", env),
       name = "New biscuit remote facts loader",
       description = "New biscuit remote facts loader",
       metadata = Map.empty,

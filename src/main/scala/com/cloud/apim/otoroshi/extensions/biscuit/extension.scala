@@ -304,7 +304,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          description: 'All your Biscuit Remote Facts Loader',
              |          link: '/extensions/cloud-apim/biscuit/remote-facts',
              |          display: () => true,
-             |          icon: () => 'fa-laptop-file'
+             |          icon: () => 'fa-tower-broadcast'
              |        },
              |        ]
              |      }],
@@ -349,7 +349,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          description: 'All your Biscuit Remote Facts Loader',
              |          link: '/extensions/cloud-apim/biscuit/remote-facts',
              |          display: () => true,
-             |          icon: () => 'fa-laptop-file'
+             |          icon: () => 'fa-tower-broadcast'
              |        },
              |      ],
              |      sidebarItems: [
@@ -388,7 +388,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          text: 'All your Biscuit Remote Facts Loader',
              |          link: '/extensions/cloud-apim/biscuit/remote-facts',
              |          display: () => true,
-             |          icon: () => 'fa-laptop-file'
+             |          icon: () => 'tower-broadcast'
              |        },
              |      ],
              |      searchItems: [
@@ -436,7 +436,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          action: () => {
              |            window.location.href = `/bo/dashboard/extensions/cloud-apim/biscuit/remote-facts`
              |          },
-             |          env: React.createElement('span', { className: "fas fa-laptop-file" }, null),
+             |          env: React.createElement('span', { className: "fas fa-tower-broadcast" }, null),
              |          label: 'Biscuit Remote Facts Loader',
              |          value: 'biscuit-facts-loader',
              |        },
