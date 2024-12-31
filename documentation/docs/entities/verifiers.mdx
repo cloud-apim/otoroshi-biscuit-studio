@@ -6,19 +6,33 @@ import Terminal from '@site/src/components/Terminal';
 
 # Verifiers
 
-A Biscuit Verifier is a key component in the Biscuit token framework, used to validate and enforce additional constraints on a Biscuit token. 
+A Biscuit Verifier is a key component in the Biscuit token framework, used to validate and enforce additional constraints on a Biscuit token.
 
 While Biscuit tokens inherently carry embedded rules and checks, a verifier allows you to apply context-specific restrictions during token validation without modifying the token itself.
 
-Using a verifier means you don’t need to modify or reissue tokens for every new constraint. 
-
-Instead, constraints can be added at runtime when validating the token.
+Using a verifier means you don’t need to modify or reissue tokens for every new constraint. Instead, constraints can be added at runtime when validating the token.
 
 ![](/screenshots/biscuit-verifier-creation.png)
 
-## Example 
+![](/screenshots/biscuit-verifier-entity-config2.png)
 
-```javascript
+## Overview
+
+### Key Features
+- **Dynamic Constraint Management**: Add new constraints at runtime without altering the original token.
+- **Enhanced Security**: Enforce strict validation policies tailored to specific contexts.
+- **Extensibility**: Easily integrate with various APIs and frameworks.
+
+### Common Use Cases
+- Limiting token usage to specific timeframes.
+- Restricting token access to particular resources.
+- Enforcing domain-specific rules dynamically.
+
+## Example Configuration
+
+The following JSON configuration defines a Biscuit Verifier with a time constraint:
+
+```json
 {
   "enabled": true,
   "id": "biscuit_verifier_6f5f20a5-2c65-4860-8ad1-7b6495ee03bf",
@@ -40,25 +54,48 @@ Instead, constraints can be added at runtime when validating the token.
 }
 ```
 
-## Create a Biscuit Verifier from command line
-```bash 
-curl -X POST -H 'Content-Type: application/json' 'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers' -u admin-api-apikey-id:admin-api-apikey-secret -d '{
-  "enabled": true,
-  "id": "biscuit_verifier_6f5f20a5-2c65-4860-8ad1-7b6495ee03bf",
-  "keypair_ref": "biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9",
-  "name": "Biscuit Verifier CURL",
-  "description": "A Biscuit Verifier created from Otoroshi API",
-  "strict": true,
-  "tags": [],
-  "config": {
-    "checks": [
-      "check if time($date), $date <= 2024-12-30T19:00:10Z;"
-    ],
-    "facts": [],
-    "resources": [],
-    "rules": [],
-    "revocation_ids": []
-  },
-  "kind": "biscuit.extensions.cloud-apim.com/BiscuitVerifier"
-}'
+### Explanation of Fields
+
+- **`enabled`**: Indicates if the verifier is active.
+- **`id`**: Unique identifier for the verifier.
+- **`keypair_ref`**: Reference to the cryptographic keypair used for token verification.
+- **`name`**: Human-readable name for the verifier.
+- **`description`**: Description of the verifier’s purpose.
+- **`strict`**: Enforces strict checking of constraints.
+- **`tags`**: Metadata tags for organizing verifiers.
+- **`config`**: Contains the specific rules, checks, facts, and other configurations applied by the verifier.
+  - **`checks`**: Constraints enforced during validation (e.g., time-based restrictions).
+  - **`facts`**: Contextual facts provided to the verifier.
+  - **`resources`**: Specifies resources associated with the token.
+  - **`rules`**: Defines custom rules for validation.
+  - **`revocation_ids`**: List of IDs marking revoked tokens.
+- **`kind`**: Specifies the resource type for integration with APIs.
+
+## Creating a Biscuit Verifier from Command Line
+
+You can create a Biscuit Verifier using the Otoroshi API with the following `curl` command:
+
+```bash
+curl -X POST -H 'Content-Type: application/json' \
+  'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers' \
+  -u admin-api-apikey-id:admin-api-apikey-secret \
+  -d '{
+    "enabled": true,
+    "id": "biscuit_verifier_6f5f20a5-2c65-4860-8ad1-7b6495ee03bf",
+    "keypair_ref": "biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9",
+    "name": "Biscuit Verifier CURL",
+    "description": "A Biscuit Verifier created from Otoroshi API",
+    "strict": true,
+    "tags": [],
+    "config": {
+      "checks": [
+        "check if time($date), $date <= 2024-12-30T19:00:10Z;"
+      ],
+      "facts": [],
+      "resources": [],
+      "rules": [],
+      "revocation_ids": []
+    },
+    "kind": "biscuit.extensions.cloud-apim.com/BiscuitVerifier"
+  }'
 ```

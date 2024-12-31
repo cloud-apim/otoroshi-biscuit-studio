@@ -1,0 +1,98 @@
+---
+sidebar_position: 5
+---
+
+import Terminal from '@site/src/components/Terminal';
+
+# Remote Facts Loader
+
+The **Remote Facts Loader** entity facilitates the loading of external facts provided by an API. This entity is particularly useful for dynamic role and permission management based on external data sources.
+
+---
+
+## Overview
+The Remote Facts Loader connects to an API endpoint to fetch data, such as roles and their associated permissions, and integrates it into your system. This entity is configured with metadata and API details to ensure smooth interaction.
+
+---
+
+![](/screenshots/biscuit-remote-facts-loader-create-entity.png)
+
+![](/screenshots/biscuit-remote-facts-loader-create-entity-configuration.png)
+
+## API Input Example
+Below is an example of the data structure that your API might return. This JSON array defines roles and their associated permissions:
+
+```json
+{
+  "roles": [
+    {
+      "admin": ["billing:read", "billing:write", "address:read", "address:write"]
+    },
+    {
+      "accounting": ["billing:read", "billing:write", "address:read"]
+    },
+    {
+      "support": ["address:read", "address:write"]
+    },
+    {
+      "pilot":  ["spaceship:drive", "address:read"]
+    },
+    {
+      "delivery":  ["address:read", "package:load", "package:unload", "package:deliver"]
+    }
+  ]
+}
+```
+
+### Key Fields in the JSON:
+- **roles**: An array of objects, each representing a role.
+- Each role object contains a key-value pair where the key is the role name (e.g., `admin`) and the value is an array of permissions associated with the role.
+
+---
+
+## Entity Configuration Example
+Below is an example configuration for the Remote Facts Loader entity:
+
+```json
+{
+  "enabled": true,
+  "id": "biscuit_remote_facts_2ae76425-194d-436b-9977-0cdeb8680fbb",
+  "name": "Remote fact loader example",
+  "description": "",
+  "metadata": {
+    "created_at": "2024-12-23T15:30:01.241+01:00"
+  },
+  "tags": [],
+  "config": {
+    "apiUrl": "http://localhost:3333/api/facts",
+    "headers": {
+      "Accept": "application/json",
+      "Authorization": "Bearer: xxxxx"
+    }
+  },
+  "kind": "BiscuitRemoteFactsLoader",
+  "_loc": {
+    "tenant": "default"
+  }
+}
+```
+
+### Key Fields in the Configuration:
+- **enabled**: A boolean indicating if the loader is active.
+- **id**: A unique identifier for the entity.
+- **name**: A human-readable name for the loader.
+- **description**: Optional, for documenting the purpose or details of the loader.
+- **metadata**: Contains system-generated metadata such as creation time.
+- **tags**: Optional tags for categorization or searching.
+- **config**:
+  - **apiUrl**: The endpoint URL where the API data is fetched.
+  - **headers**: HTTP headers to include in the request, such as `Authorization` or `Accept`.
+- **kind**: Specifies the type of loader, in this case, `BiscuitRemoteFactsLoader`.
+- **_loc**: Location or tenant-specific details, useful for multi-tenant applications.
+
+---
+
+## Usage
+1. **Define the API Endpoint**: Ensure the API serving the roles data is operational and adheres to the required JSON format.
+2. **Configure the Entity**: Update the `config.apiUrl` and `headers` fields with the API endpoint and authentication details.
+3. **Activate the Loader**: Set the `enabled` field to `true` to activate the entity.
