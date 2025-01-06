@@ -16,12 +16,13 @@ function HomepageHeader() {
           {siteConfig.title}
         </Heading>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
+        {/* <img src={require('@site/static/img/otoroshi-biscuit-studio-logo.png').default} alt="Otoroshi Biscuit Studio Logo" style={{ width: 250 }} /> */}
         <div className={styles.buttons}>
-          <Link
+          <a
             className="button button--secondary button--lg"
-            to="/docs/overview">
-            Docusaurus Tutorial - 5min ⏱️
-          </Link>
+            href="https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/latest" target="_blank">
+            Download latest version
+          </a>
         </div>
       </div>
     </header>

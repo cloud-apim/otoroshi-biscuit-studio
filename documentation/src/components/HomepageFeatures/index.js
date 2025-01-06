@@ -4,32 +4,62 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Biscuit Verifiers',
+    Svg: require('@site/static/img/undraw_secure-server.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Biscuit Verifiers allow you to validate tokens securely and flexibly. 
+        They ensure that permissions and policies are respected at all times.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Attenuators',
+    Svg: require('@site/static/img/undraw_control-panel.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Attenuators enable you to refine or reduce the capabilities of tokens, 
+        granting only the minimal required permissions for secure operations.
       </>
     ),
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'Remote Facts Loader',
+    Svg: require('@site/static/img/undraw_cloud-sync.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        The Remote Facts Loader allows integration of external data seamlessly 
+        into token verifications, expanding the scope and dynamism of your system.
+      </>
+    ),
+  },
+  {
+    title: 'Hierarchical Delegation',
+    Svg: require('@site/static/img/undraw_team-collaboration.svg').default,
+    description: (
+      <>
+        Biscuit tokens support hierarchical delegation, enabling flexible delegation 
+        of permissions while maintaining strict control over policies.
+      </>
+    ),
+  },
+  {
+    title: 'Compact Design',
+    Svg: require('@site/static/img/undraw_file-analysis.svg').default,
+    description: (
+      <>
+        Biscuit tokens are compact and designed for efficiency, making them ideal for 
+        resource-constrained environments and fast transmissions.
+      </>
+    ),
+  },
+  {
+    title: 'Auditable Policies',
+    Svg: require('@site/static/img/undraw_security-on.svg').default,
+    description: (
+      <>
+        Policies embedded in Biscuit tokens are easily auditable, ensuring that 
+        security and compliance requirements are met with transparency.
       </>
     ),
   },
