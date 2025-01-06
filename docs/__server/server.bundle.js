@@ -468,6 +468,12 @@ function _createMdxContent(props) {
         children: "KeyPairs"
       })
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: (0,jsx_runtime.jsx)(_components.img, {
+        src: (__webpack_require__(3492)/* ["default"] */ .A) + "",
+        width: "924",
+        height: "531"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: "Biscuit Auth tokens are flexible, decentralized, and cryptographically secure authorization tokens."
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: "They use ED25519 keypairs for digital signature generation and verification, ensuring integrity and authenticity."
@@ -687,8 +693,8 @@ const toc = [{
   "id": "entity-configuration-example",
   "level": 2
 }, {
-  "value": "Key Fields in the Configuration:",
-  "id": "key-fields-in-the-configuration",
+  "value": "Key Fields in the Configuration :",
+  "id": "key-fields-in-the-configuration-",
   "level": 3
 }, {
   "value": "Usage",
@@ -702,7 +708,6 @@ function _createMdxContent(props) {
     h2: "h2",
     h3: "h3",
     header: "header",
-    hr: "hr",
     img: "img",
     li: "li",
     ol: "ol",
@@ -719,16 +724,22 @@ function _createMdxContent(props) {
         id: "remote-facts-loader",
         children: "Remote Facts Loader"
       })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: (0,jsx_runtime.jsx)(_components.img, {
+        src: (__webpack_require__(7605)/* ["default"] */ .A) + "",
+        width: "845",
+        height: "576"
+      })
     }), "\n", (0,jsx_runtime.jsxs)(_components.p, {
       children: ["The ", (0,jsx_runtime.jsx)(_components.strong, {
         children: "Remote Facts Loader"
       }), " entity facilitates the loading of external facts provided by an API. This entity is particularly useful for dynamic role and permission management based on external data sources."]
-    }), "\n", (0,jsx_runtime.jsx)(_components.hr, {}), "\n", (0,jsx_runtime.jsx)(_components.h2, {
+    }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
       id: "overview",
       children: "Overview"
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: "The Remote Facts Loader connects to an API endpoint to fetch data, such as roles and their associated permissions, and integrates it into your system. This entity is configured with metadata and API details to ensure smooth interaction."
-    }), "\n", (0,jsx_runtime.jsx)(_components.hr, {}), "\n", (0,jsx_runtime.jsx)(_components.p, {
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: (0,jsx_runtime.jsx)(_components.img, {
         src: (__webpack_require__(7462)/* ["default"] */ .A) + "",
         width: "2824",
@@ -763,7 +774,7 @@ function _createMdxContent(props) {
           children: "admin"
         }), ") and the value is an array of permissions associated with the role."]
       }), "\n"]
-    }), "\n", (0,jsx_runtime.jsx)(_components.hr, {}), "\n", (0,jsx_runtime.jsx)(_components.h2, {
+    }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
       id: "entity-configuration-example",
       children: "Entity Configuration Example"
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
@@ -774,8 +785,8 @@ function _createMdxContent(props) {
         children: "{\n  \"enabled\": true,\n  \"id\": \"biscuit_remote_facts_2ae76425-194d-436b-9977-0cdeb8680fbb\",\n  \"name\": \"Remote fact loader example\",\n  \"description\": \"\",\n  \"metadata\": {\n    \"created_at\": \"2024-12-23T15:30:01.241+01:00\"\n  },\n  \"tags\": [],\n  \"config\": {\n    \"apiUrl\": \"http://localhost:3333/api/facts\",\n    \"headers\": {\n      \"Accept\": \"application/json\",\n      \"Authorization\": \"Bearer: xxxxx\"\n    }\n  },\n  \"kind\": \"BiscuitRemoteFactsLoader\",\n  \"_loc\": {\n    \"tenant\": \"default\"\n  }\n}\n"
       })
     }), "\n", (0,jsx_runtime.jsx)(_components.h3, {
-      id: "key-fields-in-the-configuration",
-      children: "Key Fields in the Configuration:"
+      id: "key-fields-in-the-configuration-",
+      children: "Key Fields in the Configuration :"
     }), "\n", (0,jsx_runtime.jsxs)(_components.ul, {
       children: ["\n", (0,jsx_runtime.jsxs)(_components.li, {
         children: [(0,jsx_runtime.jsx)(_components.strong, {
@@ -830,7 +841,7 @@ function _createMdxContent(props) {
           children: "_loc"
         }), ": Location or tenant-specific details, useful for multi-tenant applications."]
       }), "\n"]
-    }), "\n", (0,jsx_runtime.jsx)(_components.hr, {}), "\n", (0,jsx_runtime.jsx)(_components.h2, {
+    }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
       id: "usage",
       children: "Usage"
     }), "\n", (0,jsx_runtime.jsxs)(_components.ol, {
@@ -961,6 +972,12 @@ function _createMdxContent(props) {
       children: (0,jsx_runtime.jsx)(_components.h1, {
         id: "verifiers",
         children: "Verifiers"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: (0,jsx_runtime.jsx)(_components.img, {
+        src: (__webpack_require__(2989)/* ["default"] */ .A) + "",
+        width: "826",
+        height: "541"
       })
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: "A Biscuit Verifier is a key component in the Biscuit token framework, used to validate and enforce additional constraints on a Biscuit token."
@@ -1162,7 +1179,7 @@ __webpack_require__.d(__webpack_exports__, {
 });
 
 ;// ./.docusaurus/docusaurus-plugin-content-docs/default/site-docs-install-mdx-046.json
-const site_docs_install_mdx_046_namespaceObject = /*#__PURE__*/JSON.parse('{"id":"install","title":"Installation","description":"Download Otoroshi","source":"@site/docs/install.mdx","sourceDirName":".","slug":"/install","permalink":"/otoroshi-biscuit-studio/docs/install","draft":false,"unlisted":false,"tags":[],"version":"current","sidebarPosition":2,"frontMatter":{"sidebar_position":2},"sidebar":"tutorialSidebar","previous":{"title":"Overview","permalink":"/otoroshi-biscuit-studio/docs/overview"},"next":{"title":"Entities","permalink":"/otoroshi-biscuit-studio/docs/category/entities"}}');
+const site_docs_install_mdx_046_namespaceObject = /*#__PURE__*/JSON.parse('{"id":"install","title":"Installation","description":"Download Otoroshi","source":"@site/docs/install.mdx","sourceDirName":".","slug":"/install","permalink":"/otoroshi-biscuit-studio/docs/install","draft":false,"unlisted":false,"tags":[],"version":"current","sidebarPosition":3,"frontMatter":{"sidebar_position":3},"sidebar":"tutorialSidebar","previous":{"title":"Introduction","permalink":"/otoroshi-biscuit-studio/docs/introduction"},"next":{"title":"Entities","permalink":"/otoroshi-biscuit-studio/docs/category/entities"}}');
 // EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
 var jsx_runtime = __webpack_require__(4848);
 // EXTERNAL MODULE: ./node_modules/@mdx-js/react/lib/index.js
@@ -1173,7 +1190,7 @@ var Terminal = __webpack_require__(9229);
 
 
 const frontMatter = {
-	sidebar_position: 2
+	sidebar_position: 3
 };
 const contentTitle = 'Installation';
 
@@ -1273,6 +1290,143 @@ function MDXContent(props = {}) {
 
 /***/ }),
 
+/***/ 1916:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+// ESM COMPAT FLAG
+__webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, {
+  assets: () => (/* binding */ assets),
+  contentTitle: () => (/* binding */ contentTitle),
+  "default": () => (/* binding */ MDXContent),
+  frontMatter: () => (/* binding */ frontMatter),
+  metadata: () => (/* reexport */ site_docs_introduction_mdx_972_namespaceObject),
+  toc: () => (/* binding */ toc)
+});
+
+;// ./.docusaurus/docusaurus-plugin-content-docs/default/site-docs-introduction-mdx-972.json
+const site_docs_introduction_mdx_972_namespaceObject = /*#__PURE__*/JSON.parse('{"id":"introduction","title":"Introduction","description":"Biscuit tokens bring a new level of security and adaptability to token-based systems. By leveraging cryptographic primitives and a unique capability-based design, they enable:","source":"@site/docs/introduction.mdx","sourceDirName":".","slug":"/introduction","permalink":"/otoroshi-biscuit-studio/docs/introduction","draft":false,"unlisted":false,"tags":[],"version":"current","sidebarPosition":2,"frontMatter":{"sidebar_position":2},"sidebar":"tutorialSidebar","previous":{"title":"Overview","permalink":"/otoroshi-biscuit-studio/docs/overview"},"next":{"title":"Installation","permalink":"/otoroshi-biscuit-studio/docs/install"}}');
+// EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
+var jsx_runtime = __webpack_require__(4848);
+// EXTERNAL MODULE: ./node_modules/@mdx-js/react/lib/index.js
+var lib = __webpack_require__(8453);
+;// ./docs/introduction.mdx
+
+
+const frontMatter = {
+	sidebar_position: 2
+};
+const contentTitle = 'Introduction';
+
+const assets = {
+
+};
+
+
+
+const toc = [{
+  "value": "Why Use Biscuit Tokens?",
+  "id": "why-use-biscuit-tokens",
+  "level": 3
+}, {
+  "value": "Next Steps",
+  "id": "next-steps",
+  "level": 2
+}];
+function _createMdxContent(props) {
+  const _components = {
+    a: "a",
+    h1: "h1",
+    h2: "h2",
+    h3: "h3",
+    header: "header",
+    hr: "hr",
+    li: "li",
+    p: "p",
+    strong: "strong",
+    ul: "ul",
+    ...(0,lib/* useMDXComponents */.R)(),
+    ...props.components
+  };
+  return (0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+    children: [(0,jsx_runtime.jsx)(_components.header, {
+      children: (0,jsx_runtime.jsx)(_components.h1, {
+        id: "introduction",
+        children: "Introduction"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "Biscuit tokens bring a new level of security and adaptability to token-based systems. By leveraging cryptographic primitives and a unique capability-based design, they enable:"
+    }), "\n", (0,jsx_runtime.jsxs)(_components.ul, {
+      children: ["\n", (0,jsx_runtime.jsxs)(_components.li, {
+        children: [(0,jsx_runtime.jsx)(_components.strong, {
+          children: "Granular Control"
+        }), ": Fine-tuned permissions for secure operations."]
+      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
+        children: [(0,jsx_runtime.jsx)(_components.strong, {
+          children: "Extensibility"
+        }), ": Support for custom logic through policies and external data."]
+      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
+        children: [(0,jsx_runtime.jsx)(_components.strong, {
+          children: "Efficiency"
+        }), ": Compact structure ensures seamless transmission and storage."]
+      }), "\n"]
+    }), "\n", (0,jsx_runtime.jsx)(_components.h3, {
+      id: "why-use-biscuit-tokens",
+      children: "Why Use Biscuit Tokens?"
+    }), "\n", (0,jsx_runtime.jsxs)(_components.ul, {
+      children: ["\n", (0,jsx_runtime.jsxs)(_components.li, {
+        children: [(0,jsx_runtime.jsx)(_components.strong, {
+          children: "Flexibility"
+        }), ": Tailor tokens to specific scenarios with attenuation and delegation."]
+      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
+        children: [(0,jsx_runtime.jsx)(_components.strong, {
+          children: "Scalability"
+        }), ": Suitable for both small-scale applications and large distributed systems."]
+      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
+        children: [(0,jsx_runtime.jsx)(_components.strong, {
+          children: "Transparency"
+        }), ": Built-in auditable policies ensure clear and accountable access control."]
+      }), "\n"]
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "By adopting Biscuit tokens, developers can create robust access control systems that are secure, efficient, and adaptable to various use cases."
+    }), "\n", (0,jsx_runtime.jsx)(_components.hr, {}), "\n", (0,jsx_runtime.jsx)(_components.h2, {
+      id: "next-steps",
+      children: "Next Steps"
+    }), "\n", (0,jsx_runtime.jsxs)(_components.ul, {
+      children: ["\n", (0,jsx_runtime.jsx)(_components.li, {
+        children: (0,jsx_runtime.jsx)(_components.a, {
+          href: "/docs/install",
+          children: "Installation"
+        })
+      }), "\n", (0,jsx_runtime.jsx)(_components.li, {
+        children: (0,jsx_runtime.jsx)(_components.a, {
+          href: "/docs/api",
+          children: "API Reference"
+        })
+      }), "\n"]
+    })]
+  });
+}
+function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = {
+    ...(0,lib/* useMDXComponents */.R)(),
+    ...props.components
+  };
+  return MDXLayout ? (0,jsx_runtime.jsx)(MDXLayout, {
+    ...props,
+    children: (0,jsx_runtime.jsx)(_createMdxContent, {
+      ...props
+    })
+  }) : _createMdxContent(props);
+}
+
+
+
+/***/ }),
+
 /***/ 3829:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -1291,7 +1445,7 @@ __webpack_require__.d(__webpack_exports__, {
 });
 
 ;// ./.docusaurus/docusaurus-plugin-content-docs/default/site-docs-overview-mdx-188.json
-const site_docs_overview_mdx_188_namespaceObject = /*#__PURE__*/JSON.parse('{"id":"overview","title":"Overview","description":"Otoroshi Biscuit Studio is an Otoroshi extension that allows you to use and integrate Biscuit Tokens into your Gateway.","source":"@site/docs/overview.mdx","sourceDirName":".","slug":"/overview","permalink":"/otoroshi-biscuit-studio/docs/overview","draft":false,"unlisted":false,"tags":[],"version":"current","sidebarPosition":1,"frontMatter":{"sidebar_position":1},"sidebar":"tutorialSidebar","next":{"title":"Installation","permalink":"/otoroshi-biscuit-studio/docs/install"}}');
+const site_docs_overview_mdx_188_namespaceObject = /*#__PURE__*/JSON.parse('{"id":"overview","title":"Overview","description":"Otoroshi Biscuit Studio is an Otoroshi extension that allows you to use and integrate Biscuit Tokens into your Gateway.","source":"@site/docs/overview.mdx","sourceDirName":".","slug":"/overview","permalink":"/otoroshi-biscuit-studio/docs/overview","draft":false,"unlisted":false,"tags":[],"version":"current","sidebarPosition":1,"frontMatter":{"sidebar_position":1},"sidebar":"tutorialSidebar","next":{"title":"Introduction","permalink":"/otoroshi-biscuit-studio/docs/introduction"}}');
 // EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
 var jsx_runtime = __webpack_require__(4848);
 // EXTERNAL MODULE: ./node_modules/@mdx-js/react/lib/index.js
@@ -1342,6 +1496,12 @@ function _createMdxContent(props) {
       })
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: "Otoroshi Biscuit Studio is an Otoroshi extension that allows you to use and integrate Biscuit Tokens into your Gateway."
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "Biscuit tokens are a powerful and flexible tool designed for secure and efficient access control."
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "They combine modern cryptographic techniques with a compact, extensible structure, enabling developers to implement secure systems with ease."
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "With their unique features, Biscuit tokens stand out as a cutting-edge solution for token-based authentication and authorization."
     }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
       id: "supported-entities",
       children: "Supported Entities"
@@ -1365,6 +1525,16 @@ function _createMdxContent(props) {
         children: (0,jsx_runtime.jsx)(_components.a, {
           href: "/docs/entities/rbac_policies",
           children: "Biscuit RBAC Policies"
+        })
+      }), "\n", (0,jsx_runtime.jsx)(_components.li, {
+        children: (0,jsx_runtime.jsx)(_components.a, {
+          href: "/docs/entities/remote_facts",
+          children: "Biscuit Remote Facts Loader"
+        })
+      }), "\n", (0,jsx_runtime.jsx)(_components.li, {
+        children: (0,jsx_runtime.jsx)(_components.a, {
+          href: "/docs/entities/tokens_forge",
+          children: "Biscuit Tokens Forge"
         })
       }), "\n"]
     }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
@@ -1983,7 +2153,7 @@ function MDXContent(props = {}) {
 
 /***/ }),
 
-/***/ 870:
+/***/ 2803:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1991,10 +2161,10 @@ function MDXContent(props = {}) {
 /* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6540);
-var _g;
+var _path, _path2, _path3, _path4, _path5, _path6, _path7, _path8, _path9, _path10, _path11, _circle, _path12, _path13, _path14, _path15, _circle2, _path16, _path17, _path18, _path19, _path20;
 function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
 
-const SvgUndrawDocusaurusMountain = _ref => {
+const SvgUndrawCloudSync = _ref => {
   let {
     title,
     titleId,
@@ -2002,1929 +2172,1725 @@ const SvgUndrawDocusaurusMountain = _ref => {
   } = _ref;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", _extends({
     xmlns: "http://www.w3.org/2000/svg",
-    width: 1088,
-    height: 687.962,
-    viewBox: "0 0 1088 687.962",
+    width: 844.669,
+    height: 576,
+    viewBox: "0 0 844.669 576",
     "aria-labelledby": titleId
-  }, props), title === undefined ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("title", {
+  }, props), title ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("title", {
     id: titleId
-  }, "Easy to Use") : title ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("title", {
-    id: titleId
-  }, title) : null, _g || (_g = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
-    "data-name": "Group 12"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
-    "data-name": "Group 11"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3f3d56",
-    d: "M961.81 454.442c-5.27 45.15-16.22 81.4-31.25 110.31-20 38.52-54.21 54.04-84.77 70.28a193 193 0 0 1-27.46 11.94c-55.61 19.3-117.85 14.18-166.74 3.99a657 657 0 0 0-104.09-13.16q-14.97-.675-29.97-.67c-15.42.02-293.07 5.29-360.67-131.57-16.69-33.76-28.13-75-32.24-125.27-11.63-142.12 52.29-235.46 134.74-296.47 155.97-115.41 369.76-110.57 523.43 7.88 102.36 78.9 198.2 198.31 179.02 362.74",
-    "data-name": "Path 83"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#f2f2f2",
-    d: "M930.56 564.752c-20 38.52-47.21 64.04-77.77 80.28a193 193 0 0 1-27.46 11.94c-55.61 19.3-117.85 14.18-166.74 3.99a657 657 0 0 0-104.09-13.16q-14.97-.675-29.97-.67-23.13.03-46.25 1.72c-100.17 7.36-253.82-6.43-321.42-143.29L326 177.962l62.95 161.619 20.09 51.59 55.37-75.98L493 275.962l130.2 149.27 36.8-81.27 254.78 207.919 14.21 11.59Z",
-    "data-name": "Path 84"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "m302 282.962 26-57 36 83-31-60Z",
-    "data-name": "Path 85",
-    opacity: 0.1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M554.5 647.802q-14.97-.675-29.97-.67l-115.49-255.96Z",
-    "data-name": "Path 86",
-    opacity: 0.1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M464.411 315.191 493 292.962l130 150-132-128Z",
-    "data-name": "Path 87",
-    opacity: 0.1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M852.79 645.032a193 193 0 0 1-27.46 11.94L623.2 425.232Z",
-    "data-name": "Path 88",
-    opacity: 0.1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
-    cx: 3,
-    cy: 3,
-    r: 3,
-    fill: "#f2f2f2",
-    "data-name": "Ellipse 11",
-    transform: "translate(479 98.962)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
-    cx: 3,
-    cy: 3,
-    r: 3,
-    fill: "#f2f2f2",
-    "data-name": "Ellipse 12",
-    transform: "translate(396 201.962)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
-    cx: 2,
-    cy: 2,
-    r: 2,
-    fill: "#f2f2f2",
-    "data-name": "Ellipse 13",
-    transform: "translate(600 220.962)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
-    cx: 2,
-    cy: 2,
-    r: 2,
-    fill: "#f2f2f2",
-    "data-name": "Ellipse 14",
-    transform: "translate(180 265.962)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
-    cx: 2,
-    cy: 2,
-    r: 2,
-    fill: "#f2f2f2",
-    "data-name": "Ellipse 15",
-    transform: "translate(612 96.962)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
-    cx: 2,
-    cy: 2,
-    r: 2,
-    fill: "#f2f2f2",
-    "data-name": "Ellipse 16",
-    transform: "translate(736 192.962)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
-    cx: 2,
-    cy: 2,
-    r: 2,
-    fill: "#f2f2f2",
-    "data-name": "Ellipse 17",
-    transform: "translate(858 344.962)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#f2f2f2",
-    d: "M306 121.222h-2.76v-2.76h-1.48v2.76H299v1.478h2.76v2.759h1.48V122.7H306Z",
-    "data-name": "Path 89"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#f2f2f2",
-    d: "M848 424.222h-2.76v-2.76h-1.48v2.76H841v1.478h2.76v2.759h1.48V425.7H848Z",
-    "data-name": "Path 90"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3f3d56",
-    d: "M1088 613.962c0 16.569-243.557 74-544 74s-544-57.431-544-74 243.557 14 544 14 544-30.568 544-14",
-    "data-name": "Path 91"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M1088 613.962c0 16.569-243.557 74-544 74s-544-57.431-544-74 243.557 14 544 14 544-30.568 544-14",
-    "data-name": "Path 92",
-    opacity: 0.1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ellipse", {
-    cx: 544,
-    cy: 30,
-    fill: "#3f3d56",
-    "data-name": "Ellipse 18",
-    rx: 544,
-    ry: 30,
-    transform: "translate(0 583.962)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#ff6584",
-    d: "M568 571.962c0 33.137-14.775 24-33 24s-33 9.137-33-24 33-96 33-96 33 62.863 33 96",
-    "data-name": "Path 93"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M550 584.641c0 15.062-6.716 10.909-15 10.909s-15 4.153-15-10.909 15-43.636 15-43.636 15 28.576 15 43.636",
-    "data-name": "Path 94",
-    opacity: 0.1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 92,
-    height: 18,
-    fill: "#2f2e41",
-    "data-name": "Rectangle 97",
-    rx: 9,
-    transform: "translate(489 604.962)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 92,
-    height: 18,
-    fill: "#2f2e41",
-    "data-name": "Rectangle 98",
-    rx: 9,
-    transform: "translate(489 586.962)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3f3d56",
-    d: "M137 490.528c0 55.343 34.719 100.126 77.626 100.126",
-    "data-name": "Path 95"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#6c63ff",
-    d: "M214.626 590.654c0-55.965 38.745-101.251 86.626-101.251",
-    "data-name": "Path 96"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#6c63ff",
-    d: "M165.125 495.545c0 52.57 22.14 95.109 49.5 95.109",
-    "data-name": "Path 97"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3f3d56",
-    d: "M214.626 590.654c0-71.511 44.783-129.377 100.126-129.377",
-    "data-name": "Path 98"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#a8a8a8",
-    d: "M198.3 591.36s11.009-.339 14.326-2.7 16.934-5.183 17.757-1.395 16.544 18.844 4.115 18.945-28.879-1.936-32.19-3.953-4.008-10.897-4.008-10.897",
-    "data-name": "Path 99"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M234.716 604.89c-12.429.1-28.879-1.936-32.19-3.953-2.522-1.536-3.527-7.048-3.863-9.591l-.368.014s.7 8.879 4.009 10.9 19.761 4.053 32.19 3.953c3.588-.029 4.827-1.305 4.759-3.2-.498 1.142-1.867 1.855-4.537 1.877",
-    "data-name": "Path 100",
-    opacity: 0.2
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3f3d56",
-    d: "M721.429 527.062c0 38.029 23.857 68.8 53.341 68.8",
-    "data-name": "Path 101"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#6c63ff",
-    d: "M774.769 595.863c0-38.456 26.623-69.575 59.525-69.575",
-    "data-name": "Path 102"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#6c63ff",
-    d: "M740.755 530.509c0 36.124 15.213 65.354 34.014 65.354",
-    "data-name": "Path 103"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3f3d56",
-    d: "M774.769 595.863c0-49.139 30.773-88.9 68.8-88.9",
-    "data-name": "Path 104"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#a8a8a8",
-    d: "M763.548 596.348s7.565-.233 9.844-1.856 11.636-3.562 12.2-.958 11.368 12.949 2.828 13.018-19.844-1.33-22.119-2.716-2.753-7.488-2.753-7.488",
-    "data-name": "Path 105"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M788.574 605.645c-8.54.069-19.844-1.33-22.119-2.716-1.733-1.056-2.423-4.843-2.654-6.59l-.253.01s.479 6.1 2.755 7.487 13.579 2.785 22.119 2.716c2.465-.02 3.317-.9 3.27-2.2-.343.788-1.283 1.278-3.118 1.293",
-    "data-name": "Path 106",
-    opacity: 0.2
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#a8a8a8",
-    d: "M893.813 618.699s11.36-1.729 14.5-4.591 16.89-7.488 18.217-3.667 19.494 17.447 6.633 19.107-30.153 1.609-33.835-.065-5.515-10.784-5.515-10.784",
-    "data-name": "Path 107"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M933.228 628.154c-12.86 1.659-30.153 1.609-33.835-.065-2.8-1.275-4.535-6.858-5.2-9.45l-.379.061s1.833 9.109 5.516 10.783 20.975 1.725 33.835.065c3.712-.479 4.836-1.956 4.529-3.906-.375 1.246-1.703 2.156-4.466 2.512",
-    "data-name": "Path 108",
-    opacity: 0.2
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#a8a8a8",
-    d: "M614.26 617.881s9.587-1.459 12.237-3.875 14.255-6.32 15.374-3.095 16.452 14.725 5.6 16.125-25.448 1.358-28.555-.055-4.656-9.1-4.656-9.1",
-    "data-name": "Path 109"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M647.524 625.856c-10.853 1.4-25.448 1.358-28.555-.055-2.367-1.076-3.827-5.788-4.39-7.976l-.32.051s1.547 7.687 4.655 9.1 17.7 1.456 28.555.055c3.133-.4 4.081-1.651 3.822-3.3-.314 1.057-1.435 1.825-3.767 2.125",
-    "data-name": "Path 110",
-    opacity: 0.2
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#a8a8a8",
-    d: "M122.389 613.09s7.463-1.136 9.527-3.016 11.1-4.92 11.969-2.409 12.808 11.463 4.358 12.553-19.811 1.057-22.23-.043-3.624-7.085-3.624-7.085",
-    "data-name": "Path 111"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M148.285 619.302c-8.449 1.09-19.811 1.057-22.23-.043-1.842-.838-2.979-4.506-3.417-6.209l-.249.04s1.2 5.984 3.624 7.085 13.781 1.133 22.23.043c2.439-.315 3.177-1.285 2.976-2.566-.246.818-1.119 1.416-2.934 1.65",
-    "data-name": "Path 112",
-    opacity: 0.2
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M383.7 601.318c0 30.22-42.124 20.873-93.7 20.873s-93.074 9.347-93.074-20.873 42.118-36.793 93.694-36.793 93.08 6.573 93.08 36.793",
-    "data-name": "Path 113",
-    opacity: 0.1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3f3d56",
-    d: "M383.7 593.881c0 30.22-42.124 20.873-93.7 20.873s-93.074 9.347-93.074-20.873 42.114-36.8 93.69-36.8 93.084 6.576 93.084 36.8",
-    "data-name": "Path 114"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#fff",
-    fillRule: "evenodd",
-    d: "M360.175 475.732h91.791v37.153h-91.791Z",
-    "data-name": "Path 40"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3ecc5f",
-    fillRule: "evenodd",
-    d: "M277.126 597.026a21.83 21.83 0 0 1-18.908-10.927 21.829 21.829 0 0 0 18.908 32.782h21.855v-21.855Z",
-    "data-name": "Path 41"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3ecc5f",
-    fillRule: "evenodd",
-    d: "m375.451 481.607 76.514-4.782v-10.928a21.854 21.854 0 0 0-21.855-21.855h-98.347l-2.732-4.735a3.154 3.154 0 0 0-5.464 0l-2.732 4.732-2.732-4.732a3.154 3.154 0 0 0-5.464 0l-2.732 4.732-2.731-4.732a3.154 3.154 0 0 0-5.464 0l-2.732 4.735h-.071l-4.526-4.525a3.153 3.153 0 0 0-5.276 1.414l-1.5 5.577-5.674-1.521a3.154 3.154 0 0 0-3.863 3.864l1.52 5.679-5.575 1.494a3.155 3.155 0 0 0-1.416 5.278l4.526 4.526v.07l-4.735 2.731a3.154 3.154 0 0 0 0 5.464l4.732 2.732-4.732 2.732a3.154 3.154 0 0 0 0 5.464l4.732 2.732-4.732 2.731a3.154 3.154 0 0 0 0 5.464l4.732 2.732-4.732 2.727a3.154 3.154 0 0 0 0 5.464l4.735 2.736-4.735 2.732a3.154 3.154 0 0 0 0 5.464l4.732 2.732-4.732 2.732a3.154 3.154 0 0 0 0 5.464l4.732 2.732-4.732 2.731a3.154 3.154 0 0 0 0 5.464l4.732 2.732-4.732 2.732a3.154 3.154 0 0 0 0 5.464l4.732 2.732-4.732 2.731a3.154 3.154 0 0 0 0 5.464l4.732 2.732-4.732 2.731a3.154 3.154 0 0 0 0 5.464l4.732 2.732-4.732 2.735a3.154 3.154 0 0 0 0 5.464l4.732 2.732-4.732 2.728a3.154 3.154 0 0 0 0 5.464l4.732 2.732a21.854 21.854 0 0 0 21.858 21.855h131.13a21.854 21.854 0 0 0 21.855-21.855v-87.42l-76.514-4.782a11.632 11.632 0 0 1 0-23.219",
-    "data-name": "Path 42"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3ecc5f",
-    fillRule: "evenodd",
-    d: "M408.255 618.882h32.782v-43.71h-32.782Z",
-    "data-name": "Path 43"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#44d860",
-    fillRule: "evenodd",
-    d: "M462.893 591.563a5 5 0 0 0-.7.07c-.042-.164-.081-.329-.127-.493a5.457 5.457 0 1 0-5.4-9.372q-.181-.185-.366-.367a5.454 5.454 0 1 0-9.384-5.4c-.162-.046-.325-.084-.486-.126a5.467 5.467 0 1 0-10.788 0c-.162.042-.325.08-.486.126a5.457 5.457 0 1 0-9.384 5.4 21.843 21.843 0 1 0 36.421 21.02 5.452 5.452 0 1 0 .7-10.858",
-    "data-name": "Path 44"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3ecc5f",
-    fillRule: "evenodd",
-    d: "M419.183 553.317h32.782v-21.855h-32.782Z",
-    "data-name": "Path 45"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#44d860",
-    fillRule: "evenodd",
-    d: "M462.893 545.121a2.732 2.732 0 1 0 0-5.464 3 3 0 0 0-.349.035c-.022-.082-.04-.164-.063-.246a2.733 2.733 0 0 0-1.052-5.253 2.7 2.7 0 0 0-1.648.566q-.09-.093-.184-.184a2.7 2.7 0 0 0 .553-1.633 2.732 2.732 0 0 0-5.245-1.07 10.928 10.928 0 1 0 0 21.031 2.732 2.732 0 0 0 5.245-1.07 2.7 2.7 0 0 0-.553-1.633q.093-.09.184-.184a2.7 2.7 0 0 0 1.648.566 2.732 2.732 0 0 0 1.052-5.253q.033-.122.063-.246a3 3 0 0 0 .349.035",
-    "data-name": "Path 46"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fillRule: "evenodd",
-    d: "M320.836 479.556a2.73 2.73 0 0 1-2.732-2.732 8.2 8.2 0 0 0-16.391 0 2.732 2.732 0 0 1-5.464 0 13.66 13.66 0 0 1 27.319 0 2.73 2.73 0 0 1-2.732 2.732",
-    "data-name": "Path 47"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#ffff50",
-    fillRule: "evenodd",
-    d: "M364.546 618.881h65.565a21.854 21.854 0 0 0 21.855-21.855v-76.492h-65.565a21.854 21.854 0 0 0-21.855 21.855Z",
-    "data-name": "Path 48"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fillRule: "evenodd",
-    d: "M435.596 554.41h-54.681a1.093 1.093 0 1 1 0-2.185h54.681a1.093 1.093 0 0 1 0 2.185m0 21.855h-54.681a1.093 1.093 0 1 1 0-2.186h54.681a1.093 1.093 0 0 1 0 2.186m0 21.855h-54.681a1.093 1.093 0 1 1 0-2.185h54.681a1.093 1.093 0 0 1 0 2.185m0-54.434h-54.681a1.093 1.093 0 1 1 0-2.185h54.681a1.093 1.093 0 0 1 0 2.185m0 21.652h-54.681a1.093 1.093 0 1 1 0-2.186h54.681a1.093 1.093 0 0 1 0 2.186m0 21.855h-54.681a1.093 1.093 0 1 1 0-2.186h54.681a1.093 1.093 0 0 1 0 2.186m16.369-100.959c-.013 0-.024-.007-.037-.005-3.377.115-4.974 3.492-6.384 6.472-1.471 3.114-2.608 5.139-4.473 5.078-2.064-.074-3.244-2.406-4.494-4.874-1.436-2.835-3.075-6.049-6.516-5.929-3.329.114-4.932 3.053-6.346 5.646-1.5 2.762-2.529 4.442-4.5 4.364-2.106-.076-3.225-1.972-4.52-4.167-1.444-2.443-3.112-5.191-6.487-5.1-3.272.113-4.879 2.606-6.3 4.808-1.5 2.328-2.552 3.746-4.551 3.662-2.156-.076-3.27-1.65-4.558-3.472-1.447-2.047-3.077-4.363-6.442-4.251-3.2.109-4.807 2.153-6.224 3.954-1.346 1.709-2.4 3.062-4.621 2.977a1.094 1.094 0 0 0-.079 2.186c3.3.11 4.967-1.967 6.417-3.81 1.286-1.635 2.4-3.045 4.582-3.12 2.1-.09 3.091 1.218 4.584 3.327 1.417 2 3.026 4.277 6.263 4.394 3.391.114 5.022-2.42 6.467-4.663 1.292-2 2.406-3.734 4.535-3.807 1.959-.073 3.026 1.475 4.529 4.022 1.417 2.4 3.023 5.121 6.324 5.241 3.415.118 5.064-2.863 6.5-5.5 1.245-2.282 2.419-4.437 4.5-4.509 1.959-.046 2.981 1.743 4.492 4.732 1.412 2.79 3.013 5.95 6.365 6.071h.185c3.348 0 4.937-3.36 6.343-6.331 1.245-2.634 2.423-5.114 4.444-5.216Z",
-    "data-name": "Path 49"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3ecc5f",
-    fillRule: "evenodd",
-    d: "M342.691 618.882h43.71v-43.71h-43.71Z",
-    "data-name": "Path 50"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
-    "data-name": "Group 8",
-    transform: "rotate(-14.98 2188.845 -1120.376)"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 92.361,
-    height: 36.462,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 3",
-    rx: 2
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
-    fill: "#4a4a4a",
-    "data-name": "Group 2",
-    transform: "translate(1.531 23.03)"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 4",
-    rx: 1,
-    transform: "translate(16.797)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 5",
-    rx: 1,
-    transform: "translate(23.12)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 6",
-    rx: 1,
-    transform: "translate(29.444)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 7",
-    rx: 1,
-    transform: "translate(35.768)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 8",
-    rx: 1,
-    transform: "translate(42.091)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 9",
-    rx: 1,
-    transform: "translate(48.415)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 10",
-    rx: 1,
-    transform: "translate(54.739)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 11",
-    rx: 1,
-    transform: "translate(61.063)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 12",
-    rx: 1,
-    transform: "translate(67.386)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fillRule: "evenodd",
-    d: "M1.093 0h13.425a1.093 1.093 0 0 1 1.093 1.093v3.15a1.093 1.093 0 0 1-1.093 1.093H1.093A1.093 1.093 0 0 1 0 4.243v-3.15A1.093 1.093 0 0 1 1.093 0M75 0h13.426a1.093 1.093 0 0 1 1.093 1.093v3.15a1.093 1.093 0 0 1-1.093 1.093H75a1.093 1.093 0 0 1-1.093-1.093v-3.15A1.093 1.093 0 0 1 75 0",
-    "data-name": "Path 51"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
-    fill: "#4a4a4a",
-    "data-name": "Group 3",
-    transform: "translate(1.531 10.261)"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fillRule: "evenodd",
-    d: "M1.093 0h5.125A1.093 1.093 0 0 1 7.31 1.093v3.149a1.093 1.093 0 0 1-1.092 1.093H1.093A1.093 1.093 0 0 1 0 4.242V1.093A1.093 1.093 0 0 1 1.093 0",
-    "data-name": "Path 52"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 13",
-    rx: 1,
-    transform: "translate(8.299)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 14",
-    rx: 1,
-    transform: "translate(14.623)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 15",
-    rx: 1,
-    transform: "translate(20.947)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 16",
-    rx: 1,
-    transform: "translate(27.271)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 17",
-    rx: 1,
-    transform: "translate(33.594)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 18",
-    rx: 1,
-    transform: "translate(39.918)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 19",
-    rx: 1,
-    transform: "translate(46.242)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 20",
-    rx: 1,
-    transform: "translate(52.565)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 21",
-    rx: 1,
-    transform: "translate(58.888)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 22",
-    rx: 1,
-    transform: "translate(65.212)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 23",
-    rx: 1,
-    transform: "translate(71.536)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 24",
-    rx: 1,
-    transform: "translate(77.859)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 25",
-    rx: 1,
-    transform: "translate(84.183)"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
-    fill: "#4a4a4a",
-    "data-name": "Group 4",
-    transform: "rotate(180 45.525 4.773)"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fillRule: "evenodd",
-    d: "M1.093 0h5.126a1.093 1.093 0 0 1 1.093 1.093v3.15a1.093 1.093 0 0 1-1.093 1.093H1.093A1.093 1.093 0 0 1 0 4.243v-3.15A1.093 1.093 0 0 1 1.093 0",
-    "data-name": "Path 53"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 26",
-    rx: 1,
-    transform: "translate(8.299)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 27",
-    rx: 1,
-    transform: "translate(14.623)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 28",
-    rx: 1,
-    transform: "translate(20.947)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 29",
-    rx: 1,
-    transform: "translate(27.271)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 30",
-    rx: 1,
-    transform: "translate(33.594)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 31",
-    rx: 1,
-    transform: "translate(39.918)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 32",
-    rx: 1,
-    transform: "translate(46.242)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 33",
-    rx: 1,
-    transform: "translate(52.565)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 34",
-    rx: 1,
-    transform: "translate(58.889)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 35",
-    rx: 1,
-    transform: "translate(65.213)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 36",
-    rx: 1,
-    transform: "translate(71.537)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 37",
-    rx: 1,
-    transform: "translate(77.86)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 38",
-    rx: 1,
-    transform: "translate(84.183)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 39",
-    rx: 1,
-    transform: "translate(8.299)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 40",
-    rx: 1,
-    transform: "translate(14.623)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 41",
-    rx: 1,
-    transform: "translate(20.947)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 42",
-    rx: 1,
-    transform: "translate(27.271)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 43",
-    rx: 1,
-    transform: "translate(33.594)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 44",
-    rx: 1,
-    transform: "translate(39.918)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 45",
-    rx: 1,
-    transform: "translate(46.242)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 46",
-    rx: 1,
-    transform: "translate(52.565)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 47",
-    rx: 1,
-    transform: "translate(58.889)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 48",
-    rx: 1,
-    transform: "translate(65.213)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 49",
-    rx: 1,
-    transform: "translate(71.537)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 50",
-    rx: 1,
-    transform: "translate(77.86)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 51",
-    rx: 1,
-    transform: "translate(84.183)"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
-    fill: "#4a4a4a",
-    "data-name": "Group 6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fillRule: "evenodd",
-    d: "M2.624 16.584h7.3a1.093 1.093 0 0 1 1.092 1.093v3.15a1.093 1.093 0 0 1-1.093 1.093h-7.3a1.093 1.093 0 0 1-1.092-1.093v-3.149a1.093 1.093 0 0 1 1.093-1.094",
-    "data-name": "Path 54"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
-    "data-name": "Group 5",
-    transform: "translate(12.202 16.584)"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 52",
-    rx: 1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 53",
-    rx: 1,
-    transform: "translate(6.324)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 54",
-    rx: 1,
-    transform: "translate(12.647)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 55",
-    rx: 1,
-    transform: "translate(18.971)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 56",
-    rx: 1,
-    transform: "translate(25.295)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 57",
-    rx: 1,
-    transform: "translate(31.619)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 58",
-    rx: 1,
-    transform: "translate(37.942)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 59",
-    rx: 1,
-    transform: "translate(44.265)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 60",
-    rx: 1,
-    transform: "translate(50.589)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 61",
-    rx: 1,
-    transform: "translate(56.912)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 62",
-    rx: 1,
-    transform: "translate(63.236)"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fillRule: "evenodd",
-    d: "M83.053 16.584h6.906a1.093 1.093 0 0 1 1.091 1.093v3.15a1.093 1.093 0 0 1-1.091 1.093h-6.907a1.093 1.093 0 0 1-1.093-1.093v-3.149a1.093 1.093 0 0 1 1.093-1.094Z",
-    "data-name": "Path 55"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
-    fill: "#4a4a4a",
-    "data-name": "Group 7",
-    transform: "translate(1.531 29.627)"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 63",
-    rx: 1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 64",
-    rx: 1,
-    transform: "translate(6.324)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 65",
-    rx: 1,
-    transform: "translate(12.647)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 66",
-    rx: 1,
-    transform: "translate(18.971)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fillRule: "evenodd",
-    d: "M26.387 0h30.422a1.093 1.093 0 0 1 1.093 1.093v3.151a1.093 1.093 0 0 1-1.093 1.093H26.387a1.093 1.093 0 0 1-1.093-1.093V1.093A1.093 1.093 0 0 1 26.387 0m33.594 0h3.942a1.093 1.093 0 0 1 1.093 1.093v3.151a1.093 1.093 0 0 1-1.093 1.093h-3.942a1.093 1.093 0 0 1-1.093-1.093V1.093A1.093 1.093 0 0 1 59.981 0",
-    "data-name": "Path 56"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 67",
-    rx: 1,
-    transform: "translate(66.003)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 68",
-    rx: 1,
-    transform: "translate(72.327)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 5.336,
-    height: 5.336,
-    "data-name": "Rectangle 69",
-    rx: 1,
-    transform: "translate(84.183)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M78.254 2.273v-1.18A1.093 1.093 0 0 1 79.347 0h3.15a1.093 1.093 0 0 1 1.093 1.093v1.18Z",
-    "data-name": "Path 57"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M83.591 3.063v1.18a1.093 1.093 0 0 1-1.093 1.093h-3.15a1.093 1.093 0 0 1-1.093-1.093v-1.18Z",
-    "data-name": "Path 58"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 88.927,
-    height: 2.371,
-    fill: "#4a4a4a",
-    "data-name": "Rectangle 70",
-    rx: 1.085,
-    transform: "translate(1.925 1.17)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 4.986,
-    height: 1.581,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 71",
-    opacity: 0.136,
-    rx: 0.723,
-    transform: "translate(4.1 1.566)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 4.986,
-    height: 1.581,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 72",
-    opacity: 0.136,
-    rx: 0.723,
-    transform: "translate(10.923 1.566)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 4.986,
-    height: 1.581,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 73",
-    opacity: 0.136,
-    rx: 0.723,
-    transform: "translate(16.173 1.566)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 4.986,
-    height: 1.581,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 74",
-    opacity: 0.136,
-    rx: 0.723,
-    transform: "translate(21.421 1.566)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 4.986,
-    height: 1.581,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 75",
-    opacity: 0.136,
-    rx: 0.723,
-    transform: "translate(26.671 1.566)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 4.986,
-    height: 1.581,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 76",
-    opacity: 0.136,
-    rx: 0.723,
-    transform: "translate(33.232 1.566)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 4.986,
-    height: 1.581,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 77",
-    opacity: 0.136,
-    rx: 0.723,
-    transform: "translate(38.48 1.566)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 4.986,
-    height: 1.581,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 78",
-    opacity: 0.136,
-    rx: 0.723,
-    transform: "translate(43.73 1.566)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 4.986,
-    height: 1.581,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 79",
-    opacity: 0.136,
-    rx: 0.723,
-    transform: "translate(48.978 1.566)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 4.986,
-    height: 1.581,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 80",
-    opacity: 0.136,
-    rx: 0.723,
-    transform: "translate(55.54 1.566)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 4.986,
-    height: 1.581,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 81",
-    opacity: 0.136,
-    rx: 0.723,
-    transform: "translate(60.788 1.566)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 4.986,
-    height: 1.581,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 82",
-    opacity: 0.136,
-    rx: 0.723,
-    transform: "translate(66.038 1.566)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 4.986,
-    height: 1.581,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 83",
-    opacity: 0.136,
-    rx: 0.723,
-    transform: "translate(72.599 1.566)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 4.986,
-    height: 1.581,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 84",
-    opacity: 0.136,
-    rx: 0.723,
-    transform: "translate(77.847 1.566)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 4.986,
-    height: 1.581,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 85",
-    opacity: 0.136,
-    rx: 0.723,
-    transform: "translate(83.097 1.566)"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#44d860",
-    fillRule: "evenodd",
-    d: "M408.256 591.563a5.4 5.4 0 0 0-.7.07c-.042-.164-.081-.329-.127-.493a5.457 5.457 0 1 0-5.4-9.372q-.181-.185-.366-.367a5.454 5.454 0 1 0-9.384-5.4c-.162-.046-.325-.084-.486-.126a5.467 5.467 0 1 0-10.788 0c-.162.042-.325.08-.486.126a5.457 5.457 0 1 0-9.384 5.4 21.843 21.843 0 1 0 36.421 21.02 5.452 5.452 0 1 0 .7-10.858",
-    "data-name": "Path 59"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3ecc5f",
-    fillRule: "evenodd",
-    d: "M342.691 553.317h43.71v-21.855h-43.71Z",
-    "data-name": "Path 60"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#44d860",
-    fillRule: "evenodd",
-    d: "M397.328 545.121a2.732 2.732 0 1 0 0-5.464 3 3 0 0 0-.349.035c-.022-.082-.04-.164-.063-.246a2.733 2.733 0 0 0-1.052-5.253 2.7 2.7 0 0 0-1.648.566q-.09-.093-.184-.184a2.7 2.7 0 0 0 .553-1.633 2.732 2.732 0 0 0-5.245-1.07 10.928 10.928 0 1 0 0 21.031 2.732 2.732 0 0 0 5.245-1.07 2.7 2.7 0 0 0-.553-1.633q.093-.09.184-.184a2.7 2.7 0 0 0 1.648.566 2.732 2.732 0 0 0 1.052-5.253q.033-.122.063-.246a3 3 0 0 0 .349.035",
-    "data-name": "Path 61"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fillRule: "evenodd",
-    d: "M408.256 464.531a3 3 0 0 1-.535-.055 2.8 2.8 0 0 1-.514-.153 3 3 0 0 1-.471-.251 4 4 0 0 1-.415-.339 3 3 0 0 1-.338-.415 2.7 2.7 0 0 1-.459-1.517 3 3 0 0 1 .055-.535 3 3 0 0 1 .152-.514 3 3 0 0 1 .252-.47 2.6 2.6 0 0 1 .753-.754 3 3 0 0 1 .471-.251 2.8 2.8 0 0 1 .514-.153 2.5 2.5 0 0 1 1.071 0 2.7 2.7 0 0 1 .983.4 4 4 0 0 1 .415.339 4 4 0 0 1 .339.415 3 3 0 0 1 .251.47 2.9 2.9 0 0 1 .208 1.049 2.77 2.77 0 0 1-.8 1.934 4 4 0 0 1-.415.339 2.72 2.72 0 0 1-1.519.459m21.855-1.366a2.8 2.8 0 0 1-1.935-.8 4 4 0 0 1-.338-.415 2.7 2.7 0 0 1-.459-1.519 2.8 2.8 0 0 1 .8-1.934 4 4 0 0 1 .415-.339 3 3 0 0 1 .471-.251 2.8 2.8 0 0 1 .514-.153 2.5 2.5 0 0 1 1.071 0 2.7 2.7 0 0 1 .983.4 4 4 0 0 1 .415.339 2.8 2.8 0 0 1 .8 1.934 3 3 0 0 1-.055.535 3 3 0 0 1-.153.514 4 4 0 0 1-.251.47 4 4 0 0 1-.339.415 4 4 0 0 1-.415.339 2.72 2.72 0 0 1-1.519.459",
-    "data-name": "Path 62"
-  }))));
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SvgUndrawDocusaurusMountain);
-
-/***/ }),
-
-/***/ 6740:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6540);
-var _g;
-function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
-
-const SvgUndrawDocusaurusReact = _ref => {
-  let {
-    title,
-    titleId,
-    ...props
-  } = _ref;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", _extends({
-    xmlns: "http://www.w3.org/2000/svg",
-    width: 1041.277,
-    height: 554.141,
-    viewBox: "0 0 1041.277 554.141",
-    "aria-labelledby": titleId
-  }, props), title === undefined ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("title", {
-    id: titleId
-  }, "Powered by React") : title ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("title", {
-    id: titleId
-  }, title) : null, _g || (_g = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
-    "data-name": "Group 24"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
-    "data-name": "Group 23",
-    transform: "translate(-.011 -.035)"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#f2f2f2",
-    d: "M961.48 438.21q-1.74 3.75-3.47 7.4-2.7 5.67-5.33 11.12c-.78 1.61-1.56 3.19-2.32 4.77-8.6 17.57-16.63 33.11-23.45 45.89a73.21 73.21 0 0 1-63.81 38.7l-151.65 1.65h-1.6l-13 .14-11.12.12-34.1.37h-1.38l-17.36.19h-.53l-107 1.16-95.51 1-11.11.12-69 .75h-.08l-44.75.48h-.48l-141.5 1.53-42.33.46a88 88 0 0 1-10.79-.54c-1.22-.14-2.44-.3-3.65-.49a87.38 87.38 0 0 1-51.29-27.54c-18.21-20.03-31.46-43.4-40.36-68.76q-1.93-5.49-3.6-11.12c-30.81-104.15 6.75-238.52 74.35-328.44q4.25-5.64 8.64-11l.07-.08c20.79-25.52 44.1-46.84 68.93-62 44-26.91 92.75-34.49 140.7-11.9 40.57 19.12 78.45 28.11 115.17 30.55 3.71.24 7.42.42 11.11.53 84.23 2.65 163.17-27.7 255.87-47.29 3.69-.78 7.39-1.55 11.12-2.28C763 .54 836.36-6.4 923.6 8.19a189 189 0 0 1 26.76 6.4q5.77 1.86 11.12 4c41.64 16.94 64.35 48.24 74 87.46q1.37 5.46 2.37 11.11c17.11 94.34-33 228.16-76.37 321.05",
-    "data-name": "Path 299"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M497.02 445.61a95 95 0 0 1-1.87 11.12h93.7v-11.12Zm-78.25 62.81 11.11-.09v-27.47c-3.81-.17-7.52-.34-11.11-.52Zm-232.92-62.81v11.12h198.5v-11.12Zm849.68-339.52h-74V18.6q-5.35-2.17-11.12-4v91.49H696.87V13.67c-3.73.73-7.43 1.5-11.12 2.28v90.14H429.88V63.24c-3.69-.11-7.4-.29-11.11-.53v43.38H162.9v-62c-24.83 15.16-48.14 36.48-68.93 62h-.07v.08q-4.4 5.4-8.64 11h8.64v328.44h-83q1.66 5.63 3.6 11.12h79.39v93.62a87 87 0 0 0 12.2 2.79c1.21.19 2.43.35 3.65.49a88 88 0 0 0 10.79.54l42.33-.46v-97h255.91v94.21l11.11-.12v-94.07h255.87v91.36l11.12-.12v-91.24h253.49v4.77c.76-1.58 1.54-3.16 2.32-4.77q2.63-5.45 5.33-11.12 1.73-3.64 3.47-7.4v-321h76.42q-1.01-5.69-2.37-11.12M162.9 445.61V117.17h255.87v328.44Zm267 0V117.17h255.85v328.44Zm520.48 0H696.87V117.17h253.49Z",
-    "data-name": "Path 300",
-    opacity: 0.1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#65617d",
-    d: "M863.09 533.65v13l-151.92 1.4-1.62.03-57.74.53-1.38.02-17.55.15h-.52l-106.98.99-175.61 1.63h-.15l-44.65.42-.48.01-198.4 1.82v-15l46.65-28 93.6-.78 2-.01.66-.01 2-.03 44.94-.37 2.01-.01.64-.01 2-.01 14.41-.12.38-.01 35.55-.3h.29l277.4-2.34 6.79-.05h.68l5.18-.05 37.65-.31 2-.03 1.85-.02h.96l11.71-.09 2.32-.03 3.11-.02 9.75-.09 15.47-.13 2-.02 3.48-.02h.65l74.71-.64Z",
-    "data-name": "Path 301"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M863.09 533.65v13l-151.92 1.4-1.62.03-57.74.53-1.38.02-17.55.15h-.52l-106.98.99-175.61 1.63h-.15l-44.65.42-.48.01-198.4 1.82v-15l46.65-28 93.6-.78 2-.01.66-.01 2-.03 44.94-.37 2.01-.01.64-.01 2-.01 14.41-.12.38-.01 35.55-.3h.29l277.4-2.34 6.79-.05h.68l5.18-.05 37.65-.31 2-.03 1.85-.02h.96l11.71-.09 2.32-.03 3.11-.02 9.75-.09 15.47-.13 2-.02 3.48-.02h.65l74.71-.64Z",
-    "data-name": "Path 302",
-    opacity: 0.2
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3f3d56",
-    d: "M296.1 483.66v24.49a6.13 6.13 0 0 1-3.5 5.54 6 6 0 0 1-2.5.6l-34.9.74a6 6 0 0 1-2.7-.57 6.12 6.12 0 0 1-3.57-5.57v-25.23Z",
-    "data-name": "Path 303"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M296.1 483.66v24.49a6.13 6.13 0 0 1-3.5 5.54 6 6 0 0 1-2.5.6l-34.9.74a6 6 0 0 1-2.7-.57 6.12 6.12 0 0 1-3.57-5.57v-25.23Z",
-    "data-name": "Path 304",
-    opacity: 0.1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3f3d56",
-    d: "M298.1 483.66v24.49a6.13 6.13 0 0 1-3.5 5.54 6 6 0 0 1-2.5.6l-34.9.74a6 6 0 0 1-2.7-.57 6.12 6.12 0 0 1-3.57-5.57v-25.23Z",
-    "data-name": "Path 305"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3f3d56",
-    d: "M680.92 483.65h47.17v31.5h-47.17z",
-    "data-name": "Rectangle 137"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M680.92 483.65h47.17v31.5h-47.17z",
-    "data-name": "Rectangle 138",
-    opacity: 0.1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3f3d56",
-    d: "M678.92 483.65h47.17v31.5h-47.17z",
-    "data-name": "Rectangle 139"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M298.09 483.65v4.97l-47.17 1.26v-6.23Z",
-    "data-name": "Path 306",
-    opacity: 0.1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#65617d",
-    d: "M381.35 312.36v168.2a4 4 0 0 1-3.85 3.95l-191.65 5.1h-.05a4 4 0 0 1-3.95-3.95v-173.3a4 4 0 0 1 3.95-3.95h191.6a4 4 0 0 1 3.95 3.95",
-    "data-name": "Path 307"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M185.85 308.41v181.2h-.05a4 4 0 0 1-3.95-3.95v-173.3a4 4 0 0 1 3.95-3.95Z",
-    "data-name": "Path 308",
-    opacity: 0.1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#39374d",
-    d: "M194.59 319.15h177.5V467.4l-177.5 4Z",
-    "data-name": "Path 309"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M726.09 483.65v6.41l-47.17-1.26v-5.15Z",
-    "data-name": "Path 310",
-    opacity: 0.1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#65617d",
-    d: "M788.35 312.36v173.3a4 4 0 0 1-4 3.95l-191.69-5.1a4 4 0 0 1-3.85-3.95v-168.2a4 4 0 0 1 3.95-3.95h191.6a4 4 0 0 1 3.99 3.95",
-    "data-name": "Path 311"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M788.35 312.36v173.3a4 4 0 0 1-4 3.95v-181.2a4 4 0 0 1 4 3.95",
-    "data-name": "Path 312",
-    opacity: 0.1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#39374d",
-    d: "M775.59 319.15h-177.5V467.4l177.5 4Z",
-    "data-name": "Path 313"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#65617d",
-    d: "M583.85 312.36v168.2a4 4 0 0 1-3.85 3.95l-191.65 5.1a4 4 0 0 1-4-3.95v-173.3a4 4 0 0 1 3.95-3.95h191.6a4 4 0 0 1 3.95 3.95",
-    "data-name": "Path 314"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#4267b2",
-    d: "M397.09 319.15h177.5V467.4l-177.5 4Z",
-    "data-name": "Path 315"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M863.09 533.65v13l-151.92 1.4-1.62.03-57.74.53-1.38.02-17.55.15h-.52l-106.98.99-175.61 1.63h-.15l-44.65.42-.48.01-198.4 1.82v-15l202.51-1.33h.48l40.99-.28h.19l283.08-1.87h.29l.17-.01h.47l4.79-.03h1.46l74.49-.5 4.4-.02.98-.01Z",
-    "data-name": "Path 316",
-    opacity: 0.1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
-    cx: 51.33,
-    cy: 51.33,
-    r: 51.33,
-    fill: "#fbbebe",
-    "data-name": "Ellipse 111",
-    transform: "translate(435.93 246.82)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#fbbebe",
-    d: "M538.6 377.16s-99.5 12-90 0c3.44-4.34 4.39-17.2 4.2-31.85-.06-4.45-.22-9.06-.45-13.65-1.1-22-3.75-43.5-3.75-43.5s87-41 77-8.5c-4 13.13-2.69 31.57.35 48.88.89 5.05 1.92 10 3 14.7a345 345 0 0 0 9.65 33.92",
-    "data-name": "Path 317"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#ff6584",
-    d: "M506.13 373.09c11.51-2.13 23.7-6 34.53-1.54 2.85 1.17 5.47 2.88 8.39 3.86s6.12 1.22 9.16 1.91c10.68 2.42 19.34 10.55 24.9 20s8.44 20.14 11.26 30.72l6.9 25.83c6 22.45 12 45.09 13.39 68.3a2438 2438 0 0 1-250.84 1.43c5.44-10.34 11-21.31 10.54-33s-7.19-23.22-4.76-34.74c1.55-7.34 6.57-13.39 9.64-20.22 8.75-19.52 1.94-45.79 17.32-60.65 6.92-6.68 17-9.21 26.63-8.89 12.28.41 24.85 4.24 37 6.11 15.56 2.36 30.26 3.76 45.94.88",
-    "data-name": "Path 318"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "m637.03 484.26-.1 1.43v.1l-.17 2.3-1.33 18.51-1.61 22.3-.46 6.28-1 13.44v.17l-107 1-175.59 1.9v.84h-.14v-1.12l.45-14.36.86-28.06.74-23.79.07-2.37a10.53 10.53 0 0 1 11.42-10.17c4.72.4 10.85.89 18.18 1.41l3 .22c42.33 2.94 120.56 6.74 199.5 2 1.66-.09 3.33-.19 5-.31 12.24-.77 24.47-1.76 36.58-3a10.53 10.53 0 0 1 11.6 11.23Z",
-    "data-name": "Path 319",
-    opacity: 0.1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3f3d56",
-    d: "M349.74 552.53v-.84l175.62-1.91 107-1h.3v-.17l1-13.44.43-6 1.64-22.61 1.29-17.9v-.44a10.6 10.6 0 0 0-.11-2.47.3.3 0 0 0 0-.1 10.4 10.4 0 0 0-2-4.64 10.54 10.54 0 0 0-9.42-4 937 937 0 0 1-36.58 3c-1.67.12-3.34.22-5 .31-78.94 4.69-157.17.89-199.5-2l-3-.22c-7.33-.52-13.46-1-18.18-1.41a10.54 10.54 0 0 0-11.24 8.53 11 11 0 0 0-.18 1.64l-.68 22.16-.93 28.07-.44 14.36v1.12Z",
-    "data-name": "Path 320"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "m637.33 491.27-1.23 15.33-1.83 22.85-.46 5.72-1 12.81-.06.64v.17l-.15 1.48.11-1.48h-.29l-107 1-175.65 1.9v-.28l.49-14.36 1-28.06.64-18.65a6.36 6.36 0 0 1 3.06-5.25 6.25 6.25 0 0 1 3.78-.9c2.1.17 4.68.37 7.69.59 4.89.36 10.92.78 17.94 1.22 13 .82 29.31 1.7 48 2.42 52 2 122.2 2.67 188.88-3.17 3-.26 6.1-.55 9.13-.84a6.26 6.26 0 0 1 3.48.66 5 5 0 0 1 .86.54 6.14 6.14 0 0 1 2 2.46 3.6 3.6 0 0 1 .25.61 6.3 6.3 0 0 1 .36 2.59",
-    "data-name": "Path 321",
-    opacity: 0.1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M298.1 504.96v3.19a6.13 6.13 0 0 1-3.5 5.54l-40.1.77a6.12 6.12 0 0 1-3.57-5.57v-3Z",
-    "data-name": "Path 322",
-    opacity: 0.1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3f3d56",
-    d: "m298.59 515.57-52.25 1v-8.67l52.25-1Z",
-    "data-name": "Path 323"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "m298.59 515.57-52.25 1v-8.67l52.25-1Z",
-    "data-name": "Path 324",
-    opacity: 0.1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3f3d56",
-    d: "m300.59 515.57-52.25 1v-8.67l52.25-1Z",
-    "data-name": "Path 325"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M679.22 506.96v3.19a6.13 6.13 0 0 0 3.5 5.54l40.1.77a6.12 6.12 0 0 0 3.57-5.57v-3Z",
-    "data-name": "Path 326",
-    opacity: 0.1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "m678.72 517.57 52.25 1v-8.67l-52.25-1Z",
-    "data-name": "Path 327",
-    opacity: 0.1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3f3d56",
-    d: "m676.72 517.57 52.25 1v-8.67l-52.25-1Z",
-    "data-name": "Path 328"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3f3d56",
-    d: "M454.79 313.88c.08 7-3.16 13.6-5.91 20.07a163.5 163.5 0 0 0-12.66 74.71c.73 11 2.58 22 .73 32.9s-8.43 21.77-19 24.9c17.53 10.45 41.26 9.35 57.76-2.66 8.79-6.4 15.34-15.33 21.75-24.11a97.86 97.86 0 0 1-13.31 44.75 103.43 103.43 0 0 0 73.51-40.82c4.31-5.81 8.06-12.19 9.72-19.23 3.09-13-1.22-26.51-4.51-39.5a266 266 0 0 1-6.17-33c-.43-3.56-.78-7.22.1-10.7 1-4.07 3.67-7.51 5.64-11.22 5.6-10.54 5.73-23.3 2.86-34.88s-8.49-22.26-14.06-32.81c-4.46-8.46-9.3-17.31-17.46-22.28-5.1-3.1-11-4.39-16.88-5.64l-25.37-5.43c-5.55-1.19-11.26-2.38-16.87-1.51-9.47 1.48-16.14 8.32-22 15.34-4.59 5.46-15.81 15.71-16.6 22.86-.72 6.59 5.1 17.63 6.09 24.58 1.3 9 2.22 6 7.3 11.52 3.21 3.42 5.28 7.37 5.34 12.16",
-    "data-name": "Path 329"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#fff",
-    fillRule: "evenodd",
-    d: "M280.139 370.832h43.635v17.662h-43.635Z",
-    "data-name": "Path 40"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3ecc5f",
-    fillRule: "evenodd",
-    d: "M240.66 428.493a10.38 10.38 0 0 1-8.989-5.195 10.377 10.377 0 0 0 8.988 15.584h10.391v-10.389Z",
-    "data-name": "Path 41"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3ecc5f",
-    fillRule: "evenodd",
-    d: "m287.402 373.625 36.373-2.273v-5.195a10.39 10.39 0 0 0-10.39-10.389h-46.75l-1.3-2.249a1.5 1.5 0 0 0-2.6 0l-1.3 2.249-1.3-2.249a1.5 1.5 0 0 0-2.6 0l-1.3 2.249-1.3-2.249a1.5 1.5 0 0 0-2.6 0l-1.3 2.249h-.034l-2.152-2.151a1.5 1.5 0 0 0-2.508.672l-.696 2.653-2.7-.723a1.5 1.5 0 0 0-1.836 1.837l.722 2.7-2.65.71a1.5 1.5 0 0 0-.673 2.509l2.152 2.152v.033l-2.249 1.3a1.5 1.5 0 0 0 0 2.6l2.249 1.3-2.249 1.3a1.5 1.5 0 0 0 0 2.6l2.25 1.282-2.249 1.3a1.5 1.5 0 0 0 0 2.6l2.249 1.3-2.249 1.3a1.5 1.5 0 0 0 0 2.6l2.249 1.3-2.249 1.3a1.5 1.5 0 0 0 0 2.6l2.249 1.3-2.249 1.3a1.5 1.5 0 0 0 0 2.6l2.249 1.3-2.249 1.3a1.5 1.5 0 0 0 0 2.6l2.249 1.3-2.249 1.3a1.5 1.5 0 0 0 0 2.6l2.249 1.3-2.249 1.3a1.5 1.5 0 0 0 0 2.6l2.249 1.3-2.249 1.3a1.5 1.5 0 0 0 0 2.6l2.249 1.3-2.249 1.3a1.5 1.5 0 0 0 0 2.6l2.249 1.3-2.249 1.3a1.5 1.5 0 0 0 0 2.6l2.249 1.3a10.39 10.39 0 0 0 10.389 10.34h62.335a10.39 10.39 0 0 0 10.39-10.39v-41.557l-36.373-2.273a5.53 5.53 0 0 1 0-11.038",
-    "data-name": "Path 42"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3ecc5f",
-    fillRule: "evenodd",
-    d: "M302.996 438.882h15.584v-20.779h-15.584Z",
-    "data-name": "Path 43"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#44d860",
-    fillRule: "evenodd",
-    d: "M328.97 425.895a3 3 0 0 0-.332.033q-.028-.117-.06-.234a2.594 2.594 0 1 0-2.567-4.455q-.086-.088-.174-.175a2.593 2.593 0 1 0-4.461-2.569q-.115-.031-.231-.06a2.6 2.6 0 1 0-5.128 0q-.116.029-.231.06a2.594 2.594 0 1 0-4.461 2.569 10.384 10.384 0 1 0 17.314 9.992 2.592 2.592 0 1 0 .332-5.161",
-    "data-name": "Path 44"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3ecc5f",
-    fillRule: "evenodd",
-    d: "M308.191 407.713h15.584v-10.389h-15.584Z",
-    "data-name": "Path 45"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#44d860",
-    fillRule: "evenodd",
-    d: "M328.969 403.818a1.3 1.3 0 1 0 0-2.6 1 1 0 0 0-.166.017l-.03-.117a1.3 1.3 0 0 0-.5-2.5 1.3 1.3 0 0 0-.783.269l-.087-.087a1.3 1.3 0 0 0 .263-.776 1.3 1.3 0 0 0-2.493-.509 5.195 5.195 0 1 0 0 10 1.3 1.3 0 0 0 2.493-.509 1.3 1.3 0 0 0-.263-.776l.087-.087a1.3 1.3 0 0 0 .783.269 1.3 1.3 0 0 0 .5-2.5q.016-.058.03-.117a1 1 0 0 0 .166.017",
-    "data-name": "Path 46"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fillRule: "evenodd",
-    d: "M261.439 372.65a1.3 1.3 0 0 1-1.3-1.3 3.9 3.9 0 0 0-7.792 0 1.3 1.3 0 1 1-2.6 0 6.494 6.494 0 0 1 12.987 0 1.3 1.3 0 0 1-1.3 1.3",
-    "data-name": "Path 47"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#ffff50",
-    fillRule: "evenodd",
-    d: "M282.217 438.882h31.168a10.39 10.39 0 0 0 10.389-10.389V392.13h-31.168a10.39 10.39 0 0 0-10.389 10.389Z",
-    "data-name": "Path 48"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fillRule: "evenodd",
-    d: "M315.993 408.233h-25.994a.52.52 0 1 1 0-1.039h25.994a.52.52 0 0 1 0 1.039m0 10.389h-25.994a.52.52 0 1 1 0-1.039h25.994a.52.52 0 0 1 0 1.039m0 10.389h-25.994a.52.52 0 1 1 0-1.039h25.994a.52.52 0 0 1 0 1.039m0-25.877h-25.994a.52.52 0 1 1 0-1.039h25.994a.52.52 0 0 1 0 1.039m0 10.293h-25.994a.52.52 0 1 1 0-1.039h25.994a.52.52 0 0 1 0 1.039m0 10.389h-25.994a.52.52 0 1 1 0-1.039h25.994a.52.52 0 0 1 0 1.039m7.782-47.993h-.018c-1.605.055-2.365 1.66-3.035 3.077-.7 1.48-1.24 2.443-2.126 2.414-.981-.035-1.542-1.144-2.137-2.317-.683-1.347-1.462-2.876-3.1-2.819-1.582.054-2.344 1.451-3.017 2.684-.715 1.313-1.2 2.112-2.141 2.075-1-.036-1.533-.938-2.149-1.981-.686-1.162-1.479-2.467-3.084-2.423-1.555.053-2.319 1.239-2.994 2.286-.713 1.106-1.213 1.781-2.164 1.741-1.025-.036-1.554-.784-2.167-1.65-.688-.973-1.463-2.074-3.062-2.021a3.82 3.82 0 0 0-2.959 1.879c-.64.812-1.14 1.456-2.2 1.415a.52.52 0 0 0-.037 1.039 3.59 3.59 0 0 0 3.05-1.811c.611-.777 1.139-1.448 2.178-1.483 1-.043 1.47.579 2.179 1.582.674.953 1.438 2.033 2.977 2.089 1.612.054 2.387-1.151 3.074-2.217.614-.953 1.144-1.775 2.156-1.81.931-.035 1.438.7 2.153 1.912.674 1.141 1.437 2.434 3.006 2.491 1.623.056 2.407-1.361 3.09-2.616.592-1.085 1.15-2.109 2.14-2.143.931-.022 1.417.829 2.135 2.249.671 1.326 1.432 2.828 3.026 2.886h.088c1.592 0 2.347-1.6 3.015-3.01.592-1.252 1.152-2.431 2.113-2.479Z",
-    "data-name": "Path 49"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3ecc5f",
-    fillRule: "evenodd",
-    d: "M271.828 438.882h20.779v-20.779h-20.779Z",
-    "data-name": "Path 50"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
-    "data-name": "Group 8",
-    transform: "rotate(-14.98 1643.944 -873.93)"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 43.906,
-    height: 17.333,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 3",
-    rx: 2
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
-    fill: "#4a4a4a",
-    "data-name": "Group 2",
-    transform: "translate(.728 10.948)"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 4",
-    rx: 1,
-    transform: "translate(7.985)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 5",
-    rx: 1,
-    transform: "translate(10.991)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 6",
-    rx: 1,
-    transform: "translate(13.997)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 7",
-    rx: 1,
-    transform: "translate(17.003)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 8",
-    rx: 1,
-    transform: "translate(20.009)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 9",
-    rx: 1,
-    transform: "translate(23.015)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 10",
-    rx: 1,
-    transform: "translate(26.021)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 11",
-    rx: 1,
-    transform: "translate(29.028)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 12",
-    rx: 1,
-    transform: "translate(32.034)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fillRule: "evenodd",
-    d: "M.519 0H6.9a.52.52 0 0 1 .521.52v1.5a.52.52 0 0 1-.519.519H.519A.52.52 0 0 1 0 2.017V.519A.52.52 0 0 1 .519 0m35.134 0h6.383a.52.52 0 0 1 .519.519v1.5a.52.52 0 0 1-.519.519h-6.384a.52.52 0 0 1-.519-.519v-1.5A.52.52 0 0 1 35.652 0Z",
-    "data-name": "Path 51"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
-    fill: "#4a4a4a",
-    "data-name": "Group 3",
-    transform: "translate(.728 4.878)"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fillRule: "evenodd",
-    d: "M.519 0h2.437a.52.52 0 0 1 .519.519v1.5a.52.52 0 0 1-.519.519H.519A.52.52 0 0 1 0 2.017V.519A.52.52 0 0 1 .519 0",
-    "data-name": "Path 52"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 13",
-    rx: 1,
-    transform: "translate(3.945)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 14",
-    rx: 1,
-    transform: "translate(6.951)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 15",
-    rx: 1,
-    transform: "translate(9.958)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 16",
-    rx: 1,
-    transform: "translate(12.964)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 17",
-    rx: 1,
-    transform: "translate(15.97)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 18",
-    rx: 1,
-    transform: "translate(18.976)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 19",
-    rx: 1,
-    transform: "translate(21.982)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 20",
-    rx: 1,
-    transform: "translate(24.988)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 21",
-    rx: 1,
-    transform: "translate(27.994)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 22",
-    rx: 1,
-    transform: "translate(31)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 23",
-    rx: 1,
-    transform: "translate(34.006)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 24",
-    rx: 1,
-    transform: "translate(37.012)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 25",
-    rx: 1,
-    transform: "translate(40.018)"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
-    fill: "#4a4a4a",
-    "data-name": "Group 4",
-    transform: "rotate(180 21.642 2.269)"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fillRule: "evenodd",
-    d: "M.519 0h2.437a.52.52 0 0 1 .519.519v1.5a.52.52 0 0 1-.519.519H.519A.52.52 0 0 1 0 2.017V.519A.52.52 0 0 1 .519 0",
-    "data-name": "Path 53"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 26",
-    rx: 1,
-    transform: "translate(3.945)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 27",
-    rx: 1,
-    transform: "translate(6.951)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 28",
-    rx: 1,
-    transform: "translate(9.958)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 29",
-    rx: 1,
-    transform: "translate(12.964)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 30",
-    rx: 1,
-    transform: "translate(15.97)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 31",
-    rx: 1,
-    transform: "translate(18.976)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 32",
-    rx: 1,
-    transform: "translate(21.982)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 33",
-    rx: 1,
-    transform: "translate(24.988)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 34",
-    rx: 1,
-    transform: "translate(27.994)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 35",
-    rx: 1,
-    transform: "translate(31.001)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 36",
-    rx: 1,
-    transform: "translate(34.007)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 37",
-    rx: 1,
-    transform: "translate(37.013)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 38",
-    rx: 1,
-    transform: "translate(40.018)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 39",
-    rx: 1,
-    transform: "translate(3.945)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 40",
-    rx: 1,
-    transform: "translate(6.951)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 41",
-    rx: 1,
-    transform: "translate(9.958)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 42",
-    rx: 1,
-    transform: "translate(12.964)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 43",
-    rx: 1,
-    transform: "translate(15.97)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 44",
-    rx: 1,
-    transform: "translate(18.976)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 45",
-    rx: 1,
-    transform: "translate(21.982)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 46",
-    rx: 1,
-    transform: "translate(24.988)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 47",
-    rx: 1,
-    transform: "translate(27.994)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 48",
-    rx: 1,
-    transform: "translate(31.001)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 49",
-    rx: 1,
-    transform: "translate(34.007)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 50",
-    rx: 1,
-    transform: "translate(37.013)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 51",
-    rx: 1,
-    transform: "translate(40.018)"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
-    fill: "#4a4a4a",
-    "data-name": "Group 6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fillRule: "evenodd",
-    d: "M1.247 7.883h3.47a.52.52 0 0 1 .519.519v1.5a.52.52 0 0 1-.519.519h-3.47A.52.52 0 0 1 .728 9.9V8.403a.52.52 0 0 1 .519-.52",
-    "data-name": "Path 54"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
-    "data-name": "Group 5",
-    transform: "translate(5.801 7.883)"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 52",
-    rx: 1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 53",
-    rx: 1,
-    transform: "translate(3.006)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 54",
-    rx: 1,
-    transform: "translate(6.012)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 55",
-    rx: 1,
-    transform: "translate(9.018)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 56",
-    rx: 1,
-    transform: "translate(12.025)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 57",
-    rx: 1,
-    transform: "translate(15.031)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 58",
-    rx: 1,
-    transform: "translate(18.037)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 59",
-    rx: 1,
-    transform: "translate(21.042)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 60",
-    rx: 1,
-    transform: "translate(24.049)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 61",
-    rx: 1,
-    transform: "translate(27.055)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 62",
-    rx: 1,
-    transform: "translate(30.061)"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fillRule: "evenodd",
-    d: "M39.482 7.883h3.28a.52.52 0 0 1 .519.519v1.5a.52.52 0 0 1-.519.519h-3.281a.52.52 0 0 1-.519-.521V8.403a.52.52 0 0 1 .519-.52Z",
-    "data-name": "Path 55"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
-    fill: "#4a4a4a",
-    "data-name": "Group 7",
-    transform: "translate(.728 14.084)"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 63",
-    rx: 1
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 64",
-    rx: 1,
-    transform: "translate(3.006)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 65",
-    rx: 1,
-    transform: "translate(6.012)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 66",
-    rx: 1,
-    transform: "translate(9.018)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fillRule: "evenodd",
-    d: "M12.543 0h14.462a.52.52 0 0 1 .519.519v1.5a.52.52 0 0 1-.519.519H12.543a.52.52 0 0 1-.519-.52V.519A.52.52 0 0 1 12.543 0m15.97 0h1.874a.52.52 0 0 1 .519.519v1.5a.52.52 0 0 1-.519.519h-1.874a.52.52 0 0 1-.519-.519v-1.5A.52.52 0 0 1 28.513 0",
-    "data-name": "Path 56"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 67",
-    rx: 1,
-    transform: "translate(31.376)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 68",
-    rx: 1,
-    transform: "translate(34.382)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.537,
-    height: 2.537,
-    "data-name": "Rectangle 69",
-    rx: 1,
-    transform: "translate(40.018)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M37.199 1.08V.519A.52.52 0 0 1 37.718 0h1.499a.52.52 0 0 1 .519.519v.561Z",
-    "data-name": "Path 57"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M39.737 1.456v.561a.52.52 0 0 1-.519.519h-1.499a.52.52 0 0 1-.519-.519v-.561Z",
-    "data-name": "Path 58"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 42.273,
-    height: 1.127,
-    fill: "#4a4a4a",
-    "data-name": "Rectangle 70",
-    rx: 0.564,
-    transform: "translate(.915 .556)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.37,
-    height: 0.752,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 71",
-    opacity: 0.136,
-    rx: 0.376,
-    transform: "translate(1.949 .744)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.37,
-    height: 0.752,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 72",
-    opacity: 0.136,
-    rx: 0.376,
-    transform: "translate(5.193 .744)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.37,
-    height: 0.752,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 73",
-    opacity: 0.136,
-    rx: 0.376,
-    transform: "translate(7.688 .744)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.37,
-    height: 0.752,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 74",
-    opacity: 0.136,
-    rx: 0.376,
-    transform: "translate(10.183 .744)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.37,
-    height: 0.752,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 75",
-    opacity: 0.136,
-    rx: 0.376,
-    transform: "translate(12.679 .744)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.37,
-    height: 0.752,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 76",
-    opacity: 0.136,
-    rx: 0.376,
-    transform: "translate(15.797 .744)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.37,
-    height: 0.752,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 77",
-    opacity: 0.136,
-    rx: 0.376,
-    transform: "translate(18.292 .744)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.37,
-    height: 0.752,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 78",
-    opacity: 0.136,
-    rx: 0.376,
-    transform: "translate(20.788 .744)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.37,
-    height: 0.752,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 79",
-    opacity: 0.136,
-    rx: 0.376,
-    transform: "translate(23.283 .744)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.37,
-    height: 0.752,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 80",
-    opacity: 0.136,
-    rx: 0.376,
-    transform: "translate(26.402 .744)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.37,
-    height: 0.752,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 81",
-    opacity: 0.136,
-    rx: 0.376,
-    transform: "translate(28.897 .744)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.37,
-    height: 0.752,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 82",
-    opacity: 0.136,
-    rx: 0.376,
-    transform: "translate(31.393 .744)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.37,
-    height: 0.752,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 83",
-    opacity: 0.136,
-    rx: 0.376,
-    transform: "translate(34.512 .744)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.37,
-    height: 0.752,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 84",
-    opacity: 0.136,
-    rx: 0.376,
-    transform: "translate(37.007 .744)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 2.37,
-    height: 0.752,
-    fill: "#d8d8d8",
-    "data-name": "Rectangle 85",
-    opacity: 0.136,
-    rx: 0.376,
-    transform: "translate(39.502 .744)"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#44d860",
-    fillRule: "evenodd",
-    d: "M302.996 425.895a3 3 0 0 0-.332.033q-.029-.117-.06-.234a2.594 2.594 0 1 0-2.567-4.455q-.086-.088-.174-.175a2.593 2.593 0 1 0-4.461-2.569q-.116-.031-.231-.06a2.6 2.6 0 1 0-5.128 0q-.115.029-.231.06a2.594 2.594 0 1 0-4.461 2.569 10.384 10.384 0 1 0 17.314 9.992 2.592 2.592 0 1 0 .332-5.161",
-    "data-name": "Path 59"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3ecc5f",
-    fillRule: "evenodd",
-    d: "M271.828 407.713h20.779v-10.389h-20.779Z",
-    "data-name": "Path 60"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#44d860",
-    fillRule: "evenodd",
-    d: "M297.801 403.818a1.3 1.3 0 1 0 0-2.6 1 1 0 0 0-.166.017l-.03-.117a1.3 1.3 0 0 0-.5-2.5 1.3 1.3 0 0 0-.783.269l-.087-.087a1.3 1.3 0 0 0 .263-.776 1.3 1.3 0 0 0-2.493-.509 5.195 5.195 0 1 0 0 10 1.3 1.3 0 0 0 2.493-.509 1.3 1.3 0 0 0-.263-.776l.087-.087a1.3 1.3 0 0 0 .783.269 1.3 1.3 0 0 0 .5-2.5q.016-.058.03-.117a1 1 0 0 0 .166.017",
-    "data-name": "Path 61"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fillRule: "evenodd",
-    d: "M302.997 365.507a1.4 1.4 0 0 1-.255-.026 1.3 1.3 0 0 1-.244-.073 1.4 1.4 0 0 1-.224-.119 2 2 0 0 1-.2-.161 1.5 1.5 0 0 1-.161-.2 1.3 1.3 0 0 1-.218-.722 1.4 1.4 0 0 1 .026-.255 1.5 1.5 0 0 1 .072-.244 1.4 1.4 0 0 1 .12-.223 1.3 1.3 0 0 1 .358-.358 1.4 1.4 0 0 1 .224-.119 1.3 1.3 0 0 1 .244-.073 1.2 1.2 0 0 1 .509 0 1.3 1.3 0 0 1 .468.192 2 2 0 0 1 .2.161 2 2 0 0 1 .161.2 1.3 1.3 0 0 1 .12.223 1.4 1.4 0 0 1 .1.5 1.32 1.32 0 0 1-.379.919 2 2 0 0 1-.2.161 1.4 1.4 0 0 1-.223.119 1.3 1.3 0 0 1-.5.1m10.389-.649a1.33 1.33 0 0 1-.92-.379 2 2 0 0 1-.161-.2 1.3 1.3 0 0 1-.218-.722 1.33 1.33 0 0 1 .379-.919 2 2 0 0 1 .2-.161 1.4 1.4 0 0 1 .224-.119 1.3 1.3 0 0 1 .244-.073 1.2 1.2 0 0 1 .509 0 1.3 1.3 0 0 1 .468.192 2 2 0 0 1 .2.161 1.33 1.33 0 0 1 .379.919 1.5 1.5 0 0 1-.026.255 1.3 1.3 0 0 1-.073.244 2 2 0 0 1-.119.223 2 2 0 0 1-.161.2 2 2 0 0 1-.2.161 1.3 1.3 0 0 1-.722.218",
-    "data-name": "Path 62"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
-    fill: "#61dafb",
-    transform: "translate(466.3 278.56)"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M263.668 117.179c0-5.827-7.3-11.35-18.487-14.775 2.582-11.4 1.434-20.477-3.622-23.382a7.86 7.86 0 0 0-4.016-1v4a4.15 4.15 0 0 1 2.044.466c2.439 1.4 3.5 6.724 2.672 13.574-.2 1.685-.52 3.461-.914 5.272a87 87 0 0 0-11.386-1.954 87.5 87.5 0 0 0-7.459-8.965c5.845-5.433 11.332-8.41 15.062-8.41V78c-4.931 0-11.386 3.514-17.913 9.611-6.527-6.061-12.982-9.539-17.913-9.539v4c3.712 0 9.216 2.959 15.062 8.356a85 85 0 0 0-7.405 8.947 84 84 0 0 0-11.4 1.972 54 54 0 0 1-.932-5.2c-.843-6.85.2-12.175 2.618-13.592a4 4 0 0 1 2.062-.466v-4a8 8 0 0 0-4.052 1c-5.039 2.9-6.168 11.96-3.568 23.328-11.153 3.443-18.415 8.947-18.415 14.757 0 5.828 7.3 11.35 18.487 14.775-2.582 11.4-1.434 20.477 3.622 23.382a7.9 7.9 0 0 0 4.034 1c4.931 0 11.386-3.514 17.913-9.611 6.527 6.061 12.982 9.539 17.913 9.539a8 8 0 0 0 4.052-1c5.039-2.9 6.168-11.96 3.568-23.328 11.111-3.42 18.373-8.943 18.373-14.752m-23.346-11.96a80 80 0 0 1-2.421 7.083 83 83 0 0 0-2.349-4.3 97 97 0 0 0-2.582-4.2c2.547.377 5.004.843 7.353 1.417Zm-8.212 19.1c-1.4 2.421-2.833 4.716-4.321 6.85a93 93 0 0 1-8.1.359c-2.708 0-5.415-.126-8.069-.341q-2.232-3.2-4.339-6.814-2.044-3.523-3.73-7.136a94 94 0 0 1 3.712-7.154c1.4-2.421 2.833-4.716 4.321-6.85a93 93 0 0 1 8.1-.359c2.708 0 5.415.126 8.069.341q2.232 3.2 4.339 6.814 2.044 3.523 3.73 7.136a101 101 0 0 1-3.712 7.15Zm5.792-2.331a77 77 0 0 1 2.474 7.136 80 80 0 0 1-7.387 1.434c.879-1.381 1.757-2.8 2.582-4.25a96 96 0 0 0 2.329-4.324Zm-18.182 19.128a74 74 0 0 1-4.985-5.738c1.614.072 3.263.126 4.931.126 1.685 0 3.353-.036 4.985-.126a70 70 0 0 1-4.931 5.738m-13.34-10.561c-2.546-.377-5-.843-7.352-1.417a80 80 0 0 1 2.421-7.083c.735 1.434 1.506 2.869 2.349 4.3s1.702 2.837 2.582 4.2m13.25-37.314a74 74 0 0 1 4.985 5.738 111 111 0 0 0-4.931-.126c-1.686 0-3.353.036-4.985.126a70 70 0 0 1 4.931-5.738M206.362 103.8a101 101 0 0 0-4.913 8.55 77 77 0 0 1-2.474-7.136 90 90 0 0 1 7.387-1.414m-16.227 22.449c-6.348-2.708-10.454-6.258-10.454-9.073s4.106-6.383 10.454-9.073c1.542-.663 3.228-1.255 4.967-1.811a86 86 0 0 0 4.034 10.92 85 85 0 0 0-3.981 10.866 54 54 0 0 1-5.021-1.826Zm9.647 25.623c-2.439-1.4-3.5-6.724-2.672-13.574.2-1.686.52-3.461.914-5.272a87 87 0 0 0 11.386 1.954 87.5 87.5 0 0 0 7.459 8.965c-5.845 5.433-11.332 8.41-15.062 8.41a4.3 4.3 0 0 1-2.026-.48Zm42.532-13.663c.843 6.85-.2 12.175-2.618 13.592a4 4 0 0 1-2.062.466c-3.712 0-9.216-2.959-15.062-8.356a85 85 0 0 0 7.405-8.947 84 84 0 0 0 11.4-1.972 50 50 0 0 1 .936 5.22Zm6.9-11.96c-1.542.663-3.228 1.255-4.967 1.811a86 86 0 0 0-4.034-10.92 85 85 0 0 0 3.981-10.866 57 57 0 0 1 5.039 1.829c6.348 2.708 10.454 6.258 10.454 9.073-.017 2.818-4.123 6.386-10.471 9.076Z",
-    "data-name": "Path 330"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M201.718 78.072",
-    "data-name": "Path 331"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
-    cx: 8.194,
-    cy: 8.194,
-    r: 8.194,
-    "data-name": "Ellipse 112",
-    transform: "translate(211.472 108.984)"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M237.525 78.018",
-    "data-name": "Path 332"
-  })))));
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SvgUndrawDocusaurusReact);
-
-/***/ }),
-
-/***/ 3844:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6540);
-var _circle, _ellipse, _ellipse2, _path, _path2, _path3, _circle2, _circle3, _circle4, _rect, _rect2, _rect3, _rect4, _rect5, _rect6, _rect7, _path4, _ellipse3, _ellipse4, _path5, _path6, _path7, _path8, _path9, _path10, _path11, _path12, _path13, _path14, _path15, _path16, _path17, _path18, _path19, _path20, _path21;
-function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
-
-const SvgUndrawDocusaurusTree = _ref => {
-  let {
-    title,
-    titleId,
-    ...props
-  } = _ref;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", _extends({
-    xmlns: "http://www.w3.org/2000/svg",
-    width: 1129,
-    height: 663,
-    viewBox: "0 0 1129 663",
-    "aria-labelledby": titleId
-  }, props), title === undefined ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("title", {
-    id: titleId
-  }, "Focus on What Matters") : title ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("title", {
-    id: titleId
-  }, title) : null, _circle || (_circle = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
-    cx: 321,
-    cy: 321,
-    r: 321,
-    fill: "#f2f2f2"
-  })), _ellipse || (_ellipse = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ellipse", {
-    cx: 559,
-    cy: 635.5,
-    fill: "#3f3d56",
-    rx: 514,
-    ry: 27.5
-  })), _ellipse2 || (_ellipse2 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ellipse", {
-    cx: 558,
-    cy: 627,
-    opacity: 0.2,
-    rx: 460,
-    ry: 22
-  })), _path || (_path = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3f3d56",
-    d: "M131 152.5h840v50H131z"
+  }, title) : null, _path || (_path = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "M502.728 560.64a50.8 50.8 0 0 1-2.374 14.045q-.05.158-.102.315h-8.857l.028-.315c.59-6.79-2.783-47.619-6.855-54.685.357.573 18.847 19.068 18.16 40.64",
+    "data-name": "Path 133"
   })), _path2 || (_path2 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3f3d56",
-    d: "M131 608.83a21.67 21.67 0 0 0 21.67 21.67h796.66A21.67 21.67 0 0 0 971 608.83V177.5H131ZM949.33 117.5H152.67A21.67 21.67 0 0 0 131 139.17v38.33h840v-38.33a21.67 21.67 0 0 0-21.67-21.67"
+    fill: "#e6e6e6",
+    d: "M502.063 574.685q-.11.159-.23.315h-6.645l.177-.315c1.097-1.981 4.346-7.904 7.362-14.045 3.24-6.598 6.215-13.447 5.964-15.926.078.558 2.32 17.602-6.628 29.971",
+    "data-name": "Path 134"
   })), _path3 || (_path3 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M949.33 117.5H152.67A21.67 21.67 0 0 0 131 139.17v38.33h840v-38.33a21.67 21.67 0 0 0-21.67-21.67",
-    opacity: 0.2
-  })), _circle2 || (_circle2 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
-    cx: 181,
-    cy: 147.5,
-    r: 13,
-    fill: "#3f3d56"
-  })), _circle3 || (_circle3 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
-    cx: 217,
-    cy: 147.5,
-    r: 13,
-    fill: "#3f3d56"
-  })), _circle4 || (_circle4 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
-    cx: 253,
-    cy: 147.5,
-    r: 13,
-    fill: "#3f3d56"
-  })), _rect || (_rect = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 337,
-    height: 386,
-    x: 168,
-    y: 213.5,
-    fill: "#606060",
-    rx: 5.335
-  })), _rect2 || (_rect2 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 284,
-    height: 22,
-    x: 603,
-    y: 272.5,
-    fill: "#2e8555",
-    rx: 5.476
-  })), _rect3 || (_rect3 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 416,
-    height: 15,
-    x: 537,
-    y: 352.5,
-    fill: "#2e8555",
-    rx: 5.476
-  })), _rect4 || (_rect4 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 416,
-    height: 15,
-    x: 537,
-    y: 396.5,
-    fill: "#2e8555",
-    rx: 5.476
-  })), _rect5 || (_rect5 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 416,
-    height: 15,
-    x: 537,
-    y: 440.5,
-    fill: "#2e8555",
-    rx: 5.476
-  })), _rect6 || (_rect6 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 416,
-    height: 15,
-    x: 537,
-    y: 484.5,
-    fill: "#2e8555",
-    rx: 5.476
-  })), _rect7 || (_rect7 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
-    width: 88,
-    height: 26,
-    x: 865,
-    y: 552.5,
-    fill: "#3ecc5f",
-    rx: 7.028
+    fill: "#e5e5e5",
+    d: "M843.313 395.54a1.354 1.354 0 0 1-1.35-1.26 60.446 60.446 0 0 0-60.12-56.01c-1.826 0-3.741.092-5.692.275a1.36 1.36 0 0 1-1.302-.675 71.757 71.757 0 0 0-131.223 15.607 1.36 1.36 0 0 1-1.33.977l-.454-.013c-.238-.008-.475-.016-.715-.016a50.71 50.71 0 0 0-49.417 40.04 1.354 1.354 0 0 1-1.326 1.074H476.461a1.355 1.355 0 1 1 0-2.709h112.836a53.444 53.444 0 0 1 51.83-41.114h.197a75.1 75.1 0 0 1 26.11-37.49A73.76 73.76 0 0 1 712.548 299a74.7 74.7 0 0 1 64.216 36.772 63 63 0 0 1 5.08-.211 63.164 63.164 0 0 1 62.822 58.529 1.354 1.354 0 0 1-1.257 1.446zM778.08 417.343H544.2a1.355 1.355 0 0 1 0-2.71h233.88a1.355 1.355 0 0 1 0 2.71M612.219 442h-93.527a1.355 1.355 0 1 1 0-2.71h93.527a1.355 1.355 0 0 1 0 2.71M433.465 114.356a2 2 0 0 1-1.993-1.86A70.684 70.684 0 0 0 361.17 47c-2.132 0-4.372.108-6.657.322a2 2 0 0 1-1.922-.997A83.989 83.989 0 0 0 199 64.592a1.99 1.99 0 0 1-1.967 1.443l-.532-.016c-.277-.01-.553-.019-.832-.019a59.235 59.235 0 0 0-57.723 46.769 2 2 0 0 1-1.957 1.587H2a2 2 0 0 1 0-4h132.388A63.27 63.27 0 0 1 195.6 62a87.988 87.988 0 0 1 159.816-18.77 74 74 0 0 1 5.753-.23 74.697 74.697 0 0 1 74.294 69.216 2 2 0 0 1-1.856 2.136 2 2 0 0 1-.142.004M409.67 140h-328a2 2 0 0 1 0-4h328a2 2 0 0 1 0 4M161.67 169h-110a2 2 0 0 1 0-4h110a2 2 0 1 1 0 4"
   })), _path4 || (_path4 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3f3d56",
-    d: "M1053.103 506.116a30.1 30.1 0 0 0 3.983-15.266c0-13.797-8.544-24.98-19.083-24.98s-19.082 11.183-19.082 24.98a30.1 30.1 0 0 0 3.983 15.266 31.25 31.25 0 0 0 0 30.532 31.25 31.25 0 0 0 0 30.532 31.25 31.25 0 0 0 0 30.532 30.1 30.1 0 0 0-3.983 15.266c0 13.797 8.543 24.981 19.082 24.981s19.083-11.184 19.083-24.98a30.1 30.1 0 0 0-3.983-15.267 31.25 31.25 0 0 0 0-30.532 31.25 31.25 0 0 0 0-30.532 31.25 31.25 0 0 0 0-30.532"
-  })), _ellipse3 || (_ellipse3 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ellipse", {
-    cx: 1038.003,
-    cy: 460.318,
-    fill: "#3f3d56",
-    rx: 19.083,
-    ry: 24.981
-  })), _ellipse4 || (_ellipse4 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ellipse", {
-    cx: 1038.003,
-    cy: 429.786,
-    fill: "#3f3d56",
-    rx: 19.083,
-    ry: 24.981
+    fill: "#9f616a",
+    d: "m368.965 551.748 4.199-10.802-39.663-21.337-6.198 15.942z"
   })), _path5 || (_path5 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3ecc5f",
-    fillRule: "evenodd",
-    d: "M1109.439 220.845a92 92 0 0 0 7.106-10.461l-50.14-8.235 54.228.403a91.57 91.57 0 0 0 1.746-72.426l-72.755 37.742 67.097-49.321A91.413 91.413 0 1 0 965.75 220.845a91.5 91.5 0 0 0-10.425 16.67l65.087 33.814-69.4-23.292a91.46 91.46 0 0 0 14.738 85.837 91.406 91.406 0 1 0 143.689 0 91.42 91.42 0 0 0 0-113.03"
+    fill: "#2f2e41",
+    d: "M391.464 523.57a14.537 14.537 0 0 0-18.825 8.286l-2.833 7.282-4.367 11.239-1.068 2.756 13.996 5.444 13.537-34.832ZM365.44 530.96l-1.826 4.844-4.558 12.088-.11.302c-11.612 1.492-24.342-1.433-36.117-5.977a147 147 0 0 1-13.824-6.169c-6.659-3.364-12.62-6.915-17.377-9.952-7.161-4.596-11.59-8.047-11.59-8.047s-1.17 1.057-3.286 2.87a362 362 0 0 1-13.114 10.68q-3.286 2.572-7.056 5.38c-18.528 13.742-42.306-22.93-42.306-22.93s6.688-4.257 8.435-5.083c5.625-2.662 18.84-8.942 30.243-14.523 5.874-2.88 11.26-5.58 14.876-7.498 12.804-6.818 28.72 6.082 28.72 6.082Z"
   })), _path6 || (_path6 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    d: "M946.189 277.36a91 91 0 0 0 19.56 56.514 91.406 91.406 0 1 0 143.69 0c12.25-15.553-163.25-66.774-163.25-56.515",
-    opacity: 0.1
+    d: "m365.44 530.96-1.826 4.844-4.558 12.088-.11.302c-11.612 1.492-24.342-1.433-36.117-5.977a147 147 0 0 1-13.824-6.169c-6.659-3.364-12.62-6.915-17.377-9.952-7.161-4.596-11.59-8.047-11.59-8.047s-1.17 1.057-3.286 2.87a362 362 0 0 1-13.114 10.68q-3.286 2.572-7.056 5.38c-18.528 13.742-42.306-22.93-42.306-22.93s6.688-4.257 8.435-5.083c5.625-2.662 18.84-8.942 30.243-14.523 5.874-2.88 11.26-5.58 14.876-7.498 12.804-6.818 28.72 6.082 28.72 6.082Z",
+    opacity: 0.14
   })), _path7 || (_path7 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#fff",
-    fillRule: "evenodd",
-    d: "M330.12 342.936h111.474v45.12H330.12Z"
+    fill: "#9f616a",
+    d: "M232.25 458.979a8.864 8.864 0 0 0-6.792 11.772l-14.909 13.712 6.123 11.092 20.782-19.66a8.912 8.912 0 0 0-5.204-16.916"
   })), _path8 || (_path8 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3ecc5f",
-    fillRule: "evenodd",
-    d: "M229.263 490.241a26.51 26.51 0 0 1-22.963-13.27 26.51 26.51 0 0 0 22.963 39.812h26.541V490.24Z"
+    fill: "#ccc",
+    d: "M187.392 521.32q-1.01 0-2.024-.087a23.82 23.82 0 0 1-19.186-12.813l-23.885-45.97a13.19 13.19 0 0 1 22.81-13.201l22.034 49.44 29.984-24.36 17.36 6.757-29.318 32.368a24.1 24.1 0 0 1-17.775 7.867"
   })), _path9 || (_path9 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3ecc5f",
-    fillRule: "evenodd",
-    d: "m348.672 350.07 92.922-5.807v-13.27a26.54 26.54 0 0 0-26.541-26.542H295.616l-3.318-5.746a3.83 3.83 0 0 0-6.635 0l-3.318 5.746-3.317-5.746a3.83 3.83 0 0 0-6.636 0l-3.317 5.746-3.318-5.746a3.83 3.83 0 0 0-6.635 0l-3.318 5.746c-.03 0-.056.004-.086.004l-5.497-5.495a3.83 3.83 0 0 0-6.407 1.717l-1.817 6.773-6.89-1.847a3.83 3.83 0 0 0-4.691 4.693l1.844 6.891-6.77 1.814a3.832 3.832 0 0 0-1.72 6.41l5.497 5.497q-.002.041-.004.085l-5.747 3.317a3.83 3.83 0 0 0 0 6.636l5.747 3.317-5.747 3.318a3.83 3.83 0 0 0 0 6.635l5.747 3.318-5.747 3.318a3.83 3.83 0 0 0 0 6.635l5.747 3.318-5.747 3.317a3.83 3.83 0 0 0 0 6.636l5.747 3.317-5.747 3.318a3.83 3.83 0 0 0 0 6.636l5.747 3.317-5.747 3.318a3.83 3.83 0 0 0 0 6.635l5.747 3.318-5.747 3.318a3.83 3.83 0 0 0 0 6.635l5.747 3.318-5.747 3.317a3.83 3.83 0 0 0 0 6.636l5.747 3.317-5.747 3.318a3.83 3.83 0 0 0 0 6.635l5.747 3.318-5.747 3.318a3.83 3.83 0 0 0 0 6.635l5.747 3.318-5.747 3.317a3.83 3.83 0 0 0 0 6.636l5.747 3.317-5.747 3.318a3.83 3.83 0 0 0 0 6.635l5.747 3.318a26.54 26.54 0 0 0 26.541 26.542h159.249a26.54 26.54 0 0 0 26.541-26.542V384.075l-92.922-5.807a14.126 14.126 0 0 1 0-28.197"
+    fill: "#9f616a",
+    d: "M91.633 575.292a8.864 8.864 0 0 0 6.174-12.108l14.18-14.464-6.688-10.761-19.738 20.708a8.912 8.912 0 0 0 6.072 16.625"
   })), _path10 || (_path10 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3ecc5f",
-    fillRule: "evenodd",
-    d: "M388.511 516.783h39.812V463.7h-39.812Z"
+    fill: "#3f3d56",
+    d: "M226.541 320.094h1.39V282.03A22.03 22.03 0 0 1 249.96 260h80.643a22.03 22.03 0 0 1 22.03 22.03v208.82a22.03 22.03 0 0 1-22.03 22.03H249.96a22.03 22.03 0 0 1-22.03-22.03V347.187h-1.39Z"
   })), _path11 || (_path11 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#44d860",
-    fillRule: "evenodd",
-    d: "M454.865 483.606a7 7 0 0 0-.848.085q-.073-.3-.154-.599a6.627 6.627 0 1 0-6.557-11.382q-.22-.225-.445-.446a6.624 6.624 0 1 0-11.397-6.564c-.196-.055-.394-.102-.59-.152a6.64 6.64 0 1 0-13.101 0c-.197.05-.394.097-.59.152a6.628 6.628 0 1 0-11.398 6.564 26.528 26.528 0 1 0 44.232 25.528 6.621 6.621 0 1 0 .848-13.186"
+    fill: "#fff",
+    d: "M249.072 265.731H259.6a7.816 7.816 0 0 0 7.236 10.769h46.2a7.816 7.816 0 0 0 7.236-10.769h9.832a16.45 16.45 0 0 1 16.452 16.452v208.513a16.45 16.45 0 0 1-16.452 16.452h-81.03a16.45 16.45 0 0 1-16.453-16.452V282.183a16.45 16.45 0 0 1 16.452-16.452"
+  })), _circle || (_circle = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 289.631,
+    cy: 386.685,
+    r: 46.691,
+    fill: "#6c63ff"
   })), _path12 || (_path12 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3ecc5f",
-    fillRule: "evenodd",
-    d: "M401.782 437.158h39.812v-26.541h-39.812Z"
+    fill: "#fff",
+    d: "m285.181 406.395-13.974-17.969 8.126-6.321 6.617 8.508 22.354-23.597 7.475 7.082z"
   })), _path13 || (_path13 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#44d860",
-    fillRule: "evenodd",
-    d: "M454.865 427.205a3.318 3.318 0 0 0 0-6.635 3 3 0 0 0-.424.042c-.026-.1-.049-.199-.077-.298a3.319 3.319 0 0 0-1.278-6.38 3.28 3.28 0 0 0-2 .688q-.11-.113-.224-.223a3.3 3.3 0 0 0 .672-1.983 3.318 3.318 0 0 0-6.37-1.299 13.27 13.27 0 1 0 0 25.541 3.318 3.318 0 0 0 6.37-1.3 3.3 3.3 0 0 0-.672-1.982q.114-.11.223-.223a3.28 3.28 0 0 0 2.001.688 3.318 3.318 0 0 0 1.278-6.38c.028-.098.05-.199.077-.298a3 3 0 0 0 .424.042"
+    fill: "#2f2e41",
+    d: "M180.111 429.296h-54.825a4.26 4.26 0 0 1-4.254-4.254V401.41a31.666 31.666 0 0 1 63.333 0v23.632a4.26 4.26 0 0 1-4.254 4.254"
   })), _path14 || (_path14 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fillRule: "evenodd",
-    d: "M282.345 347.581a3.32 3.32 0 0 1-3.317-3.318 9.953 9.953 0 1 0-19.906 0 3.318 3.318 0 1 1-6.636 0 16.588 16.588 0 1 1 33.177 0 3.32 3.32 0 0 1-3.318 3.318"
+    fill: "#9f616a",
+    d: "m365.615 566.94 5.016-10.447-37.907-24.322-7.404 15.419z"
   })), _path15 || (_path15 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#ffff50",
-    fillRule: "evenodd",
-    d: "M335.428 516.783h79.625a26.54 26.54 0 0 0 26.541-26.542v-92.895H361.97a26.54 26.54 0 0 0-26.542 26.542Z"
+    fill: "#2f2e41",
+    d: "M390.212 540.574a14.537 14.537 0 0 0-19.406 6.815l-3.384 7.042-5.218 10.871-1.276 2.666 13.536 6.503 16.173-33.69ZM363.697 545.943l-2.193 4.688-5.473 11.703-.132.293c-11.693.595-24.161-3.3-35.552-8.734a147 147 0 0 1-13.309-7.213c-6.38-3.866-12.052-7.864-16.561-11.258-6.787-5.133-10.937-8.914-10.937-8.914s-1.247.964-3.497 2.61a362 362 0 0 1-13.896 9.64q-3.473 2.312-7.448 4.822c-19.53 12.279-47.301 27.233-70.924 30.39-41.488 5.549-31.723-49.816-31.723-49.816l33.018-17.147 14.019 2.846 15.606 3.157 5.53 1.125s1.049-.397 2.854-1.087c5.814-2.222 19.473-7.468 31.27-12.157 6.078-2.42 11.655-4.698 15.408-6.333 13.29-5.813 28.169 8.271 28.169 8.271Z"
+  })), _circle2 || (_circle2 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 160.461,
+    cy: 408.245,
+    r: 22.106,
+    fill: "#9f616a"
   })), _path16 || (_path16 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fillRule: "evenodd",
-    d: "M421.714 438.485h-66.406a1.327 1.327 0 0 1 0-2.654h66.406a1.327 1.327 0 0 1 0 2.654m0 26.542h-66.406a1.327 1.327 0 1 1 0-2.654h66.406a1.327 1.327 0 0 1 0 2.654m0 26.541h-66.406a1.327 1.327 0 1 1 0-2.654h66.406a1.327 1.327 0 0 1 0 2.654m0-66.106h-66.406a1.327 1.327 0 0 1 0-2.655h66.406a1.327 1.327 0 0 1 0 2.655m0 26.294h-66.406a1.327 1.327 0 0 1 0-2.654h66.406a1.327 1.327 0 0 1 0 2.654m0 26.542h-66.406a1.327 1.327 0 0 1 0-2.655h66.406a1.327 1.327 0 0 1 0 2.655m19.88-122.607c-.016 0-.03-.008-.045-.007-4.1.14-6.04 4.241-7.753 7.86-1.786 3.783-3.168 6.242-5.432 6.167-2.506-.09-3.94-2.922-5.458-5.918-1.744-3.443-3.734-7.347-7.913-7.201-4.042.138-5.99 3.708-7.706 6.857-1.828 3.355-3.071 5.394-5.47 5.3-2.557-.093-3.916-2.395-5.488-5.06-1.753-2.967-3.78-6.304-7.878-6.19-3.973.137-5.925 3.166-7.648 5.84-1.822 2.826-3.098 4.549-5.527 4.447-2.618-.093-3.97-2.004-5.535-4.216-1.757-2.486-3.737-5.3-7.823-5.163-3.886.133-5.838 2.615-7.56 4.802-1.634 2.075-2.91 3.718-5.611 3.615a1.328 1.328 0 1 0-.096 2.654c4.004.134 6.032-2.389 7.793-4.628 1.562-1.985 2.91-3.698 5.564-3.789 2.556-.108 3.754 1.48 5.567 4.041 1.721 2.434 3.675 5.195 7.606 5.337 4.118.138 6.099-2.94 7.853-5.663 1.569-2.434 2.923-4.535 5.508-4.624 2.38-.088 3.674 1.792 5.5 4.885 1.722 2.916 3.671 6.22 7.68 6.365 4.147.143 6.15-3.477 7.895-6.682 1.511-2.77 2.938-5.388 5.466-5.475 2.38-.056 3.62 2.116 5.456 5.746 1.714 3.388 3.658 7.226 7.73 7.373l.224.004c4.066 0 5.996-4.08 7.704-7.689 1.511-3.198 2.942-6.21 5.397-6.334Z"
+    fill: "#ccc",
+    d: "m131.701 469.609 19.257 54.595-.115.19c-2.679 4.428-3.554 8-2.532 10.329a4.5 4.5 0 0 0 2.854 2.461l45.57-31.852-1.596-12.766.09-.143c4.404-7.047 5.83-13.43 4.239-18.969-2.065-7.188-8.626-10.45-8.692-10.483l-.159-.125-22.729-27.664-30.383 5.398Z"
   })), _path17 || (_path17 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3ecc5f",
-    fillRule: "evenodd",
-    d: "M308.887 516.783h53.083V463.7h-53.083Z"
+    fill: "#ccc",
+    d: "m102.417 565.436-12.9-15.878 31.098-51.337 14.5-44.817.45.145-.45-.145a18.004 18.004 0 1 1 32.104 15.537l-26.618 39.88Z"
   })), _path18 || (_path18 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#44d860",
-    fillRule: "evenodd",
-    d: "M388.511 483.606a7 7 0 0 0-.848.085c-.05-.2-.098-.4-.154-.599a6.627 6.627 0 1 0-6.557-11.382q-.22-.225-.444-.446a6.624 6.624 0 1 0-11.397-6.564c-.197-.055-.394-.102-.59-.152a6.64 6.64 0 1 0-13.102 0c-.196.05-.394.097-.59.152a6.628 6.628 0 1 0-11.397 6.564 26.528 26.528 0 1 0 44.231 25.528 6.621 6.621 0 1 0 .848-13.186"
+    fill: "#2f2e41",
+    d: "M191.856 403.773h-33.524l-.344-4.813-1.719 4.813h-5.162l-.68-9.539-3.408 9.54h-9.988v-.473a25.08 25.08 0 0 1 25.05-25.05h4.726a25.08 25.08 0 0 1 25.05 25.05Z"
   })), _path19 || (_path19 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#3ecc5f",
-    fillRule: "evenodd",
-    d: "M308.887 437.158h53.083v-26.541h-53.083Z"
+    fill: "#2f2e41",
+    d: "M158.058 433.707a4.4 4.4 0 0 1-.753-.066l-24.548-4.332v-40.57h27.022l-.669.78c-9.308 10.855-2.295 28.458 2.713 37.985a4.19 4.19 0 0 1-.333 4.45 4.24 4.24 0 0 1-3.432 1.753"
   })), _path20 || (_path20 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fill: "#44d860",
-    fillRule: "evenodd",
-    d: "M375.24 427.205a3.318 3.318 0 1 0 0-6.635 3 3 0 0 0-.423.042q-.038-.15-.077-.298a3.319 3.319 0 0 0-1.278-6.38 3.28 3.28 0 0 0-2.001.688q-.11-.113-.223-.223a3.3 3.3 0 0 0 .671-1.983 3.318 3.318 0 0 0-6.37-1.299 13.27 13.27 0 1 0 0 25.541 3.318 3.318 0 0 0 6.37-1.3 3.3 3.3 0 0 0-.671-1.982q.113-.11.223-.223a3.28 3.28 0 0 0 2.001.688 3.318 3.318 0 0 0 1.278-6.38c.028-.098.05-.199.077-.298a3 3 0 0 0 .423.042"
-  })), _path21 || (_path21 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-    fillRule: "evenodd",
-    d: "M388.511 329.334a3.6 3.6 0 0 1-.65-.067 3.3 3.3 0 0 1-.624-.185 3.5 3.5 0 0 1-.572-.306 5 5 0 0 1-.504-.411 4 4 0 0 1-.41-.504 3.28 3.28 0 0 1-.558-1.845 3.6 3.6 0 0 1 .067-.65 4 4 0 0 1 .184-.624 3.5 3.5 0 0 1 .307-.57 3.2 3.2 0 0 1 .914-.916 3.5 3.5 0 0 1 .572-.305 3.3 3.3 0 0 1 .624-.186 3.1 3.1 0 0 1 1.3 0 3.2 3.2 0 0 1 1.195.49 5 5 0 0 1 .504.412 5 5 0 0 1 .411.504 3.4 3.4 0 0 1 .306.571 3.5 3.5 0 0 1 .252 1.274 3.36 3.36 0 0 1-.969 2.349 5 5 0 0 1-.504.411 3.3 3.3 0 0 1-1.845.558m26.542-1.66a3.4 3.4 0 0 1-2.35-.968 5 5 0 0 1-.41-.504 3.28 3.28 0 0 1-.558-1.845 3.39 3.39 0 0 1 .967-2.349 5 5 0 0 1 .505-.411 3.5 3.5 0 0 1 .572-.305 3.3 3.3 0 0 1 .623-.186 3.1 3.1 0 0 1 1.3 0 3.2 3.2 0 0 1 1.195.49 5 5 0 0 1 .504.412 3.4 3.4 0 0 1 .97 2.35 4 4 0 0 1-.067.65 3.4 3.4 0 0 1-.186.623 5 5 0 0 1-.305.57 5 5 0 0 1-.412.505 5 5 0 0 1-.504.412 3.3 3.3 0 0 1-1.844.557"
+    fill: "#cbcbcb",
+    d: "M594.421 576h-539a1 1 0 1 1 0-2h539a1 1 0 1 1 0 2"
   })));
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SvgUndrawDocusaurusTree);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SvgUndrawCloudSync);
+
+/***/ }),
+
+/***/ 7144:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6540);
+var _path, _path2, _path3, _path4, _path5, _path6, _path7, _path8, _circle, _circle2, _circle3, _path9, _path10, _path11, _path12, _circle4, _path13, _path14, _path15, _path16, _path17, _path18, _path19, _path20, _path21, _path22, _path23, _circle5, _path24, _path25, _path26, _path27, _path28, _circle6, _path29, _path30, _path31;
+function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
+
+const SvgUndrawControlPanel = _ref => {
+  let {
+    title,
+    titleId,
+    ...props
+  } = _ref;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", _extends({
+    xmlns: "http://www.w3.org/2000/svg",
+    width: 751.155,
+    height: 558.147,
+    viewBox: "0 0 751.155 558.147",
+    "aria-labelledby": titleId
+  }, props), title ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("title", {
+    id: titleId
+  }, title) : null, _path || (_path = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#f0f0f0",
+    d: "M641.235 553.957c7.97-18.67 13.59-38.99 10.93-59.1a65.2 65.2 0 0 0-5.88-19.65 59.6 59.6 0 0 0-9.22-13.93 8.35 8.35 0 0 0-10.57-1.7c-.26.15-.52.31-.76.48a8.75 8.75 0 0 0-2.97 3.63 6 6 0 0 0-.31.86 8.9 8.9 0 0 0-.29 3.79 95.6 95.6 0 0 1-.9 31.11q-.765 3.915-1.87 7.76a78 78 0 0 0-5.27-5.93 65.3 65.3 0 0 0-16.45-12.12h-.01c-.03-.02-.05-.03-.08-.05-7.38-3.76-17.22-2.2-22.97.36-.38.16-.74.34-1.09.51-3 1.54-4.49 3.31-3.21 4.47.29.25.58.51.85.77a95.7 95.7 0 0 1 21.06 28.34v.01a93 93 0 0 1 5.21 13.16c1.93 6.23 3.53 13.14 7.3 18.22a16 16 0 0 0 1.25 1.53l33.68-.27c.08-.04.15-.07.23-.11l1.34.05c-.05-.24-.11-.48-.17-.72v-.02c-.03-.13-.07-.27-.1-.39-.03-.1-.05-.19-.07-.27.06-.15.12-.29.19-.44.05-.12.1-.23.15-.35"
+  })), _path2 || (_path2 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "M641.065 555.407a.44.44 0 0 1-.69.3 18.3 18.3 0 0 0-4.51-2.39c-.01-.01-.01 0-.01 0a38 38 0 0 0-6.24-1.66c-.02 0-.03-.01-.05-.01-.86-.17-1.72-.32-2.58-.48-4.18-.77-8.43-1.7-12.05-4.08a12.28 12.28 0 0 1-5.63-8.33c-.53-3.35.14-6.72.42-10.06.02-.24.04-.49.05-.73.02-.31.03-.61.03-.91a19.4 19.4 0 0 0-1.78-8.8 34.9 34.9 0 0 0-6.36-8.94q-1.995-2.145-4.16-4.13h-.01c-.06-.06-.11-.11-.17-.16 0-.01-.01-.02-.02-.03a81 81 0 0 0-20.75-13.7c-.27-.12-.55-.25-.83-.37-.73-.33-1.46-.64-2.2-.95.35-.17.71-.35 1.09-.51a83 83 0 0 1 23.09 14.66c.23.2.46.41.68.62q2.595 2.4 4.94 5.03a32.5 32.5 0 0 1 5.99 9.16 20.4 20.4 0 0 1 1.39 8.58c-.02.56-.06 1.12-.11 1.69-.31 3.37-1 6.85-.23 10.22.88 3.84 3.86 6.52 7.32 8.16a31.6 31.6 0 0 0 7.16 2.22c5.1 1.07 10.37 1.59 14.83 4.33h.01c.07.05.14.09.2.13.01 0 .01 0 .01.01a10 10 0 0 1 .93.63c.02.01.04.03.06.04a.6.6 0 0 1 .08.07.44.44 0 0 1 .1.39"
+  })), _path3 || (_path3 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "M598.122 505.09a12.205 12.205 0 0 0-.405-15.799c-.392-.435-1.087.154-.694.59a11.3 11.3 0 0 1 .346 14.697c-.37.454.385.964.753.512M610.095 527.026a23.52 23.52 0 0 1-16.58-4.361c-.474-.346-.985.407-.513.752a24.47 24.47 0 0 0 17.262 4.504c.583-.07.41-.964-.17-.895M576.615 491.187c-.02.04-.04.07-.06.11a7.76 7.76 0 0 1-5.39 3.92c-.27-.26-.56-.52-.85-.77a.33.33 0 0 1 .15-.05 6.91 6.91 0 0 0 5.26-3.47c.05-.08.1-.17.14-.25a.45.45 0 0 1 .63-.12.47.47 0 0 1 .12.63"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "M297.684 176.37a67.894 67.894 0 0 0-67.818 67.818v259.9a67.895 67.895 0 0 0 67.818 67.817h604.632a67.895 67.895 0 0 0 67.818-67.818v-259.9a67.894 67.894 0 0 0-67.818-67.817Z",
+    style: {
+      isolation: "isolate"
+    },
+    transform: "translate(-224.423 -170.927)"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "M902.316 577.348H297.684a73.344 73.344 0 0 1-73.261-73.26v-259.9a73.344 73.344 0 0 1 73.26-73.261h604.633a73.344 73.344 0 0 1 73.261 73.26v259.9a73.344 73.344 0 0 1-73.26 73.261M297.684 181.813a62.445 62.445 0 0 0-62.375 62.375v259.9a62.445 62.445 0 0 0 62.375 62.374h604.632a62.445 62.445 0 0 0 62.375-62.375v-259.9a62.445 62.445 0 0 0-62.375-62.374Z",
+    style: {
+      isolation: "isolate"
+    },
+    transform: "translate(-224.423 -170.927)"
+  }), _path4 || (_path4 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#6c63ff",
+    d: "M377.2 59.253H89.658a23.19 23.19 0 0 0-23.151 23.151v129.692a22 22 0 0 0 .38 4.1c.092.618.237 1.217.382 1.815a23.226 23.226 0 0 0 22.39 17.237H377.2c.472 0 .943-.018 1.397-.055h.327v-.018a1.4 1.4 0 0 0 .272-.018c.09 0 .2-.018.29-.018a.16.16 0 0 0 .09-.018c.2-.018.4-.036.581-.055.327-.054.653-.09.962-.145a.3.3 0 0 1 .127-.018.36.36 0 0 1 .181-.036.07.07 0 0 1 .055-.018c.2-.036.399-.073.599-.127a2 2 0 0 0 .326-.073c.4-.09.798-.181 1.18-.308.18-.055.344-.09.526-.145.236-.073.49-.164.725-.254a3 3 0 0 0 .363-.127.1.1 0 0 0 .073-.037 16 16 0 0 0 1.542-.635c.436-.2.853-.417 1.27-.635.164-.072.309-.163.472-.254a.4.4 0 0 0 .109-.072c.417-.254.834-.508 1.234-.744.018-.018.018-.036.036-.036a.02.02 0 0 0 .018-.019 14 14 0 0 0 1.234-.87h.018c.109-.091.2-.164.29-.236.127-.091.254-.2.363-.29.218-.182.436-.364.635-.545a3 3 0 0 0 .345-.308c.308-.273.599-.563.889-.853a5 5 0 0 0 .435-.472 8 8 0 0 0 .635-.69c.182-.235.381-.471.563-.707a8 8 0 0 0 .599-.78c.326-.436.616-.871.907-1.343.236-.38.472-.78.69-1.18.108-.199.217-.417.326-.634.018 0 .018-.018.018-.036.2-.382.381-.763.544-1.162.073-.163.146-.308.2-.471.145-.309.254-.635.38-.962.2-.599.4-1.216.563-1.833.145-.598.29-1.197.381-1.814a22 22 0 0 0 .381-4.1V82.404a23.19 23.19 0 0 0-23.151-23.151"
+  })), _path5 || (_path5 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "M66.506 96.448h333.847v1.814H66.506zM66.506 116.406h333.847v1.814H66.506zM66.506 136.364h333.847v1.814H66.506zM66.506 156.322h333.847v1.814H66.506zM66.506 176.28h333.847v1.814H66.506zM66.506 196.239h333.847v1.814H66.506zM399.971 216.197c-.09.617-.235 1.216-.38 1.814H66.76a15 15 0 0 1-.218-1.814Z",
+    opacity: 0.3
+  })), _path6 || (_path6 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    d: "M400.352 184.01v28.086a22 22 0 0 1-.38 4.1c-.091.618-.237 1.217-.382 1.815a31 31 0 0 1-.562 1.833c-.127.326-.236.653-.381.961-.055.164-.127.309-.2.472-.163.4-.344.78-.544 1.161 0 .019 0 .037-.018.037-.109.217-.218.435-.327.635-.217.399-.453.798-.69 1.179-.29.472-.58.907-.906 1.343a8 8 0 0 1-.6.78c-.18.236-.38.472-.562.707a8 8 0 0 1-.635.69 5 5 0 0 1-.435.472c-.29.29-.58.58-.89.852a3 3 0 0 1-.344.309c-.2.181-.417.363-.635.544-.109.09-.236.2-.363.29-.09.073-.181.146-.29.236h-.018a14 14 0 0 1-1.234.871.02.02 0 0 1-.018.018c-.018 0-.018.019-.036.037-.254.181-.527.344-.799.508-.145.09-.29.163-.435.236a.4.4 0 0 1-.11.072c-.162.09-.308.182-.47.254-.418.218-.835.436-1.27.635a16 16 0 0 1-1.543.635.1.1 0 0 1-.073.036 3 3 0 0 1-.363.127c-.235.091-.49.182-.725.254-.182.055-.345.091-.526.146-.382.127-.78.217-1.18.308a2 2 0 0 1-.326.073c-.2.054-.4.09-.6.127a.07.07 0 0 0-.054.018.36.36 0 0 0-.181.036.3.3 0 0 0-.127.018c-.309.055-.635.09-.962.145l-.58.055a.16.16 0 0 1-.091.018c-.2.018-.381.036-.562.054h-.037c-.2.018-.399.018-.598.037-.363.018-.726.018-1.09.018H89.658a23.226 23.226 0 0 1-22.39-17.237h-.507a15 15 0 0 1-.218-1.814 20 20 0 0 1-.036-1.053v-31.642a43.2 43.2 0 0 1 11.23 1.832c9.871 3.012 19.47 8.11 29.775 8.11.816 0 1.67-.036 2.504-.108 10.85-.908 19.287-7.639 26.308-15.241.563-.599 1.125-1.198 1.651-1.815a143 143 0 0 0 3.829-4.463 97.7 97.7 0 0 1 13.19-13.68c.78-.635 1.56-1.234 2.36-1.815a33.5 33.5 0 0 1 16.002-6.405 31 31 0 0 1 2.232-.145c7.765-.236 15.059 2.559 21.7 6.55.961.58 1.923 1.18 2.848 1.815a108 108 0 0 1 9.163 6.949 175 175 0 0 0 14.152 11.194c.363.254.726.508 1.089.726a34 34 0 0 0 1.723 1.089 41.9 41.9 0 0 0 16.402 6.187c.2.036.418.072.635.09 9.453 1.107 18.253-1.687 26.29-6.277.999-.58 2.015-1.18 2.995-1.815a124 124 0 0 0 17.58-14.152c1.416-1.324 2.85-2.667 4.337-3.991.672-.6 1.343-1.216 2.032-1.815 10.778-9.47 23.206-18.144 37.885-18.144.617 0 1.252.019 1.887.055 10.56.508 19.83 5.624 27.615 12.12a85 85 0 0 1 6.477 5.97l.254.253a40 40 0 0 1 1.488 1.56c5.806 6.079 11.158 12.574 17.472 18.144.69.635 1.397 1.234 2.123 1.815a59 59 0 0 0 6.895 4.935c.562.345 1.143.671 1.723.98",
+    opacity: 0.1
+  })), _path7 || (_path7 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    d: "M400.352 156.594v55.502a22 22 0 0 1-.38 4.1c-.091.618-.237 1.216-.382 1.815a31 31 0 0 1-.562 1.833c-.127.326-.236.653-.381.961-.055.164-.127.309-.2.472-.163.4-.344.78-.544 1.161 0 .019 0 .037-.018.037-.109.217-.218.435-.327.635-.217.399-.453.798-.69 1.179-.29.472-.58.907-.906 1.343a8 8 0 0 1-.6.78c-.18.236-.38.472-.562.707a8 8 0 0 1-.635.69 5 5 0 0 1-.435.472c-.29.29-.58.58-.89.852a3 3 0 0 1-.344.309c-.2.181-.417.363-.635.544-.109.09-.236.2-.363.29-.09.073-.181.146-.29.236h-.018a14 14 0 0 1-1.234.871.02.02 0 0 1-.018.018c-.018 0-.018.019-.036.037-.254.181-.527.344-.799.508-.145.09-.29.163-.435.236a.4.4 0 0 1-.11.072c-.162.09-.308.182-.47.254-.418.218-.835.436-1.27.635a16 16 0 0 1-1.543.635.1.1 0 0 1-.073.036 3 3 0 0 1-.363.127c-.235.091-.49.182-.725.254-.182.055-.345.091-.526.146-.382.127-.78.217-1.18.308a2 2 0 0 1-.326.073c-.2.054-.4.09-.6.127a.07.07 0 0 0-.054.018.36.36 0 0 0-.181.036.3.3 0 0 0-.127.018c-.309.055-.635.09-.962.145l-.58.055a.16.16 0 0 1-.091.018c-.09 0-.2.018-.29.018a1.4 1.4 0 0 1-.272.018 1 1 0 0 1-.236.018h-.091c-.09.018-.2.018-.308.037-.363.018-.726.018-1.09.018H89.658a23.226 23.226 0 0 1-22.39-17.237c-.144-.599-.29-1.197-.38-1.814a22 22 0 0 1-.381-4.1v-32.315a54 54 0 0 0 1.869-1.687 89 89 0 0 0 1.868-1.815 139 139 0 0 0 14.715-18.143c.145-.2.29-.381.417-.581.29-.417.581-.816.89-1.234a142.6 142.6 0 0 1 14.714-18.144 88 88 0 0 1 1.869-1.814c6.75-6.35 14.442-11.086 23.514-12.21 12.501-1.561 24.132 4.227 34.42 12.21.761.599 1.505 1.197 2.249 1.814 3.52 2.867 6.858 5.988 10.015 9.09.835.835 1.688 1.67 2.54 2.504a383 383 0 0 0 6.714 6.55 178 178 0 0 0 1.941 1.815c9.072 8.4 18.888 15.785 30.554 18.143.799.164 1.615.309 2.432.418a40.6 40.6 0 0 0 13.245-.418c.725-.127 1.433-.29 2.159-.471 10.922-2.704 21.047-9.508 30.21-17.672.652-.6 1.324-1.198 1.977-1.815 4.681-4.336 9.126-8.981 13.281-13.553a483 483 0 0 1 4.21-4.59 81 81 0 0 0 1.705-1.815 153.3 153.3 0 0 1 19.85-18.144 74 74 0 0 1 2.558-1.814c9.598-6.55 20.085-10.76 31.606-10.088 9.508.544 18.199 4.463 26.019 10.088a69 69 0 0 1 2.395 1.814 108.7 108.7 0 0 1 16.202 16.094c.562.671 1.125 1.36 1.687 2.05.29.345.563.708.853 1.052l.599.762c4.808 6.006 9.435 12.248 14.352 18.144Z",
+    opacity: 0.1
+  })), _path8 || (_path8 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    d: "M400.352 133.679v78.417a22 22 0 0 1-.38 4.1c-.091.618-.237 1.217-.382 1.815a31 31 0 0 1-.562 1.833c-.127.326-.236.653-.381.961-.055.164-.127.309-.2.472-.163.4-.344.78-.544 1.161 0 .019 0 .037-.018.037-.109.217-.218.435-.327.635-.217.399-.453.798-.69 1.179-.29.472-.58.907-.906 1.343a8 8 0 0 1-.6.78c-.18.236-.38.472-.562.707a8 8 0 0 1-.635.69 5 5 0 0 1-.435.472c-.29.29-.58.58-.89.852a3 3 0 0 1-.344.309c-.2.181-.417.363-.635.544-.109.09-.236.2-.363.29-.09.073-.181.146-.29.236h-.018a14 14 0 0 1-1.234.871.02.02 0 0 1-.018.018c-.018 0-.018.019-.036.037-.254.181-.527.344-.799.508-.145.09-.29.163-.435.236a.4.4 0 0 1-.11.072c-.162.09-.308.182-.47.254-.418.218-.835.436-1.27.635a16 16 0 0 1-1.543.635.1.1 0 0 1-.073.036 3 3 0 0 1-.363.127c-.235.091-.49.182-.725.254-.182.055-.345.091-.526.146-.382.127-.78.217-1.18.308a2 2 0 0 1-.326.073c-.2.054-.4.09-.6.127a.07.07 0 0 0-.054.018.36.36 0 0 0-.181.036.3.3 0 0 0-.127.018c-.309.055-.635.09-.962.145l-.58.055a.16.16 0 0 1-.091.018c-.09 0-.2.018-.29.018a1.4 1.4 0 0 1-.272.018.06.06 0 0 1-.037.018h-.29c-.454.037-.925.055-1.397.055H89.657a23.226 23.226 0 0 1-22.39-17.237c-.144-.599-.29-1.197-.38-1.814a22 22 0 0 1-.381-4.1v-46.848q2.749-3.565 5.516-7.112c.471-.617.943-1.216 1.415-1.815 2.485-3.193 4.99-6.35 7.566-9.435a174 174 0 0 1 7.765-8.709c.581-.598 1.161-1.215 1.76-1.814a100.9 100.9 0 0 1 23.46-18.144 56 56 0 0 1 3.593-1.814 56.1 56.1 0 0 1 20.52-5.353 57 57 0 0 1 27.107 5.353 51 51 0 0 1 3.756 1.814c8.872 4.572 17.2 10.977 25.002 18.144.672.58 1.307 1.197 1.96 1.814 6.187 5.806 12.047 12.03 17.636 18.144.417.454.834.926 1.252 1.38.127.144.272.29.399.435 5.443 5.987 11.249 12.047 17.418 17.672.163.163.345.308.526.471a97 97 0 0 0 2.032 1.815 141 141 0 0 0 7.475 6.187 97.3 97.3 0 0 0 19.541 11.957c1.47.671 2.958 1.27 4.464 1.814a53.66 53.66 0 0 0 26.054 3.085 52 52 0 0 0 11.812-3.085 59 59 0 0 0 4.264-1.814c9.199-4.355 17.508-10.941 25.383-18.144.653-.599 1.306-1.198 1.96-1.815 4.48-4.209 8.835-8.582 13.135-12.81a261 261 0 0 1 5.57-5.333c.654-.6 1.325-1.198 1.997-1.815 2.286-2.05 4.644-4.064 7.076-5.97a91 91 0 0 1 19.45-12.174 39 39 0 0 1 1.814-.762c.926-.38 1.85-.725 2.776-1.052a48.7 48.7 0 0 1 12.392-2.685",
+    opacity: 0.1
+  })), _circle || (_circle = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 138.174,
+    cy: 116.406,
+    r: 5.443,
+    fill: "#fff"
+  })), _circle2 || (_circle2 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 221.636,
+    cy: 176.28,
+    r: 5.443,
+    fill: "#fff"
+  })), _circle3 || (_circle3 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 334.127,
+    cy: 136.364,
+    r: 5.443,
+    fill: "#fff"
+  })), _path9 || (_path9 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "M581.718 182.806H453.37a4.631 4.631 0 1 0 0 9.262h128.348a4.631 4.631 0 1 0 0-9.262M581.718 252.934H453.37a4.631 4.631 0 1 0 0 9.262h128.348a4.631 4.631 0 1 0 0-9.262M581.718 323.062H453.37a4.631 4.631 0 1 0 0 9.262h128.348a4.631 4.631 0 1 0 0-9.262"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 659.488,
+    cy: 187.783,
+    r: 11.565,
+    fill: "#f2f2f2",
+    style: {
+      isolation: "isolate"
+    }
+  }), _path10 || (_path10 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "M657.91 193.803a1.29 1.29 0 0 1-1.029-.515l-3.155-4.207a1.286 1.286 0 1 1 2.058-1.544l2.064 2.752 5.302-7.952a1.287 1.287 0 0 1 2.141 1.427l-6.31 9.466a1.29 1.29 0 0 1-1.035.572Z"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 659.488,
+    cy: 257.911,
+    r: 11.565,
+    fill: "#f2f2f2",
+    style: {
+      isolation: "isolate"
+    }
+  }), _path11 || (_path11 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "M657.91 263.93a1.29 1.29 0 0 1-1.029-.514l-3.155-4.207a1.286 1.286 0 1 1 2.058-1.544l2.064 2.752 5.302-7.952a1.287 1.287 0 1 1 2.141 1.427l-6.31 9.466a1.29 1.29 0 0 1-1.035.572Z"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 659.488,
+    cy: 328.04,
+    r: 11.565,
+    fill: "#f2f2f2",
+    style: {
+      isolation: "isolate"
+    }
+  }), _path12 || (_path12 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "M581.718 112.678H453.37a4.631 4.631 0 1 0 0 9.262h128.348a4.631 4.631 0 1 0 0-9.262"
+  })), _circle4 || (_circle4 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 659.488,
+    cy: 117.655,
+    r: 11.565,
+    fill: "#6c63ff"
+  })), _path13 || (_path13 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "M657.91 123.674a1.29 1.29 0 0 1-1.029-.514l-3.155-4.207a1.286 1.286 0 1 1 2.058-1.544l2.064 2.752 5.302-7.952a1.287 1.287 0 1 1 2.141 1.427l-6.31 9.465a1.29 1.29 0 0 1-1.035.573Z"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 621.116,
+    cy: 117.655,
+    r: 11.565,
+    fill: "#f2f2f2",
+    style: {
+      isolation: "isolate"
+    }
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 621.116,
+    cy: 187.783,
+    r: 11.565,
+    fill: "#f2f2f2",
+    style: {
+      isolation: "isolate"
+    }
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 621.116,
+    cy: 257.911,
+    r: 11.565,
+    fill: "#f2f2f2",
+    style: {
+      isolation: "isolate"
+    }
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 621.116,
+    cy: 328.04,
+    r: 11.565,
+    fill: "#f2f2f2",
+    style: {
+      isolation: "isolate"
+    }
+  }), _path14 || (_path14 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "M657.91 334.059a1.29 1.29 0 0 1-1.029-.515l-3.155-4.207a1.286 1.286 0 1 1 2.058-1.544l2.064 2.753 5.302-7.953a1.287 1.287 0 0 1 2.141 1.427l-6.31 9.466a1.29 1.29 0 0 1-1.035.572ZM641.235 553.957a.43.43 0 0 1-.15.35.6.6 0 0 1-.27.11.39.39 0 0 1-.46-.29c-1.38-4.64-4.76-8.2-7.96-11.69-2.88-3.13-5.71-6.43-7.16-10.5a12.28 12.28 0 0 1 .52-10.05 17.7 17.7 0 0 1 1.73-2.62c1.43-1.82 3.13-3.44 4.66-5.16.16-.18.32-.37.47-.55.21-.23.4-.47.58-.71a19.35 19.35 0 0 0 3.87-8.1 34.8 34.8 0 0 0 .31-10.97q-.3-2.91-.83-5.78c-.02-.09-.03-.17-.05-.25a80.8 80.8 0 0 0-8.32-23.47c-.15-.27-.29-.54-.44-.8-.64-1.16-1.3-2.3-2-3.42.24-.17.5-.33.76-.48a83 83 0 0 1 5.97 11.63 81.3 81.3 0 0 1 4.87 16.05c.07.3.12.61.17.91.42 2.31.73 4.65.92 6.98a32.3 32.3 0 0 1-.74 10.92 20.4 20.4 0 0 1-4.07 7.71q-.51.645-1.08 1.26c-1.52 1.66-3.2 3.27-4.57 5.08a15 15 0 0 0-1.77 2.94c-1.61 3.6-.85 7.54.93 10.92 3.22 6.15 9.36 10.34 12.63 16.37a18.6 18.6 0 0 1 1.46 3.49.5.5 0 0 1 .02.12"
+  })), _path15 || (_path15 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "M637.091 488.273a12.205 12.205 0 0 0 9.189-12.859c-.051-.583-.96-.531-.91.053a11.3 11.3 0 0 1-8.571 11.943c-.57.14-.274 1.002.292.863M633.443 512.996a23.52 23.52 0 0 1-10.612-13.465c-.17-.56-1.031-.268-.862.293a24.47 24.47 0 0 0 11.071 13.988c.508.296.908-.522.403-.816M628.285 464.227c-.04.02-.07.03-.11.05a7.7 7.7 0 0 1-5.72.27 6 6 0 0 1 .31-.86 6.83 6.83 0 0 0 4.97-.21c.09-.03.17-.07.26-.11a.46.46 0 0 1 .58.28.48.48 0 0 1-.29.58"
+  })), _path16 || (_path16 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ffb6b6",
+    d: "M578.438 310.994a9.362 9.362 0 0 0-2.579-14.123l6.039-32.718-15.921 6.74-3.294 30.037a9.413 9.413 0 0 0 15.755 10.064"
+  })), _path17 || (_path17 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#3f3d56",
+    d: "m588.155 214.157-5.06-17.01-35.68-55.67a26.4 26.4 0 0 0-7.01-5.78 26.562 26.562 0 0 0-34.68 38.66 25 25 0 0 0 2.43 2.9l46.21 47.66 2.63 2.72 4.16 10.52 1.64 47.97 1.47.35 12.95 3.05 1.81.43 3.03-15.67 1.9-7.49a79.5 79.5 0 0 0 2.43-19.54c0-2.03-.07-4.07-.23-6.1Z"
+  })), _path18 || (_path18 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ffb6b6",
+    d: "M539.105 544.946h-12.39l-5.894-47.79 18.286.001z"
+  })), _path19 || (_path19 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "m538.775 540.897-13.22-5.37-.39-.16-7.3 5.53a15.54 15.54 0 0 0-15.53 14.87c-.02.22-.02.45-.02.68v.51h39.95v-16.06Z"
+  })), _path20 || (_path20 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ffb6b6",
+    d: "m515.51 520.231-10.679 6.283-29.317-38.198 15.76-9.273z"
+  })), _path21 || (_path21 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "m522.885 526.527-1.45-2.47-5.25-8.92-2.73 1.61-.28.16-14.12 2.08-.42.06-3.48 8.47a15.55 15.55 0 0 0-5.52 21.29l.26.43 34.43-20.26Z"
+  })), _path22 || (_path22 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "M554.797 252.786c5.809 17.52 5.195 36.537-1.396 56.948l-1.72 70.164-5.526 44.26a75.8 75.8 0 0 1 5.043 27.173c-.024 24.352-1.661 58.948-9.963 75.2H521.59l-4.435-72.374-5.292-36.388-.653-38.993-.569-34.008-21.36 31.235-20.758 30.353 20.632 34.801 18 56-19 16-21.554-40.863-10.446-12.137-28.516-61.73 2.562-8.595a203.3 203.3 0 0 1 22.783-50.23l28.364-65.83Z"
+  })), _path23 || (_path23 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#3f3d56",
+    d: "m557.315 246.937-3.24-6.48.29-15.54.97-52.54a50.4 50.4 0 0 0-14.93-36.68 49.4 49.4 0 0 0-9.56-7.43l-6.96-4.16-3.52-8.94-32.46.79-.07 8.67-.03 3.05-11.63 18.54.01.08.24 33.74.48 67.16 3.21 10.41-4.85 12.12 2.58 7.72 2.06-.33 69.38-11.09a13.62 13.62 0 0 0 7.53-5.98 12.4 12.4 0 0 0 .89-1.74 13.65 13.65 0 0 0-.39-11.37"
+  })), _circle5 || (_circle5 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 501.159,
+    cy: 74.551,
+    r: 29.496,
+    fill: "#ffb6b6"
+  })), _path24 || (_path24 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "M519.507 98.992c3.115-2.192 6.27-6.365 8.371-9.489a35.42 35.42 0 0 0 5.077-28.351 10.8 10.8 0 0 0-2.61-5.166 4.64 4.64 0 0 0-5.368-.98 9.68 9.68 0 0 0-.5-7.674 17.06 17.06 0 0 0-5.125-5.937 28.41 28.41 0 0 0-28.975-3.025c-1.83.88 1.104-5.755-.816-5.093a7.86 7.86 0 0 1-5.934-.022c-1.827-.888-7.763 4.62-7.094 2.702a8.958 8.958 0 0 0-1.867 15.03c1.54 1.263 3.45 1.976 5.132 3.044a14.613 14.613 0 0 1 4.73 18.795 19.4 19.4 0 0 1 5.664-2.555 6.55 6.55 0 0 1 5.85 1.322 7.36 7.36 0 0 1 1.861 5.53c-.038 2.003-.487 3.982-.513 5.984-.075 5.876-3.067 17.087 1.53 20.146 3.629 2.414 16.333-1.269 20.587-4.261"
+  })), _path25 || (_path25 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ffb6b6",
+    d: "M337.299 146.294a9.362 9.362 0 0 0 14.168 2.317l28.786 16.682-.999-17.26-27.182-13.195a9.413 9.413 0 0 0-14.773 11.456"
+  })), _path26 || (_path26 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#3f3d56",
+    d: "M523.195 141.127a26.57 26.57 0 0 0-35.36-16.5c-.32.13-.64.27-.96.41l-63.86 29.07-24.86-2.95-32.18-11.24-.82 1.27-7.23 11.17-1.01 1.56 34.52 20.41 3.66.76a24.73 24.73 0 0 1 15.68 10.67l13.38 4.4 52.27-10.12 29.3-5.68 1.66-.32a26.64 26.64 0 0 0 17.07-24.84 26.4 26.4 0 0 0-1.26-8.07"
+  })), _path27 || (_path27 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ccc",
+    d: "M671.792 558.147H323.804a1.19 1.19 0 1 1 0-2.381h347.988a1.19 1.19 0 0 1 0 2.38"
+  })), _path28 || (_path28 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "M297.251 279.936H85.903a4.631 4.631 0 0 0 0 9.262h211.348a4.631 4.631 0 1 0 0-9.262"
+  })), _circle6 || (_circle6 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 375.021,
+    cy: 284.913,
+    r: 11.565,
+    fill: "#6c63ff"
+  })), _path29 || (_path29 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "M373.443 290.932a1.29 1.29 0 0 1-1.03-.514l-3.154-4.207a1.286 1.286 0 1 1 2.058-1.544l2.064 2.752 5.302-7.952a1.287 1.287 0 1 1 2.14 1.427l-6.31 9.465a1.29 1.29 0 0 1-1.034.573Z"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 336.649,
+    cy: 284.913,
+    r: 11.565,
+    fill: "#f2f2f2",
+    style: {
+      isolation: "isolate"
+    }
+  }), _path30 || (_path30 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "M296.251 335.936H84.903a4.631 4.631 0 0 0 0 9.262h211.348a4.631 4.631 0 1 0 0-9.262"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 374.021,
+    cy: 340.913,
+    r: 11.565,
+    fill: "#f2f2f2",
+    style: {
+      isolation: "isolate"
+    }
+  }), _path31 || (_path31 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "M372.443 346.932a1.29 1.29 0 0 1-1.03-.514l-3.154-4.207a1.286 1.286 0 1 1 2.058-1.544l2.064 2.752 5.302-7.952a1.287 1.287 0 1 1 2.14 1.427l-6.31 9.465a1.29 1.29 0 0 1-1.034.573Z"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 335.649,
+    cy: 340.913,
+    r: 11.565,
+    fill: "#f2f2f2",
+    style: {
+      isolation: "isolate"
+    }
+  }));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SvgUndrawControlPanel);
+
+/***/ }),
+
+/***/ 3147:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6540);
+var _path, _circle, _circle2, _circle3, _circle4, _circle5, _circle6, _circle7, _circle8, _circle9, _circle10, _circle11, _circle12, _circle13, _circle14, _circle15, _circle16, _circle17, _circle18, _circle19, _circle20, _circle21, _circle22, _circle23, _circle24, _circle25, _circle26, _circle27, _circle28, _circle29, _circle30, _circle31, _circle32, _circle33, _circle34, _circle35, _circle36, _circle37, _circle38, _circle39, _circle40, _circle41, _circle42, _circle43, _circle44, _circle45, _circle46, _circle47, _circle48, _circle49, _circle50, _circle51, _circle52, _circle53, _circle54, _circle55, _circle56, _circle57, _circle58, _circle59, _circle60, _circle61, _circle62, _circle63, _circle64, _circle65, _circle66, _circle67, _circle68, _circle69, _circle70, _circle71, _circle72, _circle73, _circle74, _circle75, _circle76, _circle77, _circle78, _circle79, _circle80, _circle81, _circle82, _circle83, _circle84, _circle85, _circle86, _circle87, _circle88, _circle89, _circle90, _circle91, _circle92, _circle93, _circle94, _circle95, _circle96, _circle97, _circle98, _circle99, _circle100, _path2, _path3, _path4, _path5, _path6, _path7, _path8, _path9, _circle101, _path10, _path11, _circle102, _path12, _path13, _path14, _path15, _path16, _circle103, _path17, _path18, _path19, _path20, _circle104, _path21, _path22, _ellipse, _path23, _path24;
+function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
+
+const SvgUndrawFileAnalysis = _ref => {
+  let {
+    title,
+    titleId,
+    ...props
+  } = _ref;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", _extends({
+    xmlns: "http://www.w3.org/2000/svg",
+    width: 782.39,
+    height: 634.123,
+    viewBox: "0 0 782.39 634.123",
+    "aria-labelledby": titleId
+  }, props), title ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("title", {
+    id: titleId
+  }, title) : null, _path || (_path = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#3f3d56",
+    d: "M782.009 634.123H524.27v-2.106h258.12z"
+  })), _circle || (_circle = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 6.813,
+    cy: 6.814,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle2 || (_circle2 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 41.302,
+    cy: 6.814,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle3 || (_circle3 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 75.791,
+    cy: 6.814,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle4 || (_circle4 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 110.28,
+    cy: 6.814,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle5 || (_circle5 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 144.769,
+    cy: 6.814,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle6 || (_circle6 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 179.258,
+    cy: 6.814,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle7 || (_circle7 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 213.747,
+    cy: 6.814,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle8 || (_circle8 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 248.236,
+    cy: 6.814,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle9 || (_circle9 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 282.725,
+    cy: 6.814,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle10 || (_circle10 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 317.214,
+    cy: 6.814,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle11 || (_circle11 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 6.813,
+    cy: 41.736,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle12 || (_circle12 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 41.302,
+    cy: 41.736,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle13 || (_circle13 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 75.791,
+    cy: 41.736,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle14 || (_circle14 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 110.28,
+    cy: 41.736,
+    r: 6.813,
+    fill: "#6c63ff"
+  })), _circle15 || (_circle15 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 144.769,
+    cy: 41.736,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle16 || (_circle16 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 179.258,
+    cy: 41.736,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle17 || (_circle17 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 213.747,
+    cy: 41.736,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle18 || (_circle18 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 248.236,
+    cy: 41.736,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle19 || (_circle19 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 282.725,
+    cy: 41.736,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle20 || (_circle20 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 317.214,
+    cy: 41.736,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle21 || (_circle21 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 6.813,
+    cy: 76.658,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle22 || (_circle22 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 41.302,
+    cy: 76.658,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle23 || (_circle23 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 75.791,
+    cy: 76.658,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle24 || (_circle24 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 110.28,
+    cy: 76.658,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle25 || (_circle25 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 144.769,
+    cy: 76.658,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle26 || (_circle26 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 179.258,
+    cy: 76.658,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle27 || (_circle27 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 213.747,
+    cy: 76.658,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle28 || (_circle28 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 248.236,
+    cy: 76.658,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle29 || (_circle29 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 282.725,
+    cy: 76.658,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle30 || (_circle30 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 317.214,
+    cy: 76.658,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle31 || (_circle31 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 6.813,
+    cy: 111.58,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle32 || (_circle32 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 41.302,
+    cy: 111.58,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle33 || (_circle33 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 75.791,
+    cy: 111.58,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle34 || (_circle34 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 110.28,
+    cy: 111.58,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle35 || (_circle35 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 144.769,
+    cy: 111.58,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle36 || (_circle36 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 179.258,
+    cy: 111.58,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle37 || (_circle37 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 213.747,
+    cy: 111.58,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle38 || (_circle38 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 248.236,
+    cy: 111.58,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle39 || (_circle39 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 282.725,
+    cy: 111.58,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle40 || (_circle40 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 317.214,
+    cy: 111.58,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle41 || (_circle41 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 6.813,
+    cy: 146.502,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle42 || (_circle42 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 41.302,
+    cy: 146.502,
+    r: 6.813,
+    fill: "#6c63ff"
+  })), _circle43 || (_circle43 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 75.791,
+    cy: 146.502,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle44 || (_circle44 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 110.28,
+    cy: 146.502,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle45 || (_circle45 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 144.769,
+    cy: 146.502,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle46 || (_circle46 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 179.258,
+    cy: 146.502,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle47 || (_circle47 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 213.747,
+    cy: 146.502,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle48 || (_circle48 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 248.236,
+    cy: 146.502,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle49 || (_circle49 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 282.725,
+    cy: 146.502,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle50 || (_circle50 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 317.214,
+    cy: 146.502,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle51 || (_circle51 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 6.813,
+    cy: 181.424,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle52 || (_circle52 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 41.302,
+    cy: 181.424,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle53 || (_circle53 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 75.791,
+    cy: 181.424,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle54 || (_circle54 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 110.28,
+    cy: 181.424,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle55 || (_circle55 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 144.769,
+    cy: 181.424,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle56 || (_circle56 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 179.258,
+    cy: 181.424,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle57 || (_circle57 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 213.747,
+    cy: 181.424,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle58 || (_circle58 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 248.236,
+    cy: 181.424,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle59 || (_circle59 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 282.725,
+    cy: 181.424,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle60 || (_circle60 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 317.214,
+    cy: 181.424,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle61 || (_circle61 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 6.813,
+    cy: 216.346,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle62 || (_circle62 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 41.302,
+    cy: 216.346,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle63 || (_circle63 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 75.791,
+    cy: 216.346,
+    r: 6.813,
+    fill: "#6c63ff"
+  })), _circle64 || (_circle64 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 110.28,
+    cy: 216.346,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle65 || (_circle65 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 144.769,
+    cy: 216.346,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle66 || (_circle66 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 179.258,
+    cy: 216.346,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle67 || (_circle67 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 213.747,
+    cy: 216.346,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle68 || (_circle68 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 248.236,
+    cy: 216.346,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle69 || (_circle69 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 282.725,
+    cy: 216.346,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle70 || (_circle70 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 317.214,
+    cy: 216.346,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle71 || (_circle71 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 6.813,
+    cy: 251.268,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle72 || (_circle72 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 41.302,
+    cy: 251.268,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle73 || (_circle73 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 75.791,
+    cy: 251.268,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle74 || (_circle74 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 110.28,
+    cy: 251.268,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle75 || (_circle75 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 144.769,
+    cy: 251.268,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle76 || (_circle76 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 179.258,
+    cy: 251.268,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle77 || (_circle77 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 213.747,
+    cy: 251.268,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle78 || (_circle78 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 248.236,
+    cy: 251.268,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle79 || (_circle79 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 282.725,
+    cy: 251.268,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle80 || (_circle80 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 317.214,
+    cy: 251.268,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle81 || (_circle81 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 6.813,
+    cy: 286.19,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle82 || (_circle82 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 41.302,
+    cy: 286.19,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle83 || (_circle83 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 75.791,
+    cy: 286.19,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle84 || (_circle84 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 110.28,
+    cy: 286.19,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle85 || (_circle85 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 144.769,
+    cy: 286.19,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle86 || (_circle86 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 179.258,
+    cy: 286.19,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle87 || (_circle87 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 213.747,
+    cy: 286.19,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle88 || (_circle88 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 248.236,
+    cy: 286.19,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle89 || (_circle89 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 282.725,
+    cy: 286.19,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle90 || (_circle90 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 317.214,
+    cy: 286.19,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle91 || (_circle91 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 6.813,
+    cy: 321.112,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle92 || (_circle92 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 41.302,
+    cy: 321.112,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle93 || (_circle93 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 75.791,
+    cy: 321.112,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle94 || (_circle94 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 110.28,
+    cy: 321.112,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle95 || (_circle95 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 144.769,
+    cy: 321.112,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle96 || (_circle96 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 179.258,
+    cy: 321.112,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle97 || (_circle97 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 213.747,
+    cy: 321.112,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle98 || (_circle98 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 248.236,
+    cy: 321.112,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle99 || (_circle99 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 282.725,
+    cy: 321.112,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _circle100 || (_circle100 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 317.214,
+    cy: 321.112,
+    r: 6.813,
+    fill: "#e6e6e6"
+  })), _path2 || (_path2 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "M400.404 60.892a8.614 8.614 0 0 1 8.614 8.614v344.56a8.614 8.614 0 0 1-8.614 8.613H153.183a8.614 8.614 0 0 1-8.614-8.614V69.505a8.614 8.614 0 0 1 8.614-8.613z"
+  })), _path3 || (_path3 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "M154.186 413.062H399.4V70.51H154.186Z"
+  })), _path4 || (_path4 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "M344.844 124.704a1.723 1.723 0 0 1 1.723 1.723v3.446a1.723 1.723 0 0 1-1.723 1.722H208.743a1.723 1.723 0 0 1-1.723-1.722v-3.446a1.723 1.723 0 0 1 1.723-1.723zM344.844 141.07a1.723 1.723 0 0 1 1.723 1.723v3.446a1.723 1.723 0 0 1-1.723 1.723H208.743a1.723 1.723 0 0 1-1.723-1.723v-3.446a1.723 1.723 0 0 1 1.723-1.722z"
+  })), _path5 || (_path5 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#6c63ff",
+    d: "M344.844 157.437a1.723 1.723 0 0 1 1.723 1.723v3.446a1.723 1.723 0 0 1-1.723 1.722H208.743a1.723 1.723 0 0 1-1.723-1.722v-3.446a1.723 1.723 0 0 1 1.723-1.723z"
+  })), _path6 || (_path6 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "M344.844 174.162a1.723 1.723 0 0 1 1.723 1.723v3.445a1.723 1.723 0 0 1-1.723 1.723H208.743a1.723 1.723 0 0 1-1.723-1.723v-3.445a1.723 1.723 0 0 1 1.723-1.723zM344.844 190.529a1.723 1.723 0 0 1 1.723 1.722v3.446a1.723 1.723 0 0 1-1.723 1.723H208.743a1.723 1.723 0 0 1-1.723-1.723v-3.446a1.723 1.723 0 0 1 1.723-1.722zM344.844 206.895a1.723 1.723 0 0 1 1.723 1.723v3.446a1.723 1.723 0 0 1-1.723 1.722H208.743a1.723 1.723 0 0 1-1.723-1.722v-3.446a1.723 1.723 0 0 1 1.723-1.723z"
+  })), _path7 || (_path7 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#6c63ff",
+    d: "M209.612 261.951a2 2 0 0 0-2 2v92.916a2 2 0 0 0 2 2h134.131a2 2 0 0 0 2-2V263.95a2 2 0 0 0-2-2Z"
+  })), _path8 || (_path8 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#3f3d56",
+    d: "m277.241 161.182-1.408-.374L306.56 45.221h178.225v1.457H307.679z"
+  })), _path9 || (_path9 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#3f3d56",
+    d: "M499.348 61.24a15.29 15.29 0 1 1 15.29-15.29 15.31 15.31 0 0 1-15.29 15.29m0-29.125a13.835 13.835 0 1 0 13.834 13.835 13.85 13.85 0 0 0-13.834-13.835"
+  })), _circle101 || (_circle101 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 499.348,
+    cy: 45.95,
+    r: 5.825,
+    fill: "#6c63ff"
+  })), _path10 || (_path10 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#3f3d56",
+    d: "m272.477 356.941 1.407.376-30.947 115.528-178.225-.341.003-1.457 177.105.34z"
+  })), _path11 || (_path11 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#3f3d56",
+    d: "M50.18 456.457a15.29 15.29 0 1 1-15.32 15.261 15.31 15.31 0 0 1 15.32-15.261m-.056 29.125a13.835 13.835 0 1 0-13.808-13.86 13.85 13.85 0 0 0 13.808 13.86"
+  })), _circle102 || (_circle102 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 50.15,
+    cy: 471.748,
+    r: 5.825,
+    fill: "#6c63ff"
+  })), _path12 || (_path12 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ffb8b8",
+    d: "M616.828 600.594h-10.277l1.835-56.892 27.162 1.468z"
+  })), _path13 || (_path13 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "M618.23 633.29c-3.101 1.416-5.7-10.055-8.316-7.483-7.32 7.193-14.882 8.759-24.651 5.618l-.227-.038a4.575 4.575 0 0 1-2.883-5.962 4.58 4.58 0 0 1 3.174-2.832l7.784-1.946 12.221-21.494 12.477-.843a29.8 29.8 0 0 1 5.513 25.43c-1.132 4.62-2.88 8.54-5.091 9.55"
+  })), _path14 || (_path14 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ffb8b8",
+    d: "m714.467 593.074-9.557 3.78-19.219-53.579 25.798-8.625z"
+  })), _path15 || (_path15 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "M727.796 622.962c-2.364 2.458-8.999-7.253-10.486-3.9-4.16 9.381-10.617 13.619-20.857 14.292l-.224.048a4.575 4.575 0 0 1-4.875-4.484 4.58 4.58 0 0 1 1.91-3.801l6.523-4.673 3.46-24.482 11.292-5.372a29.8 29.8 0 0 1 14.48 21.618c.646 4.714.463 9.002-1.223 10.754"
+  })), _path16 || (_path16 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ffb8b8",
+    d: "m683.266 318.36-15.778 4.058a8.258 8.258 0 0 1-10.308-7.68 8.26 8.26 0 0 1 8.518-8.57l13.898.447 26.781-9.751-25.313-18.878L684 251.559l49.332 39.604a8.2 8.2 0 0 1 3.043 5.806 8.195 8.195 0 0 1-6.008 8.488c-11.56 9.433-28.399 12.322-47.1 12.904"
+  })), _circle103 || (_circle103 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 647.296,
+    cy: 193.566,
+    r: 25.693,
+    fill: "#ffb8b8"
+  })), _path17 || (_path17 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ffb8b8",
+    d: "M678.862 228.802 644.36 242.75a46.63 46.63 0 0 0-8.075-30.832l28.63-6.607c-.373 8.744 4.355 16.56 13.947 23.491"
+  })), _path18 || (_path18 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#6c63ff",
+    d: "M685.102 288.63c-27.813 2.226-43.026-1.467-66.435-15.048l8.809-20.555a17 17 0 0 1 7.003-16.278l9.147-6.479 27.895-8.075 1.251.063a15.27 15.27 0 0 1 14.462 14.08c6.06 18.11 6.1 35.616-2.132 52.292"
+  })), _path19 || (_path19 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "m679.596 331.574-59.461-6.606-4.405-19.087c-9.763-14.737-5.501-28.237 5.873-41.109 20.733 13.306 39.978 19.056 67.536 14.682-7.329 17.824-14.097 35.34-9.543 52.12"
+  })), _path20 || (_path20 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "m725.843 554.003-47.348-2.57-15.416-122.592-12.48 121.859-56.157-2.57c17.13-80.11 29.03-156.162 25.693-226.099l58.727 5.139c19.903 20.986 29.786 54.485 35.603 94.33s10.506 86.036 11.378 132.503"
+  })), _circle104 || (_circle104 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 675.58,
+    cy: 161.345,
+    r: 8.831,
+    fill: "#2f2e41"
+  })), _path21 || (_path21 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "M666.48 159.183a8.824 8.824 0 0 1 8.827-8.254c-.182-.023-.363-.052-.549-.063a8.831 8.831 0 0 0-1.133 17.626c.186.012.369.007.553.007a8.824 8.824 0 0 1-7.698-9.316"
+  })), _path22 || (_path22 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "M666.43 162.954c-7.876-6.534-30.467 1.77-31.924 6.163-10.651 1.452-18.715 7.666-18.715 18.715 6.332 2.594 13.534 2.274 21.319 0 12.41 10.113 13.26 22.827 5.713 37.43l9.285.185 11.51-16.821.55 17.062 21.283-.427V200.81a51.1 51.1 0 0 0-5.458-23.42c-3.317-6.444-8.464-10.206-13.563-14.436"
+  })), _ellipse || (_ellipse = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ellipse", {
+    cx: 646.611,
+    cy: 200.241,
+    fill: "#ffb8b8",
+    rx: 4.223,
+    ry: 5.912
+  })), _path23 || (_path23 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#6c63ff",
+    d: "M614.308 426.99a1.483 1.483 0 0 1 1.483 1.483v59.319a1.483 1.483 0 0 1-1.483 1.483h-42.561a1.483 1.483 0 0 1-1.483-1.483v-59.32a1.483 1.483 0 0 1 1.483-1.482z"
+  })), _path24 || (_path24 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ffb8b8",
+    d: "m620.135 404.983 1.437 24.914a10.82 10.82 0 0 1-12.375 11.326c-6.33-.93-6.473-7.12-4.922-13.327l5.912-23.647c14.503-51.998 18.418-103.036 17.684-152.812a12.5 12.5 0 0 1 12.834-12.714 12.49 12.49 0 0 1 12.121 12.927c-2.053 58.45-10.578 111.53-32.691 153.333"
+  })));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SvgUndrawFileAnalysis);
+
+/***/ }),
+
+/***/ 1863:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6540);
+var _path, _circle, _circle2, _path2, _circle3, _circle4, _path3, _path4, _path5, _path6, _path7, _circle5, _ellipse, _ellipse2, _circle6, _path8, _path9, _path10, _circle7, _circle8, _circle9, _path11, _path12, _circle10, _circle11, _circle12, _path13, _path14, _circle13, _circle14, _circle15, _path15, _path16, _path17, _path18;
+function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
+
+const SvgUndrawSecureServer = _ref => {
+  let {
+    title,
+    titleId,
+    ...props
+  } = _ref;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", _extends({
+    xmlns: "http://www.w3.org/2000/svg",
+    width: 826,
+    height: 541,
+    viewBox: "0 0 826 541",
+    "aria-labelledby": titleId
+  }, props), title ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("title", {
+    id: titleId
+  }, title) : null, _path || (_path = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#f1f1f1",
+    d: "m803.637 539.805 1.225-.024a284 284 0 0 0-4.348-40.598c-5.297-28.713-14.105-47.57-26.178-56.047l-.704 1.002c28.205 19.803 29.991 94.91 30.005 95.667M788.326 539.512l1.225-.024c-.027-1.356-.792-33.326-13.378-42.163l-.703 1.003c12.078 8.48 12.85 40.858 12.856 41.184"
+  })), _circle || (_circle = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 766.664,
+    cy: 438.125,
+    r: 6.125,
+    fill: "#f1f1f1"
+  })), _circle2 || (_circle2 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 769.697,
+    cy: 490.796,
+    r: 6.125,
+    fill: "#f1f1f1"
+  })), _path2 || (_path2 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#f1f1f1",
+    d: "M791.18 447.92a27.2 27.2 0 0 0 1.85 13.928 24.79 24.79 0 0 0 4.168-26.624 27.2 27.2 0 0 0-6.017 12.697M771.161 465.776a27.2 27.2 0 0 0 14.037.606 24.79 24.79 0 0 0-25.49-8.743 27.2 27.2 0 0 0 11.453 8.137M770.935 512.422a19.07 19.07 0 0 0 9.839.425 17.38 17.38 0 0 0-17.867-6.129 19.07 19.07 0 0 0 8.028 5.704M282.026 539.805l-1.778-.035a412 412 0 0 1 6.311-58.927c7.688-41.675 20.473-69.046 37.997-81.35l1.021 1.455c-40.938 28.743-43.53 137.759-43.551 138.857M304.25 539.38l-1.778-.035c.038-1.969 1.15-48.372 19.418-61.198l1.02 1.455c-17.53 12.308-18.651 59.305-18.66 59.778"
+  })), _circle3 || (_circle3 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 335.692,
+    cy: 392.219,
+    r: 8.89,
+    fill: "#f1f1f1"
+  })), _circle4 || (_circle4 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 331.29,
+    cy: 468.67,
+    r: 8.89,
+    fill: "#f1f1f1"
+  })), _path3 || (_path3 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#f1f1f1",
+    d: "M300.106 406.438a39.5 39.5 0 0 1-2.683 20.216 35.99 35.99 0 0 1-6.05-38.644 39.5 39.5 0 0 1 8.733 18.428M329.164 432.355a39.5 39.5 0 0 1-20.374.88 35.99 35.99 0 0 1 36.999-12.691 39.5 39.5 0 0 1-16.625 11.81M329.492 500.06a27.7 27.7 0 0 1-14.28.616 25.22 25.22 0 0 1 25.933-8.895 27.7 27.7 0 0 1-11.653 8.278"
+  })), _path4 || (_path4 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ffb7b7",
+    d: "m144.679 161.234-4.278-26.168-12.077-3.02s-9.586-2.952-11.826 16.355-.504 55.357-.504 55.357l-26.516 83.97a11.729 11.729 0 1 0 16.194 6.985l34.478-78.878ZM218.122 140.641l-6.34-25.746 9.922-7.52s7.656-6.478 17.297 10.4c9.642 16.877 22.198 50.712 22.198 50.712l57.358 66.816a11.729 11.729 0 1 1-12.151 12.782l-62.68-59.006ZM267.689 526.093l14.383-.001 6.843-55.478-21.229.001z"
+  })), _path5 || (_path5 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "m264.02 521.397 28.326-.001a18.05 18.05 0 0 1 18.052 18.05v.587l-46.377.002Z"
+  })), _path6 || (_path6 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ffb7b7",
+    d: "m87.016 526.093 14.383-.001 6.843-55.478-21.229.001z"
+  })), _path7 || (_path7 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "m83.347 521.397 28.326-.001a18.05 18.05 0 0 1 18.052 18.05v.587l-46.377.002Z"
+  })), _circle5 || (_circle5 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 175.23,
+    cy: 52.431,
+    r: 38.902,
+    fill: "#2f2e41"
+  })), _ellipse || (_ellipse = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ellipse", {
+    cx: 323.328,
+    cy: 202.419,
+    fill: "#2f2e41",
+    rx: 16.097,
+    ry: 12.073,
+    transform: "rotate(-45 13.153 338.398)"
+  })), _ellipse2 || (_ellipse2 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ellipse", {
+    cx: 387.973,
+    cy: 192.279,
+    fill: "#2f2e41",
+    rx: 12.073,
+    ry: 16.097,
+    transform: "rotate(-66.87 158.54 244.142)"
+  })), _circle6 || (_circle6 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 363.464,
+    cy: 241.218,
+    r: 33.016,
+    fill: "#ffb7b7",
+    transform: "rotate(-61.337 118.618 309.138)"
+  })), _path8 || (_path8 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "M141.772 40.951a44.9 44.9 0 0 0 25.662 7.93 27.5 27.5 0 0 1-10.906 4.488 90.55 90.55 0 0 0 36.985.208 24 24 0 0 0 7.742-2.66 9.8 9.8 0 0 0 4.78-6.39c.81-4.636-2.801-8.848-6.555-11.686a48.35 48.35 0 0 0-40.629-8.119c-4.538 1.173-9.085 3.155-12.032 6.8s-3.822 9.264-1.013 13.017ZM159.918 104.651l-32.678 26.687 28.552 68.08.545 10.892s-29.64 27.328-47.98 103.668-55.38 177.778-55.38 177.778l74.102 18.128 51.52-172.69 65.677 135.48 9.343 40.072 57.28-15.901-22.107-107.537-54.22-166.922 4.453-46.114s9.922-23.018-7.315-47.387l-5.406-22.898-27.987-4.77Z"
+  })), _path9 || (_path9 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e5e5e5",
+    d: "M709.415 346.93H482.543a6.84 6.84 0 0 1-6.833-6.834V263.56a6.84 6.84 0 0 1 6.833-6.834h226.872a6.84 6.84 0 0 1 6.833 6.834v76.535a6.84 6.84 0 0 1-6.833 6.833"
+  })), _path10 || (_path10 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "M511.244 277.228h60.135v6.833h-60.135z"
+  })), _circle7 || (_circle7 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 650.647,
+    cy: 281.328,
+    r: 4.1,
+    fill: "#6c63ff"
+  })), _circle8 || (_circle8 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 664.314,
+    cy: 281.328,
+    r: 4.1,
+    fill: "#6c63ff"
+  })), _circle9 || (_circle9 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 677.981,
+    cy: 281.328,
+    r: 4.1,
+    fill: "#6c63ff"
+  })), _path11 || (_path11 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e5e5e5",
+    d: "M709.415 443.965H482.543a6.84 6.84 0 0 1-6.833-6.834v-76.535a6.84 6.84 0 0 1 6.833-6.833h226.872a6.84 6.84 0 0 1 6.833 6.833v76.535a6.84 6.84 0 0 1-6.833 6.834"
+  })), _path12 || (_path12 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "M511.244 374.263h60.135v6.833h-60.135z"
+  })), _circle10 || (_circle10 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 650.647,
+    cy: 378.363,
+    r: 4.1,
+    fill: "#6c63ff"
+  })), _circle11 || (_circle11 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 664.314,
+    cy: 378.363,
+    r: 4.1,
+    fill: "#6c63ff"
+  })), _circle12 || (_circle12 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 677.981,
+    cy: 378.363,
+    r: 4.1,
+    fill: "#6c63ff"
+  })), _path13 || (_path13 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e5e5e5",
+    d: "M709.415 541H482.543a6.84 6.84 0 0 1-6.833-6.833v-76.535a6.84 6.84 0 0 1 6.833-6.834h226.872a6.84 6.84 0 0 1 6.833 6.834v76.535a6.84 6.84 0 0 1-6.833 6.833"
+  })), _path14 || (_path14 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "M511.244 471.299h60.135v6.833h-60.135z"
+  })), _circle13 || (_circle13 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 650.647,
+    cy: 475.399,
+    r: 4.1,
+    fill: "#6c63ff"
+  })), _circle14 || (_circle14 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 664.314,
+    cy: 475.399,
+    r: 4.1,
+    fill: "#6c63ff"
+  })), _circle15 || (_circle15 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 677.981,
+    cy: 475.399,
+    r: 4.1,
+    fill: "#6c63ff"
+  })), _path15 || (_path15 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#3f3d56",
+    d: "M437.17 375.975a51.7 51.7 0 0 1-12.806-1.656l-.825-.229-.764-.383c-27.648-13.862-50.972-32.171-69.326-54.42a206 206 0 0 1-35.004-62.156 239.2 239.2 0 0 1-13.528-84.274c.011-.602.021-1.067.021-1.387 0-13.939 7.738-26.17 19.712-31.159 9.165-3.819 92.375-37.996 98.387-40.466 11.322-5.673 23.402-.938 25.335-.11 4.335 1.773 81.258 33.235 97.881 41.15 17.132 8.159 21.703 22.814 21.703 30.187 0 33.382-5.782 64.58-17.184 92.727a214.7 214.7 0 0 1-38.585 62.183c-31.498 35.447-63.004 48.013-63.309 48.124a34.4 34.4 0 0 1-11.708 1.87m-7.41-18.353c2.732.612 9.02 1.531 13.12.036 5.207-1.9 31.577-15.574 56.22-43.305 34.047-38.315 51.322-86.48 51.348-143.157-.061-1.149-.877-9.338-11.722-14.503-16.3-7.762-96.255-40.455-97.061-40.785l-.221-.094c-1.676-.702-7.008-2.18-10.684-.254l-.736.343c-.891.366-89.22 36.644-98.64 40.57-6.59 2.745-8.938 9.547-8.938 14.997 0 .399-.01.978-.025 1.727-.752 38.78 8.222 134.208 107.34 184.425"
+  })), _path16 || (_path16 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#6c63ff",
+    d: "M426.698 107.805s-89.131 36.608-98.68 40.587-14.326 13.528-14.326 23.078-7.162 134.162 113.006 194.412c0 0 10.907 3.017 19.181 0s113.323-53.95 113.323-194.81c0 0 0-14.324-16.713-22.283s-97.512-40.984-97.512-40.984-9.923-4.377-18.279 0"
+  })), _path17 || (_path17 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    d: "M436.248 136.454v195.289s89.927-43.288 89.131-157.09Z",
+    opacity: 0.2
+  })), _path18 || (_path18 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#cbcbcb",
+    d: "M825 541H1a1 1 0 0 1 0-2h824a1 1 0 0 1 0 2"
+  })));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SvgUndrawSecureServer);
+
+/***/ }),
+
+/***/ 8542:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6540);
+var _path, _path2, _path3, _path4, _path5, _path6, _path7, _path8, _path9, _path10, _path11, _path12, _path13, _path14, _circle, _path15, _path16, _path17;
+function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
+
+const SvgUndrawSecurityOn = _ref => {
+  let {
+    title,
+    titleId,
+    ...props
+  } = _ref;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", _extends({
+    xmlns: "http://www.w3.org/2000/svg",
+    width: 819.07,
+    height: 584,
+    viewBox: "0 0 819.07 584",
+    "aria-labelledby": titleId
+  }, props), title ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("title", {
+    id: titleId
+  }, title) : null, _path || (_path = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#f1f1f1",
+    d: "M747.902 525.36c7.183 12.697 1.092 55.585 1.092 55.585s-39.89-16.886-47.073-29.579a26.413 26.413 0 0 1 45.98-26.007"
+  })), _path2 || (_path2 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "m749.572 580.89-.847.178c-8.162-38.778-36.666-65.075-36.953-65.336l.583-.64c.289.262 28.996 26.738 37.217 65.798"
+  })), _path3 || (_path3 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#f1f1f1",
+    d: "M813.173 539.818c-9.748 17.683-64.706 41.638-64.706 41.638s-9.061-59.263.681-76.94a36.556 36.556 0 1 1 64.025 35.302"
+  })), _path4 || (_path4 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "m748.952 582.098-.826-.87c39.77-37.768 50.065-90.444 50.164-90.972l1.178.222c-.1.531-10.458 53.577-50.516 91.62"
+  })), _path5 || (_path5 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#3f3d56",
+    d: "M192.566 405.92a75.2 75.2 0 0 1-18.64-2.412l-1.2-.332-1.113-.558c-40.242-20.176-74.192-46.827-100.907-79.211a299.9 299.9 0 0 1-50.95-90.47A348.2 348.2 0 0 1 .067 110.272c.017-.876.031-1.552.031-2.018 0-20.29 11.262-38.092 28.692-45.354C42.128 57.342 163.244 7.595 171.995 4c16.48-8.257 34.062-1.365 36.875-.16 6.311 2.58 118.276 48.375 142.471 59.897 24.936 11.874 31.589 33.205 31.589 43.937 0 48.589-8.415 93.998-25.011 134.968a312.5 312.5 0 0 1-56.163 90.51c-45.846 51.595-91.705 69.885-92.148 70.046a50.1 50.1 0 0 1-17.042 2.721m-10.785-26.715c3.976.892 13.13 2.229 19.096.052 7.58-2.764 45.962-22.668 81.83-63.032 49.557-55.769 74.703-125.875 74.74-208.371-.09-1.672-1.276-13.592-17.062-21.109C316.659 75.447 200.28 27.86 199.108 27.381l-.321-.137c-2.439-1.022-10.2-3.174-15.55-.37l-1.072.499c-1.297.532-129.863 53.337-143.575 59.05-9.592 3.997-13.01 13.898-13.01 21.83 0 .58-.014 1.424-.035 2.514-1.096 56.447 11.966 195.346 156.236 268.438"
+  })), _path6 || (_path6 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#6c63ff",
+    d: "M177.324 15.586S47.589 68.87 33.689 74.662s-20.85 19.691-20.85 33.592S2.414 303.532 177.324 391.228c0 0 15.875 4.392 27.919 0S370.188 312.7 370.188 107.674c0 0 0-20.85-24.325-32.433S203.929 15.586 203.929 15.586s-14.443-6.37-26.605 0"
+  })), _path7 || (_path7 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    d: "M191.224 57.286v284.25S60.331 278.53 61.49 112.888Z",
+    opacity: 0.1
+  })), _path8 || (_path8 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "m192.931 261.581-41.696-53.612 24.248-18.859 19.743 25.384 66.695-70.406 22.303 21.131z"
+  })), _path9 || (_path9 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#cacaca",
+    d: "M818.07 584h-381a1 1 0 0 1 0-2h381a1 1 0 0 1 0 2"
+  })), _path10 || (_path10 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ffb8b8",
+    d: "m547.206 568.237 15.465-.001 7.358-59.653-22.826.001z"
+  })), _path11 || (_path11 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "m543.26 563.188 30.458-.002h.001a19.41 19.41 0 0 1 19.41 19.41v.63l-49.868.003Z"
+  })), _path12 || (_path12 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ffb8b8",
+    d: "m599.206 568.237 15.465-.001 7.358-59.653-22.826.001z"
+  })), _path13 || (_path13 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "m595.26 563.188 30.458-.002h.001a19.41 19.41 0 0 1 19.41 19.41v.63l-49.868.003ZM571.514 358.75l3.71 189.25-30.011-1.861-20.82-120.542-6.576-82.189z"
+  })), _path14 || (_path14 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "M623.018 326.97 627.224 551l-35-1-7.56-133.17-13.15-48.217-53.696-25.204 8.766-60.272 78.9-1.096Z"
+  })), _circle || (_circle = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 562.676,
+    cy: 99.594,
+    r: 26.838,
+    fill: "#ffb8b8"
+  })), _path15 || (_path15 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ccc",
+    d: "m584.936 137.738 4.111 6.228 10.959 30.683-8.767 119.446-51.505 1.097-6.574-136.981 13.773-17.216z"
+  })), _path16 || (_path16 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "m512.338 161.499-8.766-1.096s-2.192 1.096-3.288 8.767-14.246 75.613-14.246 75.613l17.534 83.284 19.725-26.3-12.054-46.026 12.054-46.025ZM624.114 160.404h6.575l16.438 88.762-15.342 69.038L616.443 293l4.383-27.396-2.191-24.108-7.671-14.247zM578.535 99.594l-4.88-1.22s-3.66-20.739-12.2-18.299-30.497 4.88-30.497-4.88 20.738-18.298 32.938-17.078 27.779 5.267 31.718 23.178c6.313 28.713-13.027 35.966-13.027 35.966l.322-1.046a16.28 16.28 0 0 0-4.374-16.621"
+  })), _path17 || (_path17 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "m504.668 160.403 35.067-14.246 8.218-6.027 24.657 109.036 11.506-112.323 45.477 23.56-15.341 74.517-2.192 28.492 6.575 23.013s23.013 16.437 15.342 33.97-16.438 18.63-16.438 18.63-37.258-35.067-39.45-43.834-5.48-24.108-5.48-24.108-18.629 70.134-40.545 69.038-21.917-24.109-21.917-24.109l5.48-24.108 8.766-25.204-4.384-41.642Z"
+  })));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SvgUndrawSecurityOn);
+
+/***/ }),
+
+/***/ 8945:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6540);
+var _path, _path2, _path3, _path4, _path5, _path6, _path7, _path8, _path9, _path10, _path11, _path12, _path13, _path14, _path15, _path16, _path17, _path18, _path19, _path20, _path21, _path22, _path23, _circle, _path24, _path25, _path26, _path27, _path28, _path29, _path30, _rect, _rect2, _rect3, _rect4, _rect5, _rect6, _rect7, _rect8, _rect9, _rect10, _rect11, _rect12, _rect13, _rect14, _rect15, _rect16, _rect17, _rect18, _rect19, _rect20, _rect21, _rect22, _rect23, _rect24, _rect25, _rect26, _rect27, _rect28, _rect29, _rect30, _rect31, _rect32, _rect33, _path31, _ellipse, _ellipse2, _ellipse3, _path32, _rect34, _rect35, _rect36, _path33, _path34, _path35, _path36, _path37, _path38, _path39, _path40, _path41, _path42, _path43, _path44, _path45, _path46, _path47, _path48, _path49, _path50, _circle2, _path51, _path52, _path53, _path54, _circle3, _path55, _path56, _path57, _path58, _path59, _path60;
+function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
+
+const SvgUndrawTeamCollaboration = _ref => {
+  let {
+    title,
+    titleId,
+    ...props
+  } = _ref;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", _extends({
+    xmlns: "http://www.w3.org/2000/svg",
+    width: 936.131,
+    height: 505.296,
+    viewBox: "0 0 936.131 505.296",
+    "aria-labelledby": titleId
+  }, props), title ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("title", {
+    id: titleId
+  }, title) : null, _path || (_path = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e4e4e4",
+    d: "m59.295 422.007-2.92 14.65c-.22 1.12-.45 2.26-.7 3.39a14.3 14.3 0 0 0-7.34.41 68.5 68.5 0 0 1 5.04 8.43c-1.84 5.67-4.54 10.91-9.06 14.7a22.72 22.72 0 0 1-21.95 3.86l.13-.58c-4.86-9.43-2.22-21.32 3.82-30.03a58.4 58.4 0 0 1 10.85-11.47c4.08-3.4 8.49-6.45 12.86-9.46a5.99 5.99 0 0 1 9.27 6.1"
+  })), _path2 || (_path2 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#f2f2f2",
+    d: "M23.405 502.697c-1.229-8.953-2.493-18.02-1.631-27.069.766-8.036 3.217-15.885 8.209-22.32a37.1 37.1 0 0 1 9.527-8.634c.953-.6 1.829.91.881 1.507a35.3 35.3 0 0 0-13.963 16.847c-3.04 7.732-3.528 16.161-3 24.374.317 4.967.988 9.9 1.665 14.83a.9.9 0 0 1-.61 1.074.88.88 0 0 1-1.074-.61Z",
+    "data-name": "a4b268fa-75d0-4ac1-9d87-14bdca948464-2189"
+  })), _path3 || (_path3 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "M33.952 53.634q64.256-1.117 128.526-.321 64.26.8 128.478 3.524 36.035 1.528 72.04 3.662c1.93.114 1.922-2.887 0-3q-64.153-3.797-128.4-5.682-64.238-1.88-128.513-1.837-36.067.024-72.13.654c-1.929.033-1.935 3.034 0 3M332.488 34.823l18.731-1.394c1.914-.142 1.93-3.144 0-3l-18.731 1.394c-1.914.143-1.93 3.144 0 3M332.488 52.823l18.731-1.394c1.914-.142 1.93-3.144 0-3l-18.731 1.394c-1.914.143-1.93 3.144 0 3M331.079 44.603l26.632 2.42c1.922.174 1.91-2.827 0-3l-26.632-2.42c-1.922-.175-1.91 2.826 0 3M45.038 30.789a6.64 6.64 0 0 0-6.133 4.005 5.974 5.974 0 0 0 1.374 7.096 7.1 7.1 0 0 0 6.73 1.367 6 6 0 0 0 4.022-5.643 6.71 6.71 0 0 0-4.178-6.469 1.506 1.506 0 0 0-1.845 1.048 1.543 1.543 0 0 0 1.047 1.845c.262.101-.238-.128.006.005.1.054.202.104.3.162q.126.076.246.157c.28.183-.136-.134.043.03.155.143.309.282.45.439.053.06.262.225.1.11-.125-.09-.048-.068 0 .003l.11.16a5 5 0 0 1 .319.55q.032.067.064.133c.042.082.103.103.004 0-.094-.097-.034-.09 0 .004l.068.185a6 6 0 0 1 .177.617q.032.146.058.29c.067.345-.01-.213.007.043.013.213.029.425.025.64q-.002.146-.013.293-.005.074-.012.147c-.015.235-.016-.086.017-.108a2.8 2.8 0 0 0-.135.617c-.027.093-.06.184-.089.276-.104.322.098-.175-.013.045a6 6 0 0 1-.307.55c-.049.074-.233.241-.082.125.163-.127-.086.091-.14.147q-.102.108-.212.209a2 2 0 0 1-.149.13c-.01-.006.251-.174.11-.085-.177.114-.346.235-.534.334-.022.012-.262.123-.261.127-.01-.04.309-.112.09-.042q-.069.024-.137.049a5 5 0 0 1-.61.162c-.047.01-.097.014-.143.026-.155.04.148-.023.157-.018a1.3 1.3 0 0 0-.341.03 6 6 0 0 1-.64 0q-.074-.006-.147-.01c-.114-.007-.198-.09-.046 0 .117.069.107.018.003 0q-.072-.014-.146-.026a6 6 0 0 1-.624-.153q-.164-.053-.327-.111a1 1 0 0 1-.138-.053c0-.012.28.134.132.054-.187-.1-.38-.185-.564-.296q-.145-.09-.286-.186a1 1 0 0 1-.119-.085c.003-.012.233.2.112.085-.152-.145-.315-.275-.46-.43q-.047-.053-.096-.107l-.032-.036q-.122-.15-.005.001c.08.023.076.11 0-.003q-.04-.06-.082-.12a3 3 0 0 1-.31-.553c.008-.006.13.36.037.084q-.028-.078-.055-.156-.052-.156-.091-.315c-.026-.106-.04-.214-.066-.319-.044-.177.026.14.018.132-.025-.025-.014-.178-.016-.215-.012-.235.015-.464.019-.698.003-.181-.015.141-.019.132a.5.5 0 0 1 .028-.16c.028-.123.053-.246.086-.368q.057-.21.132-.414.029-.076.058-.153c.063-.188-.125.228-.021.058.142-.234.249-.487.4-.717.036-.055.254-.36.138-.206-.115.153.12-.137.163-.187.184-.204.4-.373.591-.569.113-.116-.078.057-.09.065l.177-.127q.156-.107.32-.203c.123-.072.262-.126.381-.202.141-.09-.107.04-.112.042a1 1 0 0 1 .201-.077c.116-.04.621-.259.727-.19-.005-.004-.383.03-.077.01q.108-.009.217-.015.219-.008.439.006a1.51 1.51 0 0 0 1.5-1.5 1.533 1.533 0 0 0-1.5-1.5M66.038 30.789a6.64 6.64 0 0 0-6.133 4.005 5.974 5.974 0 0 0 1.374 7.096 7.1 7.1 0 0 0 6.73 1.367 6 6 0 0 0 4.022-5.643 6.71 6.71 0 0 0-4.178-6.469 1.506 1.506 0 0 0-1.845 1.048 1.543 1.543 0 0 0 1.047 1.845c.262.101-.238-.128.006.005.1.054.202.104.3.162q.126.076.246.157c.28.183-.136-.134.043.03.155.143.309.282.45.439.053.06.262.225.1.11-.125-.09-.048-.068 0 .003l.11.16a5 5 0 0 1 .319.55q.032.067.064.133c.042.082.103.103.004 0-.094-.097-.034-.09 0 .004l.068.185a6 6 0 0 1 .177.617q.032.146.058.29c.067.345-.01-.213.007.043.013.213.029.425.025.64q-.002.146-.013.293-.005.074-.012.147c-.015.235-.016-.086.017-.108a2.8 2.8 0 0 0-.135.617c-.027.093-.06.184-.089.276-.104.322.098-.175-.013.045a6 6 0 0 1-.307.55c-.049.074-.233.241-.082.125.163-.127-.086.091-.14.147q-.102.108-.212.209a2 2 0 0 1-.149.13c-.01-.006.251-.174.11-.085-.177.114-.346.235-.534.334-.022.012-.262.123-.261.127-.01-.04.309-.112.09-.042q-.069.024-.137.049a5 5 0 0 1-.61.162c-.047.01-.097.014-.143.026-.155.04.148-.023.157-.018a1.3 1.3 0 0 0-.341.03 6 6 0 0 1-.64 0q-.074-.006-.147-.01c-.114-.007-.198-.09-.046 0 .117.069.107.018.004 0q-.074-.014-.147-.026a6 6 0 0 1-.624-.153q-.164-.053-.327-.111a1 1 0 0 1-.138-.053c0-.012.28.134.132.054-.187-.1-.38-.185-.564-.296q-.145-.09-.286-.186a1 1 0 0 1-.119-.085c.003-.012.233.2.112.085-.152-.145-.315-.275-.46-.43q-.047-.053-.096-.107l-.032-.036q-.122-.15-.005.001c.08.023.076.11 0-.003q-.04-.06-.082-.12a3 3 0 0 1-.31-.553c.008-.006.13.36.037.084q-.028-.078-.055-.156-.052-.156-.091-.315c-.026-.106-.04-.214-.066-.319-.044-.177.026.14.018.132-.025-.025-.014-.178-.016-.215-.012-.235.015-.464.019-.698.003-.181-.015.141-.019.132a.5.5 0 0 1 .028-.16c.028-.123.053-.246.086-.368q.057-.21.132-.414c.018-.051.04-.101.058-.153.063-.188-.125.228-.021.058.142-.234.249-.487.4-.717.036-.055.254-.36.138-.206-.115.153.12-.137.163-.187.184-.204.4-.373.591-.569.113-.116-.078.057-.09.065l.177-.127q.156-.107.32-.203c.123-.072.262-.126.381-.202.141-.09-.107.04-.112.042a1 1 0 0 1 .201-.077c.116-.04.621-.259.727-.19-.005-.004-.383.03-.077.01q.108-.009.217-.015.219-.008.439.006a1.51 1.51 0 0 0 1.5-1.5 1.533 1.533 0 0 0-1.5-1.5M87.038 30.789a6.64 6.64 0 0 0-6.133 4.005 5.974 5.974 0 0 0 1.374 7.096 7.1 7.1 0 0 0 6.73 1.367 6 6 0 0 0 4.022-5.643 6.71 6.71 0 0 0-4.178-6.469 1.506 1.506 0 0 0-1.845 1.048 1.543 1.543 0 0 0 1.047 1.845c.262.101-.238-.128.006.005.1.054.202.104.3.162q.126.076.246.157c.28.183-.136-.134.043.03.155.143.309.282.45.439.053.06.262.225.1.11-.125-.09-.048-.068 0 .003l.11.16a5 5 0 0 1 .319.55q.032.067.064.133c.042.082.103.103.004 0-.094-.097-.034-.09 0 .004l.068.185a6 6 0 0 1 .177.617q.032.146.058.29c.067.345-.01-.213.007.043.013.213.029.425.025.64q-.002.146-.013.293-.005.074-.012.147c-.015.235-.016-.086.017-.108a2.8 2.8 0 0 0-.135.617c-.027.093-.06.184-.089.276-.104.322.098-.175-.013.045a6 6 0 0 1-.307.55c-.049.074-.233.241-.082.125.163-.127-.086.091-.14.147q-.102.108-.212.209a2 2 0 0 1-.149.13c-.01-.006.251-.174.11-.085-.177.114-.346.235-.534.334-.022.012-.262.123-.261.127-.01-.04.309-.112.09-.042q-.069.024-.137.049a5 5 0 0 1-.61.162c-.047.01-.097.014-.143.026-.155.04.148-.023.157-.018a1.3 1.3 0 0 0-.341.03 6 6 0 0 1-.64 0q-.074-.006-.147-.01c-.114-.007-.198-.09-.046 0 .117.069.107.018.004 0q-.074-.014-.147-.026a6 6 0 0 1-.624-.153q-.164-.053-.327-.111a1 1 0 0 1-.138-.053c0-.012.28.134.132.054-.187-.1-.38-.185-.564-.296q-.144-.09-.286-.186a1 1 0 0 1-.119-.085c.003-.012.233.2.112.085-.152-.145-.315-.275-.46-.43q-.047-.053-.096-.107l-.032-.036q-.122-.15-.005.001c.08.023.076.11 0-.003q-.04-.06-.082-.12a3 3 0 0 1-.31-.553c.008-.006.13.36.037.084q-.028-.078-.055-.156-.052-.156-.091-.315c-.026-.106-.04-.214-.066-.319-.044-.177.026.14.018.132-.025-.025-.014-.178-.016-.215-.012-.235.015-.464.019-.698.003-.181-.015.141-.019.132a.5.5 0 0 1 .028-.16c.028-.123.053-.246.086-.368q.057-.21.132-.414c.018-.051.04-.101.058-.153.063-.188-.125.228-.021.058.142-.234.249-.487.4-.717.036-.055.254-.36.139-.206-.116.153.118-.137.162-.187.184-.204.4-.373.591-.569.113-.116-.078.057-.09.065l.177-.127q.156-.107.32-.203c.123-.072.262-.126.381-.202.141-.09-.107.04-.112.042a1 1 0 0 1 .201-.077c.116-.04.621-.259.727-.19-.004-.004-.383.03-.077.01q.108-.009.217-.015.219-.008.439.006a1.51 1.51 0 0 0 1.5-1.5 1.533 1.533 0 0 0-1.5-1.5"
+  })), _path4 || (_path4 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "M390.411 363H22.506a17.567 17.567 0 0 1-17.547-17.547V17.547A17.567 17.567 0 0 1 22.506 0H390.41a17.567 17.567 0 0 1 17.548 17.547v327.906A17.567 17.567 0 0 1 390.41 363M22.506 2A15.565 15.565 0 0 0 6.959 17.547v327.906A15.565 15.565 0 0 0 22.506 361H390.41a15.565 15.565 0 0 0 15.548-15.547V17.547A15.565 15.565 0 0 0 390.41 2Z"
+  })), _path5 || (_path5 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "m21.896 223.106 129.38-.394 128.719-.391 72.61-.221a1.5 1.5 0 0 0 0-3l-129.379.394-128.719.391-72.61.22a1.5 1.5 0 0 0 0 3"
+  })), _path6 || (_path6 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "m87.166 220.674.8-47.237c.033-1.931-2.967-1.932-3 0l-.8 47.237c-.033 1.931 2.967 1.931 3 0M149.001 221.185l1.95-59.375.557-16.964c.063-1.93-2.937-1.928-3 0l-1.95 59.375-.557 16.964c-.063 1.93 2.937 1.929 3 0M210.67 116.701c-1.176 21.03-3.352 83.06-4.528 104.09-.108 1.93 2.893 1.923 3 0 1.176-21.03 3.352-83.06 4.528-104.09.108-1.929-2.893-1.923-3 0M272.041 199.69l-.367 20.212c-.035 1.931 2.965 1.932 3 0 .434-23.873 1.548-23.095 1.67-29.832.036-1.932-2.964-1.932-3 0 0 0-.868-14.254-1.303 9.62M332.153 146.589l.34 56.708.097 16.238a1.5 1.5 0 0 0 3 0l-.34-56.708-.097-16.238a1.5 1.5 0 0 0-3 0"
+  })), _path7 || (_path7 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "M22.138 221.418c-2.484-6.824 3.114-13.387 8.866-16.336 6.89-3.533 14.818-4.334 21.782-7.74 10.382-5.078 17.945-14.192 24.673-23.314 6.926-9.39 13.263-19.467 22.064-27.268a44.2 44.2 0 0 1 16.068-9.299c7.503-2.341 15.46-2.502 23.211-1.558 16.019 1.95 30.868 8.565 46.324 12.77 14.572 3.965 30.628 6.195 44.93.03 7.268-3.133 13.21-8.386 19.593-12.932a65.3 65.3 0 0 1 20.408-9.845c14.358-3.992 30.038-2.926 43.405 3.823a58.24 58.24 0 0 1 27.47 28.993c6.337 15.138 5.512 32.055 3.442 47.99-.535 4.118-1.172 8.223-1.815 12.326-.297 1.889 2.594 2.702 2.892.798 2.578-16.431 5.148-33.382 1.94-49.916a60.46 60.46 0 0 0-22.33-36.377 62.04 62.04 0 0 0-40.912-12.911 67.1 67.1 0 0 0-22.474 4.998c-7.42 3.069-13.702 7.617-20.083 12.404-6.562 4.92-13.325 8.991-21.472 10.596-7.901 1.557-16.12.973-23.988-.497-16.232-3.032-31.362-9.985-47.457-13.547-14.912-3.3-31.003-3.63-44.355 4.794-10.272 6.48-17.53 16.54-24.495 26.254-6.905 9.629-13.896 19.925-23.992 26.503-6.159 4.012-13.082 5.493-19.972 7.75-6.907 2.261-13.538 6.078-16.354 13.155a12.8 12.8 0 0 0-.262 9.154c.655 1.8 3.555 1.023 2.893-.798"
+  })), _path8 || (_path8 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "m86.171 166.905-.004.002.008-.002z"
+  })), _path9 || (_path9 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "M91.373 164.146a5.96 5.96 0 0 0-7.224-2.674 5.25 5.25 0 0 0-2.989 2.783c-.057.136-.09.28-.138.419-.065.105-.143.2-.2.31a5.958 5.958 0 0 0 9.29 7.118 6.416 6.416 0 0 0 1.26-7.956m-3.758 2.547c.013.076.008.145 0 0m-.382-.868q-.02-.024 0 0m-1.683.677c-.023-.035-.025-.04 0 0m.399.338c.095.032.057.025 0 0m.178.085.04-.018a.05.05 0 0 1-.028-.006l.032.004.006-.003-.018-.004c.015 0 .017.002.018.004.178-.082.058-.042-.046-.01l-.007-.002a.7.7 0 0 0-.205-.066q-.011-.005-.02-.01c-.058-.041-.348-.268-.079-.03q-.088-.077-.171-.159a1 1 0 0 1-.088-.108q-.053-.09-.103-.183l-.005-.034-.012-.055.008-.054a.7.7 0 0 0 .038-.167l.011-.015c.043-.06.081-.13.122-.193-.217.33.085-.036.108-.083.004-.008-.003-.003-.001-.009.008-.005.006-.001.016-.007.068-.04.132-.084.2-.122.081-.045.402-.137.07-.041.075-.022.148-.05.224-.07.014-.003.126-.019.186-.03l.11-.002q.038.001.075.004c-.055.008.19.06.262.072l.03.024c.062.045.137.084.202.126-.29-.187.003.015.059.07q.048.052.095.104a1 1 0 0 1 .077.106q.072.131.148.261l.014.022v.009a2.4 2.4 0 0 0 .114.407l.006.034q.008.114.011.229v.015a1.64 1.64 0 0 0-1.499-.01"
+  })), _path10 || (_path10 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "M86.18 166.903c.005.001 0 .001 0 .002ZM86.18 166.903ZM86.18 166.905h-.005zM86.177 166.902l.002.001zM150.171 138.905l-.004.002.008-.002z"
+  })), _path11 || (_path11 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "M155.373 136.146a5.96 5.96 0 0 0-7.224-2.674 5.25 5.25 0 0 0-2.989 2.783c-.057.136-.09.28-.138.419-.065.105-.143.2-.2.31a5.958 5.958 0 0 0 9.29 7.118 6.416 6.416 0 0 0 1.26-7.956m-3.758 2.547c.013.076.008.145 0 0m-.382-.868q-.02-.024 0 0m-1.683.677c-.023-.035-.025-.04 0 0m.399.338c.095.032.057.025 0 0m.178.085.04-.018a.05.05 0 0 1-.028-.006l.032.004.006-.003-.018-.004c.015 0 .017.002.018.004.178-.082.058-.042-.046-.01l-.007-.002a.7.7 0 0 0-.205-.066q-.011-.005-.02-.01c-.058-.041-.348-.268-.079-.03q-.088-.077-.171-.159a1 1 0 0 1-.088-.108q-.053-.09-.103-.183l-.005-.034-.012-.055.008-.054a.7.7 0 0 0 .038-.167l.011-.015c.043-.06.081-.13.122-.193-.217.33.085-.036.108-.083.004-.008-.003-.003-.001-.009.008-.005.006-.001.016-.007.068-.04.131-.084.2-.122.081-.045.402-.137.07-.041.075-.022.148-.05.224-.07.014-.003.126-.019.186-.03l.11-.002q.037.001.075.004c-.055.008.19.06.262.072l.03.024c.062.045.137.084.201.126-.29-.187.004.015.06.07q.048.052.095.104a1 1 0 0 1 .077.106q.072.131.148.261l.014.022v.009a2.4 2.4 0 0 0 .114.407l.006.034q.008.114.011.229v.015a1.64 1.64 0 0 0-1.499-.01M150.18 138.905h-.005zM150.177 138.902l.002.001z"
+  })), _path12 || (_path12 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "M150.18 138.903c.005.001 0 .001 0 .002ZM150.18 138.903ZM212.177 152.902l.002.001zM217.373 108.146a5.96 5.96 0 0 0-7.224-2.674 5.25 5.25 0 0 0-2.989 2.783c-.057.136-.09.28-.138.419-.065.105-.143.2-.2.31a5.958 5.958 0 0 0 9.29 7.118 6.416 6.416 0 0 0 1.26-7.956m-3.758 2.547c.013.076.008.145 0 0m-.382-.868q-.02-.024 0 0m-1.683.677c-.023-.035-.025-.04 0 0m.399.338c.095.032.057.025 0 0m.178.085.04-.018a.05.05 0 0 1-.028-.006l.032.004.006-.003-.018-.004c.015 0 .017.002.018.004.178-.082.058-.042-.046-.01l-.007-.002a.7.7 0 0 0-.205-.066q-.011-.005-.02-.01c-.058-.041-.348-.268-.079-.03q-.088-.076-.171-.159a1 1 0 0 1-.088-.108q-.053-.09-.103-.183l-.005-.034-.012-.055.008-.054a.7.7 0 0 0 .038-.167l.011-.015c.043-.06.081-.13.122-.193-.217.33.085-.036.108-.083.004-.008-.003-.003-.001-.009.008-.005.006-.001.016-.007.068-.04.131-.084.2-.122.081-.045.402-.137.07-.041.075-.022.148-.05.224-.07.014-.003.126-.019.186-.03l.11-.002q.037.001.075.004c-.055.008.19.06.262.072l.03.024c.062.045.137.084.201.126-.29-.187.004.015.06.07q.048.052.095.104a1 1 0 0 1 .077.106q.072.131.148.261l.014.022v.009a2.4 2.4 0 0 0 .114.407l.006.034q.008.114.011.229v.015a1.64 1.64 0 0 0-1.499-.01M212.171 152.905l-.004.002.008-.002zM212.18 152.903ZM212.18 152.905h-.005zM212.18 152.903c.005.001 0 .001 0 .002ZM280.373 185.146a5.96 5.96 0 0 0-7.224-2.674 5.25 5.25 0 0 0-2.989 2.783c-.057.136-.09.28-.138.419-.065.105-.143.2-.2.31a5.958 5.958 0 0 0 9.29 7.118 6.416 6.416 0 0 0 1.26-7.956m-3.758 2.547c.013.076.008.145 0 0m-.382-.868q-.02-.024 0 0m-1.683.677c-.023-.035-.025-.04 0 0m.399.338c.095.032.057.025 0 0m.178.085.04-.018a.05.05 0 0 1-.028-.006l.032.004.006-.003-.018-.004c.015 0 .017.002.018.004.178-.082.058-.042-.046-.01l-.007-.002a.7.7 0 0 0-.205-.066q-.012-.005-.02-.01c-.058-.041-.348-.268-.079-.03q-.088-.077-.171-.159a1 1 0 0 1-.088-.108q-.053-.09-.103-.183l-.005-.034-.012-.055.008-.054a.7.7 0 0 0 .038-.167l.011-.015c.043-.06.081-.13.122-.193-.217.33.085-.036.108-.083.004-.008-.003-.003-.001-.009.008-.005.006-.001.016-.007.068-.04.131-.084.2-.122.081-.045.402-.137.07-.041.075-.022.148-.05.224-.07.014-.003.126-.019.186-.03l.11-.002q.038.001.075.004c-.055.008.19.06.262.072l.03.024c.062.045.137.084.201.126-.29-.187.004.015.06.07q.048.052.095.104a1 1 0 0 1 .077.106q.072.131.148.261l.014.022v.009a2.4 2.4 0 0 0 .114.407l.006.034q.008.114.011.229v.015a1.64 1.64 0 0 0-1.499-.01M275.171 121.905l-.004.002.008-.002zM275.18 121.903ZM275.18 121.905h-.005zM275.18 121.903c.005.001 0 .001 0 .002ZM275.177 121.902l.002.001zM334.18 141.903ZM339.373 139.146a5.96 5.96 0 0 0-7.224-2.674 5.25 5.25 0 0 0-2.989 2.783c-.057.136-.09.28-.138.419-.065.105-.143.2-.2.31a5.958 5.958 0 0 0 9.29 7.118 6.416 6.416 0 0 0 1.26-7.956m-3.758 2.547c.013.076.008.145 0 0m-.382-.868q-.02-.024 0 0m-1.683.677c-.023-.035-.025-.04 0 0m.399.338c.095.032.057.025 0 0m.178.085.04-.018a.05.05 0 0 1-.028-.006l.032.004.006-.003-.018-.004c.015 0 .017.002.018.004.178-.082.058-.042-.046-.01l-.007-.002a.7.7 0 0 0-.205-.066q-.012-.005-.02-.01c-.058-.041-.348-.268-.079-.03q-.088-.077-.171-.159a1 1 0 0 1-.088-.108q-.053-.09-.103-.183l-.005-.034-.012-.055.008-.054a.7.7 0 0 0 .038-.167l.011-.015c.043-.06.081-.13.122-.193-.217.33.085-.036.108-.083.004-.008-.003-.003-.001-.009.008-.005.006-.001.016-.007.068-.04.131-.084.2-.122.081-.045.402-.137.07-.041.075-.022.148-.05.224-.07.014-.003.126-.019.186-.03l.11-.002q.038.001.075.004c-.055.008.19.06.262.072l.03.024c.062.045.137.084.201.126-.29-.187.004.015.06.07q.048.052.095.104a1 1 0 0 1 .077.106q.072.131.148.261l.014.022v.009a2.4 2.4 0 0 0 .114.407l.006.034q.008.114.011.229v.015a1.64 1.64 0 0 0-1.499-.01"
+  })), _path13 || (_path13 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "m334.171 141.905-.004.002.008-.002zM334.177 141.902l.002.001zM334.18 141.903c.005.001 0 .001 0 .002ZM334.18 141.905h-.005z"
+  })), _path14 || (_path14 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#3f3d56",
+    d: "m318.003 187.733-46.497 2.585a1.025 1.025 0 0 1-.221-2.036l47.524-7.733Z"
+  })), _path15 || (_path15 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ffb6b6",
+    d: "m377.094 291.25 17.522-29.479 12.95 6.117s-22.315 27.871-23.026 28.673a6.857 6.857 0 1 1-7.446-5.312"
+  })), _path16 || (_path16 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#6c63ff",
+    d: "m384.382 222.774 28.388 14.81a15.716 15.716 0 0 1 2.66 23.079l-19.57 22.45-8.525-11.553 6.57-13.74-12.723-3.355Z"
+  })), _path17 || (_path17 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ffb6b6",
+    d: "m303.486 188.215-3.198 34.143-14.322.024s8.217-34.746 8.516-35.775a6.857 6.857 0 1 1 9.004 1.608"
+  })), _path18 || (_path18 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#6c63ff",
+    d: "m331.995 258.037-32.965-6.046c-13.881-1.669-19.578-10.803-17.073-19.711l8.06-28.67 12.655 6.784-.05 15.23 17.714-2.422Z"
+  })), _path19 || (_path19 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ffb6b6",
+    d: "M318.501 493.992h-9.064l-4.312-34.962h13.378z"
+  })), _path20 || (_path20 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "m318.82 503.448-27.873-.001v-.352a10.85 10.85 0 0 1 10.85-10.85l5.091-3.862 9.5 3.863h2.433Z"
+  })), _path21 || (_path21 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ffb6b6",
+    d: "M382.636 493.992h9.064l4.312-34.962h-13.378z"
+  })), _path22 || (_path22 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "m382.317 503.448 27.873-.001v-.352a10.85 10.85 0 0 0-10.849-10.85l-5.092-3.862-9.5 3.863h-2.433ZM304.726 433.338c.134-1.995 1.199-13.028 1.199-13.028l2.549-23.397 4.493-62.022 4.006-16.302 19.825 7.723 16.087-7.712 19.121 6.112 14.889 5.584s.025 2.39.14 5.277c.153 3.78.42 8.413 1.058 9.618 1.065 2.129.797 13.557.797 13.557s1.058 23.25 2.39 25.8 1.6 7.859 1.198 8.923 1.332 28.987 1.332 28.987 4.45 49.413 1.658 56.864-13.34 2.57-13.34 2.57.51-1.988-2.55-2.925-12.378-71.002-12.378-71.002-1.733-14.367-3.327-18.484-3.059-15.685-3.059-15.685-9.84-19.147-9.968-23.404c0 0-1.288-3.984-2.505.401s-4.806 14.889-4.806 14.889l-3.499 12.9-4.117 19.274-2.664 16.227s-3.99 21.537-4.628 22.467 0 20.606 0 20.606-3.085 16.756-7.444 19.682-15.91.046-15.91.046-.68-41.551-.547-43.546"
+  })), _path23 || (_path23 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#6c63ff",
+    d: "m319.547 266.132-2.533 32.818-3.806 3.94a3.67 3.67 0 0 0 .192 5.285l-2.097 3.596-.742 11.33a6.158 6.158 0 0 0 5.699 7.59l65.632 3.084a6.158 6.158 0 0 0 6.393-6.963l-5.58-42.014v-3.141l-2.5-6.067 1.285-20.324 2.987-32.259-17.362-4.485-9.414-6.477-16.355.26-9.924 8.151-13.231 2.072-10.007 1.99-1.275 2.77 2.55-.554 9.24 36.04Z"
+  })), _circle || (_circle = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 349.158,
+    cy: 188.382,
+    r: 19.266,
+    fill: "#ffb6b6"
+  })), _path24 || (_path24 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "m344.513 206.405 13.92-.71c1.783-.091 3.73-.248 5.027-1.476a7.6 7.6 0 0 0 1.578-2.621c1.287-2.99 2.574-5.978 3.828-8.982 1.734-4.153 3.438-8.54 2.995-13.02a8.29 8.29 0 0 0-2.409-5.43 4.6 4.6 0 0 0-5.59-.567 9.45 9.45 0 0 0-4.692-6.812 14.5 14.5 0 0 0-8.262-1.752 19.94 19.94 0 0 0-11.356 4.476 25 25 0 0 1-2.897 2.296 4.55 4.55 0 0 1-3.536.654 2.56 2.56 0 0 1-1.879-2.79 4.923 4.923 0 0 0-1.259 6.5 4.54 4.54 0 0 1-4.44-.525 5.428 5.428 0 1 0 5.693 9.189c.845 1.183.53 2.791.42 4.24s.279 3.252 1.676 3.653c1.89.542 3.42-2.002 5.385-1.975a2.96 2.96 0 0 1 2.344 1.51 8.7 8.7 0 0 1 .939 2.74l2.515 11.323"
+  })), _path25 || (_path25 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "M887.257 379.637c0-2.984-1.002-5.405-2.232-5.41H549.68c-1.235.005-2.232 2.426-2.237 5.41v122.81a1.115 1.115 0 0 1-1.007 1.109q-1.35.13-2.7.241c-.022 0-.045.006-.067.006-.49.044-.98.078-1.47.117h-.005q-.378-.7-.747-1.41a1.1 1.1 0 0 1-.127-.517V372.618c0-.824.034-1.653.09-2.471a32 32 0 0 1 .417-3.35c.94-5.172 3.067-8.673 5.482-8.684h340.082a2.6 2.6 0 0 1 1.024.217 4 4 0 0 1 1.263.885 7.8 7.8 0 0 1 1.242 1.698 22.3 22.3 0 0 1 2.343 8.866c0 .034.005.067.005.1.078.902.117 1.82.112 2.74l.078 11.927.05 7.113.15 22.32.056 7.926.245 81.375a1.113 1.113 0 0 1-1.114 1.113h-4.475a1.113 1.113 0 0 1-1.113-1.113Z"
+  })), _path26 || (_path26 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ccc",
+    d: "M796.133 302.3H760a1.93 1.93 0 0 0-1.925 1.93v57.081h39.99V304.23a1.93 1.93 0 0 0-1.93-1.93m-17.945 32.433a4.287 4.287 0 0 1-4.267-4.267v-6.584a4.267 4.267 0 0 1 8.534 0v6.584a4.287 4.287 0 0 1-4.267 4.267"
+  })), _path27 || (_path27 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#3f3d56",
+    d: "M757.95 359.485v5.507a1.08 1.08 0 0 0 1.077 1.077h38.084a1.08 1.08 0 0 0 1.076-1.077v-5.507Z"
+  })), _path28 || (_path28 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e6e6e6",
+    d: "M855.968 213.219H701.509a5.014 5.014 0 0 0-5.006 5.006v104.229a5.01 5.01 0 0 0 5.006 5.006h154.459a5.01 5.01 0 0 0 5.006-5.006v-104.23a5.014 5.014 0 0 0-5.006-5.005"
+  })), _path29 || (_path29 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "M854.679 216.834h-151.88a2.683 2.683 0 0 0-2.677 2.683v101.646a2.68 2.68 0 0 0 2.678 2.677h151.879a2.68 2.68 0 0 0 2.677-2.677V219.517a2.683 2.683 0 0 0-2.677-2.683"
+  })), _path30 || (_path30 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ccc",
+    d: "M825.095 367.985h-90.36a1.662 1.662 0 0 1-1.626-2.004l1.402-6.66a1.67 1.67 0 0 1 1.626-1.32h87.556a1.67 1.67 0 0 1 1.627 1.32l1.402 6.66a1.662 1.662 0 0 1-1.627 2.004"
+  })), _rect || (_rect = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 736.779,
+    y: 359.201,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect2 || (_rect2 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 742.345,
+    y: 359.201,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect3 || (_rect3 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 747.911,
+    y: 359.201,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect4 || (_rect4 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 753.477,
+    y: 359.201,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect5 || (_rect5 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 759.043,
+    y: 359.201,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect6 || (_rect6 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 764.609,
+    y: 359.201,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect7 || (_rect7 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 770.175,
+    y: 359.201,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect8 || (_rect8 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 775.741,
+    y: 359.201,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect9 || (_rect9 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 781.307,
+    y: 359.201,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect10 || (_rect10 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 786.873,
+    y: 359.201,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect11 || (_rect11 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 792.439,
+    y: 359.201,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect12 || (_rect12 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 798.005,
+    y: 359.201,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect13 || (_rect13 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 803.571,
+    y: 359.201,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect14 || (_rect14 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 809.137,
+    y: 359.201,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect15 || (_rect15 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 814.703,
+    y: 359.201,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect16 || (_rect16 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 820.269,
+    y: 359.201,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect17 || (_rect17 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 736.713,
+    y: 361.984,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect18 || (_rect18 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 742.279,
+    y: 361.984,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect19 || (_rect19 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 747.845,
+    y: 361.984,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect20 || (_rect20 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 753.411,
+    y: 361.984,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect21 || (_rect21 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 758.977,
+    y: 361.984,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect22 || (_rect22 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 764.543,
+    y: 361.984,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect23 || (_rect23 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 770.109,
+    y: 361.984,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect24 || (_rect24 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 775.675,
+    y: 361.984,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect25 || (_rect25 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 781.241,
+    y: 361.984,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect26 || (_rect26 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 786.807,
+    y: 361.984,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect27 || (_rect27 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 792.373,
+    y: 361.984,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect28 || (_rect28 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 797.939,
+    y: 361.984,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect29 || (_rect29 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 803.505,
+    y: 361.984,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect30 || (_rect30 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 809.071,
+    y: 361.984,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect31 || (_rect31 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 814.637,
+    y: 361.984,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect32 || (_rect32 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 2.783,
+    height: 1.67,
+    x: 820.203,
+    y: 361.984,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _rect33 || (_rect33 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 22.264,
+    height: 1.67,
+    x: 763.43,
+    y: 365.324,
+    fill: "#e6e6e6",
+    rx: 0.488
+  })), _path31 || (_path31 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#cacaca",
+    d: "M847.044 230.839H704.93a.565.565 0 0 1 0-1.13h142.113a.565.565 0 0 1 0 1.13"
+  })), _ellipse || (_ellipse = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ellipse", {
+    cx: 714.605,
+    cy: 223.437,
+    fill: "#ccc",
+    rx: 3.312,
+    ry: 3.386
+  })), _ellipse2 || (_ellipse2 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ellipse", {
+    cx: 726.047,
+    cy: 223.437,
+    fill: "#ccc",
+    rx: 3.312,
+    ry: 3.386
+  })), _ellipse3 || (_ellipse3 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ellipse", {
+    cx: 737.488,
+    cy: 223.437,
+    fill: "#ccc",
+    rx: 3.312,
+    ry: 3.386
+  })), _path32 || (_path32 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ccc",
+    d: "M840.155 220.89h-8.127a.616.616 0 0 0 0 1.231h8.127a.616.616 0 0 0 0-1.23M840.155 223.2h-8.127a.616.616 0 0 0 0 1.231h8.127a.616.616 0 0 0 0-1.23M840.155 225.508h-8.127a.616.616 0 0 0 0 1.23h8.127a.616.616 0 0 0 0-1.23"
+  })), _rect34 || (_rect34 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 22.588,
+    height: 4.83,
+    x: 767.289,
+    y: 261.629,
+    fill: "#6c63ff",
+    rx: 2.415
+  })), _rect35 || (_rect35 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 45.531,
+    height: 4.83,
+    x: 755.817,
+    y: 271.289,
+    fill: "#e6e6e6",
+    rx: 2.415
+  })), _rect36 || (_rect36 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 45.531,
+    height: 4.83,
+    x: 755.817,
+    y: 280.949,
+    fill: "#e6e6e6",
+    rx: 2.415
+  })), _path33 || (_path33 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ffb6b6",
+    d: "m524.726 431.447-8.186-3.916 11.245-34.217 12.082 5.778zM579.608 425.93q-.89.558-1.792 1.107a221 221 0 0 1-5.441 3.223v.018l-.037.006-.012.006-.926.228-1.328-3.511-.614-1.618-.866-2.29-1.587-4.192-8.358-22.068 12.994-3.205.487 1.99h.006l.24.986 4.54 18.413.926 3.764.03.114.56 2.249.48 1.948.536 2.177Z"
+  })), _path34 || (_path34 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "M657.124 348.432a243 243 0 0 1-2.513 3.945q-2.363 3.644-4.853 7.18c0 .006-.006.006-.012.012a17 17 0 0 1-3.187 2.327c-.048.036-.102.06-.15.09a11.8 11.8 0 0 1-2.682 1.076l-1.016.253a68 68 0 0 1-3.614.751c-2.129.38-4.233.65-6.326.818q-.252.025-.505.042c-8.605.632-16.98-.385-25.724-2.05-4.317-.818-8.725-1.798-13.289-2.814a640 640 0 0 0-4.504-.999c-.114-.024-.234-.054-.354-.078a501 501 0 0 0-6.62-1.407 313 313 0 0 0-8.81-1.683l.217 4.287a32.3 32.3 0 0 0 2.032 9.639c1.299 3.8 2.327 6.807.156 13.066l-1.046 3.03a10.35 10.35 0 0 1-1.064 9.159l-.21.319 8.724 22.074.566 1.43h-4.468l-5.496.007h-9.314l-13.44-26.963-.643-1.287v-.066l1.389-51.815c.018-.457.054-.92.114-1.377a15.75 15.75 0 0 1 5.995-10.607 15.17 15.17 0 0 1 11.299-3.09l4.6.595 9.398 1.214 6.62.86.133.018 19.524 2.526 1.401-5.713.259-.096 8.22-3.012 28.43-10.421.072-.024 1.87-.686.222.361q.102.163.193.325a55.7 55.7 0 0 1 4.492 10.427 164 164 0 0 1 4.72 18.02q.081.398.144.722l.018.067c.018.102.03.168.036.186a16.8 16.8 0 0 1-1.004 9.362"
+  })), _path35 || (_path35 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "M658.324 329.337c-.09-.385-.204-.776-.324-1.154a82 82 0 0 0-3.332-8.43c-1.419-3.128-3.12-6.477-5.147-10.103q-1.47-2.634-3.163-5.478-.848-1.425-1.762-2.904a2 2 0 0 0-.078-.132l-.174-.289-28.13 3.764-10.474 1.401-.626 5.22-.15 1.293q-.009-.001 0 .006l-.42 3.523v.006l-.56 4.654-.048-.006-15.544-2.014-16.019-2.075-8.605-1.112a15.16 15.16 0 0 0-11.298 3.09 15.76 15.76 0 0 0-5.995 10.608c-.054.42-.09.854-.108 1.28l-8.118 19.237a124.1 124.1 0 0 0-9.176 36.102l-5.953 19.031.848.079 12.615 1.172 3.331.313 7.336-10.71a57 57 0 0 0 2.37-3.764 57 57 0 0 0 3.24-6.518l15.87-37.762q1.84.316 3.643.601 8.343 1.353 16.019 2.207c16.638 1.858 31.046 2.003 43.872.427q5.402-.658 10.444-1.732 1.85-.388 3.65-.835.423-.099.836-.205a15.35 15.35 0 0 0 10.733-10.03 15.66 15.66 0 0 0 .397-8.76M527.341 425.86l-8.857-4.246-1.39-.668-2.218 5.448-15.49 3.41a3.675 3.675 0 0 0-.6 6.993l15.134 6.175 4.804-4.323-1.178 5.803 5.7 2.327 6.248-19.886ZM581.774 417.469l.566 1.431h-.566zM578.69 419.206l-9.281 3.215-1.457.503 2.257 5.433-8.608 13.321a3.675 3.675 0 0 0 4.493 5.392l15.1-6.26.372-6.453 3.245 4.952 5.688-2.357-9.552-18.526Z"
+  })), _path36 || (_path36 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ffb6b6",
+    d: "M522.36 220.25a6.592 6.592 0 0 0 9.857 2.234l19.516 12.955.037-12.173-18.538-10.436a6.627 6.627 0 0 0-10.872 7.419"
+  })), _path37 || (_path37 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ccc",
+    d: "m536.94 225.875 9.105-10.358 37.074 22.01 49.146-4.502a16.62 16.62 0 0 1 18.063 18.081 16.637 16.637 0 0 1-18.08 15.016L576.898 261Z"
+  })), _path38 || (_path38 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ccc",
+    d: "m651.006 226.035-.085-.107a35.91 35.91 0 0 0-34.752 18.006l-4.171 7.347c-13.491 16.494-3.688 27.868-3.101 29.56l-4.683 21.59 1.05 7.227.524 2.146 53.454 27.93c3.043-14.621.1-27.082-10.987-36.6l10.728-33.378a47.02 47.02 0 0 0-7.977-43.72"
+  })), _path39 || (_path39 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#6c63ff",
+    d: "M608.504 388.192h-17.147a3.92 3.92 0 0 1-3.875-3.367 87.2 87.2 0 0 1 0-23.48 3.92 3.92 0 0 1 3.81-3.366c5.394-2.418 11.204-2.418 17.27 0a3.87 3.87 0 0 1 2.947 1.42 3.96 3.96 0 0 1 .817 3.302 52.7 52.7 0 0 0 0 20.768 3.96 3.96 0 0 1-.817 3.302 3.87 3.87 0 0 1-3.005 1.42"
+  })), _path40 || (_path40 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "M606.708 366.93h-14.432a.902.902 0 1 1 0-1.804h14.432a.902.902 0 1 1 0 1.804M606.708 374.146h-14.432a.902.902 0 1 1 0-1.804h14.432a.902.902 0 1 1 0 1.804M606.708 381.362h-14.432a.902.902 0 1 1 0-1.804h14.432a.902.902 0 1 1 0 1.804"
+  })), _path41 || (_path41 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#6c63ff",
+    d: "M525.504 226.192h-17.147a3.92 3.92 0 0 1-3.875-3.367 87.2 87.2 0 0 1 0-23.48 3.92 3.92 0 0 1 3.81-3.366c5.394-2.418 11.204-2.418 17.27 0a3.87 3.87 0 0 1 2.947 1.42 3.96 3.96 0 0 1 .817 3.302 52.7 52.7 0 0 0 0 20.768 3.96 3.96 0 0 1-.817 3.302 3.87 3.87 0 0 1-3.005 1.42"
+  })), _path42 || (_path42 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "M523.708 204.93h-14.432a.902.902 0 1 1 0-1.804h14.432a.902.902 0 1 1 0 1.804M523.708 212.146h-14.432a.902.902 0 1 1 0-1.804h14.432a.902.902 0 1 1 0 1.804M523.708 219.362h-14.432a.902.902 0 1 1 0-1.804h14.432a.902.902 0 1 1 0 1.804"
+  })), _path43 || (_path43 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#6c63ff",
+    d: "M224.504 270.192h-17.147a3.92 3.92 0 0 1-3.875-3.367 87.2 87.2 0 0 1 0-23.48 3.92 3.92 0 0 1 3.81-3.366c5.394-2.418 11.204-2.418 17.27 0a3.87 3.87 0 0 1 2.947 1.42 3.96 3.96 0 0 1 .817 3.302 52.7 52.7 0 0 0 0 20.768 3.96 3.96 0 0 1-.817 3.302 3.87 3.87 0 0 1-3.005 1.42"
+  })), _path44 || (_path44 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#fff",
+    d: "M222.708 248.93h-14.432a.902.902 0 1 1 0-1.804h14.432a.902.902 0 1 1 0 1.804M222.708 256.146h-14.432a.902.902 0 1 1 0-1.804h14.432a.902.902 0 1 1 0 1.804M222.708 263.362h-14.432a.902.902 0 1 1 0-1.804h14.432a.902.902 0 1 1 0 1.804"
+  })), _path45 || (_path45 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ffb6b6",
+    d: "M613.527 366.274a6.592 6.592 0 0 0 1.646-9.973l11.775-20.25-12.153.686-9.319 19.124a6.627 6.627 0 0 0 8.051 10.413"
+  })), _path46 || (_path46 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ccc",
+    d: "m618.279 351.386-10.88-8.475 19.77-38.314-7.408-48.792a16.62 16.62 0 0 1 16.977-19.105 16.637 16.637 0 0 1 16.063 17.157l-1.83 55.557Z"
+  })), _path47 || (_path47 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#9e616a",
+    d: "M92.385 340.918a6.646 6.646 0 0 0-.924-10.15l10.582-52.56-11.686 3.752-8.47 50.84a6.682 6.682 0 0 0 10.498 8.118"
+  })), _path48 || (_path48 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ccc",
+    d: "m108.01 229.714-7.25-5.473s-6.396-.453-7.53 11.082-3.458 34.013-3.458 34.013l-11.095 51.387 15.358 3.37 11.884-55.454 7.128-16.468Z"
+  })), _path49 || (_path49 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#9e616a",
+    d: "m96.057 313.623 40.857-.681 3.405-27.919H96.057zM132.828 485.427h9.432l4.487-36.381-13.921.001zM73.738 486.301l9.432-.067 4.232-36.411-12.267 2.814z"
+  })), _path50 || (_path50 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ffb6b6",
+    d: "m103.238 260.98-2.137 5.556.427 5.557 41.827 14.487-2.075-24.318-4.702-5.557z"
+  })), _circle2 || (_circle2 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 121.182,
+    cy: 196.036,
+    r: 14.939,
+    fill: "#9e616a"
+  })), _path51 || (_path51 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "m130.489 480.774 14.91-.89v6.389l14.175 9.79a3.99 3.99 0 0 1-2.267 7.274h-17.751l-3.06-6.32-1.195 6.32h-6.692ZM70.511 481.67l14.904-.994.045 6.388 14.243 9.69a3.99 3.99 0 0 1-2.216 7.29l-17.75.124-3.105-6.297-1.15 6.327-6.693.047ZM70.803 458.407l6.868-54.898 8.172-57.881c-5.985-11.113 7.49-45.624 7.49-45.624l1.902.092 43.05 8.121-.01-.041c8.806 24.016 11.723 35.88 11.24 61.454l-1.734 91.935h.544a3.405 3.405 0 0 1 0 6.81h-17.024a3.405 3.405 0 1 1 0-6.81h.44l-15.626-109.467-13.249 45.963-14.98 59.924c5.447-1.362 4.601 1.793 4.601 3.58a3.405 3.405 0 0 1-3.405 3.405H72.06a3.401 3.401 0 0 1-1.256-6.563"
+  })), _path52 || (_path52 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ccc",
+    d: "m89.981 301.792 1.362-13.62a2.715 2.715 0 0 1 2.455-2.038c.567-6.488 2.955-34.476 3.097-35.697l.006-.051 1.086-23.192a3.43 3.43 0 0 1 3.202-3.262l5.734-.375a.303.303 0 0 0 .293-.303 4.82 4.82 0 0 1 4.822-4.822h16.977a4.515 4.515 0 0 1 4.478 3.952.3.3 0 0 0 .305.27h.002a8.066 8.066 0 0 1 8.114 6.69c2.32 13.504 6.972 44.152 4.672 61.191-.8 5.932.925 1.234 1.228 6.197a3.65 3.65 0 0 1-.91 2.649 2.634 2.634 0 0 1 1.586 3.347l.298-.074a2.724 2.724 0 0 1-3.307 1.976l-44.415 6.018c-1.459-.368-11.453-7.397-11.085-8.856"
+  })), _path53 || (_path53 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#9e616a",
+    d: "M208.666 246.42a6.646 6.646 0 0 1-9.36 4.031l-17.171 15.67-2.28-12.06 16.666-12.992a6.682 6.682 0 0 1 12.145 5.35"
+  })), _path54 || (_path54 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#ccc",
+    d: "M148.901 234.442s-5.987-13.53-13.55-10.841-3.657 15.818-3.657 15.818l28.411 42.811s40.98-26.287 35.996-26.473-6.473-9.249-6.473-9.249l-21.659 10.822-.732-3.852-1.175 1.174-3.03-2.386Z"
+  })), _circle3 || (_circle3 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
+    cx: 638.683,
+    cy: 198.721,
+    r: 20.857,
+    fill: "#ffb6b6"
+  })), _path55 || (_path55 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "M705.62 229.412a18.1 18.1 0 0 1-9.943 7 20.8 20.8 0 0 1-4.95.84 18.7 18.7 0 0 0-1.471-5.498 15.5 15.5 0 0 1-.764 5.486 18.4 18.4 0 0 1-7.236-1.94 15.95 15.95 0 0 1-8.531-11.443c-.884-5.705 1.703-11.306 2.638-17.003.94-5.696-.824-12.91-6.4-14.407-4.246-1.141-3.77-.648-7.3 1.973 3.672 5.43-9.89 25.326-15.441 23.59-3.139-.98-5.148-3.86-5.795-3.86-4.362 7.515 3.852 20.177-4.427 22.807l.682-.682c4.997-6.147-5.447-19.156-.45-25.303 1.394-1.72 2.878-3.757 2.466-5.932-.39-2.067-3.671-3.161-4.632-1.463 1.728-3.959-.824-9.243-5.049-10.26-3.753-.905-3.684.21-7.45.695a18.7 18.7 0 0 0-1.368-4.722 15.3 15.3 0 0 1-.562 4.812 6.04 6.04 0 0 1-3.655-1.32c-3.071-2.476-2.45-7.674.292-10.51 2.745-2.835 6.824-3.856 10.714-4.516 1.131-7.876 22.86-8.697 25.74-.828 1.227-5.876 8.583-8.926 14.3-7.103s9.686 7.163 11.775 12.79c2.089 5.624 2.672 11.676 3.959 17.535s3.461 11.826 7.94 15.82c4.477 3.988 11.774 5.31 16.492 1.603a13.2 13.2 0 0 1-1.575 11.839"
+  })), _path56 || (_path56 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#e4e4e4",
+    d: "m901.295 277.007-2.92 14.65c-.22 1.12-.45 2.26-.7 3.39a14.3 14.3 0 0 0-7.34.41 68.5 68.5 0 0 1 5.04 8.43c-1.84 5.67-4.54 10.91-9.06 14.7a22.72 22.72 0 0 1-21.95 3.86l.13-.58c-4.86-9.43-2.22-21.32 3.82-30.03a58.4 58.4 0 0 1 10.85-11.47c4.08-3.4 8.49-6.45 12.86-9.46a5.99 5.99 0 0 1 9.27 6.1"
+  })), _path57 || (_path57 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#f2f2f2",
+    d: "M865.405 357.697c-1.229-8.953-2.493-18.02-1.631-27.069.766-8.036 3.217-15.885 8.209-22.32a37.1 37.1 0 0 1 9.527-8.634c.953-.6 1.829.91.881 1.507a35.3 35.3 0 0 0-13.963 16.847c-3.04 7.732-3.528 16.161-3 24.374.317 4.967.988 9.9 1.665 14.83a.9.9 0 0 1-.61 1.074.88.88 0 0 1-1.074-.61Z",
+    "data-name": "a4b268fa-75d0-4ac1-9d87-14bdca948464-2189"
+  })), _path58 || (_path58 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#cacaca",
+    d: "m934.94 504.989-933.75.307a1.19 1.19 0 0 1 0-2.381l933.75-.308a1.19 1.19 0 0 1 0 2.382"
+  })), _path59 || (_path59 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "M103.6 186.89c-2.291 1.099-4.856-.555-6.834-2.194l.707.61c-3.496 3.402-5.13 8.296-5.929 13.113-.8 4.812-.888 9.733-1.895 14.511-1.007 4.773-3.097 9.569-7 12.492-5.229 3.916-12.44 3.664-18.858 2.464-.085-.017-.165-.03-.25-.048a39.2 39.2 0 0 0 2.063-15.53 35.6 35.6 0 0 1-8.551 14.016 82 82 0 0 1-12.418-4.525c-2.595-1.195-5.39-2.828-6.11-5.593-.721-2.744.955-5.623 3.197-7.356s4.994-2.637 7.548-3.871c2.55-1.23 5.073-2.981 6.093-5.626 2.355-6.084-4.353-13.065-1.739-19.046 1.29-2.94 4.447-4.54 7.415-5.774a109 109 0 0 1 13.926-4.697c4.163-1.098 8.51-1.951 12.751-1.231s8.396 3.299 9.922 7.327c2.547.86 5.251 1.83 6.886 3.974 1.633 2.14 1.502 5.821-.924 6.983"
+  })), _path60 || (_path60 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    fill: "#2f2e41",
+    d: "M123.986 179.84c-6.554-5.175-11.854-4.292-15.942-1.077-.687-.765-3.612 1.339-4.603 1.037l-3.581 6.724c-1.844 3.252-2.6 6.573-2.302 8.441-3.39 9.508 4.65 15.929 14.158 19.319a18.14 18.14 0 0 0 11.765.17l.117-1.62.72 1.328s8.692 17.897 10.746 18.7c-1.247-3.232-4.534-18.598-5.451-21.8-1.258-4.358-.399-11.282.34-15.527a24 24 0 0 0 .072-7.917l-.018-.115 2.033 4.106 4.563-2.87c-1.744-5.079-1.778-11.155-12.617-8.9"
+  })));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SvgUndrawTeamCollaboration);
 
 /***/ }),
 
@@ -3983,9 +3949,9 @@ function _interopRequireWildcard(e, r) {
 var lib = __webpack_require__(3259);
 var lib_default = /*#__PURE__*/__webpack_require__.n(lib);
 ;// ./.docusaurus/routesChunkNames.json
-const routesChunkNames_namespaceObject = /*#__PURE__*/JSON.parse('{"/otoroshi-biscuit-studio/markdown-page-6b3":{"__comp":"1f391b9e","__context":{"plugin":"a7456010"},"content":"393be207"},"/otoroshi-biscuit-studio/docs-6ee":{"__comp":"5e95c892","__context":{"plugin":"aba21aa0"}},"/otoroshi-biscuit-studio/docs-c29":{"__comp":"a7bd4aaa","__props":"d467179c"},"/otoroshi-biscuit-studio/docs-6b0":{"__comp":"a94703ab"},"/otoroshi-biscuit-studio/docs/api-fba":{"__comp":"17896441","content":"2461ffa2"},"/otoroshi-biscuit-studio/docs/category/entities-7da":{"__comp":"14eb3368","__props":"3564e3a7"},"/otoroshi-biscuit-studio/docs/category/plugins-bef":{"__comp":"14eb3368","__props":"aeecb766"},"/otoroshi-biscuit-studio/docs/entities/attenuators-7fb":{"__comp":"17896441","content":"fd744dac"},"/otoroshi-biscuit-studio/docs/entities/keypairs-12f":{"__comp":"17896441","content":"cabb12cd"},"/otoroshi-biscuit-studio/docs/entities/rbac_policies-784":{"__comp":"17896441","content":"f9604eb2"},"/otoroshi-biscuit-studio/docs/entities/remote_facts-45b":{"__comp":"17896441","content":"8b7184ae"},"/otoroshi-biscuit-studio/docs/entities/verifiers-8b1":{"__comp":"17896441","content":"b2cafd49"},"/otoroshi-biscuit-studio/docs/install-966":{"__comp":"17896441","content":"046e2194"},"/otoroshi-biscuit-studio/docs/overview-22c":{"__comp":"17896441","content":"18891827"},"/otoroshi-biscuit-studio/docs/plugins/attenuators-d1f":{"__comp":"17896441","content":"92063559"},"/otoroshi-biscuit-studio/docs/plugins/verifiers-d40":{"__comp":"17896441","content":"723d447c"},"/otoroshi-biscuit-studio/docs/tokens_forge-9b6":{"__comp":"17896441","content":"326c7620"},"/otoroshi-biscuit-studio/-8de":{"__comp":"c4f5d8e4","__context":{"plugin":"a7456010"},"config":"5e9f5e1a"}}');
+const routesChunkNames_namespaceObject = /*#__PURE__*/JSON.parse('{"/otoroshi-biscuit-studio/markdown-page-6b3":{"__comp":"1f391b9e","__context":{"plugin":"a7456010"},"content":"393be207"},"/otoroshi-biscuit-studio/docs-25a":{"__comp":"5e95c892","__context":{"plugin":"aba21aa0"}},"/otoroshi-biscuit-studio/docs-427":{"__comp":"a7bd4aaa","__props":"d467179c"},"/otoroshi-biscuit-studio/docs-5b9":{"__comp":"a94703ab"},"/otoroshi-biscuit-studio/docs/api-fba":{"__comp":"17896441","content":"2461ffa2"},"/otoroshi-biscuit-studio/docs/category/entities-7da":{"__comp":"14eb3368","__props":"3564e3a7"},"/otoroshi-biscuit-studio/docs/category/plugins-bef":{"__comp":"14eb3368","__props":"aeecb766"},"/otoroshi-biscuit-studio/docs/entities/attenuators-7fb":{"__comp":"17896441","content":"fd744dac"},"/otoroshi-biscuit-studio/docs/entities/keypairs-12f":{"__comp":"17896441","content":"cabb12cd"},"/otoroshi-biscuit-studio/docs/entities/rbac_policies-784":{"__comp":"17896441","content":"f9604eb2"},"/otoroshi-biscuit-studio/docs/entities/remote_facts-45b":{"__comp":"17896441","content":"8b7184ae"},"/otoroshi-biscuit-studio/docs/entities/verifiers-8b1":{"__comp":"17896441","content":"b2cafd49"},"/otoroshi-biscuit-studio/docs/install-966":{"__comp":"17896441","content":"046e2194"},"/otoroshi-biscuit-studio/docs/introduction-c56":{"__comp":"17896441","content":"972d9d57"},"/otoroshi-biscuit-studio/docs/overview-22c":{"__comp":"17896441","content":"18891827"},"/otoroshi-biscuit-studio/docs/plugins/attenuators-d1f":{"__comp":"17896441","content":"92063559"},"/otoroshi-biscuit-studio/docs/plugins/verifiers-d40":{"__comp":"17896441","content":"723d447c"},"/otoroshi-biscuit-studio/docs/tokens_forge-9b6":{"__comp":"17896441","content":"326c7620"},"/otoroshi-biscuit-studio/-8de":{"__comp":"c4f5d8e4","__context":{"plugin":"a7456010"},"config":"5e9f5e1a"}}');
 ;// ./.docusaurus/registry.js
-/* harmony default export */ const registry = ({"046e2194":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(7716))),"@site/docs/install.mdx",/*require.resolve*/(7716)],"14eb3368":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(2499))),"@theme/DocCategoryGeneratedIndexPage",/*require.resolve*/(2499)],"17896441":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(8950))),"@theme/DocItem",/*require.resolve*/(8950)],"18891827":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(3829))),"@site/docs/overview.mdx",/*require.resolve*/(3829)],"1f391b9e":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(4250))),"@theme/MDXPage",/*require.resolve*/(4250)],"2461ffa2":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(6992))),"@site/docs/api.mdx",/*require.resolve*/(6992)],"326c7620":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(7423))),"@site/docs/tokens_forge.mdx",/*require.resolve*/(7423)],"3564e3a7":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(6609))),"@generated/docusaurus-plugin-content-docs/default/p/otoroshi-biscuit-studio-docs-category-entities-f71.json",/*require.resolve*/(6609)],"393be207":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(591))),"@site/src/pages/markdown-page.md",/*require.resolve*/(591)],"5e95c892":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(7121))),"@theme/DocsRoot",/*require.resolve*/(7121)],"5e9f5e1a":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(4784))),"@generated/docusaurus.config",/*require.resolve*/(4784)],"723d447c":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(9956))),"@site/docs/plugins/verifiers.mdx",/*require.resolve*/(9956)],"8b7184ae":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(3680))),"@site/docs/entities/remote_facts.mdx",/*require.resolve*/(3680)],"92063559":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(6995))),"@site/docs/plugins/attenuators.mdx",/*require.resolve*/(6995)],"a7456010":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(8552))),"@generated/docusaurus-plugin-content-pages/default/__plugin.json",/*require.resolve*/(8552)],"a7bd4aaa":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(1723))),"@theme/DocVersionRoot",/*require.resolve*/(1723)],"a94703ab":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(8319))),"@theme/DocRoot",/*require.resolve*/(8319)],"aba21aa0":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(7093))),"@generated/docusaurus-plugin-content-docs/default/__plugin.json",/*require.resolve*/(7093)],"aeecb766":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(2058))),"@generated/docusaurus-plugin-content-docs/default/p/otoroshi-biscuit-studio-docs-category-plugins-86f.json",/*require.resolve*/(2058)],"b2cafd49":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(1179))),"@site/docs/entities/verifiers.mdx",/*require.resolve*/(1179)],"c4f5d8e4":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(2259))),"@site/src/pages/index.js",/*require.resolve*/(2259)],"cabb12cd":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(8685))),"@site/docs/entities/keypairs.mdx",/*require.resolve*/(8685)],"d467179c":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(1383))),"@generated/docusaurus-plugin-content-docs/default/p/otoroshi-biscuit-studio-docs-aaa.json",/*require.resolve*/(1383)],"f9604eb2":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(6580))),"@site/docs/entities/rbac_policies.mdx",/*require.resolve*/(6580)],"fd744dac":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(2149))),"@site/docs/entities/attenuators.mdx",/*require.resolve*/(2149)]});
+/* harmony default export */ const registry = ({"046e2194":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(7716))),"@site/docs/install.mdx",/*require.resolve*/(7716)],"14eb3368":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(2499))),"@theme/DocCategoryGeneratedIndexPage",/*require.resolve*/(2499)],"17896441":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(8950))),"@theme/DocItem",/*require.resolve*/(8950)],"18891827":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(3829))),"@site/docs/overview.mdx",/*require.resolve*/(3829)],"1f391b9e":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(4250))),"@theme/MDXPage",/*require.resolve*/(4250)],"2461ffa2":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(6992))),"@site/docs/api.mdx",/*require.resolve*/(6992)],"326c7620":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(7423))),"@site/docs/tokens_forge.mdx",/*require.resolve*/(7423)],"3564e3a7":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(6609))),"@generated/docusaurus-plugin-content-docs/default/p/otoroshi-biscuit-studio-docs-category-entities-f71.json",/*require.resolve*/(6609)],"393be207":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(591))),"@site/src/pages/markdown-page.md",/*require.resolve*/(591)],"5e95c892":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(7121))),"@theme/DocsRoot",/*require.resolve*/(7121)],"5e9f5e1a":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(4784))),"@generated/docusaurus.config",/*require.resolve*/(4784)],"723d447c":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(9956))),"@site/docs/plugins/verifiers.mdx",/*require.resolve*/(9956)],"8b7184ae":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(3680))),"@site/docs/entities/remote_facts.mdx",/*require.resolve*/(3680)],"92063559":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(6995))),"@site/docs/plugins/attenuators.mdx",/*require.resolve*/(6995)],"972d9d57":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(1916))),"@site/docs/introduction.mdx",/*require.resolve*/(1916)],"a7456010":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(8552))),"@generated/docusaurus-plugin-content-pages/default/__plugin.json",/*require.resolve*/(8552)],"a7bd4aaa":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(1723))),"@theme/DocVersionRoot",/*require.resolve*/(1723)],"a94703ab":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(8319))),"@theme/DocRoot",/*require.resolve*/(8319)],"aba21aa0":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(7093))),"@generated/docusaurus-plugin-content-docs/default/__plugin.json",/*require.resolve*/(7093)],"aeecb766":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(2058))),"@generated/docusaurus-plugin-content-docs/default/p/otoroshi-biscuit-studio-docs-category-plugins-86f.json",/*require.resolve*/(2058)],"b2cafd49":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(1179))),"@site/docs/entities/verifiers.mdx",/*require.resolve*/(1179)],"c4f5d8e4":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(2259))),"@site/src/pages/index.js",/*require.resolve*/(2259)],"cabb12cd":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(8685))),"@site/docs/entities/keypairs.mdx",/*require.resolve*/(8685)],"d467179c":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(1383))),"@generated/docusaurus-plugin-content-docs/default/p/otoroshi-biscuit-studio-docs-aaa.json",/*require.resolve*/(1383)],"f9604eb2":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(6580))),"@site/docs/entities/rbac_policies.mdx",/*require.resolve*/(6580)],"fd744dac":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(2149))),"@site/docs/entities/attenuators.mdx",/*require.resolve*/(2149)]});
 // EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
 var jsx_runtime = __webpack_require__(4848);
 ;// ./node_modules/@docusaurus/core/lib/client/theme-fallback/Loading/index.js
@@ -4049,7 +4015,7 @@ if(typeof chunk==='object'||typeof chunk==='function'){Object.keys(loadedModule)
 let val=loadedModules;const keyPaths=keyPath.split('.');keyPaths.slice(0,-1).forEach(k=>{val=val[k];});val[keyPaths[keyPaths.length-1]]=chunk;});/* eslint-disable no-underscore-dangle */const Component=loadedModules.__comp;delete loadedModules.__comp;const routeContext=loadedModules.__context;delete loadedModules.__context;const routeProps=loadedModules.__props;delete loadedModules.__props;/* eslint-enable no-underscore-dangle */// Is there any way to put this RouteContextProvider upper in the tree?
 return/*#__PURE__*/(0,jsx_runtime.jsx)(client_routeContext/* RouteContextProvider */.W,{value:routeContext,children:/*#__PURE__*/(0,jsx_runtime.jsx)(Component,{...loadedModules,...routeProps,...props})});}});}
 ;// ./.docusaurus/routes.js
-/* harmony default export */ const routes = ([{path:'/otoroshi-biscuit-studio/markdown-page',component:ComponentCreator('/otoroshi-biscuit-studio/markdown-page','6b3'),exact:true},{path:'/otoroshi-biscuit-studio/docs',component:ComponentCreator('/otoroshi-biscuit-studio/docs','6ee'),routes:[{path:'/otoroshi-biscuit-studio/docs',component:ComponentCreator('/otoroshi-biscuit-studio/docs','c29'),routes:[{path:'/otoroshi-biscuit-studio/docs',component:ComponentCreator('/otoroshi-biscuit-studio/docs','6b0'),routes:[{path:'/otoroshi-biscuit-studio/docs/api',component:ComponentCreator('/otoroshi-biscuit-studio/docs/api','fba'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/category/entities',component:ComponentCreator('/otoroshi-biscuit-studio/docs/category/entities','7da'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/category/plugins',component:ComponentCreator('/otoroshi-biscuit-studio/docs/category/plugins','bef'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/entities/attenuators',component:ComponentCreator('/otoroshi-biscuit-studio/docs/entities/attenuators','7fb'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/entities/keypairs',component:ComponentCreator('/otoroshi-biscuit-studio/docs/entities/keypairs','12f'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/entities/rbac_policies',component:ComponentCreator('/otoroshi-biscuit-studio/docs/entities/rbac_policies','784'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/entities/remote_facts',component:ComponentCreator('/otoroshi-biscuit-studio/docs/entities/remote_facts','45b'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/entities/verifiers',component:ComponentCreator('/otoroshi-biscuit-studio/docs/entities/verifiers','8b1'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/install',component:ComponentCreator('/otoroshi-biscuit-studio/docs/install','966'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/overview',component:ComponentCreator('/otoroshi-biscuit-studio/docs/overview','22c'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/plugins/attenuators',component:ComponentCreator('/otoroshi-biscuit-studio/docs/plugins/attenuators','d1f'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/plugins/verifiers',component:ComponentCreator('/otoroshi-biscuit-studio/docs/plugins/verifiers','d40'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/tokens_forge',component:ComponentCreator('/otoroshi-biscuit-studio/docs/tokens_forge','9b6'),exact:true,sidebar:"tutorialSidebar"}]}]}]},{path:'/otoroshi-biscuit-studio/',component:ComponentCreator('/otoroshi-biscuit-studio/','8de'),exact:true},{path:'*',component:ComponentCreator('*')}]);
+/* harmony default export */ const routes = ([{path:'/otoroshi-biscuit-studio/markdown-page',component:ComponentCreator('/otoroshi-biscuit-studio/markdown-page','6b3'),exact:true},{path:'/otoroshi-biscuit-studio/docs',component:ComponentCreator('/otoroshi-biscuit-studio/docs','25a'),routes:[{path:'/otoroshi-biscuit-studio/docs',component:ComponentCreator('/otoroshi-biscuit-studio/docs','427'),routes:[{path:'/otoroshi-biscuit-studio/docs',component:ComponentCreator('/otoroshi-biscuit-studio/docs','5b9'),routes:[{path:'/otoroshi-biscuit-studio/docs/api',component:ComponentCreator('/otoroshi-biscuit-studio/docs/api','fba'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/category/entities',component:ComponentCreator('/otoroshi-biscuit-studio/docs/category/entities','7da'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/category/plugins',component:ComponentCreator('/otoroshi-biscuit-studio/docs/category/plugins','bef'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/entities/attenuators',component:ComponentCreator('/otoroshi-biscuit-studio/docs/entities/attenuators','7fb'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/entities/keypairs',component:ComponentCreator('/otoroshi-biscuit-studio/docs/entities/keypairs','12f'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/entities/rbac_policies',component:ComponentCreator('/otoroshi-biscuit-studio/docs/entities/rbac_policies','784'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/entities/remote_facts',component:ComponentCreator('/otoroshi-biscuit-studio/docs/entities/remote_facts','45b'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/entities/verifiers',component:ComponentCreator('/otoroshi-biscuit-studio/docs/entities/verifiers','8b1'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/install',component:ComponentCreator('/otoroshi-biscuit-studio/docs/install','966'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/introduction',component:ComponentCreator('/otoroshi-biscuit-studio/docs/introduction','c56'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/overview',component:ComponentCreator('/otoroshi-biscuit-studio/docs/overview','22c'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/plugins/attenuators',component:ComponentCreator('/otoroshi-biscuit-studio/docs/plugins/attenuators','d1f'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/plugins/verifiers',component:ComponentCreator('/otoroshi-biscuit-studio/docs/plugins/verifiers','d40'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/tokens_forge',component:ComponentCreator('/otoroshi-biscuit-studio/docs/tokens_forge','9b6'),exact:true,sidebar:"tutorialSidebar"}]}]}]},{path:'/otoroshi-biscuit-studio/',component:ComponentCreator('/otoroshi-biscuit-studio/','8de'),exact:true},{path:'*',component:ComponentCreator('*')}]);
 
 /***/ }),
 
@@ -4118,7 +4084,7 @@ var react = __webpack_require__(6540);
 // EXTERNAL MODULE: ./.docusaurus/docusaurus.config.mjs
 var docusaurus_config = __webpack_require__(4784);
 ;// ./.docusaurus/globalData.json
-const globalData_namespaceObject = /*#__PURE__*/JSON.parse('{"docusaurus-plugin-content-docs":{"default":{"path":"/otoroshi-biscuit-studio/docs","versions":[{"name":"current","label":"Next","isLast":true,"path":"/otoroshi-biscuit-studio/docs","mainDocId":"overview","docs":[{"id":"api","path":"/otoroshi-biscuit-studio/docs/api","sidebar":"tutorialSidebar"},{"id":"entities/attenuators","path":"/otoroshi-biscuit-studio/docs/entities/attenuators","sidebar":"tutorialSidebar"},{"id":"entities/keypairs","path":"/otoroshi-biscuit-studio/docs/entities/keypairs","sidebar":"tutorialSidebar"},{"id":"entities/rbac_policies","path":"/otoroshi-biscuit-studio/docs/entities/rbac_policies","sidebar":"tutorialSidebar"},{"id":"entities/remote_facts","path":"/otoroshi-biscuit-studio/docs/entities/remote_facts","sidebar":"tutorialSidebar"},{"id":"entities/verifiers","path":"/otoroshi-biscuit-studio/docs/entities/verifiers","sidebar":"tutorialSidebar"},{"id":"install","path":"/otoroshi-biscuit-studio/docs/install","sidebar":"tutorialSidebar"},{"id":"overview","path":"/otoroshi-biscuit-studio/docs/overview","sidebar":"tutorialSidebar"},{"id":"plugins/attenuators","path":"/otoroshi-biscuit-studio/docs/plugins/attenuators","sidebar":"tutorialSidebar"},{"id":"plugins/verifiers","path":"/otoroshi-biscuit-studio/docs/plugins/verifiers","sidebar":"tutorialSidebar"},{"id":"tokens_forge","path":"/otoroshi-biscuit-studio/docs/tokens_forge","sidebar":"tutorialSidebar"},{"id":"/category/entities","path":"/otoroshi-biscuit-studio/docs/category/entities","sidebar":"tutorialSidebar"},{"id":"/category/plugins","path":"/otoroshi-biscuit-studio/docs/category/plugins","sidebar":"tutorialSidebar"}],"draftIds":[],"sidebars":{"tutorialSidebar":{"link":{"path":"/otoroshi-biscuit-studio/docs/overview","label":"overview"}}}}],"breadcrumbs":true}}}');
+const globalData_namespaceObject = /*#__PURE__*/JSON.parse('{"docusaurus-plugin-content-docs":{"default":{"path":"/otoroshi-biscuit-studio/docs","versions":[{"name":"current","label":"Next","isLast":true,"path":"/otoroshi-biscuit-studio/docs","mainDocId":"overview","docs":[{"id":"api","path":"/otoroshi-biscuit-studio/docs/api","sidebar":"tutorialSidebar"},{"id":"entities/attenuators","path":"/otoroshi-biscuit-studio/docs/entities/attenuators","sidebar":"tutorialSidebar"},{"id":"entities/keypairs","path":"/otoroshi-biscuit-studio/docs/entities/keypairs","sidebar":"tutorialSidebar"},{"id":"entities/rbac_policies","path":"/otoroshi-biscuit-studio/docs/entities/rbac_policies","sidebar":"tutorialSidebar"},{"id":"entities/remote_facts","path":"/otoroshi-biscuit-studio/docs/entities/remote_facts","sidebar":"tutorialSidebar"},{"id":"entities/verifiers","path":"/otoroshi-biscuit-studio/docs/entities/verifiers","sidebar":"tutorialSidebar"},{"id":"install","path":"/otoroshi-biscuit-studio/docs/install","sidebar":"tutorialSidebar"},{"id":"introduction","path":"/otoroshi-biscuit-studio/docs/introduction","sidebar":"tutorialSidebar"},{"id":"overview","path":"/otoroshi-biscuit-studio/docs/overview","sidebar":"tutorialSidebar"},{"id":"plugins/attenuators","path":"/otoroshi-biscuit-studio/docs/plugins/attenuators","sidebar":"tutorialSidebar"},{"id":"plugins/verifiers","path":"/otoroshi-biscuit-studio/docs/plugins/verifiers","sidebar":"tutorialSidebar"},{"id":"tokens_forge","path":"/otoroshi-biscuit-studio/docs/tokens_forge","sidebar":"tutorialSidebar"},{"id":"/category/entities","path":"/otoroshi-biscuit-studio/docs/category/entities","sidebar":"tutorialSidebar"},{"id":"/category/plugins","path":"/otoroshi-biscuit-studio/docs/category/plugins","sidebar":"tutorialSidebar"}],"draftIds":[],"sidebars":{"tutorialSidebar":{"link":{"path":"/otoroshi-biscuit-studio/docs/overview","label":"overview"}}}}],"breadcrumbs":true}}}');
 ;// ./.docusaurus/i18n.json
 const i18n_namespaceObject = /*#__PURE__*/JSON.parse('{"defaultLocale":"en","locales":["en"],"path":"i18n","currentLocale":"en","localeConfigs":{"en":{"label":"English","direction":"ltr","htmlLang":"en","calendar":"gregory","path":"en"}}}');
 // EXTERNAL MODULE: ./.docusaurus/codeTranslations.json
@@ -8603,12 +8569,12 @@ var styles_module_default = /*#__PURE__*/__webpack_require__.n(styles_module);
 // EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
 var jsx_runtime = __webpack_require__(4848);
 ;// ./src/components/HomepageFeatures/index.js
-const FeatureList=[{title:'Easy to Use',Svg:(__webpack_require__(870)/* ["default"] */ .A),description:/*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment,{children:"Docusaurus was designed from the ground up to be easily installed and used to get your website up and running quickly."})},{title:'Focus on What Matters',Svg:(__webpack_require__(3844)/* ["default"] */ .A),description:/*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment,{children:["Docusaurus lets you focus on your docs, and we'll do the chores. Go ahead and move your docs into the ",/*#__PURE__*/(0,jsx_runtime.jsx)("code",{children:"docs"})," directory."]})},{title:'Powered by React',Svg:(__webpack_require__(6740)/* ["default"] */ .A),description:/*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment,{children:"Extend or customize your website layout by reusing React. Docusaurus can be extended while reusing the same header and footer."})}];function Feature({Svg,title,description}){return/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{className:(0,clsx/* default */.A)('col col--4'),children:[/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"text--center",children:/*#__PURE__*/(0,jsx_runtime.jsx)(Svg,{className:(styles_module_default()).featureSvg,role:"img"})}),/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{className:"text--center padding-horiz--md",children:[/*#__PURE__*/(0,jsx_runtime.jsx)(Heading/* default */.A,{as:"h3",children:title}),/*#__PURE__*/(0,jsx_runtime.jsx)("p",{children:description})]})]});}function HomepageFeatures(){return/*#__PURE__*/(0,jsx_runtime.jsx)("section",{className:(styles_module_default()).features,children:/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"container",children:/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"row",children:FeatureList.map((props,idx)=>/*#__PURE__*/(0,jsx_runtime.jsx)(Feature,{...props},idx))})})});}
+const FeatureList=[{title:'Biscuit Verifiers',Svg:(__webpack_require__(1863)/* ["default"] */ .A),description:/*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment,{children:"Biscuit Verifiers allow you to validate tokens securely and flexibly. They ensure that permissions and policies are respected at all times."})},{title:'Attenuators',Svg:(__webpack_require__(7144)/* ["default"] */ .A),description:/*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment,{children:"Attenuators enable you to refine or reduce the capabilities of tokens, granting only the minimal required permissions for secure operations."})},{title:'Remote Facts Loader',Svg:(__webpack_require__(2803)/* ["default"] */ .A),description:/*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment,{children:"The Remote Facts Loader allows integration of external data seamlessly into token verifications, expanding the scope and dynamism of your system."})},{title:'Hierarchical Delegation',Svg:(__webpack_require__(8945)/* ["default"] */ .A),description:/*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment,{children:"Biscuit tokens support hierarchical delegation, enabling flexible delegation of permissions while maintaining strict control over policies."})},{title:'Compact Design',Svg:(__webpack_require__(3147)/* ["default"] */ .A),description:/*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment,{children:"Biscuit tokens are compact and designed for efficiency, making them ideal for resource-constrained environments and fast transmissions."})},{title:'Auditable Policies',Svg:(__webpack_require__(8542)/* ["default"] */ .A),description:/*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment,{children:"Policies embedded in Biscuit tokens are easily auditable, ensuring that security and compliance requirements are met with transparency."})}];function Feature({Svg,title,description}){return/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{className:(0,clsx/* default */.A)('col col--4'),children:[/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"text--center",children:/*#__PURE__*/(0,jsx_runtime.jsx)(Svg,{className:(styles_module_default()).featureSvg,role:"img"})}),/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{className:"text--center padding-horiz--md",children:[/*#__PURE__*/(0,jsx_runtime.jsx)(Heading/* default */.A,{as:"h3",children:title}),/*#__PURE__*/(0,jsx_runtime.jsx)("p",{children:description})]})]});}function HomepageFeatures(){return/*#__PURE__*/(0,jsx_runtime.jsx)("section",{className:(styles_module_default()).features,children:/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"container",children:/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:"row",children:FeatureList.map((props,idx)=>/*#__PURE__*/(0,jsx_runtime.jsx)(Feature,{...props},idx))})})});}
 // EXTERNAL MODULE: ./src/pages/index.module.css
 var index_module = __webpack_require__(6830);
 var index_module_default = /*#__PURE__*/__webpack_require__.n(index_module);
 ;// ./src/pages/index.js
-function HomepageHeader(){const{siteConfig}=(0,useDocusaurusContext/* default */.A)();return/*#__PURE__*/(0,jsx_runtime.jsx)("header",{className:(0,clsx/* default */.A)('hero hero--primary',(index_module_default()).heroBanner),children:/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{className:"container",children:[/*#__PURE__*/(0,jsx_runtime.jsx)(Heading/* default */.A,{as:"h1",className:"hero__title",children:siteConfig.title}),/*#__PURE__*/(0,jsx_runtime.jsx)("p",{className:"hero__subtitle",children:siteConfig.tagline}),/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:(index_module_default()).buttons,children:/*#__PURE__*/(0,jsx_runtime.jsx)(Link/* default */.A,{className:"button button--secondary button--lg",to:"/docs/overview",children:"Docusaurus Tutorial - 5min \u23F1\uFE0F"})})]})});}function Home(){const{siteConfig}=(0,useDocusaurusContext/* default */.A)();return/*#__PURE__*/(0,jsx_runtime.jsxs)(Layout/* default */.A,{title:`Hello from ${siteConfig.title}`,description:"Description will go into a meta tag in <head />",children:[/*#__PURE__*/(0,jsx_runtime.jsx)(HomepageHeader,{}),/*#__PURE__*/(0,jsx_runtime.jsx)("main",{children:/*#__PURE__*/(0,jsx_runtime.jsx)(HomepageFeatures,{})})]});}
+function HomepageHeader(){const{siteConfig}=(0,useDocusaurusContext/* default */.A)();return/*#__PURE__*/(0,jsx_runtime.jsx)("header",{className:(0,clsx/* default */.A)('hero hero--primary',(index_module_default()).heroBanner),children:/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{className:"container",children:[/*#__PURE__*/(0,jsx_runtime.jsx)(Heading/* default */.A,{as:"h1",className:"hero__title",children:siteConfig.title}),/*#__PURE__*/(0,jsx_runtime.jsx)("p",{className:"hero__subtitle",children:siteConfig.tagline}),/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:(index_module_default()).buttons,children:/*#__PURE__*/(0,jsx_runtime.jsx)("a",{className:"button button--secondary button--lg",href:"https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/latest",target:"_blank",children:"Download latest version"})})]})});}function Home(){const{siteConfig}=(0,useDocusaurusContext/* default */.A)();return/*#__PURE__*/(0,jsx_runtime.jsxs)(Layout/* default */.A,{title:`Hello from ${siteConfig.title}`,description:"Description will go into a meta tag in <head />",children:[/*#__PURE__*/(0,jsx_runtime.jsx)(HomepageHeader,{}),/*#__PURE__*/(0,jsx_runtime.jsx)("main",{children:/*#__PURE__*/(0,jsx_runtime.jsx)(HomepageFeatures,{})})]});}
 
 /***/ }),
 
@@ -13927,6 +13893,39 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 /***/ }),
 
+/***/ 7605:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4NDQuNjY5MyIgaGVpZ2h0PSI1NzYiIHZpZXdCb3g9IjAgMCA4NDQuNjY5MyA1NzYiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiByb2xlPSJpbWciIGFydGlzdD0iS2F0ZXJpbmEgTGltcGl0c291bmkiIHNvdXJjZT0iaHR0cHM6Ly91bmRyYXcuY28vIj48cGF0aCBpZD0iZmZiNTNlMTUtOTZhOC00OWU0LTg0NzQtZGRlMzFmNDdjODM4LTM4NSIgZGF0YS1uYW1lPSJQYXRoIDEzMyIgZD0iTTY4MC4zOTMxNyw3MjIuNjQwMzJhNTAuODA3MzksNTAuODA3MzksMCwwLDEtMi4zNzM2NiwxNC4wNDQ2OWMtLjAzMjA4LjEwNTUzLS4wNjc2OC4yMDk0Ni0uMTAyMzMuMzE1aC04Ljg1NzI5Yy4wMDkzLS4wOTQ2Mi4wMTg5My0uMjAwMTYuMDI4MjQtLjMxNS41OTA1Mi02Ljc4OTMyLTIuNzgzMjgtNDcuNjE4NTQtNi44NTQ0My01NC42ODVDNjYyLjU5MDM4LDY4Mi41NzMyMiw2ODEuMDc5OTIsNzAxLjA2NzU3LDY4MC4zOTMxNyw3MjIuNjQwMzJaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTc3LjY2NTM1IC0xNjIpIiBmaWxsPSIjZTZlNmU2Ii8+PHBhdGggaWQ9ImIwZDUzNzM2LTkzZTctNDA1Ny1iZTE4LTllOWNkMTdmMzkxYi0zODYiIGRhdGEtbmFtZT0iUGF0aCAxMzQiIGQ9Ik02NzkuNzI4NTMsNzM2LjY4NWMtLjA3NDEuMTA1NTMtLjE1MTA5LjIxMTA3LS4yMy4zMTVoLTYuNjQ1Yy4wNTAzNy0uMDg5ODIuMTA4NzQtLjE5NTM1LjE3NjQyLS4zMTUsMS4wOTc2Ni0xLjk4MSw0LjM0NjY5LTcuOTA0Myw3LjM2MjUyLTE0LjA0NDY5LDMuMjM5NzMtNi41OTg3OSw2LjIxNDUtMTMuNDQ3NzYsNS45NjQtMTUuOTI2NjJDNjg2LjQzNDEyLDcwNy4yNzI0NSw2ODguNjc2OSw3MjQuMzE2LDY3OS43Mjg1Myw3MzYuNjg1WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny42NjUzNSAtMTYyKSIgZmlsbD0iI2U2ZTZlNiIvPjxwYXRoIGQ9Ik0xMDIwLjk3ODU1LDU1Ny41Mzk0OWExLjM1NDQ2LDEuMzU0NDYsMCwwLDEtMS4zNDk3My0xLjI1OTYyLDYwLjQ0Niw2MC40NDYsMCwwLDAtNjAuMTIwMjUtNTYuMDFjLTEuODI2MjcsMC0zLjc0MTUuMDkyNTktNS42OTI2LjI3NTQ3YTEuMzU4ODMsMS4zNTg4MywwLDAsMS0xLjMwMTc5LS42NzUyOCw3MS43NTcsNzEuNzU3LDAsMCwwLTEzMS4yMjIzNCwxNS42MDcyMSwxLjM2Mjc4LDEuMzYyNzgsMCwwLDEtMS4zMzEzLjk3NzJsLS40NTMzLS4wMTM1NmMtLjIzNzUyLS4wMDc5My0uNDc1LS4wMTYyLS43MTQ1NS0uMDE2MkE1MC43MTE4OCw1MC43MTE4OCwwLDAsMCw3NjkuMzc1MSw1NTYuNDY0NGExLjM1NDQzLDEuMzU0NDMsMCwwLDEtMS4zMjUzNSwxLjA3NTA5SDY1NC4xMjU4OWExLjM1NDUzLDEuMzU0NTMsMCwxLDEsMC0yLjcwOTA2SDc2Ni45NjI3NWE1My40NDM1Niw1My40NDM1NiwwLDAsMSw1MS44Mjk5NC00MS4xMTQ4Yy4wNjU2NCwwLC4xMzExMi4wMDA2Ni4xOTY1Mi4wMDEzMmE3NS4wOTE4OCw3NS4wOTE4OCwwLDAsMSwyNi4xMDk3MS0zNy40OTA3QTczLjc1NTI5LDczLjc1NTI5LDAsMCwxLDg5MC4yMTM0OSw0NjFhNzQuNzA0LDc0LjcwNCwwLDAsMSw2NC4yMTU0MiwzNi43NzI0M2MxLjczNjE2LS4xNDA1NSwzLjQ0MTA2LS4yMTE2NSw1LjA3OTY2LS4yMTE2NWE2My4xNjQxNCw2My4xNjQxNCwwLDAsMSw2Mi44MjI3LDU4LjUyOTI3LDEuMzU0NDQsMS4zNTQ0NCwwLDAsMS0xLjI1NjQ4LDEuNDQ2MTRDMTAyMS4wNDI1NCw1NTcuNTM4NSwxMDIxLjAxMDQ3LDU1Ny41Mzk0OSwxMDIwLjk3ODU1LDU1Ny41Mzk0OVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xNzcuNjY1MzUgLTE2MikiIGZpbGw9IiNlNWU1ZTUiLz48cGF0aCBkPSJNOTU1Ljc0NTU3LDU3OS4zNDNINzIxLjg2NDQ2YTEuMzU0NTQsMS4zNTQ1NCwwLDAsMSwwLTIuNzA5MDdIOTU1Ljc0NTU3YTEuMzU0NTQsMS4zNTQ1NCwwLDAsMSwwLDIuNzA5MDdaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTc3LjY2NTM1IC0xNjIpIiBmaWxsPSIjZTVlNWU1Ii8+PHBhdGggZD0iTTc4OS44ODQzLDYwNEg2OTYuMzU3YTEuMzU0NTMsMS4zNTQ1MywwLDEsMSwwLTIuNzA5MDZINzg5Ljg4NDNhMS4zNTQ1MywxLjM1NDUzLDAsMCwxLDAsMi43MDkwNloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xNzcuNjY1MzUgLTE2MikiIGZpbGw9IiNlNWU1ZTUiLz48cGF0aCBkPSJNNjExLjEzMDY4LDI3Ni4zNTY0NWExLjk5OTg5LDEuOTk5ODksMCwwLDEtMS45OTI5Mi0xLjg1OTg3QTcwLjY4NCw3MC42ODQsMCwwLDAsNTM4LjgzNDU0LDIwOWMtMi4xMzIwOCwwLTQuMzcxODMuMTA4NC02LjY1NzQ3LjMyMjI3YTEuOTk5MjYsMS45OTkyNiwwLDAsMS0xLjkyMTg4LS45OTcwNyw4My45ODg1NCw4My45ODg1NCwwLDAsMC0xNTMuNTkwMzMsMTguMjY3MDksMS45OTA3NCwxLjk5MDc0LDAsMCwxLTEuOTY2OCwxLjQ0Mjg3bC0uNTMxNzQtLjAxNjEyYy0uMjc2NjEtLjAwOTI3LS41NTMtLjAxOS0uODMxNzgtLjAxOWE1OS4yMzUxNCw1OS4yMzUxNCwwLDAsMC01Ny43MjMxNSw0Ni43NjksMiwyLDAsMCwxLTEuOTU3LDEuNTg3NDFoLTEzMy45ODlhMiwyLDAsMCwxLDAtNEgzMTIuMDUzNzhBNjMuMjcwNzIsNjMuMjcwNzIsMCwwLDEsMzczLjI2NTQ1LDIyNGE4Ny45ODc3OSw4Ny45ODc3OSwwLDAsMSwxNTkuODE2MTYtMTguNzY5NTNjMS45NjcyOC0uMTUzMzIsMy44OTcyMS0uMjMwNDcsNS43NTI5My0uMjMwNDdBNzQuNjk3MDYsNzQuNjk3MDYsMCwwLDEsNjEzLjEyOCwyNzQuMjE2MzFhMS45OTk4NCwxLjk5OTg0LDAsMCwxLTEuODU1MjIsMi4xMzUyNUM2MTEuMjI1MTYsMjc2LjM1NSw2MTEuMTc3OCwyNzYuMzU2NDUsNjExLjEzMDY4LDI3Ni4zNTY0NVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xNzcuNjY1MzUgLTE2MikiIGZpbGw9IiNlNWU1ZTUiLz48cGF0aCBkPSJNNTg3LjMzNDU0LDMwMmgtMzI4YTIsMiwwLDAsMSwwLTRoMzI4YTIsMiwwLDAsMSwwLDRaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTc3LjY2NTM1IC0xNjIpIiBmaWxsPSIjZTVlNWU1Ii8+PHBhdGggZD0iTTMzOS4zMzQ1NCwzMzFoLTExMGEyLDIsMCwwLDEsMC00aDExMGEyLDIsMCwxLDEsMCw0WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny42NjUzNSAtMTYyKSIgZmlsbD0iI2U1ZTVlNSIvPjxwb2x5Z29uIHBvaW50cz0iMzY4Ljk2NSA1NTEuNzQ4IDM3My4xNjQgNTQwLjk0NiAzMzMuNTAxIDUxOS42MDkgMzI3LjMwMyA1MzUuNTUxIDM2OC45NjUgNTUxLjc0OCIgZmlsbD0iIzlmNjE2YSIvPjxwYXRoIGQ9Ik01NjkuMTI5NDcsNjg1LjU3MDE4YTE0LjUzNywxNC41MzcsMCwwLDAtMTguODI1NDEsOC4yODYxMWwtMi44MzI4Nyw3LjI4MTQxTDU0My4xMDM4Niw3MTIuMzc3bC0xLjA2NzY0LDIuNzU1ODMsMTMuOTk1NjksNS40NDQyOSwxMy41Mzc2LTM0LjgzMjMyWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny42NjUzNSAtMTYyKSIgZmlsbD0iIzJmMmU0MSIvPjxwYXRoIGQ9Ik01NDMuMTA1NTMsNjkyLjk2MDQ1bC0xLjgyNjQsNC44NDMxMi00LjU1NzkxLDEyLjA4ODMxLS4xMDkzMy4zMDIzMmMtMTEuNjEyNTMsMS40OTIwOC0yNC4zNDI5LTEuNDMzLTM2LjExNzU1LTUuOTc3MTVhMTQ2LjgxMDM1LDE0Ni44MTAzNSwwLDAsMS0xMy44MjQtNi4xNjg1OWMtNi42NTg3MS0zLjM2NDQ5LTEyLjYyMDc0LTYuOTE1NDYtMTcuMzc3MDYtOS45NTI1LTcuMTYxMjMtNC41OTYyMS0xMS41ODkzLTguMDQ3MjktMTEuNTg5My04LjA0NzI5cy0xLjE2OTgzLDEuMDU3MTMtMy4yODY2NywyLjg2OTkzYy0yLjgzNzIzLDIuNDI3NTgtNy4zNzA4OSw2LjIxODQxLTEzLjExMzU4LDEwLjY4MDcxcS0zLjI4NiwyLjU3MTI0LTcuMDU2MjEsNS4zNzg5Yy0xOC41MjgzLDEzLjc0MzA4LTQyLjMwNi0yMi45Mjg0OS00Mi4zMDYtMjIuOTI4NDlzNi42ODczNS00LjI1NzUxLDguNDM0MzgtNS4wODQyYzUuNjI1NDUtMi42NjE0NiwxOC44NDEzMy04Ljk0MTU2LDMwLjI0MzE4LTE0LjUyMjU2LDUuODc0MTMtMi44Nzk2OCwxMS4yNTk4NC01LjU3OTQ5LDE0Ljg3NTc5LTcuNDk4MzEsMTIuODA0MzktNi44MTcyMiwyOC43MjExOSw2LjA4MjUyLDI4LjcyMTE5LDYuMDgyNTJaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTc3LjY2NTM1IC0xNjIpIiBmaWxsPSIjMmYyZTQxIi8+PHBhdGggZD0iTTU0My4xMDU1Myw2OTIuOTYwNDVsLTEuODI2NCw0Ljg0MzEyLTQuNTU3OTEsMTIuMDg4MzEtLjEwOTMzLjMwMjMyYy0xMS42MTI1MywxLjQ5MjA4LTI0LjM0MjktMS40MzMtMzYuMTE3NTUtNS45NzcxNWExNDYuODEwMzUsMTQ2LjgxMDM1LDAsMCwxLTEzLjgyNC02LjE2ODU5Yy02LjY1ODcxLTMuMzY0NDktMTIuNjIwNzQtNi45MTU0Ni0xNy4zNzcwNi05Ljk1MjUtNy4xNjEyMy00LjU5NjIxLTExLjU4OTMtOC4wNDcyOS0xMS41ODkzLTguMDQ3MjlzLTEuMTY5ODMsMS4wNTcxMy0zLjI4NjY3LDIuODY5OTNjLTIuODM3MjMsMi40Mjc1OC03LjM3MDg5LDYuMjE4NDEtMTMuMTEzNTgsMTAuNjgwNzFxLTMuMjg2LDIuNTcxMjQtNy4wNTYyMSw1LjM3ODljLTE4LjUyODMsMTMuNzQzMDgtNDIuMzA2LTIyLjkyODQ5LTQyLjMwNi0yMi45Mjg0OXM2LjY4NzM1LTQuMjU3NTEsOC40MzQzOC01LjA4NDJjNS42MjU0NS0yLjY2MTQ2LDE4Ljg0MTMzLTguOTQxNTYsMzAuMjQzMTgtMTQuNTIyNTYsNS44NzQxMy0yLjg3OTY4LDExLjI1OTg0LTUuNTc5NDksMTQuODc1NzktNy40OTgzMSwxMi44MDQzOS02LjgxNzIyLDI4LjcyMTE5LDYuMDgyNTIsMjguNzIxMTksNi4wODI1MloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xNzcuNjY1MzUgLTE2MikiIG9wYWNpdHk9IjAuMTQiLz48cGF0aCBkPSJNNDA5LjkxNTI0LDYyMC45Nzg3OUE4Ljg2Mzc0LDguODYzNzQsMCwwLDAsNDAzLjEyMyw2MzIuNzUxNGwtMTQuOTA4MywxMy43MTE4NSw2LjEyMywxMS4wOTIsMjAuNzgxNDQtMTkuNjU5NDhhOC45MTE3OCw4LjkxMTc4LDAsMCwwLTUuMjAzOTMtMTYuOTE3WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny42NjUzNSAtMTYyKSIgZmlsbD0iIzlmNjE2YSIvPjxwYXRoIGQ9Ik0zNjUuMDU3LDY4My4zMjA2OXEtMS4wMTAxMSwwLTIuMDIzMjMtLjA4NzI0YTIzLjgyLDIzLjgyLDAsMCwxLTE5LjE4NjY2LTEyLjgxMzI2bC0yMy44ODQzOC00NS45NzFhMTMuMTkwNDIsMTMuMTkwNDIsMCwwLDEsMjIuODA5MTgtMTMuMjAwNWwyMi4wMzQ5Myw0OS40NDEsMjkuOTgzMTUtMjQuMzYxMzksMTcuMzYwNTEsNi43NTgxTDM4Mi44MzIsNjc1LjQ1MzkyQTI0LjA4OTg5LDI0LjA4OTg5LDAsMCwxLDM2NS4wNTcsNjgzLjMyMDY5WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny42NjUzNSAtMTYyKSIgZmlsbD0iI2NjYyIvPjxwYXRoIGQ9Ik0yNjkuMjk4MzksNzM3LjI5MmE4Ljg2MzczLDguODYzNzMsMCwwLDAsNi4xNzQ0NC0xMi4xMDhsMTQuMTc5NDEtMTQuNDY0MzJMMjgyLjk2MzkyLDY5OS45NTlsLTE5LjczNzE3LDIwLjcwNzY3YTguOTExNzcsOC45MTE3NywwLDAsMCw2LjA3MTY0LDE2LjYyNTMzWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny42NjUzNSAtMTYyKSIgZmlsbD0iIzlmNjE2YSIvPjxwYXRoIGQ9Ik00MDQuMjA2ODEsNDgyLjA5MzZoMS4zODk0NFY0NDQuMDMwMTJBMjIuMDMwMSwyMi4wMzAxLDAsMCwxLDQyNy42MjYzNCw0MjJINTA4LjI2OWEyMi4wMzAxMSwyMi4wMzAxMSwwLDAsMSwyMi4wMzAxNSwyMi4wMzAwNVY2NTIuODQ5MzFhMjIuMDMwMTEsMjIuMDMwMTEsMCwwLDEtMjIuMDMwMDksMjIuMDMwMTJINDI3LjYyNjQ0YTIyLjAzMDEsMjIuMDMwMSwwLDAsMS0yMi4wMzAxNi0yMi4wM1Y1MDkuMTg3ODNoLTEuMzg5NDdaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTc3LjY2NTM1IC0xNjIpIiBmaWxsPSIjM2YzZDU2Ii8+PHBhdGggZD0iTTQyNi43Mzc1LDQyNy43MzE0N0g0MzcuMjY0YTcuODE2MjMsNy44MTYyMywwLDAsMCw3LjIzNjc2LDEwLjc2ODIxaDQ2LjE5OTE0YTcuODE2MjEsNy44MTYyMSwwLDAsMCw3LjIzNjc2LTEwLjc2ODIyaDkuODMxODFhMTYuNDUxODQsMTYuNDUxODQsMCwwLDEsMTYuNDUxODUsMTYuNDUxODJWNjUyLjY5NjEyQTE2LjQ1MTg0LDE2LjQ1MTg0LDAsMCwxLDUwNy43Njg1Miw2NjkuMTQ4aC04MS4wMzFhMTYuNDUxODQsMTYuNDUxODQsMCwwLDEtMTYuNDUxODUtMTYuNDUxODNoMFY0NDQuMTgzMjlBMTYuNDUxODMsMTYuNDUxODMsMCwwLDEsNDI2LjczNzUsNDI3LjczMTQ3WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny42NjUzNSAtMTYyKSIgZmlsbD0iI2ZmZiIvPjxjaXJjbGUgY3g9IjI4OS42MzA2NCIgY3k9IjM4Ni42ODUxOSIgcj0iNDYuNjkxIiBmaWxsPSIjNmM2M2ZmIi8+PHBvbHlnb24gcG9pbnRzPSIyODUuMTgxIDQwNi4zOTUgMjcxLjIwNyAzODguNDI2IDI3OS4zMzMgMzgyLjEwNSAyODUuOTUgMzkwLjYxMyAzMDguMzA0IDM2Ny4wMTYgMzE1Ljc3OSAzNzQuMDk4IDI4NS4xODEgNDA2LjM5NSIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik0zNTcuNzc2NTksNTkxLjI5NTdIMzAyLjk1MTFhNC4yNTg1LDQuMjU4NSwwLDAsMS00LjI1MzctNC4yNTM3VjU2My40MTAzMmEzMS42NjY0NSwzMS42NjY0NSwwLDAsMSw2My4zMzI4OSwwVjU4Ny4wNDJBNC4yNTg1LDQuMjU4NSwwLDAsMSwzNTcuNzc2NTksNTkxLjI5NTdaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTc3LjY2NTM1IC0xNjIpIiBmaWxsPSIjMmYyZTQxIi8+PHBvbHlnb24gcG9pbnRzPSIzNjUuNjE1IDU2Ni45NCAzNzAuNjMxIDU1Ni40OTMgMzMyLjcyNCA1MzIuMTcxIDMyNS4zMiA1NDcuNTkgMzY1LjYxNSA1NjYuOTQiIGZpbGw9IiM5ZjYxNmEiLz48cGF0aCBkPSJNNTY3Ljg3NzQ1LDcwMi41NzM4MWExNC41MzcsMTQuNTM3LDAsMCwwLTE5LjQwNjM2LDYuODE1MzRsLTMuMzgzOSw3LjA0MjI1LTUuMjE3OSwxMC44NzA1Ny0xLjI3NjIsMi42NjU2NiwxMy41MzYwNiw2LjUwMzQ1LDE2LjE3MzYyLTMzLjY4OTM0WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny42NjUzNSAtMTYyKSIgZmlsbD0iIzJmMmU0MSIvPjxwYXRoIGQ9Ik01NDEuMzYyNjYsNzA3Ljk0MjkybC0yLjE5MzA4LDQuNjg4NDktNS40NzMxNCwxMS43MDI0MS0uMTMyMjMuMjkzYy0xMS42OTI4NC41OTU1Mi0yNC4xNjA4NS0zLjI5OS0zNS41NTE2LTguNzM0MjZhMTQ2LjgwOTA4LDE0Ni44MDkwOCwwLDAsMS0xMy4zMDkyLTcuMjEyMzljLTYuMzgwNTYtMy44NjYxMS0xMi4wNTIxNi03Ljg2NDYzLTE2LjU2MTEtMTEuMjU4MTEtNi43ODctNS4xMzI3OS0xMC45MzY4MS04LjkxMzg2LTEwLjkzNjgxLTguOTEzODZzLTEuMjQ3NTguOTY0MTQtMy40OTc0NCwyLjYwODk1Yy0zLjAxNTM1LDIuMjAyNDMtNy44MjY4NCw1LjYzMzc1LTEzLjg5NTM4LDkuNjQxNjhxLTMuNDczNzksMi4zMTExOS03LjQ0ODU5LDQuODIwODljLTE5LjUyOTM3LDEyLjI3OS00Ny4zMDEyMSwyNy4yMzMxNS03MC45MjM2NSwzMC4zOTAzMS00MS40ODc2Nyw1LjU0ODcxLTMxLjcyMy00OS44MTU1My0zMS43MjMtNDkuODE1NTNsMzMuMDE4MTItMTcuMTQ3MTYsMTQuMDE4MzgsMi44NDUyNiwxNS42MDYzNywzLjE1NzE2LDUuNTI5NjcsMS4xMjQ4N3MxLjA0OTM1LS4zOTcsMi44NTQ3My0xLjA4N2M1LjgxMzMtMi4yMjE0MSwxOS40NzI1OS03LjQ2NzY0LDMxLjI2OTUxLTEyLjE1NjE4LDYuMDc4LTIuNDE5ODgsMTEuNjU1MjEtNC42OTgsMTUuNDA3OS02LjMzMzMsMTMuMjkwMjgtNS44MTMzNiwyOC4xNjksOC4yNzEwOSwyOC4xNjksOC4yNzEwOVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xNzcuNjY1MzUgLTE2MikiIGZpbGw9IiMyZjJlNDEiLz48Y2lyY2xlIGN4PSIxNjAuNDYwOTIiIGN5PSI0MDguMjQ0NjEiIHI9IjIyLjEwNjI1IiBmaWxsPSIjOWY2MTZhIi8+PHBhdGggZD0iTTMwOS4zNjY3NSw2MzEuNjA4ODVsMTkuMjU2ODEsNTQuNTk0NzItLjExNTYyLjE5MTA4Yy0yLjY3ODQxLDQuNDI3NzEtMy41NTM3NSw3Ljk5OTIzLTIuNTMxMTcsMTAuMzI4MjRhNC41MDA1Myw0LjUwMDUzLDAsMCwwLDIuODUzMzQsMi40NjE0OGw0NS41NzAxMy0zMS44NTI0NS0xLjU5NTYtMTIuNzY2MTguMDg4ODUtLjE0MjYzYzQuNDA0NjMtNy4wNDc1LDUuODMwODQtMTMuNDI5OSw0LjIzOTYzLTE4Ljk2OS0yLjA2NDc3LTcuMTg3ODItOC42MjYtMTAuNDUxLTguNjkyLTEwLjQ4MzMzbC0uMTU4NzctLjEyNTA4TDM0NS41NTM0NCw1OTcuMTgyM2wtMzAuMzgyODYsNS4zOTc5WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny42NjUzNSAtMTYyKSIgZmlsbD0iI2NjYyIvPjxwYXRoIGQ9Ik0yODAuMDgyMzksNzI3LjQzNTc3bC0xMi45MDA1LTE1Ljg3NzU0LDMxLjA5ODc0LTUxLjMzNywxNC40OTkwOS00NC44MTc1Ni40NDk3OS4xNDUzOS0uNDQ5NzktLjE0NTM5YTE4LjAwNDA2LDE4LjAwNDA2LDAsMSwxLDMyLjEwNDcsMTUuNTM2OUwzMTguMjY2LDY3MC44MjAzNloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xNzcuNjY1MzUgLTE2MikiIGZpbGw9IiNjY2MiLz48cGF0aCBkPSJNMzY5LjUyMTgxLDU2NS43NzM0OUgzMzUuOTk3MzdsLS4zNDM4Ni00LjgxMzExLTEuNzE4ODQsNC44MTMxMWgtNS4xNjJsLS42ODEyNi05LjUzOTQ0LTMuNDA2NzQsOS41Mzk0NGgtOS45ODgzMXYtLjQ3MjYzYTI1LjA3NzcyLDI1LjA3NzcyLDAsMCwxLDI1LjA0OTM1LTI1LjA0OTU4aDQuNzI2NTZhMjUuMDc3OTEsMjUuMDc3OTEsMCwwLDEsMjUuMDQ5NTgsMjUuMDQ5NThaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTc3LjY2NTM1IC0xNjIpIiBmaWxsPSIjMmYyZTQxIi8+PHBhdGggZD0iTTMzNS43MjMsNTk1LjcwN2E0LjM0NTEyLDQuMzQ1MTIsMCwwLDEtLjc1MjgtLjA2NjQ2bC0yNC41NDgxLTQuMzMxMjVWNTUwLjczODUzaDI3LjAyMjczbC0uNjY5Ljc4Yy05LjMwODIxLDEwLjg1NTgxLTIuMjk1NTUsMjguNDU4NjQsMi43MTMsMzcuOTg1MTZhNC4xOTA3NCw0LjE5MDc0LDAsMCwxLS4zMzMsNC40NDk0QTQuMjM2Niw0LjIzNjYsMCwwLDEsMzM1LjcyMyw1OTUuNzA3WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny42NjUzNSAtMTYyKSIgZmlsbD0iIzJmMmU0MSIvPjxwYXRoIGQ9Ik03NzIuMDg2NTEsNzM4aC01MzlhMSwxLDAsMSwxLDAtMmg1MzlhMSwxLDAsMSwxLDAsMloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xNzcuNjY1MzUgLTE2MikiIGZpbGw9IiNjYmNiY2IiLz48L3N2Zz4=");
+
+/***/ }),
+
+/***/ 3492:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MjQuMjU1NzEiIGhlaWdodD0iNTMwLjU5MTQxIiB2aWV3Qm94PSIwIDAgOTI0LjI1NTcxIDUzMC41OTE0MSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHJvbGU9ImltZyIgYXJ0aXN0PSJLYXRlcmluYSBMaW1waXRzb3VuaSIgc291cmNlPSJodHRwczovL3VuZHJhdy5jby8iPjxwYXRoIGQ9Ik0xNTMuOTk4MzksMzQzLjk2NjQ2YTEyLjQxNTY3LDEyLjQxNTY3LDAsMCwxLTE1LjgyMDIzLTE0LjU4Nzc5YzcuMjIzNy0zMC4wNTI2MSwzNC42OTE2MS0xMDMuNTQ2NDIsMTM0Ljc1ODEtMTM0LjQ1Nzg0LDQzLjM0NTIyLTEzLjM4OTczLDg0LjkxMzU3LTEzLjYxODMsMTIzLjQ5OTktLjY4NDQyLDMxLjc0MzU4LDEwLjU5NjMsNTIuODE2NjYsMjcuMTc4MTcsNjIuODk2OSwzNS4xOTI3NmExMi4zMTM0MSwxMi4zMTM0MSwwLDAsMSwyLjAxNjg0LDE3LjI5NjZxLS4wMzc2OS4wNDc1Ni0uMDc1NzguMDk0NzhhMTIuNjAzMzksMTIuNjAzMzksMCwwLDEtMTcuNTYwNjgsMS45OTMzN2MtMTguMjYyOTItMTQuMzg5NjUtNzMuNjg0MTktNTguMTA1MDctMTYzLjUwNy0zMC4zNThDMTkyLjUwMDEyLDI0NS41NDkxNywxNjguNjc1NTksMzA4LjkyMiwxNjIuNDk2MTMsMzM0Ljg0OThhMTIuMjMxLDEyLjIzMSwwLDAsMS04LjQ5NzcyLDkuMTE2NjNaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTM3Ljg3MjE0IC0xODQuNzA0MykiIGZpbGw9IiM2YzYzZmYiLz48cGF0aCBkPSJNNDI2LjczODQ1LDUxNC4xODUzM2ExMi4zNDYzNywxMi4zNDYzNywwLDAsMS0zLjA2NzY2LjU3NjY2Yy03OC4xNzUwNiw0LjIxMDQ4LTEyNy45MTMyNi02MC43MzUyOS0xMjkuOTU1MzEtNjMuNDQzbC0uMzc4NTQtLjYyNWMtMS4yNDY0MS0xLjkzMzQtMzEuMzQxODQtNDcuNzIyNTEtMTguMDkyODEtODQuMDg3NzksNi4wODU1Ny0xNi42MjUwOCwxOS41NDQ0NS0yOC4yOTQzNyw0MC4xMTY0OC0zNC42NDkyNSwxOS4xMzI4Ni01LjkxMDMxLDM0Ljc4OS00LjE2MjI4LDQ4LjExNTA2LDUuMzUzNTIsMTAuOTI2ODIsNy43NTMwNiwxNy45Mjk2NCwxOS4zMTQ5MiwyNC43MTcwNiwzMC40Nzk2NSwxNC4xMTY0OCwyMy4xODIyMywyMi43Njc3MywzNC45NzY3OCw0OS41OTk2NSwyOC4xNzE5NCwxMS43ODEzLTIuOTkwMTgsMTcuMjgyMjctMTIuMjAxMjIsMTkuNzk1MzgtMTkuMzc2MzcsNi43NjYzNC0xOS41MjQ3NS43Njk1Ni00Ni4xNDI2MS0xNS4wOTU5NC02Ni4yODA2NC0yMC40OTczNy0yNi4xMjYxNy03Ny44NTk1OC02OS41MjAyNS0xNDguNjM0MTktNDcuNjU3MzQtMzAuMjIzMTMsOS4zMzYxOS01NC45NTc1NCwyNy43MzQzOC03MS41MjE2Niw1My4wNjc4Ny0xMy43MjIxLDIxLjAyNDMtMjEuNjk5MzMsNDcuMTM2NTEtMjEuODc0MjIsNzEuNDg3NjUtLjI3NTM1LDQ1LjM0MDc2LDM2Ljg4NDExLDEwNC45OTEyNywzNy4yMzY0OSwxMDUuNTMxNTlhMTIuMjkwMjEsMTIuMjkwMjEsMCwwLDEtMy45MDU3MywxNi45MzY1cS0uMDU2OTQuMDM1NjktLjExNDMyLjA3MDY0YTEyLjU4NDIxLDEyLjU4NDIxLDAsMCwxLTE3LjIzNS0zLjg1N2MtMS42NzcyMy0yLjcyNzY5LTQxLjM1NTY2LTY2LjMyOTY0LTQxLjAzNi0xMTguNzMyMTMuNDQ1LTU2Ljc5OTg5LDM0Ljk2MTM2LTEyNC41ODgzNSwxMTEuMTU0MTEtMTQ4LjEyNSwzNS4yMTgtMTAuODc5MTUsNzIuMjI4NTEtOS4wNTA2MywxMDcuMDU3NTQsNS4yMjk0LDI2Ljk5NTE2LDExLjEzNTc1LDUxLjk3OSwyOS41Njk5Miw2OC40OTY4OSw1MC42MTkyNCwyMS4wOTc1MywyNi44NjgxNSwyOC41MzA0Nyw2Mi4wMzc4NSwxOC45MjYxMiw4OS40ODczNC02LjQwMjkxLDE4LjI5OTYzLTE5LjY1ODc4LDMwLjkyNjMyLTM3LjI3NTMyLDM1LjQ0MDg1LTQ1LjkxMzc5LDExLjY3OTI2LTYzLjkwMDI0LTE3LjcyNjQ1LTc3LjAxODA5LTM5LjE3Njk0LTEzLjQ3MDI0LTIxLjk5MDgxLTIwLjkyMTE1LTMyLjMwMTM4LTQ0LjIwMjI3LTI1LjEwOTY0LTEyLjc4MzQ2LDMuOTQ4OTMtMjAuNjU4OSwxMC4yNzY2OS0yMy45NzExNCwxOS4zNjgtNC41MDcyMiwxMi40MjgtLjIzNTYsMjguMzU3Niw0LjE0MTQ4LDM5LjUyNXEuMDY4LjE3NTEzLjEzNjMyLjM0OTQxYTEwMC45NDYyNCwxMDAuOTQ2MjQsMCwwLDAsMjUuNjEzMTksMzcuMjUyNWMxOC4wMTIxMywxNi42MzM1OSw1MS40NTEwOCw0MC4zNDcsOTQuMDY5ODYsMzguMDYwMzlhMTIuMzA4NjIsMTIuMzA4NjIsMCwwLDEsMTMuMDQ4MDksMTEuNTIxNzZxLjAwMzY2LjA1OS4wMDY3Ni4xMTgwOGExMi41Nzg4NywxMi41Nzg4NywwLDAsMS04Ljg1MjMxLDEyLjQ3MloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMzcuODcyMTQgLTE4NC43MDQzKSIgZmlsbD0iIzZjNjNmZiIvPjxwYXRoIGQ9Ik0zMzEuOTQwMjcsNTM3LjUzNDE4YTEyLjYxNTU0LDEyLjYxNTU0LDAsMCwxLTkuODcwNTEtMS4wMzEzNmMtMzguNTU3MTUtMjEuODQ1Ny02NS42MjQ3LTUxLjIyODI2LTg1LjExNi05Mi40MTA0M2wtLjA3ODQ1LS4yNTRjLTEyLjI4NDE3LTI3LjQ1Nzc0LTE5LjY3OS02OS40MDktMy4zNjcyMi0xMDQuODY1NjUsMTIuMDQyMTktMjYuMTYyMzQsMzQuNjQ2NC00NC41NTE2NCw2Ny4wNzA2NC01NC41Njc3NywzOC4zNTAzNC0xMS44NDY3Niw3NC4wNTkxNC0zLjEyNDUzLDEwMy4zNjYzOSwyNS4xMDI1NEExNTMuMTcwNDUsMTUzLjE3MDQ1LDAsMCwxLDQzNS45MjkxNSwzNTQuODA2YTEyLjUxNjQ2LDEyLjUxNjQ2LDAsMCwxLTIzLjAzMDY3LDkuODAzNzUsMTI4LjI2MDY5LDEyOC4yNjA2OSwwLDAsMC0yNi45NjYxMi0zNy43NjAyOWMtMjIuNTg5ODktMjEuNDkyMS00OC44NTAxMS0yNy44NDctNzguMTQyLTE4Ljc5ODUzLTI1LjMxMjkyLDcuODE5MzgtNDIuNzQzMjIsMjEuNjQyODQtNTEuNjY1OTQsNDEuMDkxODMtMTIuODY3NDksMjcuOTkzOC02LjI0MjU3LDYyLjk0OTQxLDMuMzcwNiw4NC40NjI0NCwxNy4xODY0NSwzNi40MjI2Nyw0MS4wMjU0Miw2Mi4yNTg0OCw3NC45NjA5LDgxLjQ1MTM5YTEyLjI1NTMxLDEyLjI1NTMxLDAsMCwxLDQuNjU0NTgsMTYuNjk0OTJxLS4wNDcuMDgzMjgtLjA5NTI5LjE2NTlBMTIuNTY4NjEsMTIuNTY4NjEsMCwwLDEsMzMxLjk0MDI3LDUzNy41MzQxOFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMzcuODcyMTQgLTE4NC43MDQzKSIgZmlsbD0iIzZjNjNmZiIvPjxjaXJjbGUgY3g9IjE5OC4xMjg0OCIgY3k9IjIxMy43NjgyMSIgcj0iMTUuOTQ5MDUiIGZpbGw9IiNlNmU2ZTYiLz48cGF0aCBkPSJNNjIzLjU3NTU5LDU5My4yMjQ0N2E2LjU2OTc0LDYuNTY5NzQsMCwwLDEtLjk4NDM3LS4wNzQyMSw2LjQ1OTI0LDYuNDU5MjQsMCwwLDEtNC4yNjA3NS0yLjU2OTM0TDYwOS41Njk3Myw1NzguNzAyYTYuNDk4NTMsNi40OTg1MywwLDAsMSwxLjM3My05LjA4ODg2bDc0Ljg5OTQxLTU1LjI0MDI0YTYuNDk5ODksNi40OTk4OSwwLDAsMSw5LjA4OTg1LDEuMzczbDguNzU5NzYsMTEuODc3OTNhNi41MDA4Nyw2LjUwMDg3LDAsMCwxLTEuMzcyMDcsOS4wODk4NEw2MjcuNDIwMzIsNTkxLjk1NEE2LjQ1Mzc0LDYuNDUzNzQsMCwwLDEsNjIzLjU3NTU5LDU5My4yMjQ0N1oiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMzcuODcyMTQgLTE4NC43MDQzKSIgZmlsbD0iIzZjNjNmZiIvPjxwYXRoIGQ9Ik02NzYuNzY4NzYsNTQ4Ljc0ODM0LDY2NS4zMDUyNCw1MzMuMjA1MWE2LDYsMCwwLDEsMS4yNjc0My04LjM5MDA5bDQzLjg2MTA2LTM4LjQyOTkzYTYsNiwwLDAsMSw4LjM5MDA5LDEuMjY3NDNsMjAuOTYzNTIsMjUuMDQzMjRhNiw2LDAsMCwxLTEuMjY3NDMsOC4zOTAwOWwtNTMuMzYxMDYsMjguOTI5OTNBNiw2LDAsMCwxLDY3Ni43Njg3Niw1NDguNzQ4MzRaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTM3Ljg3MjE0IC0xODQuNzA0MykiIGZpbGw9IiMyZjJlNDEiLz48cGF0aCBkPSJNNzQ3LjI0NTUxLDcxNC45NTU5Mkg3MzIuNDg2NzJhNi41MDc1Myw2LjUwNzUzLDAsMCwxLTYuNS02LjVWNTg1LjQ0MTI3YTYuNTA3NTMsNi41MDc1MywwLDAsMSw2LjUtNi41aDE0Ljc1ODc5YTYuNTA3NTMsNi41MDc1MywwLDAsMSw2LjUsNi41VjcwOC40NTU5MkE2LjUwNzUzLDYuNTA3NTMsMCwwLDEsNzQ3LjI0NTUxLDcxNC45NTU5MloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMzcuODcyMTQgLTE4NC43MDQzKSIgZmlsbD0iIzZjNjNmZiIvPjxwYXRoIGQ9Ik03NzYuNDM3OSw3MTQuOTU1OTJINzYxLjY3ODEzYTYuNTA3NTMsNi41MDc1MywwLDAsMS02LjUtNi41VjU4NS40NDEyN2E2LjUwNzUzLDYuNTA3NTMsMCwwLDEsNi41LTYuNUg3NzYuNDM3OWE2LjUwNzUzLDYuNTA3NTMsMCwwLDEsNi41LDYuNVY3MDguNDU1OTJBNi41MDc1Myw2LjUwNzUzLDAsMCwxLDc3Ni40Mzc5LDcxNC45NTU5MloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMzcuODcyMTQgLTE4NC43MDQzKSIgZmlsbD0iIzZjNjNmZiIvPjxyZWN0IHg9IjQ1Mi45MjI2OSIgeT0iNTI4LjM1MDY4IiB3aWR0aD0iMzI0LjAzMjYxIiBoZWlnaHQ9IjIuMjQwNzIiIGZpbGw9IiMzZjNkNTYiLz48Y2lyY2xlIGN4PSI2MTAuMjE2NDUiIGN5PSIxOTUuNzQyNDciIHI9IjUzLjUxOTE2IiBmaWxsPSIjNmM2M2ZmIi8+PHBhdGggZD0iTTgzMC45NDQ0OSw2NTEuODc5MjYsNzk5Ljk1MDQxLDUxNC4yMzM3NVY0ODEuNzEyMjdhOC4wMDAyLDguMDAwMiwwLDAsMC04LThINzYyLjI1OTkyVjQ1Mi43OTkxOGE3Ljk5OTg5LDcuOTk5ODksMCwwLDAtOC04aC0xNmE3Ljk5OTg4LDcuOTk5ODgsMCwwLDAtOCw4djIwLjkxMzA5SDcwMC41Njk0M2E4LjAwMDIsOC4wMDAyLDAsMCwwLTgsOFY2NTIuNzk5MThhNy45NjgxNCw3Ljk2ODE0LDAsMCwwLC41ODQyOSwyLjk5MjY4LDcuODM0MjgsNy44MzQyOCwwLDAsMCw3LjM3NzEzLDYuMjA2NTRMODI1Ljk1NTM1LDY2Ni4xOEM4MzMuNDUxMiw2NjYuMzc2ODIsODM2Ljg1MjQ1LDY1Ni42Mjc3OSw4MzAuOTQ0NDksNjUxLjg3OTI2WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEzNy44NzIxNCAtMTg0LjcwNDMpIiBmaWxsPSIjMmYyZTQxIi8+PHBhdGggZD0iTTc0OC42MDI5NCwzOTkuNDYwOGMtMy4zMDU2Ny0uMDkyNzctNy40MTk5My0uMjA4LTEwLjU4ODg3LTIuNTIzNDRhOC4xMzE0OCw4LjEzMTQ4LDAsMCwxLTMuMjAwMi02LjA3MDMxLDUuNDcxMzIsNS40NzEzMiwwLDAsMSwxLjg2MDM1LTQuNDk1MTJjMS42NTcyMy0xLjM5ODQzLDQuMDc2MTgtMS43MjU1OCw2LjY3Nzc0LS45NjA5M2wtMi42OTkyMi0xOS43MjY1NywxLjk4MjQyLS4yNzE0OCwzLjE3MTg4LDIzLjE5MDQzLTEuNjU0My0uNzU4NzljLTEuOTE4OTUtLjg4MDg2LTQuNTUxNzYtMS4zMjgxMi02LjE4NzUuMDU0NjlhMy41MTMzNiwzLjUxMzM2LDAsMCwwLTEuMTUyMzQsMi44OTY0OCw2LjE0MzM1LDYuMTQzMzUsMCwwLDAsMi4zODA4Niw0LjUyNjM3YzIuNDY2NzksMS44MDE3Niw1Ljc0NjA5LDIuMDM1MTYsOS40NjU4MiwyLjEzODY3WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEzNy44NzIxNCAtMTg0LjcwNDMpIiBmaWxsPSIjMmYyZTQxIi8+PHJlY3QgeD0iNTgyLjIxMDI4IiB5PSIxODIuNjgyMjkiIHdpZHRoPSIxMC43NzE0OCIgaGVpZ2h0PSIyIiBmaWxsPSIjMmYyZTQxIi8+PHJlY3QgeD0iNjE2LjIxMDI4IiB5PSIxODIuNjgyMjkiIHdpZHRoPSIxMC43NzE0OCIgaGVpZ2h0PSIyIiBmaWxsPSIjMmYyZTQxIi8+PHBhdGggZD0iTTcwMS4yMjEzLDM0NS44NTM3NWMtOS41MDY2LTUuNzYxNDgtMTMuOTgzNzItMTYuNjkwODEtMTMuOTkyLTI3LjUwMDE5YTM5LjYzNzIyLDM5LjYzNzIyLDAsMCwxLDE0LjAxMjItMzAuMjc1MjZjOS43OTE2NS04LjQ2ODUxLDIyLjgzMTM5LTEyLjYxMjg0LDM1LjU3MDM3LTEzLjY2NTg3LDE1LjQxMzE0LTEuMjc0MDcsMzAuNzI2LDIuMDc2MTIsNDUuNDQ1NjEsNi4zNTIwNSwxNS43NjEzMiw0LjU3ODU1LDMxLjIwNTIxLDEwLjMzOTQsNDcuMzM5MTYsMTMuNTQ0NzgsMTUuNjU2NDgsMy4xMTA1MiwzMS4zNTQxNSwzLjQxNzI2LDQ2Ljc2ODI4LTEuMDgwOCwxNC4yMjY4Ni00LjE1MTU5LDI4LjY2Nzc4LTExLjQ4NzY1LDQzLjg2MzczLTEwLjIxNjMsMTMuMTI0NzMsMS4wOTgwNywyMy4wOTIsOS44MzIxOSwyOS43OTcsMjAuNjIzLDEzLjMxMTcsMjEuNDIzNiwxNC4zNjMxMSw1MC4xNzgzOSwzMy41MDY1Myw2OC4wMTg0Nyw4LjI3Nyw3LjcxMzQ2LDE5LjA1OTUyLDExLjIwNzY0LDI5LjgzNjQzLDEzLjgxOTMxLDEwLjMzNCwyLjUwNDM0LDIxLjM1NzY3LDQuMTA4OTIsMzAuODQwNjcsOS4xNzcxNSwxMC4xNjg3MSw1LjQzNDcyLDE2LjMyNDY2LDE1LjY0OTY2LDE0LjczMzg0LDI3LjM1NDMtMS44MDY4MSwxMy4yOTM3MS0xMS4yNjY0OCwyNC43MzUyLTIxLjY4MTI5LDMyLjU0NDY2QTkxLjczMDgsOTEuNzMwOCwwLDAsMSw5NTkuODY3NTUsNDY5LjY3NWMtMjcuNjMyMzgtNy4zMzA2OC01MC4wODc4LTI4Ljc0NjE3LTc5LjUyNzU0LTMwLjA4ODIyLTE2LjQyMzUxLS43NDg2OS0zMi41OTQxMywzLjcyNTYxLTQ5LjAxNTMyLDIuOTgzNzMtMTEuMzgwNTgtLjUxNDE1LTIzLjYzMDEtNC43MjE1NC0zMS41NTY3LTEzLjE4NTFhMjQuNzA4ODYsMjQuNzA4ODYsMCwwLDEtNi43NTY4OC0xNC41MzcxOWMtLjE3OTM1LTEuOTA1NjUtMy4xODExMS0xLjkyNDM3LTMsMCwxLjEyNTMxLDExLjk1NjkyLDkuOTI2NTYsMjAuNzg4NzUsMjAuNDMsMjUuNjQ0MjdhNTYuMzU1MzIsNTYuMzU1MzIsMCwwLDAsMTcuNDc5Nyw0LjgxMjFjOC4wMzYwNS44ODc1NiwxNi4yMjkwNS4wNDc5MywyNC4yMjgzMS0uODI5MDYsOC40NTUtLjkyNywxNi45MjQtMi4wNjg3NSwyNS40NDc3OS0xLjk2NjYxYTcyLjczOTg5LDcyLjczOTg5LDAsMCwxLDIyLjgzNzI5LDQuMDYxNDZjMTQuMTA1NjIsNC44MzgsMjYuODEyODMsMTIuODY0NzksNDAuMjg4MjUsMTkuMTE2MjcsMTMuMDQyMjUsNi4wNTA1MSwyNi42OTk4Niw5LjgwMTgsNDEuMTQ1NjQsOS44OTQ4NWE5Ni4yMTEsOTYuMjExLDAsMCwwLDQwLjM2NzYxLTguNjU3MTZjMTIuNDc3NzgtNS42ODQzMywyNC4yMDMyOC0xNC4xNjkzOCwzMS45NzIxNS0yNS42MDc4MSw3LjI4Mzg5LTEwLjcyNDM2LDExLjEwODE1LTI0Ljc5MzE3LDQuNTUzMDktMzYuNzk5MTYtNS4xMzc2NS05LjQwOTkyLTE0LjkzNjE3LTE0LjE3MTc0LTI0LjgxNTk1LTE3LjEwMzQtMTAuOTUyMjQtMy4yNDk5LTIyLjM5OS00LjczNDI3LTMzLjExOTgtOC43ODE0MWE0NS41OTMyOCw0NS41OTMyOCwwLDAsMS0xNS4xNzE3OS05LjEwMDIxLDU3LjAwMzA3LDU3LjAwMzA3LDAsMCwxLTExLjUzMS0xNS45MTA5MWMtNi4xMzc2OC0xMS45NzMwOS05LjI3Mzc4LTI1LjEyMzI2LTE0LjQ0Mjc2LTM3LjQ5MDQ5LTQuNzg4LTExLjQ1NTgtMTEuMzQwMTQtMjMuMDAyMi0yMS44OTM3LTMwLjA2MjE5YTM3LjI0NDQ0LDM3LjI0NDQ0LDAsMCwwLTE5LjA1NzQxLTYuMTUxNzJjLTcuNTE3NzMtLjM0LTE0Ljk4ODQ4LDEuMzg1NzgtMjIuMTMzNTMsMy41NjA1NS03LjU2MSwyLjMwMTM3LTE0LjkzOTQxLDUuMTc1ODUtMjIuNTU3NTUsNy4yOTM5NGE4MS42NzE3MSw4MS42NzE3MSwwLDAsMS0yNC42Njg4MSwyLjk0NjE1Yy0xNy4xMjItLjU1Nzg2LTMzLjY2MTgtNS42NDQxLTQ5Ljg3MTEzLTEwLjc3MjIzLTI4LjM5NTU5LTguOTgzNDgtNTkuOTc2LTE4LjYwMDY3LTg4LjUyNDU5LTQuNzUzMDYtMTEuMTIzNjksNS4zOTU1OS0yMC41NDYsMTQuNDQ4MjUtMjQuNTE4NTEsMjYuMzM1MzYtMy41MTUsMTAuNTE4MTItMy4wMjkzLDIyLjc4NywyLjM4OTY0LDMyLjU4NjI0YTMwLjQ1NTI5LDMwLjQ1NTI5LDAsMCwwLDEwLjg2MzA3LDExLjMzMDE2YzEuNjU1NCwxLjAwMzI2LDMuMTY0ODgtMS41OSwxLjUxNDE2LTIuNTkwNDFaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTM3Ljg3MjE0IC0xODQuNzA0MykiIGZpbGw9IiMyZjJlNDEiLz48cGF0aCBkPSJNNzgzLjk2MDM2LDYxMy4yOTg2OUg3NjkuMjAwNTlhNi41MDc1Myw2LjUwNzUzLDAsMCwxLTYuNS02LjVWNTIxLjU0MzgxYTYuNTA3NTMsNi41MDc1MywwLDAsMSw2LjUtNi41aDE0Ljc1OTc3YTYuNTA3NTMsNi41MDc1MywwLDAsMSw2LjUsNi41djg1LjI1NDg4QTYuNTA3NTMsNi41MDc1MywwLDAsMSw3ODMuOTYwMzYsNjEzLjI5ODY5WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEzNy44NzIxNCAtMTg0LjcwNDMpIiBmaWxsPSIjNmM2M2ZmIi8+PHBhdGggZD0iTTcyNi45ODg0LDMzMi42MTE3M2ExMi43MzU4NiwxMi43MzU4NiwwLDAsMCwyMS42NTg2LDcuMjAwNzJsLTIuNTA3MDgtLjY2MTlhMjEuMjA0OSwyMS4yMDQ5LDAsMCwwLDM3LjE1MTY1LDQuMzk2NjljMS4xMjk1OS0xLjU2OTQxLTEuNDcxNTMtMy4wNjg3LTIuNTkwNDEtMS41MTQxNmExOC4yMDk5MywxOC4yMDk5MywwLDAsMS0zMS42Njg0LTMuNjgsMS41MjIxMywxLjUyMjEzLDAsMCwwLTIuNTA3MDgtLjY2MTksOS43NTgxNSw5Ljc1ODE1LDAsMCwxLTE2LjY0NDQ0LTUuODc2OTJjLS4yNjc2OC0xLjkwMzg1LTMuMTU4NzUtMS4wOTM3OC0yLjg5Mjg0Ljc5NzUyWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEzNy44NzIxNCAtMTg0LjcwNDMpIiBmaWxsPSIjMmYyZTQxIi8+PHBhdGggaWQ9ImY2YWQ4ODgxLTUzMWYtNDUwZi1hZjhjLWVlNDMwZjkxYzk0NC0zMzgiIGRhdGEtbmFtZT0iUGF0aCAzMyIgZD0iTTYzMi40MjQyOSw1NDUuNTk3bC0uMzEyODEuMjEyMDctNS44MDc2Ni04LjU2Njc2YTUuOTksNS45OSwwLDAsMC04LjMxOTMtMS41OTY4NWgwbC0xOC4xNDk5MSwxMi4zMDQzNmE1Ljk5LDUuOTksMCwwLDAtMS41OTY4NSw4LjMxOTNsMzEuODYxMzQsNDYuOTk4YTUuOTksNS45OSwwLDAsMCw4LjMxOTI5LDEuNTk2ODVoMGwxOC4xNDk4NC0xMi4zMDQzYTUuOTksNS45OSwwLDAsMCwxLjU5Njg1LTguMzE5M2gwbC0yMS45MTk2OS0zMi4zMzMyOC4zMTI4MS0uMjEyMDdaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTM3Ljg3MjE0IC0xODQuNzA0MykiIGZpbGw9IiMzZjNkNTYiLz48cGF0aCBpZD0iZmM4ODZiNTMtOGY3Zi00NTlhLThmNDYtZGM4ODk3MmYwM2MwLTMzOSIgZGF0YS1uYW1lPSJQYXRoIDM0IiBkPSJNNjE5LjM1NzQxLDUzNy44N2wtMi4yOTMxMiwxLjU1NDU3YTIuMDU3MTEsMi4wNTcxMSwwLDAsMSwuMDEzOTEsMy40MTQ4MWwtMTAuMDY0MDcsNi44MjI3M2EyLjA1NzExLDIuMDU3MTEsMCwwLDEtMy4xNjY3NS0xLjI3NzA3bC0yLjE0MjExLDEuNDUyMmE0LjMyOTg1LDQuMzI5ODUsMCwwLDAtMS4xNTQyOCw2LjAxMzU2aDBsMzAuNzkzMzEsNDUuNDIyNTdhNC4zMjk4NCw0LjMyOTg0LDAsMCwwLDYuMDEzNTUsMS4xNTQyOGgwbDE3LjY1MTYyLTExLjk2NjU2YTQuMzI5ODUsNC4zMjk4NSwwLDAsMCwxLjE1NDI4LTYuMDEzNTVoMGwtMzAuNzkzNDYtNDUuNDIyOGE0LjMyOTg1LDQuMzI5ODUsMCwwLDAtNi4wMTM1Ni0xLjE1NDI3aDBaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTM3Ljg3MjE0IC0xODQuNzA0MykiIGZpbGw9IiNmZmYiLz48L3N2Zz4=");
+
+/***/ }),
+
+/***/ 2989:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MjYiIGhlaWdodD0iNTQxIiB2aWV3Qm94PSIwIDAgODI2IDU0MSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHJvbGU9ImltZyIgYXJ0aXN0PSJLYXRlcmluYSBMaW1waXRzb3VuaSIgc291cmNlPSJodHRwczovL3VuZHJhdy5jby8iPjxwYXRoIGQ9Ik05OTAuNjM3MzMsNzE5LjMwNTA2bDEuMjI0OTItLjAyMzkzYTI4NC4wODAxOCwyODQuMDgwMTgsMCwwLDAtNC4zNDgyMy00MC41OTgyNGMtNS4yOTY4My0yOC43MTI2OC0xNC4xMDQ1NC00Ny41Njk3Ny0yNi4xNzg1MS01Ni4wNDczMmwtLjcwMzM3LDEuMDAyNDJDOTg4LjgzNyw2NDMuNDQxMjgsOTkwLjYyMyw3MTguNTQ4NDUsOTkwLjYzNzMzLDcxOS4zMDUwNloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xODcgLTE3OS41KSIgZmlsbD0iI2YxZjFmMSIvPjxwYXRoIGQ9Ik05NzUuMzI1ODEsNzE5LjAxMmwxLjIyNDkyLS4wMjM5M2MtLjAyNjMzLTEuMzU2NS0uNzkxOTEtMzMuMzI2NDctMTMuMzc3ODMtNDIuMTYyODlsLS43MDMzOCwxLjAwMjQzQzk3NC41NDc2OCw2ODYuMzA3NTUsOTc1LjMxOTgzLDcxOC42ODYsOTc1LjMyNTgxLDcxOS4wMTJaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTg3IC0xNzkuNSkiIGZpbGw9IiNmMWYxZjEiLz48Y2lyY2xlIGN4PSI3NjYuNjYzNjEiIGN5PSI0MzguMTI0NjMiIHI9IjYuMTI0NjEiIGZpbGw9IiNmMWYxZjEiLz48Y2lyY2xlIGN4PSI3NjkuNjk2NiIgY3k9IjQ5MC43OTYyNiIgcj0iNi4xMjQ2MSIgZmlsbD0iI2YxZjFmMSIvPjxwYXRoIGQ9Ik05NzguMTgwNjMsNjI3LjQyMDY4YTI3LjIwNDgxLDI3LjIwNDgxLDAsMCwwLDEuODQ5LDEzLjkyNzcyLDI0Ljc5Mjg4LDI0Ljc5Mjg4LDAsMCwwLDQuMTY4MjUtMjYuNjIzOTVBMjcuMjA1MTEsMjcuMjA1MTEsMCwwLDAsOTc4LjE4MDYzLDYyNy40MjA2OFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xODcgLTE3OS41KSIgZmlsbD0iI2YxZjFmMSIvPjxwYXRoIGQ9Ik05NTguMTYxLDY0NS4yNzYyNGEyNy4yMDQ4NCwyNy4yMDQ4NCwwLDAsMCwxNC4wMzY4NS42MDYxLDI0Ljc5Mjk0LDI0Ljc5Mjk0LDAsMCwwLTI1LjQ5MDQxLTguNzQzNDVBMjcuMjA1LDI3LjIwNSwwLDAsMCw5NTguMTYxLDY0NS4yNzYyNFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xODcgLTE3OS41KSIgZmlsbD0iI2YxZjFmMSIvPjxwYXRoIGQ9Ik05NTcuOTM0ODgsNjkxLjkyMTkzYTE5LjA2ODY2LDE5LjA2ODY2LDAsMCwwLDkuODM4NjkuNDI0ODQsMTcuMzc3NzcsMTcuMzc3NzcsMCwwLDAtMTcuODY2NjktNi4xMjg0NUExOS4wNjgzOCwxOS4wNjgzOCwwLDAsMCw5NTcuOTM0ODgsNjkxLjkyMTkzWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE4NyAtMTc5LjUpIiBmaWxsPSIjZjFmMWYxIi8+PHBhdGggZD0iTTQ2OS4wMjU5LDcxOS4zMDUwNWwtMS43Nzc5My0uMDM0NzJhNDEyLjMzMTA5LDQxMi4zMzEwOSwwLDAsMSw2LjMxMTMxLTU4LjkyN2M3LjY4ODE2LTQxLjY3NTQ5LDIwLjQ3MjI2LTY5LjA0NTkxLDM3Ljk5NzIxLTgxLjM1MDhsMS4wMjA5MiwxLjQ1NUM0NzEuNjM5LDYwOS4xOTEzNSw0NjkuMDQ2NzQsNzE4LjIwNjg3LDQ2OS4wMjU5LDcxOS4zMDUwNVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xODcgLTE3OS41KSIgZmlsbD0iI2YxZjFmMSIvPjxwYXRoIGQ9Ik00OTEuMjUwMDUsNzE4Ljg3OTY3bC0xLjc3NzkzLS4wMzQ3M2MuMDM4MjItMS45Njg5MiwxLjE0OTQzLTQ4LjM3MjI0LDE5LjQxNzQ4LTYxLjE5OGwxLjAyMDkyLDEuNDU1QzQ5Mi4zNzk0OSw2NzEuNDEwMjgsNDkxLjI1ODczLDcxOC40MDY1NCw0OTEuMjUwMDUsNzE4Ljg3OTY3WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE4NyAtMTc5LjUpIiBmaWxsPSIjZjFmMWYxIi8+PGNpcmNsZSBjeD0iMzM1LjY5MjAxIiBjeT0iMzkyLjIxOTM1IiByPSI4Ljg4OTY3IiBmaWxsPSIjZjFmMWYxIi8+PGNpcmNsZSBjeD0iMzMxLjI4OTcxIiBjeT0iNDY4LjY3MDQzIiByPSI4Ljg4OTY2IiBmaWxsPSIjZjFmMWYxIi8+PHBhdGggZD0iTTQ4Ny4xMDYzOCw1ODUuOTM4YTM5LjQ4NywzOS40ODcsMCwwLDEtMi42ODM3MSwyMC4yMTU2MiwzNS45ODYsMzUuOTg2LDAsMCwxLTYuMDUwMDctMzguNjQzNzZBMzkuNDg3MjMsMzkuNDg3MjMsMCwwLDEsNDg3LjEwNjM4LDU4NS45MzhaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTg3IC0xNzkuNSkiIGZpbGw9IiNmMWYxZjEiLz48cGF0aCBkPSJNNTE2LjE2NDE1LDYxMS44NTQ3MmEzOS40ODY5MiwzOS40ODY5MiwwLDAsMS0yMC4zNzQuODc5NzQsMzUuOTg2MDgsMzUuOTg2MDgsMCwwLDEsMzYuOTk4NDctMTIuNjkwODJBMzkuNDg3MTQsMzkuNDg3MTQsMCwwLDEsNTE2LjE2NDE1LDYxMS44NTQ3MloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xODcgLTE3OS41KSIgZmlsbD0iI2YxZjFmMSIvPjxwYXRoIGQ9Ik01MTYuNDkyNCw2NzkuNTU5MzdhMjcuNjc3NTQsMjcuNjc3NTQsMCwwLDEtMTQuMjgwNTMuNjE2NjQsMjUuMjIzMjgsMjUuMjIzMjgsMCwwLDEsMjUuOTMyOTEtOC44OTUyNUEyNy42NzcyNiwyNy42NzcyNiwwLDAsMSw1MTYuNDkyNCw2NzkuNTU5MzdaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTg3IC0xNzkuNSkiIGZpbGw9IiNmMWYxZjEiLz48cGF0aCBkPSJNMzMxLjY3ODg5LDM0MC43MzQwOGwtNC4yNzc0OS0yNi4xNjgyNEwzMTUuMzI0LDMxMS41NDY0MXMtOS41ODU1NC0yLjk1MjQ4LTExLjgyNiwxNi4zNTUwN2MtMi4yNDA0MiwxOS4zMDc2OS0uNTAzNTQsNTUuMzU2MTItLjUwMzU0LDU1LjM1NjEybC0yNi41MTY3NCw4My45NzA2NWExMS43Mjg1OCwxMS43Mjg1OCwwLDEsMCwxNi4xOTM5NSw2Ljk4NDkybDM0LjQ3ODI0LTc4Ljg3Nzg1WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE4NyAtMTc5LjUpIiBmaWxsPSIjZmZiN2I3Ii8+PHBhdGggZD0iTTQwNS4xMjIyNSwzMjAuMTQxMTFsLTYuMzQwNjctMjUuNzQ2MjUsOS45MjItNy41MTlzNy42NTY0OS02LjQ3OSwxNy4yOTc4NywxMC4zOTgzMmM5LjY0MTQ0LDE2Ljg3NzQ3LDIyLjE5OCw1MC43MTI5MywyMi4xOTgsNTAuNzEyOTNsNTcuMzU3MzQsNjYuODE1NzVhMTEuNzI4NjEsMTEuNzI4NjEsMCwxLDEtMTIuMTUwOTIsMTIuNzgyMzVMNDMwLjcyNiwzNjguNTc5MjVaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTg3IC0xNzkuNSkiIGZpbGw9IiNmZmI3YjciLz48cG9seWdvbiBwb2ludHM9IjI2Ny42ODkgNTI2LjA5MyAyODIuMDcyIDUyNi4wOTIgMjg4LjkxNSA0NzAuNjE0IDI2Ny42ODYgNDcwLjYxNSAyNjcuNjg5IDUyNi4wOTMiIGZpbGw9IiNmZmI3YjciLz48cGF0aCBkPSJNNDUxLjAxOTg3LDcwMC44OTY3N2wyOC4zMjU4MS0uMDAxMTVoLjAwMTE1YTE4LjA1MjM4LDE4LjA1MjM4LDAsMCwxLDE4LjA1MTQyLDE4LjA1MTE0di41ODY2bC00Ni4zNzc1Mi4wMDE3MloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xODcgLTE3OS41KSIgZmlsbD0iIzJmMmU0MSIvPjxwb2x5Z29uIHBvaW50cz0iODcuMDE2IDUyNi4wOTMgMTAxLjM5OSA1MjYuMDkyIDEwOC4yNDIgNDcwLjYxNCA4Ny4wMTMgNDcwLjYxNSA4Ny4wMTYgNTI2LjA5MyIgZmlsbD0iI2ZmYjdiNyIvPjxwYXRoIGQ9Ik0yNzAuMzQ2OTQsNzAwLjg5Njc3bDI4LjMyNTgxLS4wMDExNWguMDAxMTVhMTguMDUyMzgsMTguMDUyMzgsMCwwLDEsMTguMDUxNDIsMTguMDUxMTR2LjU4NjZsLTQ2LjM3NzUyLjAwMTcyWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE4NyAtMTc5LjUpIiBmaWxsPSIjMmYyZTQxIi8+PGNpcmNsZSBjeD0iMTc1LjIzMDA5IiBjeT0iNTIuNDMxMTMiIHI9IjM4LjkwMTc2IiBmaWxsPSIjMmYyZTQxIi8+PGVsbGlwc2UgY3g9IjMyMy4zMjgzMyIgY3k9IjIwMi40MTk0NSIgcng9IjE2LjA5NzI4IiByeT0iMTIuMDcyOTYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yMzUuNDMxNDkgMTA4LjQxNDk0KSByb3RhdGUoLTQ1KSIgZmlsbD0iIzJmMmU0MSIvPjxlbGxpcHNlIGN4PSIzODcuOTcyODEiIGN5PSIxOTIuMjc5MTQiIHJ4PSIxMi4wNzI5NiIgcnk9IjE2LjA5NzI4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTI4LjI1NTMgMjk0LjAzMTczKSByb3RhdGUoLTY2Ljg2OTU2KSIgZmlsbD0iIzJmMmU0MSIvPjxjaXJjbGUgY3g9IjM2My40NjM4NyIgY3k9IjI0MS4yMTc4NyIgcj0iMzMuMDE1NTEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yMDkuNTMyODMgMjY0LjkzODQ0KSByb3RhdGUoLTYxLjMzNjgyKSIgZmlsbD0iI2ZmYjdiNyIvPjxwYXRoIGQ9Ik0zMjguNzcyMjUsMjIwLjQ1MTIxYTQ0LjkwMzczLDQ0LjkwMzczLDAsMCwwLDI1LjY2MjE1LDcuOTMwNzIsMjcuNTE3MzYsMjcuNTE3MzYsMCwwLDEtMTAuOTA2NSw0LjQ4Nyw5MC41NDUzNiw5MC41NDUzNiwwLDAsMCwzNi45ODQ5MS4yMDc4MSwyMy45MzcsMjMuOTM3LDAsMCwwLDcuNzQyNDMtMi42NTkxOSw5Ljc5ODMyLDkuNzk4MzIsMCwwLDAsNC43NzktNi4zOTEzOWMuODExNDQtNC42MzU1OC0yLjgwMDY2LTguODQ3MTEtNi41NTQ0NC0xMS42ODU0NGE0OC4zNDgxNyw0OC4zNDgxNywwLDAsMC00MC42Mjg0NC04LjExODY5Yy00LjUzODQ2LDEuMTczMTMtOS4wODUsMy4xNTUyNS0xMi4wMzI4Myw2LjhzLTMuODIxMDUsOS4yNjM3Mi0xLjAxMjQ5LDEzLjAxNjgzWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE4NyAtMTc5LjUpIiBmaWxsPSIjMmYyZTQxIi8+PHBhdGggZD0iTTM0Ni45MTc2NSwyODQuMTUxMjJsLTMyLjY3NzksMjYuNjg3LDI4LjU1MjE1LDY4LjA3OS41NDQ2NCwxMC44OTI2M3MtMjkuNjM5NzksMjcuMzI4LTQ3Ljk3OTA5LDEwMy42NjgyOC01NS4zNzk1OCwxNzcuNzc4MDctNTUuMzc5NTgsMTc3Ljc3ODA3bDc0LjEwMDcxLDE4LjEyNzY0LDUxLjUyMDY1LTE3Mi42ODk2MSw2NS42NzY3LDEzNS40ODAyNSw5LjM0Myw0MC4wNzE2Miw1Ny4yODAyMy0xNS45MDE0NEw0NzUuNzkyNDQsNTY4LjgwODI5LDQyMS41NzIzLDQwMS44ODU3Nmw0LjQ1MjQtNDYuMTE0MTdzOS45MjE4Ni0yMy4wMTczMy03LjMxNDY2LTQ3LjM4NjI4bC01LjQwNjQ5LTIyLjg5ODA3TDM4NS4zMTcsMjgwLjcxNjgxWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE4NyAtMTc5LjUpIiBmaWxsPSIjMmYyZTQxIi8+PHBhdGggZD0iTTg5Ni40MTQ1NSw1MjYuNDI5Mkg2NjkuNTQzMDVhNi44NDE0Miw2Ljg0MTQyLDAsMCwxLTYuODMzNDgtNi44MzM0OHYtNzYuNTM1YTYuODQxNDIsNi44NDE0MiwwLDAsMSw2LjgzMzQ4LTYuODMzNDhoMjI2Ljg3MTVhNi44NDEzMSw2Ljg0MTMxLDAsMCwxLDYuODMzNDgsNi44MzM0OHY3Ni41MzVBNi44NDEzMSw2Ljg0MTMxLDAsMCwxLDg5Ni40MTQ1NSw1MjYuNDI5MloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xODcgLTE3OS41KSIgZmlsbD0iI2U1ZTVlNSIvPjxyZWN0IHg9IjUxMS4yNDM2NiIgeT0iMjc3LjIyNzcxIiB3aWR0aD0iNjAuMTM0NjIiIGhlaWdodD0iNi44MzM0OCIgZmlsbD0iI2ZmZiIvPjxjaXJjbGUgY3g9IjY1MC42NDY2MyIgY3k9IjI4MS4zMjc4IiByPSI0LjEwMDA5IiBmaWxsPSIjNmM2M2ZmIi8+PGNpcmNsZSBjeD0iNjY0LjMxMzU5IiBjeT0iMjgxLjMyNzgiIHI9IjQuMTAwMDkiIGZpbGw9IiM2YzYzZmYiLz48Y2lyY2xlIGN4PSI2NzcuOTgwNTUiIGN5PSIyODEuMzI3OCIgcj0iNC4xMDAwOSIgZmlsbD0iIzZjNjNmZiIvPjxwYXRoIGQ9Ik04OTYuNDE0NTUsNjIzLjQ2NDZINjY5LjU0MzA1YTYuODQxNDIsNi44NDE0MiwwLDAsMS02LjgzMzQ4LTYuODMzNDh2LTc2LjUzNWE2Ljg0MTQyLDYuODQxNDIsMCwwLDEsNi44MzM0OC02LjgzMzQ4aDIyNi44NzE1YTYuODQxMzEsNi44NDEzMSwwLDAsMSw2LjgzMzQ4LDYuODMzNDh2NzYuNTM1QTYuODQxMzEsNi44NDEzMSwwLDAsMSw4OTYuNDE0NTUsNjIzLjQ2NDZaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTg3IC0xNzkuNSkiIGZpbGw9IiNlNWU1ZTUiLz48cmVjdCB4PSI1MTEuMjQzNjYiIHk9IjM3NC4yNjMxMSIgd2lkdGg9IjYwLjEzNDYyIiBoZWlnaHQ9IjYuODMzNDgiIGZpbGw9IiNmZmYiLz48Y2lyY2xlIGN4PSI2NTAuNjQ2NjMiIGN5PSIzNzguMzYzMiIgcj0iNC4xMDAwOSIgZmlsbD0iIzZjNjNmZiIvPjxjaXJjbGUgY3g9IjY2NC4zMTM1OSIgY3k9IjM3OC4zNjMyIiByPSI0LjEwMDA5IiBmaWxsPSIjNmM2M2ZmIi8+PGNpcmNsZSBjeD0iNjc3Ljk4MDU1IiBjeT0iMzc4LjM2MzIiIHI9IjQuMTAwMDkiIGZpbGw9IiM2YzYzZmYiLz48cGF0aCBkPSJNODk2LjQxNDU1LDcyMC41SDY2OS41NDMwNWE2Ljg0MTQyLDYuODQxNDIsMCwwLDEtNi44MzM0OC02LjgzMzQ4di03Ni41MzVhNi44NDE0Miw2Ljg0MTQyLDAsMCwxLDYuODMzNDgtNi44MzM0OGgyMjYuODcxNWE2Ljg0MTMxLDYuODQxMzEsMCwwLDEsNi44MzM0OCw2LjgzMzQ4djc2LjUzNUE2Ljg0MTMxLDYuODQxMzEsMCwwLDEsODk2LjQxNDU1LDcyMC41WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE4NyAtMTc5LjUpIiBmaWxsPSIjZTVlNWU1Ii8+PHJlY3QgeD0iNTExLjI0MzY2IiB5PSI0NzEuMjk4NTEiIHdpZHRoPSI2MC4xMzQ2MiIgaGVpZ2h0PSI2LjgzMzQ4IiBmaWxsPSIjZmZmIi8+PGNpcmNsZSBjeD0iNjUwLjY0NjYzIiBjeT0iNDc1LjM5ODYiIHI9IjQuMTAwMDkiIGZpbGw9IiM2YzYzZmYiLz48Y2lyY2xlIGN4PSI2NjQuMzEzNTkiIGN5PSI0NzUuMzk4NiIgcj0iNC4xMDAwOSIgZmlsbD0iIzZjNjNmZiIvPjxjaXJjbGUgY3g9IjY3Ny45ODA1NSIgY3k9IjQ3NS4zOTg2IiByPSI0LjEwMDA5IiBmaWxsPSIjNmM2M2ZmIi8+PHBhdGggZD0iTTYyNC4xNjk3NSw1NTUuNDc1MWE1MS42NTc1OCw1MS42NTc1OCwwLDAsMS0xMi44MDU5Mi0xLjY1NjUzbC0uODI0MzctLjIyODA5LS43NjQ3My0uMzgzMTVjLTI3LjY0NzQxLTEzLjg2MTg4LTUwLjk3Mi0zMi4xNzE0OC02OS4zMjYxMy01NC40MjA1MUEyMDYuMDE1NzYsMjA2LjAxNTc2LDAsMCwxLDUwNS40NDUsNDM2LjYzMTE5YTIzOS4yMzA1OCwyMzkuMjMwNTgsMCwwLDEtMTMuNTI4MTktODQuMjc0MTFjLjAxMTY2LS42MDE5MS4wMjE1Ny0xLjA2NjY2LjAyMTU3LTEuMzg2ODUsMC0xMy45MzkyMSw3LjczNzM1LTI2LjE2OTgzLDE5LjcxMTctMzEuMTU5MjIsOS4xNjQ2LTMuODE4NTksOTIuMzc0NzctMzcuOTk2MzIsOTguMzg2OTEtNDAuNDY1NzYsMTEuMzIyNS01LjY3MzMsMjMuNDAxNTctLjkzOCwyNS4zMzQ1Ny0uMTEsNC4zMzU4LDEuNzcyNzEsODEuMjU4NTIsMzMuMjM1LDk3Ljg4MTQ3LDQxLjE1MDQ0LDE3LjEzMTYxLDguMTU3ODksMjEuNzAyNSwyMi44MTMyNiwyMS43MDI1LDMwLjE4NjYxLDAsMzMuMzgxNTItNS43ODEzMiw2NC41NzkyMS0xNy4xODM0OCw5Mi43MjY1M2EyMTQuNzA4MzUsMjE0LjcwODM1LDAsMCwxLTM4LjU4NSw2Mi4xODM2MWMtMzEuNDk4MDYsMzUuNDQ2NDUtNjMuMDA0NDgsNDguMDEyNDEtNjMuMzA4NTUsNDguMTIzMTZBMzQuNDI3MDgsMzQuNDI3MDgsMCwwLDEsNjI0LjE2OTc1LDU1NS40NzUxWk02MTYuNzYwNDYsNTM3LjEyMmMyLjczMTU0LjYxMjQxLDkuMDIwMzUsMS41MzEsMTMuMTE5MzEuMDM1NzUsNS4yMDcxOS0xLjg5OSwzMS41Nzc1My0xNS41NzM1OSw1Ni4yMTk4NC00My4zMDQ3NCwzNC4wNDcxNy0zOC4zMTUsNTEuMzIyNzQtODYuNDgwMDgsNTEuMzQ4LTE0My4xNTc0OC0uMDYwODEtMS4xNDgyNi0uODc2MjUtOS4zMzgtMTEuNzIxNzctMTQuNTAyMjctMTYuMzAwNjItNy43NjIzMi05Ni4yNTUyNS00MC40NTU2Ni05Ny4wNjEtNDAuNzg1MThsLS4yMjA5LS4wOTM2NWMtMS42NzU1Ny0uNzAyMTYtNy4wMDgwOC0yLjE4MTExLTEwLjY4Mzg3LS4yNTQ5MWwtLjczNi4zNDMxMmMtLjg5MTIxLjM2Ni04OS4yMTk3OCwzNi42NDQ0NS05OC42NDAwNyw0MC41Njk1MS02LjU4OTc3LDIuNzQ1NzItOC45Mzc2OCw5LjU0Nzg1LTguOTM3NjgsMTQuOTk4MSwwLC4zOTgzLS4wMTAzLjk3NzY4LS4wMjQ4NywxLjcyNjQ3QzUwOC42Njg2MSwzOTEuNDc3NTcsNTE3LjY0MjcyLDQ4Ni45MDUxNSw2MTYuNzYwNDYsNTM3LjEyMloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xODcgLTE3OS41KSIgZmlsbD0iIzNmM2Q1NiIvPjxwYXRoIGQ9Ik02MTMuNjk4MjQsMjg3LjMwNXMtODkuMTMxMzgsMzYuNjA3NTMtOTguNjgxMTcsNDAuNTg2NjEtMTQuMzI0NjgsMTMuNTI4ODctMTQuMzI0NjgsMjMuMDc4NjZTNDkzLjUzLDQ4NS4xMzIsNjEzLjY5ODI0LDU0NS4zODE2N2MwLDAsMTAuOTA2NDQsMy4wMTc3MiwxOS4xODEsMHMxMTMuMzIyMzEtNTMuOTQ5OTMsMTEzLjMyMjMxLTE5NC44MDkzNGMwLDAsMC0xNC4zMjQ2OS0xNi43MTIxNC0yMi4yODI4NVM2MzEuOTc2OTQsMjg3LjMwNSw2MzEuOTc2OTQsMjg3LjMwNSw2MjIuMDU0MzEsMjgyLjkyOCw2MTMuNjk4MjQsMjg3LjMwNVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xODcgLTE3OS41KSIgZmlsbD0iIzZjNjNmZiIvPjxwYXRoIGQ9Ik02MjMuMjQ4LDMxNS45NTQzM1Y1MTEuMjQyNTRzODkuOTI3Mi00My4yODczNyw4OS4xMzEzOC0xNTcuMDg5WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE4NyAtMTc5LjUpIiBvcGFjaXR5PSIwLjIiLz48cGF0aCBkPSJNMTAxMiw3MjAuNUgxODhhMSwxLDAsMCwxLDAtMmg4MjRhMSwxLDAsMCwxLDAsMloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xODcgLTE3OS41KSIgZmlsbD0iI2NiY2JjYiIvPjwvc3ZnPg==");
+
+/***/ }),
+
 /***/ 7308:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -14177,7 +14176,7 @@ __webpack_require__.r(__webpack_exports__);
           ]
         }
       ],
-      "copyright": "Copyright © 2024 Cloud APIM Built with Docusaurus."
+      "copyright": "Copyright © 2025 Cloud APIM Built with Docusaurus."
     },
     "prism": {
       "theme": {
@@ -18292,7 +18291,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"name":"docusaurus-plugin-content-doc
 /***/ ((module) => {
 
 "use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"version":{"pluginId":"default","version":"current","label":"Next","banner":null,"badge":false,"noIndex":false,"className":"docs-version-current","isLast":true,"docsSidebars":{"tutorialSidebar":[{"type":"link","label":"Overview","href":"/otoroshi-biscuit-studio/docs/overview","docId":"overview","unlisted":false},{"type":"link","label":"Installation","href":"/otoroshi-biscuit-studio/docs/install","docId":"install","unlisted":false},{"type":"category","label":"Entities","collapsible":true,"collapsed":true,"items":[{"type":"link","label":"KeyPairs","href":"/otoroshi-biscuit-studio/docs/entities/keypairs","docId":"entities/keypairs","unlisted":false},{"type":"link","label":"Verifiers","href":"/otoroshi-biscuit-studio/docs/entities/verifiers","docId":"entities/verifiers","unlisted":false},{"type":"link","label":"Attenuators","href":"/otoroshi-biscuit-studio/docs/entities/attenuators","docId":"entities/attenuators","unlisted":false},{"type":"link","label":"Biscuit RBAC Policies","href":"/otoroshi-biscuit-studio/docs/entities/rbac_policies","docId":"entities/rbac_policies","unlisted":false},{"type":"link","label":"Remote Facts Loader","href":"/otoroshi-biscuit-studio/docs/entities/remote_facts","docId":"entities/remote_facts","unlisted":false}],"href":"/otoroshi-biscuit-studio/docs/category/entities"},{"type":"category","label":"Plugins","collapsible":true,"collapsed":true,"items":[{"type":"link","label":"Verifier plugin","href":"/otoroshi-biscuit-studio/docs/plugins/verifiers","docId":"plugins/verifiers","unlisted":false},{"type":"link","label":"Attenuator plugin","href":"/otoroshi-biscuit-studio/docs/plugins/attenuators","docId":"plugins/attenuators","unlisted":false}],"href":"/otoroshi-biscuit-studio/docs/category/plugins"},{"type":"link","label":"Biscuit Tokens Forge","href":"/otoroshi-biscuit-studio/docs/tokens_forge","docId":"tokens_forge","unlisted":false},{"type":"link","label":"API Documentation","href":"/otoroshi-biscuit-studio/docs/api","docId":"api","unlisted":false}]},"docs":{"api":{"id":"api","title":"API Documentation","description":"","sidebar":"tutorialSidebar"},"entities/attenuators":{"id":"entities/attenuators","title":"Attenuators","description":"What biscuit attenuators are ?","sidebar":"tutorialSidebar"},"entities/keypairs":{"id":"entities/keypairs","title":"KeyPairs","description":"Biscuit Auth tokens are flexible, decentralized, and cryptographically secure authorization tokens.","sidebar":"tutorialSidebar"},"entities/rbac_policies":{"id":"entities/rbac_policies","title":"Biscuit RBAC Policies","description":"Integrate RBAC to a verifier plugin","sidebar":"tutorialSidebar"},"entities/remote_facts":{"id":"entities/remote_facts","title":"Remote Facts Loader","description":"The Remote Facts Loader entity facilitates the loading of external facts provided by an API. This entity is particularly useful for dynamic role and permission management based on external data sources.","sidebar":"tutorialSidebar"},"entities/verifiers":{"id":"entities/verifiers","title":"Verifiers","description":"A Biscuit Verifier is a key component in the Biscuit token framework, used to validate and enforce additional constraints on a Biscuit token.","sidebar":"tutorialSidebar"},"install":{"id":"install","title":"Installation","description":"Download Otoroshi","sidebar":"tutorialSidebar"},"overview":{"id":"overview","title":"Overview","description":"Otoroshi Biscuit Studio is an Otoroshi extension that allows you to use and integrate Biscuit Tokens into your Gateway.","sidebar":"tutorialSidebar"},"plugins/attenuators":{"id":"plugins/attenuators","title":"Attenuator plugin","description":"When attenuating a Biscuit token from sources such as headers, cookies, or query parameters, the process begins by extracting and validating the original token.","sidebar":"tutorialSidebar"},"plugins/verifiers":{"id":"plugins/verifiers","title":"Verifier plugin","description":"Example Request Before Using a Biscuit Verifier","sidebar":"tutorialSidebar"},"tokens_forge":{"id":"tokens_forge","title":"Biscuit Tokens Forge","description":"Prerequisites","sidebar":"tutorialSidebar"}}}}');
+module.exports = /*#__PURE__*/JSON.parse('{"version":{"pluginId":"default","version":"current","label":"Next","banner":null,"badge":false,"noIndex":false,"className":"docs-version-current","isLast":true,"docsSidebars":{"tutorialSidebar":[{"type":"link","label":"Overview","href":"/otoroshi-biscuit-studio/docs/overview","docId":"overview","unlisted":false},{"type":"link","label":"Introduction","href":"/otoroshi-biscuit-studio/docs/introduction","docId":"introduction","unlisted":false},{"type":"link","label":"Installation","href":"/otoroshi-biscuit-studio/docs/install","docId":"install","unlisted":false},{"type":"category","label":"Entities","collapsible":true,"collapsed":true,"items":[{"type":"link","label":"KeyPairs","href":"/otoroshi-biscuit-studio/docs/entities/keypairs","docId":"entities/keypairs","unlisted":false},{"type":"link","label":"Verifiers","href":"/otoroshi-biscuit-studio/docs/entities/verifiers","docId":"entities/verifiers","unlisted":false},{"type":"link","label":"Attenuators","href":"/otoroshi-biscuit-studio/docs/entities/attenuators","docId":"entities/attenuators","unlisted":false},{"type":"link","label":"Biscuit RBAC Policies","href":"/otoroshi-biscuit-studio/docs/entities/rbac_policies","docId":"entities/rbac_policies","unlisted":false},{"type":"link","label":"Remote Facts Loader","href":"/otoroshi-biscuit-studio/docs/entities/remote_facts","docId":"entities/remote_facts","unlisted":false}],"href":"/otoroshi-biscuit-studio/docs/category/entities"},{"type":"category","label":"Plugins","collapsible":true,"collapsed":true,"items":[{"type":"link","label":"Verifier plugin","href":"/otoroshi-biscuit-studio/docs/plugins/verifiers","docId":"plugins/verifiers","unlisted":false},{"type":"link","label":"Attenuator plugin","href":"/otoroshi-biscuit-studio/docs/plugins/attenuators","docId":"plugins/attenuators","unlisted":false}],"href":"/otoroshi-biscuit-studio/docs/category/plugins"},{"type":"link","label":"Biscuit Tokens Forge","href":"/otoroshi-biscuit-studio/docs/tokens_forge","docId":"tokens_forge","unlisted":false},{"type":"link","label":"API Documentation","href":"/otoroshi-biscuit-studio/docs/api","docId":"api","unlisted":false}]},"docs":{"api":{"id":"api","title":"API Documentation","description":"","sidebar":"tutorialSidebar"},"entities/attenuators":{"id":"entities/attenuators","title":"Attenuators","description":"What biscuit attenuators are ?","sidebar":"tutorialSidebar"},"entities/keypairs":{"id":"entities/keypairs","title":"KeyPairs","description":"Biscuit Auth tokens are flexible, decentralized, and cryptographically secure authorization tokens.","sidebar":"tutorialSidebar"},"entities/rbac_policies":{"id":"entities/rbac_policies","title":"Biscuit RBAC Policies","description":"Integrate RBAC to a verifier plugin","sidebar":"tutorialSidebar"},"entities/remote_facts":{"id":"entities/remote_facts","title":"Remote Facts Loader","description":"The Remote Facts Loader entity facilitates the loading of external facts provided by an API. This entity is particularly useful for dynamic role and permission management based on external data sources.","sidebar":"tutorialSidebar"},"entities/verifiers":{"id":"entities/verifiers","title":"Verifiers","description":"A Biscuit Verifier is a key component in the Biscuit token framework, used to validate and enforce additional constraints on a Biscuit token.","sidebar":"tutorialSidebar"},"install":{"id":"install","title":"Installation","description":"Download Otoroshi","sidebar":"tutorialSidebar"},"introduction":{"id":"introduction","title":"Introduction","description":"Biscuit tokens bring a new level of security and adaptability to token-based systems. By leveraging cryptographic primitives and a unique capability-based design, they enable:","sidebar":"tutorialSidebar"},"overview":{"id":"overview","title":"Overview","description":"Otoroshi Biscuit Studio is an Otoroshi extension that allows you to use and integrate Biscuit Tokens into your Gateway.","sidebar":"tutorialSidebar"},"plugins/attenuators":{"id":"plugins/attenuators","title":"Attenuator plugin","description":"When attenuating a Biscuit token from sources such as headers, cookies, or query parameters, the process begins by extracting and validating the original token.","sidebar":"tutorialSidebar"},"plugins/verifiers":{"id":"plugins/verifiers","title":"Verifier plugin","description":"Example Request Before Using a Biscuit Verifier","sidebar":"tutorialSidebar"},"tokens_forge":{"id":"tokens_forge","title":"Biscuit Tokens Forge","description":"Prerequisites","sidebar":"tutorialSidebar"}}}}');
 
 /***/ }),
 
