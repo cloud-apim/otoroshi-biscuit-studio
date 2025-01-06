@@ -1,152 +1,316 @@
 {
-  "openapi": "3.0.3",
-  "info": {
-    "title": "Otoroshi Biscuit Studio API",
-    "description": "API for managing Biscuit Attenuators, KeyPairs, and Verifiers within the Otoroshi ecosystem.",
-    "version": "1.0.0"
-  },
-  "servers": [
-    {
-      "url": "http://otoroshi-api.oto.tools:8080",
-      "description": "Otoroshi API Server"
-    }
-  ],
-  "paths": {
-    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-attenuators": {
-      "post": {
-        "summary": "Create a Biscuit Attenuator",
-        "description": "Creates a new Biscuit Attenuator.",
-        "operationId": "createBiscuitAttenuator",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "enabled": { "type": "boolean" },
-                  "id": { "type": "string" },
-                  "keypair_ref": { "type": "string" },
-                  "name": { "type": "string" },
-                  "description": { "type": "string" },
-                  "tags": { "type": "array", "items": { "type": "string" } },
-                  "config": {
-                    "type": "object",
-                    "properties": {
-                      "checks": { "type": "array", "items": { "type": "string" } }
-                    }
-                  },
-                  "kind": { "type": "string" }
-                },
-                "required": ["enabled", "id", "keypair_ref", "name", "config", "kind"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Biscuit Attenuator successfully created."
-          }
-        },
-        "security": [
-          {
-            "basicAuth": []
-          }
-        ]
-      }
-    },
-    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs": {
-      "post": {
-        "summary": "Create a Biscuit KeyPair",
-        "description": "Creates a new Biscuit KeyPair.",
-        "operationId": "createBiscuitKeyPair",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": { "type": "string" },
-                  "name": { "type": "string" },
-                  "description": { "type": "string" },
-                  "pubKey": { "type": "string" },
-                  "privKey": { "type": "string" },
-                  "tags": { "type": "array", "items": { "type": "string" } },
-                  "kind": { "type": "string" }
-                },
-                "required": ["id", "name", "pubKey", "privKey", "kind"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Biscuit KeyPair successfully created."
-          }
-        },
-        "security": [
-          {
-            "basicAuth": []
-          }
-        ]
-      }
-    },
-    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers": {
-      "post": {
-        "summary": "Create a Biscuit Verifier",
-        "description": "Creates a new Biscuit Verifier.",
-        "operationId": "createBiscuitVerifier",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "enabled": { "type": "boolean" },
-                  "id": { "type": "string" },
-                  "keypair_ref": { "type": "string" },
-                  "name": { "type": "string" },
-                  "description": { "type": "string" },
-                  "strict": { "type": "boolean" },
-                  "tags": { "type": "array", "items": { "type": "string" } },
-                  "config": {
-                    "type": "object",
-                    "properties": {
-                      "checks": { "type": "array", "items": { "type": "string" } },
-                      "facts": { "type": "array", "items": { "type": "string" } },
-                      "resources": { "type": "array", "items": { "type": "string" } },
-                      "rules": { "type": "array", "items": { "type": "string" } },
-                      "revocation_ids": { "type": "array", "items": { "type": "string" } }
-                    }
-                  },
-                  "kind": { "type": "string" }
-                },
-                "required": ["enabled", "id", "keypair_ref", "name", "config", "kind"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Biscuit Verifier successfully created."
-          }
-        },
-        "security": [
-          {
-            "basicAuth": []
-          }
-        ]
-      }
-    }
-  },
-  "components": {
-    "securitySchemes": {
-      "basicAuth": {
-        "type": "http",
-        "scheme": "basic"
-      }
-    }
-  }
+	"openapi": "3.0.3",
+	"info": {
+		"title": "Otoroshi Biscuit Studio API",
+		"description": "API for managing Biscuit Attenuators, KeyPairs, and Verifiers within the Otoroshi ecosystem.",
+		"version": "1.0.0"
+	},
+	"servers": [
+		{
+			"url": "http://otoroshi-api.oto.tools:8080",
+			"description": "Otoroshi API Server"
+		}
+	],
+	"paths": {
+		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-attenuators": {
+			"post": {
+				"summary": "Create a Biscuit Attenuator",
+				"description": "Creates a new Biscuit Attenuator.",
+				"operationId": "createBiscuitAttenuator",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"enabled": { "type": "boolean" },
+									"id": { "type": "string" },
+									"keypair_ref": { "type": "string" },
+									"name": { "type": "string" },
+									"description": { "type": "string" },
+									"tags": { "type": "array", "items": { "type": "string" } },
+									"config": {
+										"type": "object",
+										"properties": {
+											"checks": {
+												"type": "array",
+												"items": { "type": "string" }
+											}
+										}
+									},
+									"kind": { "type": "string" }
+								},
+								"required": [
+									"enabled",
+									"id",
+									"keypair_ref",
+									"name",
+									"config",
+									"kind"
+								]
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Biscuit Attenuator successfully created."
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			}
+		},
+		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-attenuators/_template": {
+			"get": {
+				"summary": "Get Biscuit Attenuator Template",
+				"description": "Retrieves a template for creating a new Biscuit Attenuator.",
+				"operationId": "getBiscuitAttenuatorTemplate",
+				"responses": {
+					"200": {
+						"description": "Template retrieved successfully.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"enabled": { "type": "boolean" },
+										"id": { "type": "string" },
+										"keypair_ref": { "type": "string" },
+										"name": { "type": "string" },
+										"description": { "type": "string" },
+										"metadata": {
+											"type": "object"
+										},
+										"tags": { "type": "array", "items": { "type": "string" } },
+										"config": { "type": "object", "nullable": true }
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			}
+		},
+		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs": {
+			"post": {
+				"summary": "Create a Biscuit KeyPair",
+				"description": "Creates a new Biscuit KeyPair.",
+				"operationId": "createBiscuitKeyPair",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"id": { "type": "string" },
+									"name": { "type": "string" },
+									"description": { "type": "string" },
+									"pubKey": { "type": "string" },
+									"privKey": { "type": "string" },
+									"tags": { "type": "array", "items": { "type": "string" } },
+									"kind": { "type": "string" }
+								},
+								"required": ["id", "name", "pubKey", "privKey", "kind"]
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Biscuit KeyPair successfully created."
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			}
+		},
+		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs/_template": {
+			"get": {
+				"summary": "Get Biscuit KeyPair Template",
+				"description": "Retrieves a template for creating a new Biscuit KeyPair.",
+				"operationId": "getBiscuitKeyPairTemplate",
+				"responses": {
+					"200": {
+						"description": "Template retrieved successfully.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"id": { "type": "string" },
+										"name": { "type": "string" },
+										"description": { "type": "string" },
+										"metadata": {
+											"type": "object"
+										},
+										"tags": { "type": "array", "items": { "type": "string" } },
+										"pubKey": { "type": "string" },
+										"privKey": { "type": "string" }
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			}
+		},
+		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers": {
+			"post": {
+				"summary": "Create a Biscuit Verifier",
+				"description": "Creates a new Biscuit Verifier.",
+				"operationId": "createBiscuitVerifier",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"enabled": { "type": "boolean" },
+									"id": { "type": "string" },
+									"keypair_ref": { "type": "string" },
+									"name": { "type": "string" },
+									"description": { "type": "string" },
+									"strict": { "type": "boolean" },
+									"tags": { "type": "array", "items": { "type": "string" } },
+									"config": {
+										"type": "object",
+										"properties": {
+											"checks": {
+												"type": "array",
+												"items": { "type": "string" }
+											},
+											"facts": {
+												"type": "array",
+												"items": { "type": "string" }
+											},
+											"resources": {
+												"type": "array",
+												"items": { "type": "string" }
+											},
+											"rules": {
+												"type": "array",
+												"items": { "type": "string" }
+											},
+											"revocation_ids": {
+												"type": "array",
+												"items": { "type": "string" }
+											}
+										}
+									},
+									"kind": { "type": "string" }
+								},
+								"required": [
+									"enabled",
+									"id",
+									"keypair_ref",
+									"name",
+									"config",
+									"kind"
+								]
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Biscuit Verifier successfully created."
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			}
+		},
+		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers/_template": {
+			"get": {
+				"summary": "Get Biscuit Verifier Template",
+				"description": "Retrieves a template for creating a new Biscuit Verifier.",
+				"operationId": "getBiscuitVerifierTemplate",
+				"responses": {
+					"200": {
+						"description": "Template retrieved successfully.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"enabled": { "type": "boolean" },
+										"id": { "type": "string" },
+										"keypair_ref": { "type": "string" },
+										"name": { "type": "string" },
+										"description": { "type": "string" },
+										"metadata": {
+											"type": "object"
+										},
+										"strict": { "type": "boolean" },
+										"tags": { "type": "array", "items": { "type": "string" } },
+										"config": {
+											"type": "object",
+											"properties": {
+												"checks": {
+													"type": "array",
+													"items": { "type": "string" }
+												},
+												"facts": {
+													"type": "array",
+													"items": { "type": "string" }
+												},
+												"resources": {
+													"type": "array",
+													"items": { "type": "string" }
+												},
+												"rules": {
+													"type": "array",
+													"items": { "type": "string" }
+												},
+												"revocation_ids": {
+													"type": "array",
+													"items": { "type": "string" }
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			}
+		}
+	},
+	"components": {
+		"securitySchemes": {
+			"basicAuth": {
+				"type": "http",
+				"scheme": "basic"
+			}
+		}
+	}
 }
