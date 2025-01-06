@@ -41,7 +41,7 @@ class BiscuitRbacPoliciesPage extends Component {
             props: {
                 label: "Remote facts Reference",
                 valuesFrom:
-                    "/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/remote-facts",
+                    "/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-remote-facts",
                 transformer: (item) => ({ label: item.name, value: item.id }),
             },
         },
@@ -58,6 +58,11 @@ class BiscuitRbacPoliciesPage extends Component {
 			filterId: "description",
 			content: (item) => item.description,
 		},
+    {
+			title: "Created At",
+			filterId: "metadata.created_at",
+			content: (item) => item?.metadata?.created_at,
+		}
 	];
 
 	formFlow = [

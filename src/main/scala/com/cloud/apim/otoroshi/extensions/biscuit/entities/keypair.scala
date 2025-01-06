@@ -85,8 +85,8 @@ object BiscuitKeyPair {
         tmpl = (v, p) => {
           BiscuitKeyPair(
             id = IdGenerator.namedId("biscuit-keypair", env),
-            name = "Prompt",
-            description = "A new prompt",
+            name = "New Biscuit Key Pair",
+            description = "New biscuit KeyPair",
             metadata = Map.empty,
             tags = Seq.empty,
             location = EntityLocation.default,

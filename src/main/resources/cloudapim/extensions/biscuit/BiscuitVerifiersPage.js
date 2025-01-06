@@ -70,6 +70,11 @@ class BiscuitVerifiersPage extends Component {
 			filterId: "description",
 			content: (item) => item.description,
 		},
+    {
+			title: "Created At",
+			filterId: "metadata.created_at",
+			content: (item) => item?.metadata?.created_at,
+		}
 	];
 
 	formFlow = [
