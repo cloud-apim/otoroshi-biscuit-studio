@@ -68,6 +68,11 @@ const config = {
             label: 'Documentation',
           },
           {
+            label: 'API Reference',
+            href: '/docs/api',
+            position: 'left',
+          },
+          {
             href: 'https://github.com/cloud-apim/otoroshi-biscuit-studio',
             label: 'GitHub',
             position: 'right',
