@@ -222,23 +222,32 @@ object BiscuitUtils {
   }
 }
 
-
-case class Role(name: String, permissions: List[String])
-
-object BiscuitRbacUtils {
+object BiscuitRemoteUtils {
 
   implicit val rolesReads: Reads[List[Role]] = Reads { json =>
-    (json \ "roles").validate[List[Map[String, List[String]]]].map { roles =>
-      roles.flatMap(_.toList.map { case (name, permissions) =>
-        Role(name, permissions)
-      })
+    (json \ "roles").validateOpt[List[Map[String, List[String]]]].map {
+      case Some(roles) =>
+        roles.flatMap(_.toList.map { case (name, permissions) =>
+          Role(name, permissions)
+        })
+      case None => List.empty
     }
   }
+
+  implicit val revocatedIdsReads: Reads[List[BiscuitRevocatedId]] = Reads { json =>
+    (json \ "revocated").validateOpt[List[String]].map {
+      case Some(ids) => ids.map(BiscuitRevocatedId)
+      case None => List.empty
+    }
+  }
+
+  case class Role(name: String, permissions: List[String])
+  case class BiscuitRevocatedId(id: String)
 
   def getRemoteFacts(
                       apiUrl: String,
                       headers: Map[String, String],
-                    )(implicit env: Env, ec: ExecutionContext): Future[Either[String, List[String]]] = {
+                    )(implicit env: Env, ec: ExecutionContext): Future[Either[String, (List[String], List[String])]] = {
 
     env.Ws
       .url(apiUrl)
@@ -251,16 +260,22 @@ object BiscuitRbacUtils {
       .map { resp =>
         resp.status match {
           case 200 =>
-            resp.json.validate[List[Role]] match {
-              case JsSuccess(roles, _) =>
-                val biscuitFacts = roles.map { role =>
-                  s"""role("${role.name}", [${role.permissions.map(p => s""""$p"""").mkString(", ")}]);"""
-                }
-                Right(biscuitFacts)
+            val rolesResult = (resp.json \ "roles").validate[List[Map[String, List[String]]]].getOrElse(List.empty)
+            val revocatedResult = (resp.json \ "revocated").validate[List[String]].getOrElse(List.empty)
 
-              case JsError(errors) =>
-                Left(s"Failed to parse API response: $errors")
+            val roles = rolesResult.flatMap(_.toList.map { case (name, permissions) =>
+              Role(name, permissions)
+            })
+
+            val revocatedIds = revocatedResult.map(BiscuitRevocatedId)
+
+            val roleFacts = roles.map { role =>
+              s"""role("${role.name}", [${role.permissions.map(p => s""""$p"""").mkString(", ")}]);"""
             }
+
+            val revocatedIdsRemote = revocatedIds.map(_.id)
+
+            Right((roleFacts, revocatedIdsRemote))
 
           case _ =>
             Left(s"API request failed with status ${resp.status}: ${resp.body}")

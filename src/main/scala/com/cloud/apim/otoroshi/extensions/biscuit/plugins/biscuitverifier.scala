@@ -1,7 +1,7 @@
 package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
 import com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitVerifierConfig
-import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitRbacUtils, BiscuitUtils}
+import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitRemoteUtils, BiscuitUtils}
 import org.biscuitsec.biscuit.crypto.PublicKey
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.env.Env
@@ -75,10 +75,13 @@ class BiscuitTokenValidator extends NgAccessValidator {
                           case None => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> "remoteFactsRef not found"))).vfuture
                           case Some(remoteFactsEntity) => {
                             if (remoteFactsEntity.config.nonEmpty && remoteFactsEntity.config.get.apiUrl.nonEmpty && remoteFactsEntity.config.get.headers.nonEmpty) {
-                              BiscuitRbacUtils.getRemoteFacts(remoteFactsEntity.config.get.apiUrl, remoteFactsEntity.config.get.headers).flatMap {
+                              BiscuitRemoteUtils.getRemoteFacts(remoteFactsEntity.config.get.apiUrl, remoteFactsEntity.config.get.headers).flatMap {
                                 case Left(error) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Unable to get remote facts: ${error}"))).vfuture
                                 case Right(listFacts) => {
-                                  val finalListFacts = verifierConfig.facts ++ rbacConf ++ listFacts
+                                  val remoteFacts = listFacts._1
+                                  val remoteRevokedIt = listFacts._2
+                                  val finalListFacts = verifierConfig.facts ++ rbacConf ++ remoteFacts
+                                  val finalListOfRevokedId = verifierConfig.revocation_ids ++ remoteRevokedIt
 
                                   BiscuitUtils.extractToken(ctx.request, config.extractorType, config.extractorName) match {
                                     case Some(token) => {
@@ -90,7 +93,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
                                             case Left(err) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Biscuit token is not valid : ${err}"))).vfuture
                                             case Right(biscuitToken) => {
 
-                                              BiscuitUtils.verify(biscuitToken, verifierConfig.copy(facts = finalListFacts), AccessValidatorContext(ctx)) match {
+                                              BiscuitUtils.verify(biscuitToken, verifierConfig.copy(facts = finalListFacts, revocation_ids = finalListOfRevokedId), AccessValidatorContext(ctx)) match {
                                                 case Left(verificationError) => forbidden(ctx)
                                                 case Right(_) => NgAccess.NgAllowed.vfuture
                                               }
