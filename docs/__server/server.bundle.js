@@ -444,8 +444,16 @@ const toc = [{
   "id": "example",
   "level": 2
 }, {
-  "value": "Create a keypair from command line",
-  "id": "create-a-keypair-from-command-line",
+  "value": "Create a keypair with Otoroshi&#39;s API",
+  "id": "create-a-keypair-with-otoroshis-api",
+  "level": 2
+}, {
+  "value": "Get a KeyPair template with Otoroshi&#39;s API",
+  "id": "get-a-keypair-template-with-otoroshis-api",
+  "level": 2
+}, {
+  "value": "Create bulk KeyPairs with Otoroshi&#39;s API",
+  "id": "create-bulk-keypairs-with-otoroshis-api",
   "level": 2
 }];
 function _createMdxContent(props) {
@@ -517,12 +525,35 @@ function _createMdxContent(props) {
         children: "{\n  \"id\": \"biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9\",\n  \"name\": \"My Biscuit KeyPair\",\n  \"description\": \"A simple ED25519 Biscuit KeyPair\",\n  \"metadata\": {\n    \"created_at\": \"2024-12-16T12:19:21.589+01:00\"\n  },\n  \"pubKey\": \"cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb\",\n  \"privKey\": \"0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619\",\n  \"tags\": [],\n  \"kind\": \"BiscuitKeyPair\",\n  \"_loc\": {\n    \"tenant\": \"default\"\n  }\n}\n"
       })
     }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
-      id: "create-a-keypair-from-command-line",
-      children: "Create a keypair from command line"
+      id: "create-a-keypair-with-otoroshis-api",
+      children: "Create a keypair with Otoroshi's API"
     }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
       children: (0,jsx_runtime.jsx)(_components.code, {
         className: "language-bash",
         children: "curl -X POST -H 'Content-Type: application/json' 'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs' -u admin-api-apikey-id:admin-api-apikey-secret -d '{\n  \"id\": \"biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9\",\n  \"name\": \"KeyPair from Otoroshi API\",\n  \"description\": \"A Biscuit KeyPair created from Otoroshi API\",\n  \"pubKey\": \"cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb\",\n  \"privKey\": \"0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619\",\n  \"tags\": [],\n  \"kind\": \"biscuit.extensions.cloud-apim.com/BiscuitKeyPair\"\n}'\n"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
+      id: "get-a-keypair-template-with-otoroshis-api",
+      children: "Get a KeyPair template with Otoroshi's API"
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-bash",
+        children: "curl -X GET -H 'Content-Type: application/json' 'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs/_template' -u admin-api-apikey-id:admin-api-apikey-secret\n"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "Result :"
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-js",
+        children: "{\n  \"id\": \"biscuit-keypair_b6f88449-9c1a-4e46-a3af-b42e00f14e60\",\n  \"name\": \"New Biscuit Key Pair\",\n  \"description\": \"New biscuit KeyPair\",\n  \"metadata\": {},\n  \"pubKey\": \"\",\n  \"privKey\": \"\",\n  \"tags\": []\n}\n"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
+      id: "create-bulk-keypairs-with-otoroshis-api",
+      children: "Create bulk KeyPairs with Otoroshi's API"
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-bash",
+        children: "curl -X POST -H 'Content-Type: application/x-ndjson' 'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs/_bulk' -u admin-api-apikey-id:admin-api-apikey-secret -d '[{\n  \"name\": \"KeyPair from Otoroshi API Bulk 1\",\n  \"description\": \"A Biscuit KeyPair created from Otoroshi API\",\n  \"pubKey\": \"cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb\",\n  \"privKey\": \"0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619\",\n  \"tags\": [],\n  \"kind\": \"biscuit.extensions.cloud-apim.com/BiscuitKeyPair\"\n},\n{\n  \"name\": \"KeyPair from Otoroshi API Bulk 2\",\n  \"description\": \"A Biscuit KeyPair created from Otoroshi API\",\n  \"pubKey\": \"cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb\",\n  \"privKey\": \"0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619\",\n  \"tags\": [],\n  \"kind\": \"biscuit.extensions.cloud-apim.com/BiscuitKeyPair\"\n}]'\n"
       })
     })]
   });
@@ -950,6 +981,10 @@ const toc = [{
   "value": "Creating a Biscuit Verifier from Command Line",
   "id": "creating-a-biscuit-verifier-from-command-line",
   "level": 2
+}, {
+  "value": "Bulk creation",
+  "id": "bulk-creation",
+  "level": 3
 }];
 function _createMdxContent(props) {
   const _components = {
@@ -1140,6 +1175,14 @@ function _createMdxContent(props) {
       children: (0,jsx_runtime.jsx)(_components.code, {
         className: "language-bash",
         children: "curl -X POST -H 'Content-Type: application/json' \\\n  'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers' \\\n  -u admin-api-apikey-id:admin-api-apikey-secret \\\n  -d '{\n    \"enabled\": true,\n    \"id\": \"biscuit_verifier_6f5f20a5-2c65-4860-8ad1-7b6495ee03bf\",\n    \"keypair_ref\": \"biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9\",\n    \"name\": \"Biscuit Verifier CURL\",\n    \"description\": \"A Biscuit Verifier created from Otoroshi API\",\n    \"strict\": true,\n    \"tags\": [],\n    \"config\": {\n      \"checks\": [\n        \"check if time($date), $date <= 2024-12-30T19:00:10Z;\"\n      ],\n      \"facts\": [],\n      \"resources\": [],\n      \"rules\": [],\n      \"revocation_ids\": []\n    },\n    \"kind\": \"biscuit.extensions.cloud-apim.com/BiscuitVerifier\"\n  }'\n"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.h3, {
+      id: "bulk-creation",
+      children: "Bulk creation"
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-bash",
+        children: "curl -X POST -H 'Content-Type: application/x-ndjson' \\\n  'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers/_bulk' \\\n  -u admin-api-apikey-id:admin-api-apikey-secret \\\n  -d '[{\n    \"enabled\": true,\n    \"keypair_ref\": \"biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9\",\n    \"name\": \"Biscuit Verifier FROM CURL BULK 1\",\n    \"description\": \"A Biscuit Verifier created from Otoroshi API\",\n    \"strict\": true,\n    \"tags\": [],\n    \"config\": {\n      \"checks\": [\n        \"check if time($date), $date <= 2024-12-30T19:00:10Z;\"\n      ],\n      \"facts\": [],\n      \"resources\": [],\n      \"rules\": [],\n      \"revocation_ids\": []\n    },\n    \"kind\": \"biscuit.extensions.cloud-apim.com/BiscuitVerifier\"\n  },\n  {\n    \"enabled\": true,\n    \"keypair_ref\": \"biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9\",\n    \"name\": \"Biscuit Verifier FROM CURL BULK 2\",\n    \"description\": \"A Biscuit Verifier created from Otoroshi API\",\n    \"strict\": true,\n    \"tags\": [],\n    \"config\": {\n      \"checks\": [\n        \"check if time($date), $date <= 2024-12-30T19:00:10Z;\"\n      ],\n      \"facts\": [],\n      \"resources\": [],\n      \"rules\": [],\n      \"revocation_ids\": []\n    },\n    \"kind\": \"biscuit.extensions.cloud-apim.com/BiscuitVerifier\"\n  }]'\n"
       })
     })]
   });
@@ -8574,7 +8617,7 @@ const FeatureList=[{title:'Biscuit Verifiers',Svg:(__webpack_require__(1863)/* [
 var index_module = __webpack_require__(6830);
 var index_module_default = /*#__PURE__*/__webpack_require__.n(index_module);
 ;// ./src/pages/index.js
-function HomepageHeader(){const{siteConfig}=(0,useDocusaurusContext/* default */.A)();return/*#__PURE__*/(0,jsx_runtime.jsx)("header",{className:(0,clsx/* default */.A)('hero hero--primary',(index_module_default()).heroBanner),children:/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{className:"container",children:[/*#__PURE__*/(0,jsx_runtime.jsx)(Heading/* default */.A,{as:"h1",className:"hero__title",children:siteConfig.title}),/*#__PURE__*/(0,jsx_runtime.jsx)("p",{className:"hero__subtitle",children:siteConfig.tagline}),/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:(index_module_default()).buttons,children:/*#__PURE__*/(0,jsx_runtime.jsx)("a",{className:"button button--secondary button--lg",href:"https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/latest",target:"_blank",children:"Download latest version"})})]})});}function Home(){const{siteConfig}=(0,useDocusaurusContext/* default */.A)();return/*#__PURE__*/(0,jsx_runtime.jsxs)(Layout/* default */.A,{title:`Hello from ${siteConfig.title}`,description:"Description will go into a meta tag in <head />",children:[/*#__PURE__*/(0,jsx_runtime.jsx)(HomepageHeader,{}),/*#__PURE__*/(0,jsx_runtime.jsx)("main",{children:/*#__PURE__*/(0,jsx_runtime.jsx)(HomepageFeatures,{})})]});}
+function HomepageHeader(){const{siteConfig}=(0,useDocusaurusContext/* default */.A)();return/*#__PURE__*/(0,jsx_runtime.jsx)("header",{className:(0,clsx/* default */.A)('hero hero--primary',(index_module_default()).heroBanner),children:/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{className:"container",children:[/*#__PURE__*/(0,jsx_runtime.jsx)(Heading/* default */.A,{as:"h1",className:"hero__title",children:siteConfig.title}),/*#__PURE__*/(0,jsx_runtime.jsx)("p",{className:"hero__subtitle",children:siteConfig.tagline}),/*#__PURE__*/(0,jsx_runtime.jsx)("img",{src:(__webpack_require__(6486)/* ["default"] */ .A),alt:"Otoroshi Biscuit Studio Logo",style:{width:250}}),/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:(index_module_default()).buttons,children:/*#__PURE__*/(0,jsx_runtime.jsx)("a",{className:"button button--secondary button--lg",href:"https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/latest",target:"_blank",children:"Download latest version"})})]})});}function Home(){const{siteConfig}=(0,useDocusaurusContext/* default */.A)();return/*#__PURE__*/(0,jsx_runtime.jsxs)(Layout/* default */.A,{title:`Hello from ${siteConfig.title}`,description:"Description will go into a meta tag in <head />",children:[/*#__PURE__*/(0,jsx_runtime.jsx)(HomepageHeader,{}),/*#__PURE__*/(0,jsx_runtime.jsx)("main",{children:/*#__PURE__*/(0,jsx_runtime.jsx)(HomepageFeatures,{})})]});}
 
 /***/ }),
 
@@ -13893,6 +13936,17 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 /***/ }),
 
+/***/ 6486:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/images/otoroshi-biscuit-studio-logo-e288a83b3efafc5a8afc453b87a63ba4.png");
+
+/***/ }),
+
 /***/ 7605:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -14110,6 +14164,11 @@ __webpack_require__.r(__webpack_exports__);
           "sidebarId": "tutorialSidebar",
           "position": "left",
           "label": "Documentation"
+        },
+        {
+          "label": "API Reference",
+          "href": "/docs/api",
+          "position": "left"
         },
         {
           "href": "https://github.com/cloud-apim/otoroshi-biscuit-studio",
