@@ -5,6 +5,7 @@ npm run build
 cd ..
 rm -rf ./docs
 mv ./documentation/build ./docs 
-git add --all
+git add ./documentation
+git add ./docs
 git commit -am 'build otoroshi-biscuit-studio documentation website'
 git push origin main
