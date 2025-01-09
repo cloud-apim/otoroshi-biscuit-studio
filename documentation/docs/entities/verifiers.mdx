@@ -101,3 +101,18 @@ curl -X POST -H 'Content-Type: application/json' \
     "kind": "biscuit.extensions.cloud-apim.com/BiscuitVerifier"
   }'
 ```
+
+### Bulk creation
+```bash
+curl -X POST -H 'Content-Type: application/x-ndjson' \
+  'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers/_bulk' \
+  -u admin-api-apikey-id:admin-api-apikey-secret \
+  -d '{"enabled":true,"id":"verifier_bulk_1","keypair_ref":"biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9","name":"Biscuit Verifier FROM CURL BULK 1","description":"A Biscuit Verifier created from Otoroshi API","strict":true,"tags":[],"config.checks":["check if time($date), $date <= 2024-12-30T19:00:10Z;"],"config.facts":[],"config.resources":[],"config.rules":[],"config.revocation_ids":[],"kind":"biscuit.extensions.cloud-apim.com/BiscuitVerifier"}
+{"enabled":true,"id":"verifier_bulk_2","keypair_ref":"biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9","name":"Biscuit Verifier FROM CURL BULK 2","description":"A Biscuit Verifier created from Otoroshi API","strict":true,"tags":[],"config.checks":["check if time($date), $date <= 2024-12-30T19:00:10Z;"],"config.facts":[],"config.resources":[],"config.rules":[],"config.revocation_ids":[],"kind":"biscuit.extensions.cloud-apim.com/BiscuitVerifier"}'
+```
+
+#### Response
+```js
+{"status":201,"created":true,"id":"verifier_bulk_1","id_field":"id"}
+{"status":201,"created":true,"id":"verifier_bulk_2","id_field":"id"}
+```

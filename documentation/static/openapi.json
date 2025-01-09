@@ -23,6 +23,10 @@
 		{
 			"name": "biscuit-attenuators",
 			"description": "all the operations about the biscuit attenuators"
+		},
+		{
+			"name": "biscuit-remote-facts",
+			"description": "all the operations about the biscuit remote facts"
 		}
 	],
 	"paths": {
@@ -117,7 +121,7 @@
 				]
 			}
 		},
-    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-attenuators/{id}": {
+		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-attenuators/{id}": {
 			"delete": {
 				"tags": ["biscuit-attenuators"],
 				"summary": "Delete a Biscuit Attenuator",
@@ -218,7 +222,7 @@
 				]
 			}
 		},
-    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs/{id}": {
+		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs/{id}": {
 			"delete": {
 				"tags": ["biscuit-keypairs"],
 				"summary": "Delete a Biscuit KeyPair",
@@ -404,6 +408,71 @@
 					}
 				]
 			}
+		},
+		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-remote-facts/_template": {
+			"get": {
+				"tags": ["biscuit-remote-facts"],
+				"summary": "Get Biscuit Verifier Remote Facts Entity",
+				"description": "Retrieves a template for creating a new Biscuit Remote Facts.",
+				"operationId": "getBiscuitRemoteFactsTemplate",
+				"responses": {
+					"200": {
+						"description": "Template retrieved successfully.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"enabled": { "type": "boolean" },
+										"id": { "type": "string" },
+										"keypair_ref": { "type": "string" },
+										"name": { "type": "string" },
+										"description": { "type": "string" },
+										"metadata": {
+											"type": "object"
+										},
+										"strict": { "type": "boolean" },
+										"tags": {
+											"type": "array",
+											"items": { "type": "string" }
+										},
+										"config": {
+											"type": "object",
+											"properties": {
+												"checks": {
+													"type": "array",
+													"items": { "type": "string" }
+												},
+												"facts": {
+													"type": "array",
+													"items": { "type": "string" }
+												},
+												"resources": {
+													"type": "array",
+													"items": { "type": "string" }
+												},
+												"rules": {
+													"type": "array",
+													"items": { "type": "string" }
+												},
+												"revocation_ids": {
+													"type": "array",
+													"items": { "type": "string" }
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"security": [
+				{
+					"basicAuth": []
+				}
+			]
 		}
 	},
 	"components": {
