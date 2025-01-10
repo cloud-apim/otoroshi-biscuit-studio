@@ -4,6 +4,31 @@ The Otoroshi Biscuit Studio is set of Otoroshi plugins to use Biscuit Tokens int
 
 ## Installation 
 
+Follow this guide in order to get Otoroshi with the Biscuit Studio Extension.
+### Download Otoroshi
+
+```sh
+curl -L -o otoroshi.jar 'https://github.com/MAIF/otoroshi/releases/download/v16.22.0/otoroshi.jar'
+```
+
+### Download the Biscuit Studio extension
+  
+You can download the latest release of `otoroshi-biscuit-studio` from https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/latest
+
+```sh
+curl -L -o biscuit-studio-extension.jar 'https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/0.0.1/otoroshi-biscuit-studio_2.12-0.0.1.jar'
+```
+
+### Run Otoroshi with the Biscuit Studio Extension
+
+```sh
+java -cp "./biscuit-studio-extension.jar:./otoroshi.jar" -Dotoroshi.adminLogin=admin -Dotoroshi.adminPassword=password -Dotoroshi.storage=file play.core.server.ProdServerStart
+```
+
+Open http://otoroshi.oto.tools:8080/ in your browser
+
+Default Otoroshi UI credentials : admin / password
+
 ## Create your first entity : KeyPair
 
 ## creates the keypair entity
