@@ -48,3 +48,7 @@ Here is a demo configuration :
     "token_replace_name": "biscuit_token"
   }
 ```
+
+### Biscuit Studio API Reference
+
+[API Reference](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/api)
