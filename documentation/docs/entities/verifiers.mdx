@@ -116,3 +116,167 @@ curl -X POST -H 'Content-Type: application/x-ndjson' \
 {"status":201,"created":true,"id":"verifier_bulk_1","id_field":"id"}
 {"status":201,"created":true,"id":"verifier_bulk_2","id_field":"id"}
 ```
+
+## Configuration Examples
+
+### Rules
+
+Rules are logical expressions used to define conditions under which certain actions are authorized. They can combine facts, predicates, and other rules to evaluate permissions.
+
+### Example Rule
+
+The following rule determines whether a user is allowed to perform an operation on a resource:
+
+```js
+is_allowed($user, $res, $op) <- 
+    user($user),          // Declares the user
+    resource($res),       // Declares the resource
+    operation($op),       // Declares the operation
+    right($user, $res, $op); // Verifies the user has the necessary rights
+```
+
+In this example:
+- `user($user)` identifies the user.
+- `resource($res)` identifies the resource being accessed.
+- `operation($op)` specifies the action (e.g., read, write).
+- `right($user, $res, $op)` asserts that the user has the permission for the operation on the resource.
+
+---
+
+### Facts
+
+Facts are data points or assertions stored in the Biscuit token. They are used as inputs to evaluate the rules. For example:
+
+```js
+user("alice");
+resource("file1");
+operation("read");
+right("alice", "file1", "read");
+```
+
+These facts state that:
+- Alice is the user.
+- The resource is "file1".
+- The operation is "read".
+- Alice has the right to perform the read operation on file1.
+
+---
+
+### Policies
+
+Policies are used to define the decision logic for allowing or denying access. Biscuit tokens support `allow` and `deny` policies to control access.
+
+### Example Policy
+
+The following policy allows access if the `is_allowed` rule evaluates to true:
+
+```js
+allow if is_allowed($user, $resource, $op);
+```
+
+This policy specifies that:
+- Access is granted (`allow`) if the `is_allowed` rule matches.
+
+### Combining Policies
+
+Policies can also include deny conditions, such as:
+
+```js
+deny if user($user), resource($res), operation($op), not right($user, $res, $op);
+```
+
+This policy denies access if:
+- A user, resource, and operation are defined.
+- The user does not have the corresponding right for the resource and operation.
+
+---
+
+## Contextual Restrictions
+
+Biscuit tokens support additional contextual restrictions using caveats. Caveats allow tokens to impose extra conditions that must be satisfied for access to be granted.
+
+### Example of Caveats
+
+To restrict access to a specific time range:
+
+```js
+time($t), $t <= 1672531200, $t >= 1672444800;
+```
+
+Here:
+- `$t` represents the current time.
+- Access is allowed only if the current time falls between the specified timestamps.
+
+### Example with IP Restriction
+
+To restrict access based on IP address:
+
+```js
+ip("192.168.1.1");
+```
+
+Access is allowed only if the IP matches `192.168.1.1`.
+
+---
+
+## Advanced Examples
+
+### Hierarchical Rights
+
+Defining a hierarchy where admin users have access to all resources and operations:
+
+```js
+right($user, $res, $op) <- role($user, "admin");
+```
+
+### Read-Only Role
+
+Defining a "read-only" role:
+
+```js
+right($user, $res, "read") <- role($user, "read-only");
+```
+
+### Resource-Specific Rights
+
+Granting a user specific rights on a specific resource:
+
+```js
+right("bob", "file2", "write");
+```
+
+### Example as CURL call with Rules and Policies
+
+```bash
+curl -X POST -H 'Content-Type: application/json' \
+  'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers' \
+  -u admin-api-apikey-id:admin-api-apikey-secret \
+  -d '{
+    "enabled": true,
+    "keypair_ref": "biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9",
+    "name": "Biscuit Verifier FROM CURL 1",
+    "description": "A Biscuit Verifier created from Otoroshi API",
+    "strict": true,
+    "tags": [],
+    "config": {
+      "checks": [
+        "check if time($date), $date <= 2025-12-30T19:00:10Z;"
+      ],
+      "facts": [
+        "user(\"alice\");",
+        "resource(\"file1\");",
+        "operation(\"read\");",
+        "right(\"alice\",\"file1\",\"read\");"
+      ],
+      "resources": [],
+      "rules": [
+        "is_allowed($user, $res, $op) <- user($user), resource($res), operation($op), right($user, $res, $op);"
+      ],
+      "policies": [
+         "allow if is_allowed($user, $resource, $op);"
+      ],
+      "revokedIds": []
+    },
+    "kind": "biscuit.extensions.cloud-apim.com/BiscuitVerifier"
+  }'
+```
