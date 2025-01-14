@@ -96,7 +96,7 @@ object BiscuitTokenForge {
 trait BiscuitTokenForgeDataStore extends BasicStore[BiscuitTokenForge] {
   def template(env: Env): BiscuitTokenForge = {
     val defaultBiscuitTokenForge = BiscuitTokenForge(
-      id = IdGenerator.namedId("biscuit_token_", env),
+      id = IdGenerator.namedId("biscuit-token", env),
       name = "New biscuit token",
       description = "New biscuit token",
       token = "",

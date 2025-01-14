@@ -7,6 +7,8 @@ import scala.util.{Failure, Success, Try}
 case class BiscuitVerifierConfig(
       verifierRef: String,
       rbacPolicyRef: String,
+      enableRemoteFacts: Boolean = false,
+      remoteFactsRef: String,
       enforce: Boolean = true,
       extractorType: String,
       extractorName: String
@@ -15,7 +17,7 @@ case class BiscuitVerifierConfig(
 }
 
 object BiscuitVerifierConfig {
-  val configFlow: Seq[String] = Seq("verifier_ref", "rbac_ref", "enforce", "extractor_type", "extractor_name")
+  val configFlow: Seq[String] = Seq("verifier_ref", "rbac_ref", "enable_remote_facts", "remote_facts_ref", "enforce", "extractor_type", "extractor_name")
   def configSchema(name: String): Option[JsObject] = Some(Json.obj(
     "verifier_ref" -> Json.obj(
       "type" -> "select",
@@ -33,6 +35,21 @@ object BiscuitVerifierConfig {
       "label" -> s"RBAC Policy Reference",
       "props" -> Json.obj(
         "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-rbac",
+        "optionsTransformer" -> Json.obj(
+          "label" -> "name",
+          "value" -> "id",
+        ),
+      ),
+    ),
+    "enable_remote_facts" -> Json.obj(
+      "type" -> "bool",
+      "label" -> "Enable Remote Facts Loader"
+    ),
+    "remote_facts_ref" -> Json.obj(
+      "type" -> "select",
+      "label" -> s"Load Remote Facts",
+      "props" -> Json.obj(
+        "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-remote-facts",
         "optionsTransformer" -> Json.obj(
           "label" -> "name",
           "value" -> "id",
@@ -62,6 +79,8 @@ object BiscuitVerifierConfig {
   val default = BiscuitVerifierConfig(
     "",
     "",
+    false,
+    "",
     true,
     "Header",
     "Authorization"
@@ -71,6 +90,8 @@ object BiscuitVerifierConfig {
     override def writes(o: BiscuitVerifierConfig): JsValue = Json.obj(
       "verifier_ref" -> o.verifierRef,
       "rbac_ref" -> o.rbacPolicyRef,
+      "enable_remote_facts" -> o.enableRemoteFacts,
+      "remote_facts_ref" -> o.rbacPolicyRef,
       "enforce" -> o.enforce,
       "extractor_type" -> o.extractorType,
       "extractor_name" -> o.extractorName,
@@ -79,7 +100,9 @@ object BiscuitVerifierConfig {
       BiscuitVerifierConfig(
         verifierRef = json.select("verifier_ref").asOpt[String].getOrElse(""),
         rbacPolicyRef = json.select("rbac_ref").asOpt[String].getOrElse(""),
-        enforce = json.select("enforce").asOpt[Boolean].getOrElse(false),
+        enableRemoteFacts = json.select("enable_remote_facts").asOpt[Boolean].getOrElse(false),
+        remoteFactsRef = json.select("remote_facts_ref").asOpt[String].getOrElse(""),
+        enforce = json.select("enforce").asOpt[Boolean].getOrElse(true),
         extractorType = json.select("extractor_type").asOpt[String].getOrElse(""),
         extractorName = json.select("extractor_name").asOpt[String].getOrElse("")
       )

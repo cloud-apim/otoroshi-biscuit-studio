@@ -12,16 +12,13 @@ import play.api.libs.json._
 
 import scala.util.{Failure, Success, Try}
 
-case class ExternalFactsConfig(
-                                apiUrl: String
-                              )
-
 case class VerifierConfig(
                            checks: Seq[String],
                            facts: Seq[String],
                            resources: Seq[String],
                            rules: Seq[String],
-                           revocation_ids: Seq[String]
+                           policies: Seq[String],
+                           revokedIds: Seq[String]
                          ) {
   def json: JsValue = VerifierConfig.format.writes(this)
 }
@@ -34,7 +31,8 @@ object VerifierConfig {
         "facts" -> o.facts,
         "resources" -> o.resources,
         "rules" -> o.rules,
-        "revocation_ids" -> o.revocation_ids
+        "policies" -> o.policies,
+        "revokedIds" -> o.revokedIds
       )
     }
 
@@ -45,7 +43,8 @@ object VerifierConfig {
           facts = (json \ "facts").asOpt[Seq[String]].getOrElse(Seq.empty),
           resources = (json \ "resources").asOpt[Seq[String]].getOrElse(Seq.empty),
           rules = (json \ "rules").asOpt[Seq[String]].getOrElse(Seq.empty),
-          revocation_ids = (json \ "revocation_ids").asOpt[Seq[String]].getOrElse(Seq.empty)
+          policies = (json \ "policies").asOpt[Seq[String]].getOrElse(Seq.empty),
+          revokedIds = (json \ "revokedIds").asOpt[Seq[String]].getOrElse(Seq.empty)
         )
       } match {
         case Failure(e) => JsError(e.getMessage)
@@ -141,7 +140,7 @@ object BiscuitVerifier {
 trait BiscuitVerifierDataStore extends BasicStore[BiscuitVerifier] {
   def template(env: Env): BiscuitVerifier = {
     val defaultBiscuitVerifier = BiscuitVerifier(
-      id = IdGenerator.namedId("biscuit_verifier", env),
+      id = IdGenerator.namedId("biscuit-verifier", env),
       name = "New biscuit verifier",
       description = "New biscuit verifier",
       metadata = Map.empty,

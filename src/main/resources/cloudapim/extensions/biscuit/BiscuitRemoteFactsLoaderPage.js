@@ -90,7 +90,7 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 				selfUrl: "extensions/cloud-apim/biscuit/remote-facts",
 				defaultTitle: "All Biscuit Remote Facts",
 				defaultValue: () => ({
-					id: "biscuit-remote-facts_" + uuid(),
+					id: `biscuit-remote-facts_${uuid()}`,
 					name: "Remote fact loader",
 					description: "Biscuit Remote fact loader",
 					tags: [],

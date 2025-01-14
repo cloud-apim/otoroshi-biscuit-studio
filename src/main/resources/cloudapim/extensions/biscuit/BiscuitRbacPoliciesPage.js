@@ -31,20 +31,7 @@ class BiscuitRbacPoliciesPage extends Component {
 		roles: {
 			type: "object",
 			props: { label: "List of Roles" },
-		},
-        enableRemoteFacts: {
-            type: 'bool',
-            props: { label: "Enable remote facts loader" },
-        },
-        remoteFactsRef: {
-            type: "select",
-            props: {
-                label: "Remote facts Reference",
-                valuesFrom:
-                    "/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-remote-facts",
-                transformer: (item) => ({ label: item.name, value: item.id }),
-            },
-        },
+		}
 	};
 
 	columns = [
@@ -74,10 +61,7 @@ class BiscuitRbacPoliciesPage extends Component {
 		"tags",
 		"metadata",
 		"<<<Roles",
-		"roles",
-		"<<<Remote Facts",
-		"enableRemoteFacts",
-		"remoteFactsRef"
+		"roles"
 	];
 
 	componentDidMount() {
@@ -98,13 +82,11 @@ class BiscuitRbacPoliciesPage extends Component {
 				selfUrl: "extensions/cloud-apim/biscuit/rbac",
 				defaultTitle: "All Biscuit RBAC Policies",
 				defaultValue: () => ({
-					id: "biscuit_rbac_policy_" + uuid(),
-					name: "Biscuit RBAC Policy " + uuid(),
+					id: `biscuit-rbac-policy_${uuid()}`,
+					name: "Biscuit RBAC Policy",
 					description: "A simple Biscuit RBAC Policy",
 					tags: [],
 					metadata: {},
-					enableRemoteFacts: false,
-					remoteFactsRef: "",
 					roles: {
 						admin: [
 							"billing:read",

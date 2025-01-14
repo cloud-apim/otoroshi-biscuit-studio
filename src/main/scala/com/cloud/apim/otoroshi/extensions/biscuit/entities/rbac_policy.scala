@@ -22,8 +22,6 @@ case class BiscuitRbacPolicy(
                               metadata: Map[String, String] = Map.empty,
                               location: EntityLocation,
                               roles: Map[String, JsArray] = Map.empty,
-                              remoteFactsRef: String,
-                              enableRemoteFacts: Boolean
                             ) extends EntityLocationSupport {
   def json: JsValue = BiscuitRbacPolicy.format.writes(this)
 
@@ -50,9 +48,7 @@ object BiscuitRbacPolicy {
         "metadata" -> o.metadata,
         "strict" -> o.strict,
         "tags" -> JsArray(o.tags.map(JsString.apply)),
-        "roles" -> o.roles,
-        "enableRemoteFacts" -> o.enableRemoteFacts,
-        "remoteFactsRef" -> o.remoteFactsRef
+        "roles" -> o.roles
       )
     }
 
@@ -64,12 +60,10 @@ object BiscuitRbacPolicy {
           name = (json \ "name").as[String],
           description = (json \ "description").asOpt[String].getOrElse("--"),
           enabled = (json \ "enabled").asOpt[Boolean].getOrElse(true),
-          enableRemoteFacts = (json \ "enableRemoteFacts").asOpt[Boolean].getOrElse(true),
           strict = (json \ "strict").asOpt[Boolean].getOrElse(true),
           metadata = (json \ "metadata").asOpt[Map[String, String]].getOrElse(Map.empty),
           tags = (json \ "tags").asOpt[Seq[String]].getOrElse(Seq.empty[String]),
           roles = (json \ "roles").asOpt[Map[String, JsArray]].getOrElse(Map.empty),
-          remoteFactsRef = (json \ "remoteFactsRef").as[String],
         )
       } match {
         case Failure(e) => JsError(e.getMessage)
@@ -102,15 +96,13 @@ object BiscuitRbacPolicy {
 trait BiscuitRbacPolicyDataStore extends BasicStore[BiscuitRbacPolicy] {
   def template(env: Env): BiscuitRbacPolicy = {
     val defaultBiscuitRbacPolicy = BiscuitRbacPolicy(
-      id = IdGenerator.namedId("biscuit_rbac_policy", env),
+      id = IdGenerator.namedId("biscuit-rbac-policy", env),
       name = "New biscuit RBAC Policy",
       description = "New biscuit RBAC Policy",
       metadata = Map.empty,
       tags = Seq.empty,
       location = EntityLocation.default,
-      roles = Map.empty,
-      remoteFactsRef = "",
-      enableRemoteFacts = false
+      roles = Map.empty
     )
     env.datastores.globalConfigDataStore
       .latest()(env.otoroshiExecutionContext, env)

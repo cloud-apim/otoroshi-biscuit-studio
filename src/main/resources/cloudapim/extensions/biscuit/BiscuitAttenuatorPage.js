@@ -91,7 +91,7 @@ class BiscuitAttenuatorPage extends Component {
 				selfUrl: "extensions/cloud-apim/biscuit/attenuators",
 				defaultTitle: "All Biscuit Attenuators",
 				defaultValue: () => ({
-					id: "biscuit_attenuator_" + uuid(),
+					id: `biscuit-attenuator_${uuid()}`,
 					name: "Biscuit Attenuator",
 					description: "A simple Biscuit Attenuator",
 					tags: [],

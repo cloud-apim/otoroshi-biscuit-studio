@@ -95,7 +95,7 @@ class BiscuitKeyPairPage extends Component {
 				selfUrl: "extensions/cloud-apim/biscuit/keypairs",
 				defaultTitle: "All Biscuit KeyPairs",
 				defaultValue: () => ({
-					id: 'biscuit-keypair_' + uuid(),
+					id: `biscuit-keypair_${uuid()}`,
 					name: "Biscuit Key Pair",
 					description: "A simple ED25519 Biscuit KeyPair",
 					tags: [],

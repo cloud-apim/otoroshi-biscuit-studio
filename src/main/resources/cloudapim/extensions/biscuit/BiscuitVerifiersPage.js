@@ -53,9 +53,13 @@ class BiscuitVerifiersPage extends Component {
 			type: "array",
 			props: { label: "Rules" },
 		},
-		'config.revocation_ids': {
+		'config.policies': {
+      type: "array",
+      props: { label: "Policies" },
+    },
+		'config.revokedIds': {
 			type: "array",
-			props: { label: "Revocation IDs" },
+			props: { label: "Revoked IDs" },
 		},
 	};
 
@@ -95,8 +99,10 @@ class BiscuitVerifiersPage extends Component {
 		"config.resources",
 		">>>Rules",
 		"config.rules",
-		">>>Revocation IDs",
-		"config.revocation_ids",
+		">>>Policies",
+		"config.policies",
+		">>>Revoked IDs",
+		"config.revokedIds",
 	];
 
 	componentDidMount() {
@@ -117,7 +123,7 @@ class BiscuitVerifiersPage extends Component {
 				selfUrl: "extensions/cloud-apim/biscuit/verifiers",
 				defaultTitle: "All Biscuit Verifiers",
 				defaultValue: () => ({
-					id: "biscuit-verifier_" + uuid(),
+					id: `biscuit-verifier_${uuid()}`,
 					name: "Biscuit Verifier",
 					description: "A simple Biscuit Verifier",
 					tags: [],
@@ -128,7 +134,8 @@ class BiscuitVerifiersPage extends Component {
             facts: [],
             resources: [],
             rules: [],
-            revocation_ids: [],
+            policies: [],
+            revokedIds: [],
           }
 				}),
 				itemName: "Biscuit Verifier",
