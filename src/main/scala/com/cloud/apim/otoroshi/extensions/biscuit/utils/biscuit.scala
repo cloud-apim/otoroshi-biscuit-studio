@@ -307,7 +307,7 @@ object BiscuitUtils {
   def getRemoteFacts(
                       apiUrl: String,
                       headers: Map[String, String],
-                    )(implicit env: Env, ec: ExecutionContext): Future[Either[String, (List[String], List[String], List[String], List[String], String)]] = {
+                    )(implicit env: Env, ec: ExecutionContext): Future[Either[String, (List[String], List[String], List[String], List[String])]] = {
 
     env.Ws
       .url(apiUrl)
@@ -367,13 +367,7 @@ object BiscuitUtils {
             val factsStrings = facts.map(fact => s"""${fact.name}("${fact.value}")""")
             val aclStrings = aclEntries.map(acl => s"""right("${acl.user}", "${acl.resource}", "${acl.action}");""")
 
-            var aclRules = ""
-
-            if(aclStrings.nonEmpty){
-              aclRules = "is_allowed($user, $res, $op) <- user($user), resource($res), operation($op), right($user, $res, $op)"
-            }
-
-            Right((roleFacts ++ userRoleFacts, revokedIdsRemote, factsStrings, aclStrings, aclRules))
+            Right((roleFacts ++ userRoleFacts, revokedIdsRemote, factsStrings, aclStrings))
 
           case _ =>
             Left(s"API request failed with status ${resp.status}: ${resp.body}")
