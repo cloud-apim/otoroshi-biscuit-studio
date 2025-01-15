@@ -95,7 +95,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
                                             case Left(err) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Biscuit token is not valid : ${err}"))).vfuture
                                             case Right(biscuitToken) => {
 
-                                              BiscuitUtils.verify(biscuitToken, verifierConfig.copy(facts = finalListFacts, revokedIds = finalListOfRevokedId), AccessValidatorContext(ctx)) match {
+                                              BiscuitUtils.verify(biscuitToken, verifierConfig.copy(facts = finalListFacts, revokedIds = finalListOfRevokedId), AccessValidatorContext(ctx).some) match {
                                                 case Left(err) => forbidden(ctx)
                                                 case Right(_) => NgAccess.NgAllowed.vfuture
                                               }
@@ -123,7 +123,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
                                 Try(biscuitUnverified.verify(publicKey)).toEither match {
                                   case Left(err) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Biscuit token is not valid : ${err}"))).vfuture
                                   case Right(biscuitToken) => {
-                                    BiscuitUtils.verify(biscuitToken, verifierConfig.copy(facts = verifierConfig.facts ++ rbacConf), AccessValidatorContext(ctx)) match {
+                                    BiscuitUtils.verify(biscuitToken, verifierConfig.copy(facts = verifierConfig.facts ++ rbacConf), AccessValidatorContext(ctx).some) match {
                                       case Left(err) => forbidden(ctx)
                                       case Right(_) => NgAccess.NgAllowed.vfuture
                                     }
@@ -148,7 +148,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
                           Try(biscuitUnverified.verify(publicKey)).toEither match {
                             case Left(err) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Biscuit token is not valid : ${err}"))).vfuture
                             case Right(biscuitToken) => {
-                              BiscuitUtils.verify(biscuitToken, verifierConfig, AccessValidatorContext(ctx)) match {
+                              BiscuitUtils.verify(biscuitToken, verifierConfig, AccessValidatorContext(ctx).some) match {
                                 case Left(err) => forbidden(ctx)
                                 case Right(_) => NgAccess.NgAllowed.vfuture
                               }

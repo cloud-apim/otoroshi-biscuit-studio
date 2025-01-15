@@ -6,6 +6,7 @@ import akka.stream.scaladsl.{Source, StreamConverters}
 import biscuit.format.schema.Schema.PublicKey.Algorithm
 import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitForgeConfig, BiscuitUtils}
 import org.biscuitsec.biscuit.crypto.{KeyPair, PublicKey}
+import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.env.Env
 import otoroshi.models._
 import otoroshi.next.extensions._
@@ -14,9 +15,11 @@ import otoroshi.utils.syntax.implicits._
 import play.api.Logger
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.mvc.{RequestHeader, Result, Results}
+import otoroshi.plugins.biscuit.VerificationContext
 
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
+import scala.util.Try
 
 class BiscuitExtensionDatastores(env: Env, extensionId: AdminExtensionId) {
   val biscuitKeyPairDataStore: BiscuitKeyPairDataStore = new KvBiscuitKeyPairDataStore(extensionId, env.datastores.redis, env)
@@ -30,43 +33,56 @@ class BiscuitExtensionDatastores(env: Env, extensionId: AdminExtensionId) {
 class BiscuitExtensionState(env: Env) {
 
   private val _keypairs = new UnboundedTrieMap[String, BiscuitKeyPair]()
+  private val _verifiers = new UnboundedTrieMap[String, BiscuitVerifier]()
+  private val _attenuators = new UnboundedTrieMap[String, BiscuitAttenuator]()
+  private val _tokenforge = new UnboundedTrieMap[String, BiscuitTokenForge]()
+  private val _rbacpolicies = new UnboundedTrieMap[String, BiscuitRbacPolicy]()
+  private val _rfl = new UnboundedTrieMap[String, RemoteFactsLoader]()
+
   def keypair(id: String): Option[BiscuitKeyPair] = _keypairs.get(id)
-  def allKeypairs(): Seq[BiscuitKeyPair]          = _keypairs.values.toSeq
+
+  def allKeypairs(): Seq[BiscuitKeyPair] = _keypairs.values.toSeq
+
   def updateKeyPairs(values: Seq[BiscuitKeyPair]): Unit = {
     _keypairs.addAll(values.map(v => (v.id, v))).remAll(_keypairs.keySet.toSeq.diff(values.map(_.id)))
   }
 
-  private val _verifiers = new UnboundedTrieMap[String, BiscuitVerifier]()
   def biscuitVerifier(id: String): Option[BiscuitVerifier] = _verifiers.get(id)
+
   def allBiscuitVerifiers(): Seq[BiscuitVerifier] = _verifiers.values.toSeq
+
   def updateBiscuitVerifiers(values: Seq[BiscuitVerifier]): Unit = {
     _verifiers.addAll(values.map(v => (v.id, v))).remAll(_verifiers.keySet.toSeq.diff(values.map(_.id)))
   }
 
-  private val _attenuators = new UnboundedTrieMap[String, BiscuitAttenuator]()
   def biscuitAttenuator(id: String): Option[BiscuitAttenuator] = _attenuators.get(id)
+
   def allBiscuitAttenuators(): Seq[BiscuitAttenuator] = _attenuators.values.toSeq
+
   def updateBiscuitAttenuators(values: Seq[BiscuitAttenuator]): Unit = {
     _attenuators.addAll(values.map(v => (v.id, v))).remAll(_attenuators.keySet.toSeq.diff(values.map(_.id)))
   }
 
-  private val _tokenforge = new UnboundedTrieMap[String, BiscuitTokenForge]()
   def biscuitTokenForge(id: String): Option[BiscuitTokenForge] = _tokenforge.get(id)
+
   def allBiscuitTokenForge(): Seq[BiscuitTokenForge] = _tokenforge.values.toSeq
+
   def updateBiscuitTokenForge(values: Seq[BiscuitTokenForge]): Unit = {
     _tokenforge.addAll(values.map(v => (v.id, v))).remAll(_tokenforge.keySet.toSeq.diff(values.map(_.id)))
   }
 
-  private val _rbacpolicies = new UnboundedTrieMap[String, BiscuitRbacPolicy]()
   def biscuitRbacPolicy(id: String): Option[BiscuitRbacPolicy] = _rbacpolicies.get(id)
+
   def allbiscuitRbacPolicies(): Seq[BiscuitRbacPolicy] = _rbacpolicies.values.toSeq
+
   def updateBiscuitRbacPolicy(values: Seq[BiscuitRbacPolicy]): Unit = {
     _rbacpolicies.addAll(values.map(v => (v.id, v))).remAll(_rbacpolicies.keySet.toSeq.diff(values.map(_.id)))
   }
 
-  private val _rfl = new UnboundedTrieMap[String, RemoteFactsLoader]()
   def biscuitRemoteFactsLoader(id: String): Option[RemoteFactsLoader] = _rfl.get(id)
+
   def allBiscuitRemoteFactsLoader(): Seq[RemoteFactsLoader] = _rfl.values.toSeq
+
   def updatebiscuitRemoteFactsLoader(values: Seq[RemoteFactsLoader]): Unit = {
     _rfl.addAll(values.map(v => (v.id, v))).remAll(_rfl.keySet.toSeq.diff(values.map(_.id)))
   }
@@ -74,13 +90,22 @@ class BiscuitExtensionState(env: Env) {
 
 class BiscuitExtension(val env: Env) extends AdminExtension {
 
-  private lazy val datastores = new BiscuitExtensionDatastores(env, id)
-
   lazy val states = new BiscuitExtensionState(env)
-
+  lazy val biscuitKeyPairPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitKeyPairPage.js")
+  lazy val biscuitVerifiersPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitVerifiersPage.js")
+  lazy val biscuitAttenuatorsPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitAttenuatorPage.js")
+  lazy val biscuitTokenForgePage = getResourceCode("cloudapim/extensions/biscuit/BiscuitTokenForgePage.js")
+  lazy val biscuitRbacPoliciesPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitRbacPoliciesPage.js")
+  lazy val biscuitRemoteFactsLoaderPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitRemoteFactsLoaderPage.js")
+  lazy val biscuitWebComponents = getResourceCode("cloudapim/extensions/biscuit/webcomponents/index.js")
+    .replace("/assets/tree-sitter.wasm", "/extensions/assets/cloud-apim/extensions/biscuit/assets/tree-sitter.wasm")
+    .replace("/assets/tree-sitter-biscuit.wasm", "/extensions/assets/cloud-apim/extensions/biscuit/assets/tree-sitter-biscuit.wasm")
+    .replace("assets/biscuit_bg-f81a6772.wasm", "/extensions/assets/cloud-apim/extensions/biscuit/assets/biscuit.wasm")
+  lazy val treeSitterComponent = getResourceBytes("cloudapim/extensions/biscuit/webcomponents/assets/tree-sitter.wasm")
+  lazy val treeSitterBiscuitComponent = getResourceBytes("cloudapim/extensions/biscuit/webcomponents/assets/tree-sitter-biscuit.wasm")
+  lazy val biscuitWasmComponents = getResourceBytes("cloudapim/extensions/biscuit/webcomponents/assets/biscuit.wasm")
+  private lazy val datastores = new BiscuitExtensionDatastores(env, id)
   val logger = Logger("cloud-apim-biscuit-extension")
-
-  override def id: AdminExtensionId = AdminExtensionId("cloud-apim.extensions.biscuit")
 
   override def name: String = "Otoroshi Biscuit Studio"
 
@@ -103,21 +128,38 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
     )
   )
 
-  lazy val biscuitKeyPairPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitKeyPairPage.js")
-  lazy val biscuitVerifiersPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitVerifiersPage.js")
-  lazy val biscuitAttenuatorsPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitAttenuatorPage.js")
-  lazy val biscuitTokenForgePage = getResourceCode("cloudapim/extensions/biscuit/BiscuitTokenForgePage.js")
-  lazy val biscuitRbacPoliciesPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitRbacPoliciesPage.js")
-  lazy val biscuitRemoteFactsLoaderPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitRemoteFactsLoaderPage.js")
-  lazy val biscuitWebComponents = getResourceCode("cloudapim/extensions/biscuit/webcomponents/index.js")
-                                  .replace("/assets/tree-sitter.wasm", "/extensions/assets/cloud-apim/extensions/biscuit/assets/tree-sitter.wasm")
-                                  .replace("/assets/tree-sitter-biscuit.wasm", "/extensions/assets/cloud-apim/extensions/biscuit/assets/tree-sitter-biscuit.wasm")
-                                  .replace("assets/biscuit_bg-f81a6772.wasm", "/extensions/assets/cloud-apim/extensions/biscuit/assets/biscuit.wasm")
-  lazy val treeSitterComponent = getResourceBytes("cloudapim/extensions/biscuit/webcomponents/assets/tree-sitter.wasm")
-  lazy val treeSitterBiscuitComponent = getResourceBytes("cloudapim/extensions/biscuit/webcomponents/assets/tree-sitter-biscuit.wasm")
-  lazy val biscuitWasmComponents = getResourceBytes("cloudapim/extensions/biscuit/webcomponents/assets/biscuit.wasm")
+  def getResourceCode(path: String): String = {
+    implicit val ec = env.otoroshiExecutionContext
+    implicit val mat = env.otoroshiMaterializer
+    env.environment.resourceAsStream(path)
+      .map(stream => StreamConverters.fromInputStream(() => stream).runFold(ByteString.empty)(_ ++ _).awaitf(10.seconds).utf8String)
+      .getOrElse(s"'resource ${path} not found !'")
+  }
 
-  def handleGenerateTokenFromForge(ctx: AdminExtensionRouterContext[AdminExtensionBackofficeAuthRoute], req: RequestHeader, user: Option[BackOfficeUser], body:  Option[Source[ByteString, _]]): Future[Result] = {
+  def getResourceBytes(path: String): ByteString = {
+    implicit val ec = env.otoroshiExecutionContext
+    implicit val mat = env.otoroshiMaterializer
+    env.environment.resourceAsStream(path)
+      .map(stream => StreamConverters.fromInputStream(() => stream).runFold(ByteString.empty)(_ ++ _).awaitf(10.seconds))
+      .get
+  }
+
+  override def backofficeAuthRoutes(): Seq[AdminExtensionBackofficeAuthRoute] = Seq(
+    AdminExtensionBackofficeAuthRoute(
+      method = "POST",
+      path = "/extensions/cloud-apim/extensions/biscuit/tokens/forge/_generate",
+      wantsBody = true,
+      handle = handleGenerateTokenFromForge
+    ),
+    AdminExtensionBackofficeAuthRoute(
+      method = "POST",
+      path = "/extensions/cloud-apim/extensions/biscuit/tokens/verifier/_test",
+      wantsBody = true,
+      handle = handleVerifierTester
+    )
+  )
+
+  def handleGenerateTokenFromForge(ctx: AdminExtensionRouterContext[AdminExtensionBackofficeAuthRoute], req: RequestHeader, user: Option[BackOfficeUser], body: Option[Source[ByteString, _]]): Future[Result] = {
     implicit val ec = env.otoroshiExecutionContext
     implicit val mat = env.otoroshiMaterializer
     (body match {
@@ -126,13 +168,13 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
         val bodyJson = bodyRaw.utf8String.parseJson
         bodyJson.select("keypair_ref").asOpt[String] match {
           case None => Results.Ok(Json.obj("done" -> false, "error" -> "no keypair provided")).vfuture
-          case Some(keyPairRef) =>  {
+          case Some(keyPairRef) => {
             env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(keyPairRef)) match {
               case None => Results.Ok(Json.obj("done" -> false, "error" -> "no keypair found")).vfuture
               case Some(keypairDb) => {
                 bodyJson.select("config").asOpt[JsValue] match {
                   case None => Results.Ok(Json.obj("done" -> false, "error" -> "no config provided")).vfuture
-                  case Some(newTokenConfig) =>  {
+                  case Some(newTokenConfig) => {
 
                     val biscuitForgeConf = BiscuitForgeConfig.format.reads(newTokenConfig).asOpt
 
@@ -163,30 +205,76 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
     }
   }
 
-  def getResourceCode(path: String): String = {
+  def handleVerifierTester(ctx: AdminExtensionRouterContext[AdminExtensionBackofficeAuthRoute], req: RequestHeader, user: Option[BackOfficeUser], body: Option[Source[ByteString, _]]): Future[Result] = {
     implicit val ec = env.otoroshiExecutionContext
     implicit val mat = env.otoroshiMaterializer
-    env.environment.resourceAsStream(path)
-      .map(stream => StreamConverters.fromInputStream(() => stream).runFold(ByteString.empty)(_++_).awaitf(10.seconds).utf8String)
-      .getOrElse(s"'resource ${path} not found !'")
-  }
+    implicit val ev = env
+    (body match {
+      case None => Results.Ok(Json.obj("done" -> false, "error" -> "no body")).vfuture
+      case Some(bodySource) =>
+        bodySource.runFold(ByteString.empty)(_ ++ _).flatMap { bodyRaw =>
+          val bodyJson = bodyRaw.utf8String.parseJson
+          val biscuitTokenRef = bodyJson.select("biscuitTokenRef").asOpt[String]
+          val biscuitKeyPairRef = bodyJson.select("keypairRef").asOpt[String]
 
-   def getResourceBytes(path: String): ByteString = {
-    implicit val ec = env.otoroshiExecutionContext
-    implicit val mat = env.otoroshiMaterializer
-    env.environment.resourceAsStream(path)
-      .map(stream => StreamConverters.fromInputStream(() => stream).runFold(ByteString.empty)(_++_).awaitf(10.seconds))
-      .get
-  }
+          biscuitKeyPairRef match {
+            case None => Results.Ok(Json.obj("done" -> false, "error" -> "keypairRef not provided")).vfuture
+            case Some(keypairRef) => {
 
-  override def backofficeAuthRoutes(): Seq[AdminExtensionBackofficeAuthRoute] = Seq(
-    AdminExtensionBackofficeAuthRoute(
-      method = "POST",
-      path = "/extensions/cloud-apim/extensions/biscuit/tokens/forge/_generate",
-      wantsBody = true,
-      handle = handleGenerateTokenFromForge
-    )
-  )
+              env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitTokenForge(biscuitTokenRef.get)) match {
+                case None => Results.Ok(Json.obj("done" -> false, "error" -> "biscuitTokenRef doesn't exist")).vfuture
+                case Some(biscuitTokenRef) => {
+
+                  if (biscuitTokenRef.token.isEmpty) {
+                    Results.Ok(Json.obj("done" -> false, "error" -> "biscuit token not provided in entity")).vfuture
+                  } else {
+                    val finalBiscuitToken = biscuitTokenRef.token.get
+
+                    env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(keypairRef)) match {
+                      case None => Results.Ok(Json.obj("done" -> false, "error" -> "keypair doesn't exist")).vfuture
+                      case Some(keypair) => {
+                        val publicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)
+
+
+                        Try(Biscuit.from_b64url(finalBiscuitToken, publicKey)).toEither match {
+                          case Left(err) => {
+                            Results.Ok(Json.obj("done" -> false, "error" -> s"Unable to deserialize Biscuit token : ${err}")).vfuture
+                          }
+                          case Right(biscuitUnverified) =>
+
+                            Try(biscuitUnverified.verify(publicKey)).toEither match {
+                              case Left(err) => Results.Ok(Json.obj("done" -> false, "error" -> s"Biscuit token is not valid : ${err}")).vfuture
+                              case Right(biscuitToken) => {
+
+                                val verifierConfig = VerifierConfig(
+                                  checks = bodyJson.select("checks").asOpt[List[String]].getOrElse(List.empty),
+                                  facts = bodyJson.select("facts").asOpt[List[String]].getOrElse(List.empty),
+                                  resources = bodyJson.select("resources").asOpt[List[String]].getOrElse(List.empty),
+                                  rules = bodyJson.select("rules").asOpt[List[String]].getOrElse(List.empty),
+                                  policies = bodyJson.select("policies").asOpt[List[String]].getOrElse(List.empty),
+                                  revokedIds = bodyJson.select("revokedIds").asOpt[List[String]].getOrElse(List.empty),
+                                )
+
+                                BiscuitUtils.verify(biscuitToken, verifierConfig, None) match {
+                                  case Left(err) => Results.Ok(Json.obj("done" -> false, "error" -> err.toString)).vfuture
+                                  case Right(_) => Results.Ok(Json.obj("done" -> true, "message" -> "Checked successfully")).vfuture
+                                }
+                              }
+                            }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+    }).recover {
+      case e: Throwable =>
+        Results.Ok(Json.obj("done" -> false, "error" -> e.getMessage))
+    }
+  }
 
   override def assets(): Seq[AdminExtensionAssetRoute] = Seq(
     AdminExtensionAssetRoute(
@@ -208,19 +296,19 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
         Results.Ok(treeSitterComponent).future
       }
     ),
-       AdminExtensionAssetRoute(
+    AdminExtensionAssetRoute(
       path = "/extensions/assets/cloud-apim/extensions/biscuit/assets/tree-sitter-biscuit.wasm",
       handle = (ctx: AdminExtensionRouterContext[AdminExtensionAssetRoute], req: RequestHeader) => {
         Results.Ok(treeSitterBiscuitComponent).future
       }
     ),
-       AdminExtensionAssetRoute(
+    AdminExtensionAssetRoute(
       path = "/extensions/assets/cloud-apim/extensions/biscuit/assets/biscuit.wasm",
       handle = (ctx: AdminExtensionRouterContext[AdminExtensionAssetRoute], req: RequestHeader) => {
         Results.Ok(biscuitWasmComponents).future
       }
     ),
-       AdminExtensionAssetRoute(
+    AdminExtensionAssetRoute(
       path = "/extensions/assets/cloud-apim/extensions/biscuit/biscuit.js",
       handle = (ctx: AdminExtensionRouterContext[AdminExtensionAssetRoute], req: RequestHeader) => {
         Results.Ok(biscuitWebComponents).as("text/javascript").vfuture
@@ -558,6 +646,8 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       }
     )
   )
+
+  override def id: AdminExtensionId = AdminExtensionId("cloud-apim.extensions.biscuit")
 
   override def syncStates(): Future[Unit] = {
     implicit val ec = env.otoroshiExecutionContext

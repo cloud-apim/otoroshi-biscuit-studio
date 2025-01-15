@@ -37,29 +37,32 @@ class BiscuitVerifiersPage extends Component {
 				transformer: (item) => ({ label: item.name, value: item.id }),
 			},
 		},
-		'config.facts': {
+		"config.facts": {
 			type: "array",
 			props: { label: "Facts" },
 		},
-		'config.checks': {
+		"config.checks": {
 			type: "array",
 			props: { label: "Checks" },
 		},
-		'config.resources': {
+		"config.resources": {
 			type: "array",
 			props: { label: "Resources" },
 		},
-		'config.rules': {
+		"config.rules": {
 			type: "array",
 			props: { label: "Rules" },
 		},
-		'config.policies': {
-      type: "array",
-      props: { label: "Policies" },
-    },
-		'config.revokedIds': {
+		"config.policies": {
+			type: "array",
+			props: { label: "Policies" },
+		},
+		"config.revokedIds": {
 			type: "array",
 			props: { label: "Revoked IDs" },
+		},
+		tester: {
+			type: BiscuitVerifierTester,
 		},
 	};
 
@@ -74,11 +77,11 @@ class BiscuitVerifiersPage extends Component {
 			filterId: "description",
 			content: (item) => item.description,
 		},
-    {
+		{
 			title: "Created At",
 			filterId: "metadata.created_at",
 			content: (item) => item?.metadata?.created_at,
-		}
+		},
 	];
 
 	formFlow = [
@@ -103,6 +106,8 @@ class BiscuitVerifiersPage extends Component {
 		"config.policies",
 		">>>Revoked IDs",
 		"config.revokedIds",
+		">>>Tester",
+		"tester",
 	];
 
 	componentDidMount() {
@@ -129,14 +134,14 @@ class BiscuitVerifiersPage extends Component {
 					tags: [],
 					metadata: {},
 					keypair_ref: "",
-          config : {
-            checks: [],
-            facts: [],
-            resources: [],
-            rules: [],
-            policies: [],
-            revokedIds: [],
-          }
+					config: {
+						checks: [],
+						facts: [],
+						resources: [],
+						rules: [],
+						policies: [],
+						revokedIds: [],
+					},
 				}),
 				itemName: "Biscuit Verifier",
 				formSchema: this.formSchema,
@@ -164,10 +169,36 @@ class BiscuitVerifiersPage extends Component {
 		);
 	}
 }
-
 class BiscuitVerifierTester extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			biscuitTokenRef: "",
+			error: "",
+			warning: "",
+			successMessage: "",
+		};
+	}
+
+	handleInputChange = (event) => {
+		this.setState({ biscuitToken: event.target.value });
+	};
+
 	send = () => {
-		fetch("/extensions/cloud-apim/extensions/biscuit/verifiers/_test", {
+		const { biscuitTokenRef } = this.state;
+
+		// Validate that either a Biscuit token or a provider is provided
+		if (!biscuitTokenRef) {
+			this.setState({
+				error: "Please provide either a Biscuit token or select a provider.",
+			});
+			return;
+		}
+
+		// Clear previous errors and warnings
+		this.setState({ error: "", warning: "" });
+
+		fetch("/extensions/cloud-apim/extensions/biscuit/tokens/verifier/_test", {
 			method: "POST",
 			credentials: "include",
 			headers: {
@@ -176,24 +207,122 @@ class BiscuitVerifierTester extends Component {
 			},
 			body: JSON.stringify({
 				...this.props.rawValue?.config,
+				keypairRef: this.props.rawValue?.keypair_ref,
+				biscuitTokenRef,
 			}),
 		})
 			.then((r) => r.json())
-			.then((data) => console.log(data));
+			.then((data) => {
+				if (data?.valid === false) {
+					this.setState({
+						warning: "The provided Biscuit token is not valid.",
+					});
+				} else if (data?.done === false) {
+					this.setState({
+						successMessage: null,
+						error: null,
+						warning: `Bad verification : ${data.error}`,
+					});
+				} else {
+					this.setState({
+						warning: null,
+						error: null,
+						successMessage: data.message,
+					});
+				}
+			})
+			.catch((error) => {
+				console.error("Error:", error);
+				this.setState({
+					error: "An error occurred while processing your request.",
+				});
+			});
 	};
 
 	render() {
-		return [
+		const { error, warning, successMessage, biscuitTokenRef } = this.state;
+
+		return React.createElement("div", { className: "row mb-3" }, [
 			React.createElement(
-				"button",
-				{
-					type: "button",
-					className: "btn btn-sm btn-success",
-					onClick: this.send,
-				},
-				React.createElement("i", { className: "fas fa-play" }),
-				React.createElement("span", null, " Test Configuration")
+				"div",
+				{ className: "form-group" },
+				React.createElement(SelectInput, {
+					label: "Tokens from forge",
+					value: biscuitTokenRef,
+					onChange: (biscuitTokenRef) => this.setState({ biscuitTokenRef }),
+					valuesFrom:
+						"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/tokens-forge",
+					transformer: (item) => ({ label: item.name, value: item.id }),
+				})
 			),
-		];
+			error &&
+				React.createElement(
+					"div",
+					{
+						style: { maxWidth: "80%", marginLeft: "15%", textAlign: "center" },
+					},
+					React.createElement(
+						"div",
+						{
+							className: "alert alert-danger rounded mx-auto",
+							style: { width: "100%", textAlign: "center" },
+						},
+						React.createElement("i", {
+							className: "fas fa-exclamation-circle",
+						}),
+						React.createElement("span", null, ` ${error}`)
+					)
+				),
+			warning &&
+				React.createElement(
+					"div",
+					{
+						style: { maxWidth: "80%", marginLeft: "15%", textAlign: "center" },
+					},
+					React.createElement(
+						"div",
+						{
+							className: "alert alert-warning rounded mx-auto",
+							style: { maxWidth: "75%", textAlign: "center" },
+						},
+						React.createElement("i", {
+							className: "fas fa-exclamation-triangle",
+						}),
+						React.createElement("span", null, ` ${warning}`)
+					)
+				),
+			successMessage &&
+				React.createElement(
+					"div",
+					{
+						style: { maxWidth: "80%", marginLeft: "15%", textAlign: "center" },
+					},
+					React.createElement(
+						"div",
+						{
+							className: "alert alert-success rounded mx-auto",
+							style: { maxWidth: "75%", textAlign: "center" },
+						},
+						React.createElement("i", {
+							className: "fas fa-check",
+						}),
+						React.createElement("span", null, ` ${successMessage}`)
+					)
+				),
+			React.createElement(
+				"div",
+				{ className: "text-center" },
+				React.createElement(
+					"button",
+					{
+						type: "button",
+						className: "btn btn-sm btn-success",
+						onClick: this.send,
+					},
+					React.createElement("i", { className: "fas fa-play" }),
+					React.createElement("span", null, " Test Configuration")
+				)
+			),
+		]);
 	}
 }

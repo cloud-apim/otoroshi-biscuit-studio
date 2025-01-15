@@ -145,15 +145,18 @@ object BiscuitUtils {
   def verify(
               biscuitToken: Biscuit,
               config: VerifierConfig,
-              ctx: VerificationContext
+              ctxOpt: Option[VerificationContext]
             )(implicit env: Env): Either[org.biscuitsec.biscuit.error.Error, Unit] = {
 
     val verifier = biscuitToken.authorizer()
-
     verifier.set_time()
 
-    verifier.add_fact(s"""operation("${readOrWrite(ctx.request.method)}")""")
-    verifier.add_fact(
+    if(ctxOpt.nonEmpty){
+      val ctx = ctxOpt.get
+
+      verifier.add_fact(s"""operation("${readOrWrite(ctx.request.method)}")""")
+
+      verifier.add_fact(
       fact(
         "resource",
         Seq(
@@ -181,6 +184,8 @@ object BiscuitUtils {
       user.metadata.foreach { case (key, value) =>
         verifier.add_fact(fact("user_meta", Seq(string(key), string(value)).asJava))
       }
+    }
+
     }
 
     // Add resources from the configuration
