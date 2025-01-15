@@ -20,11 +20,11 @@ import scala.jdk.CollectionConverters.{iterableAsScalaIterableConverter, seqAsJa
 import scala.util.{Failure, Success, Try}
 
 case class BiscuitForgeConfig(
-                           checks: Seq[String],
-                           facts: Seq[String],
-                           resources: Seq[String],
-                           rules: Seq[String],
-                         ){
+                               checks: Seq[String],
+                               facts: Seq[String],
+                               resources: Seq[String],
+                               rules: Seq[String],
+                             ) {
   def json: JsValue = BiscuitForgeConfig.format.writes(this)
 }
 
@@ -53,19 +53,8 @@ object BiscuitForgeConfig {
       }
   }
 }
-object BiscuitUtils {
-  def readOrWrite(method: String): String =
-    method match {
-      case "DELETE" => "write"
-      case "GET" => "read"
-      case "HEAD" => "read"
-      case "OPTIONS" => "read"
-      case "PATCH" => "write"
-      case "POST" => "write"
-      case "PUT" => "write"
-      case _ => "none"
-    }
 
+object BiscuitUtils {
   def extractToken(req: RequestHeader, extractorType: String, extractorName: String): Option[String] = {
     (extractorType match {
       case "header" => req.headers.get(extractorName)
@@ -151,40 +140,40 @@ object BiscuitUtils {
     val verifier = biscuitToken.authorizer()
     verifier.set_time()
 
-    if(ctxOpt.nonEmpty){
+    if (ctxOpt.nonEmpty) {
       val ctx = ctxOpt.get
 
       verifier.add_fact(s"""operation("${readOrWrite(ctx.request.method)}")""")
 
       verifier.add_fact(
-      fact(
-        "resource",
-        Seq(
-          string(ctx.request.method.toLowerCase),
-          string(ctx.request.domain),
-          string(ctx.request.path)
-        ).asJava
+        fact(
+          "resource",
+          Seq(
+            string(ctx.request.method.toLowerCase),
+            string(ctx.request.domain),
+            string(ctx.request.path)
+          ).asJava
+        )
       )
-    )
-    verifier.add_fact(fact("resource", Seq(string(ctx.request.domain)).asJava))
-    verifier.add_fact(fact("req_path", Seq(string(ctx.request.path)).asJava))
-    verifier.add_fact(fact("req_domain", Seq(string(ctx.request.domain)).asJava))
-    verifier.add_fact(fact("req_method", Seq(string(ctx.request.method.toLowerCase)).asJava))
-    verifier.add_fact(fact("descriptor_id", Seq(string(ctx.descriptor.id)).asJava))
+      verifier.add_fact(fact("resource", Seq(string(ctx.request.domain)).asJava))
+      verifier.add_fact(fact("req_path", Seq(string(ctx.request.path)).asJava))
+      verifier.add_fact(fact("req_domain", Seq(string(ctx.request.domain)).asJava))
+      verifier.add_fact(fact("req_method", Seq(string(ctx.request.method.toLowerCase)).asJava))
+      verifier.add_fact(fact("descriptor_id", Seq(string(ctx.descriptor.id)).asJava))
 
-    ctx.apikey.foreach { apikey =>
-      apikey.tags.foreach(tag => verifier.add_fact(fact("apikey_tag", Seq(string(tag)).asJava)))
-      apikey.metadata.foreach { case (key, value) =>
-        verifier.add_fact(fact("apikey_meta", Seq(string(key), string(value)).asJava))
+      ctx.apikey.foreach { apikey =>
+        apikey.tags.foreach(tag => verifier.add_fact(fact("apikey_tag", Seq(string(tag)).asJava)))
+        apikey.metadata.foreach { case (key, value) =>
+          verifier.add_fact(fact("apikey_meta", Seq(string(key), string(value)).asJava))
+        }
       }
-    }
 
-    // Add user-related facts if available
-    ctx.user.foreach { user =>
-      user.metadata.foreach { case (key, value) =>
-        verifier.add_fact(fact("user_meta", Seq(string(key), string(value)).asJava))
+      // Add user-related facts if available
+      ctx.user.foreach { user =>
+        user.metadata.foreach { case (key, value) =>
+          verifier.add_fact(fact("user_meta", Seq(string(key), string(value)).asJava))
+        }
       }
-    }
 
     }
 
@@ -241,9 +230,21 @@ object BiscuitUtils {
         Right(())
     }
   }
+
+  def readOrWrite(method: String): String =
+    method match {
+      case "DELETE" => "write"
+      case "GET" => "read"
+      case "HEAD" => "read"
+      case "OPTIONS" => "read"
+      case "PATCH" => "write"
+      case "POST" => "write"
+      case "PUT" => "write"
+      case _ => "none"
+    }
 }
 
-  object BiscuitRemoteUtils {
+object BiscuitRemoteUtils {
 
   implicit val rolesReads: Reads[List[Role]] = Reads { json =>
     (json \ "roles").validateOpt[List[Map[String, List[String]]]].map {
@@ -302,12 +303,6 @@ object BiscuitUtils {
       case None => List.empty
     }
   }
-
-  case class Role(name: String, permissions: List[String])
-  case class BiscuitrevokedId(id: String)
-  case class Fact(name: String, value: String)
-  case class ACL(user: String, resource: String, action: String)
-  case class UserRole(id: Int, name: String, roles: List[String])
 
   def getRemoteFacts(
                       apiUrl: String,
@@ -383,4 +378,14 @@ object BiscuitUtils {
           Left(s"An error occurred during API request: ${ex.getMessage}")
       }
   }
+
+  case class Role(name: String, permissions: List[String])
+
+  case class BiscuitrevokedId(id: String)
+
+  case class Fact(name: String, value: String)
+
+  case class ACL(user: String, resource: String, action: String)
+
+  case class UserRole(id: Int, name: String, roles: List[String])
 }

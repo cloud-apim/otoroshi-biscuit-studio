@@ -70,7 +70,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
                         .map(_.stripSuffix(";"))
                         .toSeq
 
-                      if(config.enableRemoteFacts && config.remoteFactsRef.nonEmpty){
+                      if (config.enableRemoteFacts && config.remoteFactsRef.nonEmpty) {
                         env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitRemoteFactsLoader(config.remoteFactsRef)) match {
                           case None => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> "remoteFactsRef not found"))).vfuture
                           case Some(remoteFactsEntity) => {

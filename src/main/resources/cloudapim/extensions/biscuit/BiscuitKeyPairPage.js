@@ -52,16 +52,16 @@ class BiscuitKeyPairPage extends Component {
 			filterId: "pubKey",
 			content: (item) => item.pubKey,
 		},
-    {
+		{
 			title: "Created At",
 			filterId: "metadata.created_at",
 			content: (item) => item?.metadata?.created_at,
 		},
-    {
+		{
 			title: "Updated At",
 			filterId: "metadata.updated_at",
-			content: (item) => item?.metadata?.updated_at || "--",
-		}
+			content: (item) => item?.metadata?.updated_at || "--",
+		},
 	];
 
 	formFlow = [
@@ -73,8 +73,8 @@ class BiscuitKeyPairPage extends Component {
 		"metadata",
 		"<<<KeyPair parameters",
 		"keypair_generator",
-    // "<<< Biscuit playground",
-    // 'playground'
+		// "<<< Biscuit playground",
+		// 'playground'
 	];
 
 	componentDidMount() {
@@ -121,7 +121,7 @@ class BiscuitKeyPairPage extends Component {
 				rowNavigation: true,
 				extractKey: (item) => item.id,
 				export: true,
-				kubernetesKind: "BiscuitKeyPair"
+				kubernetesKind: "BiscuitKeyPair",
 			},
 			null
 		);

@@ -37,19 +37,19 @@ class BiscuitTokenForge extends Component {
 				transformer: (item) => ({ label: item.name, value: item.id }),
 			},
 		},
-    'config.facts': {
+		"config.facts": {
 			type: "array",
 			props: { label: "Facts" },
 		},
-		'config.checks': {
+		"config.checks": {
 			type: "array",
 			props: { label: "Checks" },
 		},
-		'config.resources': {
+		"config.resources": {
 			type: "array",
 			props: { label: "Resources" },
 		},
-		'config.rules': {
+		"config.rules": {
 			type: "array",
 			props: { label: "Rules" },
 		},
@@ -69,11 +69,11 @@ class BiscuitTokenForge extends Component {
 			filterId: "description",
 			content: (item) => item.description,
 		},
-    {
+		{
 			title: "Created At",
 			filterId: "metadata.created_at",
 			content: (item) => item?.metadata?.created_at,
-		}
+		},
 	];
 
 	formFlow = [
@@ -197,17 +197,19 @@ class TokenGenerator extends Component {
 	render() {
 		if (!this.props?.rawValue?.keypair_ref) {
 			return [
-        React.createElement(
-          "div",
-          { className: "row mb-3" },
-          React.createElement("div", 	{ className: "col-xs-12 col-sm-2 col-form-label" }),
-          React.createElement(
-            "label",
-            { className: "col-sm-10", style: { display: "flex" } },
-            "Please select a KeyPair reference before generating a new token"
-          ),
-        )
-      ]
+				React.createElement(
+					"div",
+					{ className: "row mb-3" },
+					React.createElement("div", {
+						className: "col-xs-12 col-sm-2 col-form-label",
+					}),
+					React.createElement(
+						"label",
+						{ className: "col-sm-10", style: { display: "flex" } },
+						"Please select a KeyPair reference before generating a new token"
+					)
+				),
+			];
 		}
 
 		return [
@@ -272,7 +274,11 @@ class TokenGenerator extends Component {
 						onClick: this.generateNewToken,
 					},
 					React.createElement("i", { className: "fas fa-rotate-right" }),
-					React.createElement("span", {disabled : this?.props?.rawValue?.keypair_ref}, "Generate new token")
+					React.createElement(
+						"span",
+						{ disabled: this?.props?.rawValue?.keypair_ref },
+						"Generate new token"
+					)
 				)
 			),
 		];

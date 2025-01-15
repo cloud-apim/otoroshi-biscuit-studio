@@ -37,7 +37,7 @@ class BiscuitAttenuatorPage extends Component {
 				transformer: (item) => ({ label: item.name, value: item.id }),
 			},
 		},
-		'config.checks': {
+		"config.checks": {
 			type: "array",
 			props: { label: "Checks" },
 		},
@@ -54,11 +54,11 @@ class BiscuitAttenuatorPage extends Component {
 			filterId: "description",
 			content: (item) => item.description,
 		},
-    {
+		{
 			title: "Created At",
 			filterId: "metadata.created_at",
 			content: (item) => item?.metadata?.created_at,
-		}
+		},
 	];
 
 	formFlow = [
@@ -98,7 +98,7 @@ class BiscuitAttenuatorPage extends Component {
 					metadata: {},
 					keypair_ref: "",
 					config: {
-						checks: []
+						checks: [],
 					},
 				}),
 				itemName: "Biscuit Attenuator",

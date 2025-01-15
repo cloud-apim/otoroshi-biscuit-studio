@@ -31,7 +31,7 @@ class BiscuitRbacPoliciesPage extends Component {
 		roles: {
 			type: "object",
 			props: { label: "List of Roles" },
-		}
+		},
 	};
 
 	columns = [
@@ -45,11 +45,11 @@ class BiscuitRbacPoliciesPage extends Component {
 			filterId: "description",
 			content: (item) => item.description,
 		},
-    {
+		{
 			title: "Created At",
 			filterId: "metadata.created_at",
 			content: (item) => item?.metadata?.created_at,
-		}
+		},
 	];
 
 	formFlow = [
@@ -61,7 +61,7 @@ class BiscuitRbacPoliciesPage extends Component {
 		"tags",
 		"metadata",
 		"<<<Roles",
-		"roles"
+		"roles",
 	];
 
 	componentDidMount() {

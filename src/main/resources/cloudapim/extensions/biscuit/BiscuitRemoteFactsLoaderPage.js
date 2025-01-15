@@ -28,17 +28,17 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 			type: "array",
 			props: { label: "Tags" },
 		},
-        'config.apiUrl': {
-            type: "string",
-            props: {
-                label: "API URL",
-                placeholder: "Description of the Context",
-            },
-        },
-        'config.headers': {
-                    type: "object",
-         			props: { label: "Headers" },
-        }
+		"config.apiUrl": {
+			type: "string",
+			props: {
+				label: "API URL",
+				placeholder: "Description of the Context",
+			},
+		},
+		"config.headers": {
+			type: "object",
+			props: { label: "Headers" },
+		},
 	};
 
 	columns = [
@@ -52,11 +52,11 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 			filterId: "description",
 			content: (item) => item.description,
 		},
-    {
+		{
 			title: "Created At",
 			filterId: "metadata.created_at",
 			content: (item) => item?.metadata?.created_at,
-		}
+		},
 	];
 
 	formFlow = [
@@ -69,7 +69,7 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 		"metadata",
 		"<<<Configuration",
 		"config.apiUrl",
-		"config.headers"
+		"config.headers",
 	];
 
 	componentDidMount() {
@@ -95,13 +95,13 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 					description: "Biscuit Remote fact loader",
 					tags: [],
 					metadata: {},
-					config:{
-					    apiUrl: "https://api.domain.com/v1/roles",
-					    headers: {
-					        "Accept": "application/json",
-					        "Authorization": "Bearer: xxxxx"
-					    }
-					}
+					config: {
+						apiUrl: "https://api.domain.com/v1/roles",
+						headers: {
+							Accept: "application/json",
+							Authorization: "Bearer: xxxxx",
+						},
+					},
 				}),
 				itemName: "Biscuit Remote Facts Loader",
 				formSchema: this.formSchema,
@@ -123,7 +123,7 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 				rowNavigation: true,
 				extractKey: (item) => item.id,
 				export: true,
-				kubernetesKind: "BiscuitRemoteFactsLoader"
+				kubernetesKind: "BiscuitRemoteFactsLoader",
 			},
 			null
 		);
