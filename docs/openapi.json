@@ -23,6 +23,10 @@
 		{
 			"name": "biscuit-attenuators",
 			"description": "all the operations about the biscuit attenuators"
+		},
+		{
+			"name": "biscuit-remote-facts",
+			"description": "all the operations about the biscuit remote facts"
 		}
 	],
 	"paths": {
@@ -117,7 +121,7 @@
 				]
 			}
 		},
-    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-attenuators/{id}": {
+		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-attenuators/{id}": {
 			"delete": {
 				"tags": ["biscuit-attenuators"],
 				"summary": "Delete a Biscuit Attenuator",
@@ -218,7 +222,7 @@
 				]
 			}
 		},
-    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs/{id}": {
+		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs/{id}": {
 			"delete": {
 				"tags": ["biscuit-keypairs"],
 				"summary": "Delete a Biscuit KeyPair",
@@ -236,6 +240,53 @@
 				"responses": {
 					"204": {
 						"description": "Biscuit KeyPair deleted successfully."
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			}
+		},
+		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs/_bulk": {
+			"post": {
+				"tags": ["biscuit-keypairs"],
+				"summary": "Bulk create Biscuit KeyPairs",
+				"operationId": "bulkCreateKeyPairs",
+				"requestBody": {
+					"description": "Bulk creation of Biscuit KeyPairs using NDJSON.",
+					"required": true,
+					"content": {
+						"application/x-ndjson": {
+							"schema": {
+								"type": "string",
+								"example": "{\"id\":\"bulk_keypair1\",\"name\":\"KeyPair from Otoroshi API Bulk 1\",\"description\":\"A Biscuit KeyPair created from Otoroshi API\",\"pubKey\":\"cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb\",\"privKey\":\"0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619\",\"tags\":[],\"kind\":\"biscuit.extensions.cloud-apim.com/BiscuitKeyPair\"}\n{\"id\":\"bulk_keypair2\",\"name\":\"KeyPair from Otoroshi API Bulk 2\",\"description\":\"A Biscuit KeyPair created from Otoroshi API\",\"pubKey\":\"cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb\",\"privKey\":\"0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619\",\"tags\":[],\"kind\":\"biscuit.extensions.cloud-apim.com/BiscuitKeyPair\"}"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "KeyPairs created successfully.",
+						"content": {
+							"application/json": {
+								"example": [
+									{
+										"status": 201,
+										"created": true,
+										"id": "bulk_keypair1",
+										"id_field": "id"
+									},
+									{
+										"status": 201,
+										"created": true,
+										"id": "bulk_keypair2",
+										"id_field": "id"
+									}
+								]
+							}
+						}
 					}
 				},
 				"security": [
@@ -404,7 +455,266 @@
 					}
 				]
 			}
-		}
+		},
+		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers/_bulk": {
+			"post": {
+				"tags": ["biscuit-verifiers"],
+				"summary": "Bulk create Biscuit Verifiers",
+				"operationId": "bulkCreateVerifiers",
+				"requestBody": {
+					"description": "Bulk creation of Biscuit Verifiers using NDJSON.",
+					"required": true,
+					"content": {
+						"application/x-ndjson": {
+							"schema": {
+								"type": "string",
+								"example": "{\"enabled\":true,\"id\":\"verifier_bulk_1\",\"keypair_ref\":\"biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9\",\"name\":\"Biscuit Verifier FROM CURL BULK 1\",\"description\":\"A Biscuit Verifier created from Otoroshi API\",\"strict\":true,\"tags\":[],\"config.checks\":[\"check if time($date), $date <= 2024-12-30T19:00:10Z;\"],\"config.facts\":[],\"config.resources\":[],\"config.rules\":[],\"config.revocation_ids\":[],\"kind\":\"biscuit.extensions.cloud-apim.com/BiscuitVerifier\"}\n{\"enabled\":true,\"id\":\"verifier_bulk_2\",\"keypair_ref\":\"biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9\",\"name\":\"Biscuit Verifier FROM CURL BULK 2\",\"description\":\"A Biscuit Verifier created from Otoroshi API\",\"strict\":true,\"tags\":[],\"config.checks\":[\"check if time($date), $date <= 2024-12-30T19:00:10Z;\"],\"config.facts\":[],\"config.resources\":[],\"config.rules\":[],\"config.revocation_ids\":[],\"kind\":\"biscuit.extensions.cloud-apim.com/BiscuitVerifier\"}"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Verifiers created successfully.",
+						"content": {
+							"application/json": {
+								"example": [
+									{
+										"status": 201,
+										"created": true,
+										"id": "verifier_bulk_1",
+										"id_field": "id"
+									},
+									{
+										"status": 201,
+										"created": true,
+										"id": "verifier_bulk_2",
+										"id_field": "id"
+									}
+								]
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			}
+		},
+		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-remote-facts/_template": {
+			"get": {
+				"tags": ["biscuit-remote-facts"],
+				"summary": "Get Biscuit Verifier Remote Facts Entity",
+				"description": "Retrieves a template for creating a new Biscuit Remote Facts.",
+				"operationId": "getBiscuitRemoteFactsTemplate",
+				"responses": {
+					"200": {
+						"description": "Template retrieved successfully.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"enabled": { "type": "boolean" },
+										"id": { "type": "string" },
+										"keypair_ref": { "type": "string" },
+										"name": { "type": "string" },
+										"description": { "type": "string" },
+										"metadata": {
+											"type": "object"
+										},
+										"strict": { "type": "boolean" },
+										"tags": {
+											"type": "array",
+											"items": { "type": "string" }
+										},
+										"config": {
+											"type": "object",
+											"properties": {
+												"checks": {
+													"type": "array",
+													"items": { "type": "string" }
+												},
+												"facts": {
+													"type": "array",
+													"items": { "type": "string" }
+												},
+												"resources": {
+													"type": "array",
+													"items": { "type": "string" }
+												},
+												"rules": {
+													"type": "array",
+													"items": { "type": "string" }
+												},
+												"revocation_ids": {
+													"type": "array",
+													"items": { "type": "string" }
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			}
+		},
+		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-remote-facts": {
+			"post": {
+				"tags": ["biscuit-remote-facts"],
+				"summary": "Create a Biscuit Remote Facts Loader",
+				"operationId": "createRemoteFactsLoader",
+				"requestBody": {
+					"description": "Create a new Biscuit Remote Facts Loader.",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"enabled": {
+										"type": "boolean",
+										"description": "Indicates whether the remote facts loader is enabled."
+									},
+									"id": {
+										"type": "string",
+										"description": "The unique identifier for the remote facts loader."
+									},
+									"name": {
+										"type": "string",
+										"description": "The name of the remote facts loader."
+									},
+									"description": {
+										"type": "string",
+										"description": "A description of the remote facts loader."
+									},
+									"metadata": {
+										"type": "object",
+										"properties": {
+											"created_at": {
+												"type": "string",
+												"format": "date-time",
+												"description": "The creation timestamp."
+											},
+											"updated_at": {
+												"type": "string",
+												"format": "date-time",
+												"description": "The last updated timestamp."
+											}
+										}
+									},
+									"tags": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										},
+										"description": "Tags associated with the remote facts loader."
+									},
+									"config": {
+										"type": "object",
+										"properties": {
+											"apiUrl": {
+												"type": "string",
+												"format": "uri",
+												"description": "The URL of the API to load facts from."
+											},
+											"headers": {
+												"type": "object",
+												"additionalProperties": {
+													"type": "string"
+												},
+												"description": "Headers to include in requests to the API."
+											}
+										},
+										"required": ["apiUrl", "headers"]
+									},
+									"kind": {
+										"type": "string",
+										"enum": [
+											"biscuit.extensions.cloud-apim.com/BiscuitRemoteFactsLoader"
+										],
+										"description": "The kind of resource being created."
+									}
+								},
+								"required": [
+									"enabled",
+									"id",
+									"name",
+									"description",
+									"config",
+									"kind"
+								]
+							},
+							"example": {
+								"enabled": true,
+								"id": "biscuit-remote-facts_2ae76425-194d-436b-9977-0cdeb8680fbb",
+								"name": "Remote Facts Loader",
+								"description": "Biscuit Remote facts loader",
+								"metadata": {},
+								"tags": [],
+								"config": {
+									"apiUrl": "http://localhost:3333/api/facts",
+									"headers": {
+										"Accept": "application/json",
+										"Authorization": "Bearer: xxxxx"
+									}
+								},
+								"kind": "biscuit.extensions.cloud-apim.com/BiscuitRemoteFactsLoader"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Remote facts loader created successfully."
+					},
+					"400": {
+						"description": "Invalid request data."
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			}
+		},
+  	"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-remote-facts/{id}": {
+			"delete": {
+				"tags": ["biscuit-remote-facts"],
+				"summary": "Delete a Biscuit Remote Facts Loader entity",
+				"description": "Deletes a Biscuit Remote Facts Loader entity by its ID.",
+				"operationId": "deleteBiscuitRemoteFactsEntity",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "string" },
+						"description": "ID of the entity to delete."
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "Biscuit Remote Facts Loader entity deleted successfully."
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			}
+		},
 	},
 	"components": {
 		"securitySchemes": {

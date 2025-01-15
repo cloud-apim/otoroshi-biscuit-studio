@@ -530,7 +530,7 @@ function _createMdxContent(props) {
     }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
       children: (0,jsx_runtime.jsx)(_components.code, {
         className: "language-bash",
-        children: "curl -X POST -H 'Content-Type: application/json' 'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs' -u admin-api-apikey-id:admin-api-apikey-secret -d '{\n  \"id\": \"biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9\",\n  \"name\": \"KeyPair from Otoroshi API\",\n  \"description\": \"A Biscuit KeyPair created from Otoroshi API\",\n  \"pubKey\": \"cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb\",\n  \"privKey\": \"0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619\",\n  \"tags\": [],\n  \"kind\": \"biscuit.extensions.cloud-apim.com/BiscuitKeyPair\"\n}'\n"
+        children: "curl -X POST -H 'Content-Type: application/json' 'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs' -u admin-api-apikey-id:admin-api-apikey-secret -d '{\n  \"id\": \"biscuit-keypair_e42033bc-f181-485f-857d-576e4728f6f9\",\n  \"name\": \"KeyPair from Otoroshi API\",\n  \"description\": \"A Biscuit KeyPair created from Otoroshi API\",\n  \"pubKey\": \"cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb\",\n  \"privKey\": \"0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619\",\n  \"tags\": [],\n  \"kind\": \"biscuit.extensions.cloud-apim.com/BiscuitKeyPair\"\n}'\n"
       })
     }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
       id: "get-a-keypair-template-with-otoroshis-api",
@@ -553,7 +553,14 @@ function _createMdxContent(props) {
     }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
       children: (0,jsx_runtime.jsx)(_components.code, {
         className: "language-bash",
-        children: "curl -X POST -H 'Content-Type: application/x-ndjson' 'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs/_bulk' -u admin-api-apikey-id:admin-api-apikey-secret -d '[{\n  \"name\": \"KeyPair from Otoroshi API Bulk 1\",\n  \"description\": \"A Biscuit KeyPair created from Otoroshi API\",\n  \"pubKey\": \"cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb\",\n  \"privKey\": \"0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619\",\n  \"tags\": [],\n  \"kind\": \"biscuit.extensions.cloud-apim.com/BiscuitKeyPair\"\n},\n{\n  \"name\": \"KeyPair from Otoroshi API Bulk 2\",\n  \"description\": \"A Biscuit KeyPair created from Otoroshi API\",\n  \"pubKey\": \"cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb\",\n  \"privKey\": \"0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619\",\n  \"tags\": [],\n  \"kind\": \"biscuit.extensions.cloud-apim.com/BiscuitKeyPair\"\n}]'\n"
+        children: "curl -X POST -H 'Content-Type: application/x-ndjson' 'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs/_bulk' -u admin-api-apikey-id:admin-api-apikey-secret -d '{\"id\":\"bulk_keypair1\",\"name\":\"KeyPair from Otoroshi API Bulk 1\",\"description\":\"A Biscuit KeyPair created from Otoroshi API\",\"pubKey\":\"cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb\",\"privKey\":\"0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619\",\"tags\":[],\"kind\":\"biscuit.extensions.cloud-apim.com/BiscuitKeyPair\"}\n{\"id\":\"bulk_keypair2\",\"name\":\"KeyPair from Otoroshi API Bulk 2\",\"description\":\"A Biscuit KeyPair created from Otoroshi API\",\"pubKey\":\"cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb\",\"privKey\":\"0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619\",\"tags\":[],\"kind\":\"biscuit.extensions.cloud-apim.com/BiscuitKeyPair\"}\n'\n"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "Result"
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-js",
+        children: "{\"status\":201,\"created\":true,\"id\":\"bulk_keypair1\",\"id_field\":\"id\"}\n{\"status\":201,\"created\":true,\"id\":\"bulk_keypair2\",\"id_field\":\"id\"}\n"
       })
     })]
   });
@@ -985,6 +992,70 @@ const toc = [{
   "value": "Bulk creation",
   "id": "bulk-creation",
   "level": 3
+}, {
+  "value": "Response",
+  "id": "response",
+  "level": 4
+}, {
+  "value": "Configuration Examples",
+  "id": "configuration-examples",
+  "level": 2
+}, {
+  "value": "Rules",
+  "id": "rules",
+  "level": 3
+}, {
+  "value": "Example Rule",
+  "id": "example-rule",
+  "level": 3
+}, {
+  "value": "Facts",
+  "id": "facts",
+  "level": 3
+}, {
+  "value": "Policies",
+  "id": "policies",
+  "level": 3
+}, {
+  "value": "Example Policy",
+  "id": "example-policy",
+  "level": 3
+}, {
+  "value": "Combining Policies",
+  "id": "combining-policies",
+  "level": 3
+}, {
+  "value": "Contextual Restrictions",
+  "id": "contextual-restrictions",
+  "level": 2
+}, {
+  "value": "Example of Caveats",
+  "id": "example-of-caveats",
+  "level": 3
+}, {
+  "value": "Example with IP Restriction",
+  "id": "example-with-ip-restriction",
+  "level": 3
+}, {
+  "value": "Advanced Examples",
+  "id": "advanced-examples",
+  "level": 2
+}, {
+  "value": "Hierarchical Rights",
+  "id": "hierarchical-rights",
+  "level": 3
+}, {
+  "value": "Read-Only Role",
+  "id": "read-only-role",
+  "level": 3
+}, {
+  "value": "Resource-Specific Rights",
+  "id": "resource-specific-rights",
+  "level": 3
+}, {
+  "value": "Example as CURL call with Rules and Policies",
+  "id": "example-as-curl-call-with-rules-and-policies",
+  "level": 3
 }];
 function _createMdxContent(props) {
   const _components = {
@@ -992,7 +1063,9 @@ function _createMdxContent(props) {
     h1: "h1",
     h2: "h2",
     h3: "h3",
+    h4: "h4",
     header: "header",
+    hr: "hr",
     img: "img",
     li: "li",
     p: "p",
@@ -1029,8 +1102,8 @@ function _createMdxContent(props) {
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: (0,jsx_runtime.jsx)(_components.img, {
         src: (__webpack_require__(5324)/* ["default"] */ .A) + "",
-        width: "2824",
-        height: "1568"
+        width: "2818",
+        height: "1694"
       })
     }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
       id: "overview",
@@ -1182,7 +1255,204 @@ function _createMdxContent(props) {
     }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
       children: (0,jsx_runtime.jsx)(_components.code, {
         className: "language-bash",
-        children: "curl -X POST -H 'Content-Type: application/x-ndjson' \\\n  'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers/_bulk' \\\n  -u admin-api-apikey-id:admin-api-apikey-secret \\\n  -d '[{\n    \"enabled\": true,\n    \"keypair_ref\": \"biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9\",\n    \"name\": \"Biscuit Verifier FROM CURL BULK 1\",\n    \"description\": \"A Biscuit Verifier created from Otoroshi API\",\n    \"strict\": true,\n    \"tags\": [],\n    \"config\": {\n      \"checks\": [\n        \"check if time($date), $date <= 2024-12-30T19:00:10Z;\"\n      ],\n      \"facts\": [],\n      \"resources\": [],\n      \"rules\": [],\n      \"revocation_ids\": []\n    },\n    \"kind\": \"biscuit.extensions.cloud-apim.com/BiscuitVerifier\"\n  },\n  {\n    \"enabled\": true,\n    \"keypair_ref\": \"biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9\",\n    \"name\": \"Biscuit Verifier FROM CURL BULK 2\",\n    \"description\": \"A Biscuit Verifier created from Otoroshi API\",\n    \"strict\": true,\n    \"tags\": [],\n    \"config\": {\n      \"checks\": [\n        \"check if time($date), $date <= 2024-12-30T19:00:10Z;\"\n      ],\n      \"facts\": [],\n      \"resources\": [],\n      \"rules\": [],\n      \"revocation_ids\": []\n    },\n    \"kind\": \"biscuit.extensions.cloud-apim.com/BiscuitVerifier\"\n  }]'\n"
+        children: "curl -X POST -H 'Content-Type: application/x-ndjson' \\\n  'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers/_bulk' \\\n  -u admin-api-apikey-id:admin-api-apikey-secret \\\n  -d '{\"enabled\":true,\"id\":\"verifier_bulk_1\",\"keypair_ref\":\"biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9\",\"name\":\"Biscuit Verifier FROM CURL BULK 1\",\"description\":\"A Biscuit Verifier created from Otoroshi API\",\"strict\":true,\"tags\":[],\"config.checks\":[\"check if time($date), $date <= 2024-12-30T19:00:10Z;\"],\"config.facts\":[],\"config.resources\":[],\"config.rules\":[],\"config.revocation_ids\":[],\"kind\":\"biscuit.extensions.cloud-apim.com/BiscuitVerifier\"}\n{\"enabled\":true,\"id\":\"verifier_bulk_2\",\"keypair_ref\":\"biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9\",\"name\":\"Biscuit Verifier FROM CURL BULK 2\",\"description\":\"A Biscuit Verifier created from Otoroshi API\",\"strict\":true,\"tags\":[],\"config.checks\":[\"check if time($date), $date <= 2024-12-30T19:00:10Z;\"],\"config.facts\":[],\"config.resources\":[],\"config.rules\":[],\"config.revocation_ids\":[],\"kind\":\"biscuit.extensions.cloud-apim.com/BiscuitVerifier\"}'\n"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.h4, {
+      id: "response",
+      children: "Response"
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-js",
+        children: "{\"status\":201,\"created\":true,\"id\":\"verifier_bulk_1\",\"id_field\":\"id\"}\n{\"status\":201,\"created\":true,\"id\":\"verifier_bulk_2\",\"id_field\":\"id\"}\n"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
+      id: "configuration-examples",
+      children: "Configuration Examples"
+    }), "\n", (0,jsx_runtime.jsx)(_components.h3, {
+      id: "rules",
+      children: "Rules"
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "Rules are logical expressions used to define conditions under which certain actions are authorized. They can combine facts, predicates, and other rules to evaluate permissions."
+    }), "\n", (0,jsx_runtime.jsx)(_components.h3, {
+      id: "example-rule",
+      children: "Example Rule"
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "The following rule determines whether a user is allowed to perform an operation on a resource:"
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-js",
+        children: "is_allowed($user, $res, $op) <- \n    user($user),          // Declares the user\n    resource($res),       // Declares the resource\n    operation($op),       // Declares the operation\n    right($user, $res, $op); // Verifies the user has the necessary rights\n"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "In this example:"
+    }), "\n", (0,jsx_runtime.jsxs)(_components.ul, {
+      children: ["\n", (0,jsx_runtime.jsxs)(_components.li, {
+        children: [(0,jsx_runtime.jsx)(_components.code, {
+          children: "user($user)"
+        }), " identifies the user."]
+      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
+        children: [(0,jsx_runtime.jsx)(_components.code, {
+          children: "resource($res)"
+        }), " identifies the resource being accessed."]
+      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
+        children: [(0,jsx_runtime.jsx)(_components.code, {
+          children: "operation($op)"
+        }), " specifies the action (e.g., read, write)."]
+      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
+        children: [(0,jsx_runtime.jsx)(_components.code, {
+          children: "right($user, $res, $op)"
+        }), " asserts that the user has the permission for the operation on the resource."]
+      }), "\n"]
+    }), "\n", (0,jsx_runtime.jsx)(_components.hr, {}), "\n", (0,jsx_runtime.jsx)(_components.h3, {
+      id: "facts",
+      children: "Facts"
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "Facts are data points or assertions stored in the Biscuit token. They are used as inputs to evaluate the rules. For example:"
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-js",
+        children: "user(\"alice\");\nresource(\"file1\");\noperation(\"read\");\nright(\"alice\", \"file1\", \"read\");\n"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "These facts state that:"
+    }), "\n", (0,jsx_runtime.jsxs)(_components.ul, {
+      children: ["\n", (0,jsx_runtime.jsx)(_components.li, {
+        children: "Alice is the user."
+      }), "\n", (0,jsx_runtime.jsx)(_components.li, {
+        children: "The resource is \"file1\"."
+      }), "\n", (0,jsx_runtime.jsx)(_components.li, {
+        children: "The operation is \"read\"."
+      }), "\n", (0,jsx_runtime.jsx)(_components.li, {
+        children: "Alice has the right to perform the read operation on file1."
+      }), "\n"]
+    }), "\n", (0,jsx_runtime.jsx)(_components.hr, {}), "\n", (0,jsx_runtime.jsx)(_components.h3, {
+      id: "policies",
+      children: "Policies"
+    }), "\n", (0,jsx_runtime.jsxs)(_components.p, {
+      children: ["Policies are used to define the decision logic for allowing or denying access. Biscuit tokens support ", (0,jsx_runtime.jsx)(_components.code, {
+        children: "allow"
+      }), " and ", (0,jsx_runtime.jsx)(_components.code, {
+        children: "deny"
+      }), " policies to control access."]
+    }), "\n", (0,jsx_runtime.jsx)(_components.h3, {
+      id: "example-policy",
+      children: "Example Policy"
+    }), "\n", (0,jsx_runtime.jsxs)(_components.p, {
+      children: ["The following policy allows access if the ", (0,jsx_runtime.jsx)(_components.code, {
+        children: "is_allowed"
+      }), " rule evaluates to true:"]
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-js",
+        children: "allow if is_allowed($user, $resource, $op);\n"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "This policy specifies that:"
+    }), "\n", (0,jsx_runtime.jsxs)(_components.ul, {
+      children: ["\n", (0,jsx_runtime.jsxs)(_components.li, {
+        children: ["Access is granted (", (0,jsx_runtime.jsx)(_components.code, {
+          children: "allow"
+        }), ") if the ", (0,jsx_runtime.jsx)(_components.code, {
+          children: "is_allowed"
+        }), " rule matches."]
+      }), "\n"]
+    }), "\n", (0,jsx_runtime.jsx)(_components.h3, {
+      id: "combining-policies",
+      children: "Combining Policies"
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "Policies can also include deny conditions, such as:"
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-js",
+        children: "deny if user($user), resource($res), operation($op), not right($user, $res, $op);\n"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "This policy denies access if:"
+    }), "\n", (0,jsx_runtime.jsxs)(_components.ul, {
+      children: ["\n", (0,jsx_runtime.jsx)(_components.li, {
+        children: "A user, resource, and operation are defined."
+      }), "\n", (0,jsx_runtime.jsx)(_components.li, {
+        children: "The user does not have the corresponding right for the resource and operation."
+      }), "\n"]
+    }), "\n", (0,jsx_runtime.jsx)(_components.hr, {}), "\n", (0,jsx_runtime.jsx)(_components.h2, {
+      id: "contextual-restrictions",
+      children: "Contextual Restrictions"
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "Biscuit tokens support additional contextual restrictions using caveats. Caveats allow tokens to impose extra conditions that must be satisfied for access to be granted."
+    }), "\n", (0,jsx_runtime.jsx)(_components.h3, {
+      id: "example-of-caveats",
+      children: "Example of Caveats"
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "To restrict access to a specific time range:"
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-js",
+        children: "time($t), $t <= 1672531200, $t >= 1672444800;\n"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "Here:"
+    }), "\n", (0,jsx_runtime.jsxs)(_components.ul, {
+      children: ["\n", (0,jsx_runtime.jsxs)(_components.li, {
+        children: [(0,jsx_runtime.jsx)(_components.code, {
+          children: "$t"
+        }), " represents the current time."]
+      }), "\n", (0,jsx_runtime.jsx)(_components.li, {
+        children: "Access is allowed only if the current time falls between the specified timestamps."
+      }), "\n"]
+    }), "\n", (0,jsx_runtime.jsx)(_components.h3, {
+      id: "example-with-ip-restriction",
+      children: "Example with IP Restriction"
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "To restrict access based on IP address:"
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-js",
+        children: "ip(\"192.168.1.1\");\n"
+      })
+    }), "\n", (0,jsx_runtime.jsxs)(_components.p, {
+      children: ["Access is allowed only if the IP matches ", (0,jsx_runtime.jsx)(_components.code, {
+        children: "192.168.1.1"
+      }), "."]
+    }), "\n", (0,jsx_runtime.jsx)(_components.hr, {}), "\n", (0,jsx_runtime.jsx)(_components.h2, {
+      id: "advanced-examples",
+      children: "Advanced Examples"
+    }), "\n", (0,jsx_runtime.jsx)(_components.h3, {
+      id: "hierarchical-rights",
+      children: "Hierarchical Rights"
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "Defining a hierarchy where admin users have access to all resources and operations:"
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-js",
+        children: "right($user, $res, $op) <- role($user, \"admin\");\n"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.h3, {
+      id: "read-only-role",
+      children: "Read-Only Role"
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "Defining a \"read-only\" role:"
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-js",
+        children: "right($user, $res, \"read\") <- role($user, \"read-only\");\n"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.h3, {
+      id: "resource-specific-rights",
+      children: "Resource-Specific Rights"
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "Granting a user specific rights on a specific resource:"
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-js",
+        children: "right(\"bob\", \"file2\", \"write\");\n"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.h3, {
+      id: "example-as-curl-call-with-rules-and-policies",
+      children: "Example as CURL call with Rules and Policies"
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-bash",
+        children: "curl -X POST -H 'Content-Type: application/json' \\\n  'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers' \\\n  -u admin-api-apikey-id:admin-api-apikey-secret \\\n  -d '{\n    \"enabled\": true,\n    \"keypair_ref\": \"biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9\",\n    \"name\": \"Biscuit Verifier FROM CURL 1\",\n    \"description\": \"A Biscuit Verifier created from Otoroshi API\",\n    \"strict\": true,\n    \"tags\": [],\n    \"config\": {\n      \"checks\": [\n        \"check if time($date), $date <= 2025-12-30T19:00:10Z;\"\n      ],\n      \"facts\": [\n        \"user(\\\"alice\\\");\",\n        \"resource(\\\"file1\\\");\",\n        \"operation(\\\"read\\\");\",\n        \"right(\\\"alice\\\",\\\"file1\\\",\\\"read\\\");\"\n      ],\n      \"resources\": [],\n      \"rules\": [\n        \"is_allowed($user, $res, $op) <- user($user), resource($res), operation($op), right($user, $res, $op);\"\n      ],\n      \"policies\": [\n         \"allow if is_allowed($user, $resource, $op);\"\n      ],\n      \"revokedIds\": []\n    },\n    \"kind\": \"biscuit.extensions.cloud-apim.com/BiscuitVerifier\"\n  }'\n"
       })
     })]
   });
@@ -1281,7 +1551,7 @@ function _createMdxContent(props) {
     }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
       children: (0,jsx_runtime.jsx)(_components.code, {
         className: "language-sh",
-        children: "curl -L -o otoroshi.jar 'https://github.com/MAIF/otoroshi/releases/download/v16.21.0/otoroshi.jar'\n"
+        children: "curl -L -o otoroshi.jar 'https://github.com/MAIF/otoroshi/releases/download/v16.22.0/otoroshi.jar'\n"
       })
     }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
       id: "download-the-biscuit-studio-extension",
@@ -14042,7 +14312,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/images/biscuit-verifier-entity-config2-b7ef423e61c6a1e01f1f75838b2911dd.png");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/images/biscuit-verifier-entity-config2-68c8f362f43bbf400cfb2c5f2cbdf032.png");
 
 /***/ }),
 
