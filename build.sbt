@@ -31,7 +31,7 @@ lazy val root = (project in file("."))
       "spring-snapshots" at "https://repo.spring.io/snapshot"
     ),
     libraryDependencies ++= Seq(
-      "fr.maif" %% "otoroshi" % "16.19.0" % "provided" excludeAll (netty: _*),
+      "fr.maif" %% "otoroshi" % "16.22.0" % "provided" excludeAll (netty: _*),
       "io.netty" % "netty-transport-native-kqueue" % "4.1.107.Final" % "provided" excludeAll(jackson: _*),
       "io.netty" % "netty-transport-native-epoll" % "4.1.107.Final" % "provided" excludeAll(jackson: _*),
       "org.biscuitsec" % "biscuit" % "4.0.0",
