@@ -83,6 +83,7 @@ object BiscuitKeyPair {
         extractIdJsonf = json => json.select("id").asString,
         idFieldNamef = () => "id",
         tmpl = (v, p) => {
+          val biscuitKeyPair = new KeyPair()
           BiscuitKeyPair(
             id = IdGenerator.namedId("biscuit-keypair", env),
             name = "New Biscuit Key Pair",
@@ -90,8 +91,8 @@ object BiscuitKeyPair {
             metadata = Map.empty,
             tags = Seq.empty,
             location = EntityLocation.default,
-            privKey = "",
-            pubKey = ""
+            privKey = biscuitKeyPair.toHex,
+            pubKey = biscuitKeyPair.public_key().toHex
           ).json
         },
         canRead = true,
