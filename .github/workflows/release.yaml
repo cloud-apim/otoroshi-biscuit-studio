@@ -26,15 +26,15 @@ jobs:
           SBT_OPTS: -XX:MaxPermSize=8G -Xmx8G -Xss32M
         run: |
           sbt ';compile;package;assembly'
-          rm ./target/scala-2.12/otoroshi-biscuit-studio2.12-${{ inputs.version }}.jar 
-          mv ./target/scala-2.12/otoroshi-biscuit-studio-assembly_2.12-dev.jar ./target/scala-2.12/otoroshi-biscuit-studio2.12-${{ inputs.version }}.jar
+          rm ./target/scala-2.12/otoroshi-biscuit-studio_2.12-${{ inputs.version }}.jar 
+          mv ./target/scala-2.12/otoroshi-biscuit-studio-assembly_2.12-dev.jar ./target/scala-2.12/otoroshi-biscuit-studio_2.12-${{ inputs.version }}.jar
       - name: Generate SHA-256
         run: |
-          shasum -a 256 ./target/scala-2.12/otoroshi-biscuit-studio2.12-${{ inputs.version }}.jar | cut -d ' ' -f 1 > ./target/scala-2.12/otoroshi-biscuit-studio2.12-${{ inputs.version }}.jar.sha256
+          shasum -a 256 ./target/scala-2.12/otoroshi-biscuit-studio_2.12-${{ inputs.version }}.jar | cut -d ' ' -f 1 > ./target/scala-2.12/otoroshi-biscuit-studio_2.12-${{ inputs.version }}.jar.sha256
       - name: Release binary and SHA-256 checksum to GitHub
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ inputs.version }}
           files: |
-            ./target/scala-2.12/otoroshi-biscuit-studio2.12-${{ inputs.version }}.jar
-            ./target/scala-2.12/otoroshi-biscuit-studio2.12-${{ inputs.version }}.jar.sha256
+            ./target/scala-2.12/otoroshi-biscuit-studio_2.12-${{ inputs.version }}.jar
+            ./target/scala-2.12/otoroshi-biscuit-studio_2.12-${{ inputs.version }}.jar.sha256
