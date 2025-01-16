@@ -71,3 +71,5 @@ project/**/metals.sbt
 .history
 
 .DS_STORE
+
+logs/
