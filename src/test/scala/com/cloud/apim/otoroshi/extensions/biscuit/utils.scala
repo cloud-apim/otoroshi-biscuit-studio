@@ -489,3 +489,43 @@ class BiscuitExtensionSuite extends munit.FunSuite {
   def startOtoroshiServer(port: Int = freePort): Otoroshi = Utils.startOtoroshi(port)
   def clientFor(port: Int): OtoroshiClient = Utils.clientFor(port)
 }
+
+class BiscuitStudioOneOtoroshiServerPerSuite extends BiscuitExtensionSuite {
+
+  val port: Int = freePort
+  var otoroshi: Otoroshi = _
+  var client: OtoroshiClient = _
+  implicit var ec: ExecutionContext = _
+  implicit var mat: Materializer = _
+
+  override def beforeAll(): Unit = {
+    otoroshi = startOtoroshiServer(port)
+    client = clientFor(port)
+    ec = otoroshi.executionContext
+    mat = otoroshi.materializer
+  }
+
+  override def afterAll(): Unit = {
+    otoroshi.stop()
+  }
+}
+
+class BiscuitStudioOneOtoroshiServerPerTest extends BiscuitExtensionSuite {
+
+  val port: Int = freePort
+  var otoroshi: Otoroshi = _
+  var client: OtoroshiClient = _
+  implicit var ec: ExecutionContext = _
+  implicit var mat: Materializer = _
+
+  override def beforeEach(context: BeforeEach): Unit = {
+    otoroshi = startOtoroshiServer(port)
+    client = clientFor(port)
+    ec = otoroshi.executionContext
+    mat = otoroshi.materializer
+  }
+
+  override def afterEach(context: AfterEach): Unit = {
+    otoroshi.stop()
+  }
+}
