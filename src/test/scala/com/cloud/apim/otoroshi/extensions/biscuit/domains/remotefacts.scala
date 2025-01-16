@@ -10,7 +10,7 @@ import scala.concurrent.duration.DurationInt
 
 object BiscuitRemoteFactsLoaderUtils extends Assertions {
 
-  def createKeypairEntity(client: OtoroshiClient)(remoteFacts: RemoteFactsLoader)(implicit ec: ExecutionContext) = {
+  def createRemoteFactsEntity(client: OtoroshiClient)(remoteFacts: RemoteFactsLoader)(implicit ec: ExecutionContext) = {
     val res = client.forBiscuitEntity("biscuit-remote-facts").createEntity(remoteFacts).awaitf(10.seconds)
 
     assert(res.created, s"[${remoteFacts.id}] entity RemoteFactsLoader has not been created")

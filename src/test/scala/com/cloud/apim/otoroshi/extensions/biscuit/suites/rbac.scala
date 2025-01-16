@@ -1,16 +1,15 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import akka.stream.Materializer
-import com.cloud.apim.otoroshi.extensions.biscuit.domains.{BiscuitKeyPairsUtils, BiscuitVerifiersUtils}
-import com.cloud.apim.otoroshi.extensions.biscuit.entities.{BiscuitKeyPair, BiscuitVerifier, VerifierConfig}
+import com.cloud.apim.otoroshi.extensions.biscuit.domains.BiscuitRbacUtils
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.BiscuitRbacPolicy
 import com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionSuite, OtoroshiClient}
 import otoroshi.api.Otoroshi
 import otoroshi.models.EntityLocation
-import otoroshi.utils.syntax.implicits.BetterSyntax
 
 import scala.concurrent.ExecutionContext
 
-class TestVerifiers extends BiscuitExtensionSuite {
+class TestRbac extends BiscuitExtensionSuite {
   def printHeader(str: String, what: String): Unit = {
     println("\n\n-----------------------------------------")
     println(s"  [${str}] - ${what}")
@@ -34,30 +33,20 @@ class TestVerifiers extends BiscuitExtensionSuite {
     otoroshi.stop()
   }
 
-  val entityId = s"biscuit-verifier_7086fb05-0a0b-4be8-92b0-1f89ab243a83"
+  val entityId = s"biscuit-rbac-policy_ef6d2c09-203e-4ce5-8519-3e931df5601a"
 
-  val conf = VerifierConfig(
-    checks = List.empty,
-    facts = List.empty,
-    resources = List.empty,
-    rules = List.empty,
-    policies = List.empty,
-    revokedIds = List.empty
-  )
-
-  val verifier = BiscuitVerifier(
+  val rbacEntity = BiscuitRbacPolicy(
     id = entityId,
-    name = "New Biscuit Verifier entity",
-    description = "New biscuit Verifier entity",
+    name = "New Biscuit RBAC entity",
+    description = "New biscuit RBAC entity",
     metadata = Map.empty,
     tags = Seq.empty,
     location = EntityLocation.default,
-    keypairRef = "",
-    config =  conf.some
+    roles = Map.empty
   )
 
-  test(s"create verifier entity") {
-    printHeader(verifier.name, "Create new verifier entity")
-    BiscuitVerifiersUtils.createVerifierEntity(client)(verifier)
+  test(s"create rbac entity") {
+    printHeader(rbacEntity.name, "Create new attenuator entity")
+    BiscuitRbacUtils.createRbacEntity(client)(rbacEntity)
   }
 }

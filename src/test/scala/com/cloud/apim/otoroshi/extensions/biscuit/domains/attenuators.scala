@@ -9,8 +9,7 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.DurationInt
 
 object BiscuitAttenuatorsUtils extends Assertions {
-
-  def createKeypairEntity(client: OtoroshiClient)(attenuator: BiscuitAttenuator)(implicit ec: ExecutionContext) = {
+  def createAttenuatorEntity(client: OtoroshiClient)(attenuator: BiscuitAttenuator)(implicit ec: ExecutionContext) = {
     val res = client.forBiscuitEntity("biscuit-attenuators").createEntity(attenuator).awaitf(10.seconds)
 
     assert(res.created, s"[${attenuator.id}] attenuator has not been created")

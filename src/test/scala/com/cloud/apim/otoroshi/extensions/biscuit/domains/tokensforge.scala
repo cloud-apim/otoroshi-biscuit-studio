@@ -10,7 +10,7 @@ import scala.concurrent.duration.DurationInt
 
 object BiscuitTokensForgeUtils extends Assertions {
 
-  def createKeypairEntity(client: OtoroshiClient)(token: BiscuitTokenForge)(implicit ec: ExecutionContext) = {
+  def createTokenEntity(client: OtoroshiClient)(token: BiscuitTokenForge)(implicit ec: ExecutionContext) = {
     val res = client.forBiscuitEntity("tokens-forge").createEntity(token).awaitf(10.seconds)
 
     assert(res.created, s"[${token.id}] token has not been created")

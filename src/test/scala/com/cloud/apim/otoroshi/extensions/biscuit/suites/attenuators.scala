@@ -1,8 +1,8 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import akka.stream.Materializer
-import com.cloud.apim.otoroshi.extensions.biscuit.domains.{BiscuitKeyPairsUtils, BiscuitVerifiersUtils}
-import com.cloud.apim.otoroshi.extensions.biscuit.entities.{BiscuitKeyPair, BiscuitVerifier, VerifierConfig}
+import com.cloud.apim.otoroshi.extensions.biscuit.domains.BiscuitAttenuatorsUtils
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.{AttenuatorConfig, BiscuitAttenuator}
 import com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionSuite, OtoroshiClient}
 import otoroshi.api.Otoroshi
 import otoroshi.models.EntityLocation
@@ -10,7 +10,7 @@ import otoroshi.utils.syntax.implicits.BetterSyntax
 
 import scala.concurrent.ExecutionContext
 
-class TestVerifiers extends BiscuitExtensionSuite {
+class TestAttenuators extends BiscuitExtensionSuite {
   def printHeader(str: String, what: String): Unit = {
     println("\n\n-----------------------------------------")
     println(s"  [${str}] - ${what}")
@@ -34,21 +34,16 @@ class TestVerifiers extends BiscuitExtensionSuite {
     otoroshi.stop()
   }
 
-  val entityId = s"biscuit-verifier_7086fb05-0a0b-4be8-92b0-1f89ab243a83"
+  val entityId = s"biscuit-attenuator_0155dcd8-bda6-4c7f-a300-0f26f46de0a6"
 
-  val conf = VerifierConfig(
+  val conf = AttenuatorConfig(
     checks = List.empty,
-    facts = List.empty,
-    resources = List.empty,
-    rules = List.empty,
-    policies = List.empty,
-    revokedIds = List.empty
   )
 
-  val verifier = BiscuitVerifier(
+  val attenuator = BiscuitAttenuator(
     id = entityId,
-    name = "New Biscuit Verifier entity",
-    description = "New biscuit Verifier entity",
+    name = "New Biscuit Attenuator entity",
+    description = "New biscuit Attenuator entity",
     metadata = Map.empty,
     tags = Seq.empty,
     location = EntityLocation.default,
@@ -56,8 +51,8 @@ class TestVerifiers extends BiscuitExtensionSuite {
     config =  conf.some
   )
 
-  test(s"create verifier entity") {
-    printHeader(verifier.name, "Create new verifier entity")
-    BiscuitVerifiersUtils.createVerifierEntity(client)(verifier)
+  test(s"create attenuator entity") {
+    printHeader(attenuator.name, "Create new attenuator entity")
+    BiscuitAttenuatorsUtils.createAttenuatorEntity(client)(attenuator)
   }
 }
