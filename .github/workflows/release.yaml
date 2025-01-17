@@ -10,13 +10,13 @@ jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: setup jdk11
         uses: actions/setup-java@v1
         with:
           java-version: 11
       - uses: sbt/setup-sbt@v1.1.5
-      - uses: coursier/cache-action@v5
+      - uses: coursier/cache-action@v6
       - name: change version
         run: |
           echo 'ThisBuild / version := "${{ inputs.version }}"' > version.sbt
