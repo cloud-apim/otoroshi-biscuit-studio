@@ -106,43 +106,40 @@ object RemoteFactsLoader {
       "biscuit.extensions.cloud-apim.com",
       ResourceVersion("v1", true, false, true),
       GenericResourceAccessApiWithState[RemoteFactsLoader](
-        RemoteFactsLoader.format,
-        classOf[RemoteFactsLoader],
-        datastores.biscuitRemoteFactsLoaderDataStore.key,
-        datastores.biscuitRemoteFactsLoaderDataStore.extractId,
-        json => json.select("id").asString,
-        () => "id",
-        (v, p) => datastores.biscuitRemoteFactsLoaderDataStore.template(env).json,
+        format = RemoteFactsLoader.format,
+        clazz = classOf[RemoteFactsLoader],
+        keyf = id => datastores.biscuitRemoteFactsLoaderDataStore.key(id),
+        extractIdf = c => datastores.biscuitRemoteFactsLoaderDataStore.extractId(c),
+        extractIdJsonf = json => json.select("id").asString,
+        idFieldNamef = () => "id",
+        tmpl = (v, p) => {
+          RemoteFactsLoader(
+            id = IdGenerator.namedId("biscuit-remote-facts", env),
+            name = "New biscuit remote facts loader",
+            description = "New biscuit remote facts loader",
+            metadata = Map.empty,
+            tags = Seq.empty,
+            location = EntityLocation.default,
+            config = BiscuitRemoteFactsConfig(
+              apiUrl = "https://my-api.domain.com/v1/roles",
+              headers = Map("Authorization" -> "Bearer xxxx")
+            ).some
+          ).json
+        },
+        canRead = true,
+        canCreate = true,
+        canUpdate = true,
+        canDelete = true,
+        canBulk = true,
         stateAll = () => states.allBiscuitRemoteFactsLoader(),
         stateOne = id => states.biscuitRemoteFactsLoader(id),
-        stateUpdate = values => states.updatebiscuitRemoteFactsLoader(values))
+        stateUpdate = values => states.updatebiscuitRemoteFactsLoader(values)
+      )
     )
   }
 }
 
-trait BiscuitRemoteFactsLoaderDataStore extends BasicStore[RemoteFactsLoader] {
-  def template(env: Env): RemoteFactsLoader = {
-    val defaultFactsLoader = RemoteFactsLoader(
-      id = IdGenerator.namedId("biscuit-remote-facts", env),
-      name = "New biscuit remote facts loader",
-      description = "New biscuit remote facts loader",
-      metadata = Map.empty,
-      tags = Seq.empty,
-      location = EntityLocation.default,
-      config = None
-    )
-    env.datastores.globalConfigDataStore
-      .latest()(env.otoroshiExecutionContext, env)
-      .templates
-      .apikey
-      .map { template =>
-        RemoteFactsLoader.format.reads(defaultFactsLoader.json.asObject.deepMerge(template)).get
-      }
-      .getOrElse {
-        defaultFactsLoader
-      }
-  }
-}
+trait BiscuitRemoteFactsLoaderDataStore extends BasicStore[RemoteFactsLoader]
 
 class KvBiscuitRemoteFactsLoaderDataStore(extensionId: AdminExtensionId, redisCli: RedisLike, _env: Env)
   extends BiscuitRemoteFactsLoaderDataStore

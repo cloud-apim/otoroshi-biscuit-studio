@@ -79,45 +79,44 @@ object BiscuitTokenForge {
       "biscuit.extensions.cloud-apim.com",
       ResourceVersion("v1", true, false, true),
       GenericResourceAccessApiWithState[BiscuitTokenForge](
-        BiscuitTokenForge.format,
-        classOf[BiscuitTokenForge],
-        datastores.biscuitTokenForgeDataStore.key,
-        datastores.biscuitTokenForgeDataStore.extractId,
-        json => json.select("id").asString,
-        () => "id",
-        (v, p) => datastores.biscuitTokenForgeDataStore.template(env).json,
+        format = BiscuitTokenForge.format,
+        clazz = classOf[BiscuitTokenForge],
+        keyf = id => datastores.biscuitTokenForgeDataStore.key(id),
+        extractIdf = c => datastores.biscuitTokenForgeDataStore.extractId(c),
+        extractIdJsonf = json => json.select("id").asString,
+        idFieldNamef = () => "id",
+        tmpl = (v, p) => {
+          BiscuitTokenForge(
+            id = IdGenerator.namedId("biscuit-token", env),
+            name = "New biscuit token",
+            description = "New biscuit token",
+            token = None,
+            keypairRef = "",
+            metadata = Map.empty,
+            tags = Seq.empty,
+            location = EntityLocation.default,
+            config = BiscuitForgeConfig(
+              checks = Seq.empty,
+              facts = Seq.empty,
+              resources = Seq.empty,
+              rules = Seq.empty
+            ).some
+          ).json
+        },
+        canRead = true,
+        canCreate = true,
+        canUpdate = true,
+        canDelete = true,
+        canBulk = true,
         stateAll = () => states.allBiscuitTokenForge(),
         stateOne = id => states.biscuitTokenForge(id),
-        stateUpdate = values => states.updateBiscuitTokenForge(values))
+        stateUpdate = values => states.updateBiscuitTokenForge(values)
+      )
     )
   }
 }
 
-trait BiscuitTokenForgeDataStore extends BasicStore[BiscuitTokenForge] {
-  def template(env: Env): BiscuitTokenForge = {
-    val defaultBiscuitTokenForge = BiscuitTokenForge(
-      id = IdGenerator.namedId("biscuit-token", env),
-      name = "New biscuit token",
-      description = "New biscuit token",
-      token = None,
-      keypairRef = "",
-      metadata = Map.empty,
-      tags = Seq.empty,
-      location = EntityLocation.default,
-      config = None
-    )
-    env.datastores.globalConfigDataStore
-      .latest()(env.otoroshiExecutionContext, env)
-      .templates
-      .apikey
-      .map { template =>
-        BiscuitTokenForge.format.reads(defaultBiscuitTokenForge.json.asObject.deepMerge(template)).get
-      }
-      .getOrElse {
-        defaultBiscuitTokenForge
-      }
-  }
-}
+trait BiscuitTokenForgeDataStore extends BasicStore[BiscuitTokenForge]
 
 class KvBiscuitTokenForgeDataStore(extensionId: AdminExtensionId, redisCli: RedisLike, _env: Env)
   extends BiscuitTokenForgeDataStore

@@ -120,7 +120,9 @@ object BiscuitAttenuator {
             tags = Seq.empty,
             location = EntityLocation.default,
             keypairRef = "",
-            config = None
+            config = AttenuatorConfig(
+              checks = Seq.empty
+            ).some
           ).json
         },
         canRead = true,

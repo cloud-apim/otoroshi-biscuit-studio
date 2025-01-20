@@ -79,44 +79,37 @@ object BiscuitRbacPolicy {
       "biscuit.extensions.cloud-apim.com",
       ResourceVersion("v1", true, false, true),
       GenericResourceAccessApiWithState[BiscuitRbacPolicy](
-        BiscuitRbacPolicy.format,
-        classOf[BiscuitRbacPolicy],
-        datastores.biscuitRbacPolicyDataStore.key,
-        datastores.biscuitRbacPolicyDataStore.extractId,
-        json => json.select("id").asString,
-        () => "id",
-        (v, p) => datastores.biscuitRbacPolicyDataStore.template(env).json,
+        format = BiscuitRbacPolicy.format,
+        clazz = classOf[BiscuitRbacPolicy],
+        keyf = id => datastores.biscuitRbacPolicyDataStore.key(id),
+        extractIdf = c => datastores.biscuitRbacPolicyDataStore.extractId(c),
+        extractIdJsonf = json => json.select("id").asString,
+        idFieldNamef = () => "id",
+        tmpl = (v, p) => {
+          BiscuitRbacPolicy(
+            id = IdGenerator.namedId("biscuit-rbac-policy", env),
+            name = "New biscuit RBAC Policy",
+            description = "New biscuit RBAC Policy",
+            metadata = Map.empty,
+            tags = Seq.empty,
+            location = EntityLocation.default,
+            roles = Map.empty
+          ).json
+        },
+        canRead = true,
+        canCreate = true,
+        canUpdate = true,
+        canDelete = true,
+        canBulk = true,
         stateAll = () => states.allbiscuitRbacPolicies(),
         stateOne = id => states.biscuitRbacPolicy(id),
-        stateUpdate = values => states.updateBiscuitRbacPolicy(values))
+        stateUpdate = values => states.updateBiscuitRbacPolicy(values)
+      )
     )
   }
 }
 
-trait BiscuitRbacPolicyDataStore extends BasicStore[BiscuitRbacPolicy] {
-  def template(env: Env): BiscuitRbacPolicy = {
-    val defaultBiscuitRbacPolicy = BiscuitRbacPolicy(
-      id = IdGenerator.namedId("biscuit-rbac-policy", env),
-      name = "New biscuit RBAC Policy",
-      description = "New biscuit RBAC Policy",
-      metadata = Map.empty,
-      tags = Seq.empty,
-      location = EntityLocation.default,
-      roles = Map.empty
-    )
-    env.datastores.globalConfigDataStore
-      .latest()(env.otoroshiExecutionContext, env)
-      .templates
-      .apikey
-      .map { template =>
-        BiscuitRbacPolicy.format.reads(defaultBiscuitRbacPolicy.json.asObject.deepMerge(template)).get
-      }
-      .getOrElse {
-        defaultBiscuitRbacPolicy
-      }
-  }
-}
-
+trait BiscuitRbacPolicyDataStore extends BasicStore[BiscuitRbacPolicy]
 class KvBiscuitRbacPolicyDataStore(extensionId: AdminExtensionId, redisCli: RedisLike, _env: Env)
   extends BiscuitRbacPolicyDataStore
     with RedisLikeStore[BiscuitRbacPolicy] {

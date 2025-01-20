@@ -123,44 +123,45 @@ object BiscuitVerifier {
       "biscuit.extensions.cloud-apim.com",
       ResourceVersion("v1", true, false, true),
       GenericResourceAccessApiWithState[BiscuitVerifier](
-        BiscuitVerifier.format,
-        classOf[BiscuitVerifier],
-        datastores.biscuitVerifierDataStore.key,
-        datastores.biscuitVerifierDataStore.extractId,
-        json => json.select("id").asString,
-        () => "id",
-        (v, p) => datastores.biscuitVerifierDataStore.template(env).json,
+        format = BiscuitVerifier.format,
+        clazz = classOf[BiscuitVerifier],
+        keyf = id => datastores.biscuitVerifierDataStore.key(id),
+        extractIdf = c => datastores.biscuitVerifierDataStore.extractId(c),
+        extractIdJsonf = json => json.select("id").asString,
+        idFieldNamef = () => "id",
+        tmpl = (v, p) => {
+          BiscuitVerifier(
+            id = IdGenerator.namedId("biscuit-verifier", env),
+            name = "New biscuit verifier",
+            description = "New biscuit verifier",
+            metadata = Map.empty,
+            tags = Seq.empty,
+            location = EntityLocation.default,
+            keypairRef = "",
+            config = VerifierConfig(
+              checks = Seq.empty,
+              facts = Seq.empty,
+              resources = Seq.empty,
+              rules = Seq.empty,
+              policies = Seq.empty,
+              revokedIds = Seq.empty,
+            ).some
+          ).json
+        },
+        canRead = true,
+        canCreate = true,
+        canUpdate = true,
+        canDelete = true,
+        canBulk = true,
         stateAll = () => states.allBiscuitVerifiers(),
         stateOne = id => states.biscuitVerifier(id),
-        stateUpdate = values => states.updateBiscuitVerifiers(values))
+        stateUpdate = values => states.updateBiscuitVerifiers(values)
+      )
     )
   }
 }
 
-trait BiscuitVerifierDataStore extends BasicStore[BiscuitVerifier] {
-  def template(env: Env): BiscuitVerifier = {
-    val defaultBiscuitVerifier = BiscuitVerifier(
-      id = IdGenerator.namedId("biscuit-verifier", env),
-      name = "New biscuit verifier",
-      description = "New biscuit verifier",
-      metadata = Map.empty,
-      tags = Seq.empty,
-      location = EntityLocation.default,
-      keypairRef = "",
-      config = None
-    )
-    env.datastores.globalConfigDataStore
-      .latest()(env.otoroshiExecutionContext, env)
-      .templates
-      .apikey
-      .map { template =>
-        BiscuitVerifier.format.reads(defaultBiscuitVerifier.json.asObject.deepMerge(template)).get
-      }
-      .getOrElse {
-        defaultBiscuitVerifier
-      }
-  }
-}
+trait BiscuitVerifierDataStore extends BasicStore[BiscuitVerifier]
 
 class KvBiscuitVerifierDataStore(extensionId: AdminExtensionId, redisCli: RedisLike, _env: Env)
   extends BiscuitVerifierDataStore
