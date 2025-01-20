@@ -94,23 +94,39 @@ class BiscuitKeyPairPage extends Component {
 				parentProps: this.props,
 				selfUrl: "extensions/cloud-apim/biscuit/keypairs",
 				defaultTitle: "All Biscuit KeyPairs",
-				defaultValue: () => ({
-					id: `biscuit-keypair_${uuid()}`,
-					name: "Biscuit Key Pair",
-					description: "A simple ED25519 Biscuit KeyPair",
-					tags: [],
-					metadata: {},
-				}),
+				defaultValue: () => this.client.template(),
 				itemName: "Biscuit KeyPair",
 				formSchema: this.formSchema,
 				formFlow: this.formFlow,
 				columns: this.columns,
 				stayAfterSave: true,
-				fetchTemplate: () => this.client.template(),
-				fetchItems: (paginationState) => this.client.findAll(),
-				updateItem: this.client.update,
+				fetchItems: (paginationState) =>
+					this.client.findAll({
+						...paginationState,
+						fields: [
+							"id",
+							"name",
+							"desc",
+							"pubKey",
+							"metadata.created_at",
+							"metadata.updated_at",
+						],
+					}),
+        updateItem: (e) => {
+					if (!e.privKey || !e.pubKey) {
+						alert("Public key or private key not provided !");
+					} else {
+						return this.client.update(e);
+					}
+				},
 				deleteItem: this.client.delete,
-				createItem: this.client.create,
+				createItem: (e) => {
+					if (!e.privKey || !e.pubKey) {
+						alert("Public key or private key not provided !");
+					} else {
+						return this.client.create(e);
+					}
+				},
 				navigateTo: (item) => {
 					window.location = `/bo/dashboard/extensions/cloud-apim/biscuit/keypairs/edit/${item.id}`;
 				},
@@ -128,13 +144,27 @@ class BiscuitKeyPairPage extends Component {
 	}
 }
 class KeyPairGenerator extends Component {
-	generateNewKeyPair = () => {
+	fetchNewKeyPair = () => {
 		fetch("/extensions/assets/cloud-apim/extensions/biscuit/keypairs/generate")
 			.then((d) => d.json())
 			.then((data) => {
 				this.props.changeValue("pubKey", data.publickey);
 				this.props.changeValue("privKey", data.privateKey);
 			});
+	};
+
+	generateNewKeyPair = () => {
+		if (this.props?.rawValue?.pubKey || this.props?.rawValue?.privKey) {
+			if (
+				window.confirm(
+					"Do you really want to generate new keypair (it will erase the previous)"
+				)
+			) {
+				this.fetchNewKeyPair();
+			}
+		} else {
+			this.fetchNewKeyPair();
+		}
 	};
 
 	render() {
