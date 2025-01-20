@@ -21,7 +21,7 @@ case class BiscuitRbacPolicy(
                               tags: Seq[String] = Seq.empty,
                               metadata: Map[String, String] = Map.empty,
                               location: EntityLocation,
-                              roles: Map[String, JsArray] = Map.empty,
+                              roles: Map[String, Seq[String]] = Map.empty,
                             ) extends EntityLocationSupport {
   def json: JsValue = BiscuitRbacPolicy.format.writes(this)
 
@@ -63,7 +63,7 @@ object BiscuitRbacPolicy {
           strict = (json \ "strict").asOpt[Boolean].getOrElse(true),
           metadata = (json \ "metadata").asOpt[Map[String, String]].getOrElse(Map.empty),
           tags = (json \ "tags").asOpt[Seq[String]].getOrElse(Seq.empty[String]),
-          roles = (json \ "roles").asOpt[Map[String, JsArray]].getOrElse(Map.empty),
+          roles = (json \ "roles").asOpt[Map[String, Seq[String]]].getOrElse(Map.empty),
         )
       } match {
         case Failure(e) => JsError(e.getMessage)
@@ -93,7 +93,12 @@ object BiscuitRbacPolicy {
             metadata = Map.empty,
             tags = Seq.empty,
             location = EntityLocation.default,
-            roles = Map.empty
+            roles = Map(
+              "admin" -> Seq("billing:read", "billing:write", "address:read", "address:write"),
+              "accounting" -> Seq("billing:read", "billing:write", "address:read"),
+              "pilot" -> Seq("spaceship:drive", "address:read"),
+              "delivery" -> Seq("address:read", "package:load", "package:unload", "package:deliver")
+            )
           ).json
         },
         canRead = true,
@@ -108,7 +113,6 @@ object BiscuitRbacPolicy {
     )
   }
 }
-
 trait BiscuitRbacPolicyDataStore extends BasicStore[BiscuitRbacPolicy]
 class KvBiscuitRbacPolicyDataStore(extensionId: AdminExtensionId, redisCli: RedisLike, _env: Env)
   extends BiscuitRbacPolicyDataStore
