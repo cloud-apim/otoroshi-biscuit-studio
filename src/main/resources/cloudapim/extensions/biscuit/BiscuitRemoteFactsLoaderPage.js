@@ -89,20 +89,7 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 				parentProps: this.props,
 				selfUrl: "extensions/cloud-apim/biscuit/remote-facts",
 				defaultTitle: "All Biscuit Remote Facts",
-				defaultValue: () => ({
-					id: `biscuit-remote-facts_${uuid()}`,
-					name: "Remote fact loader",
-					description: "Biscuit Remote fact loader",
-					tags: [],
-					metadata: {},
-					config: {
-						apiUrl: "https://api.domain.com/v1/roles",
-						headers: {
-							Accept: "application/json",
-							Authorization: "Bearer: xxxxx",
-						},
-					},
-				}),
+        defaultValue: () => this.client.template(),
 				itemName: "Biscuit Remote Facts Loader",
 				formSchema: this.formSchema,
 				formFlow: this.formFlow,
@@ -110,9 +97,25 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 				stayAfterSave: true,
 				fetchTemplate: () => this.client.template(),
 				fetchItems: (paginationState) => this.client.findAll(),
-				updateItem: this.client.update,
+        updateItem: (e) => {
+					if (!e.config.apiUrl || e.config.apiUrl === "https://my-api.domain.com/v1/roles") {
+						alert(
+							"Please verify your API URL connection"
+						);
+					} else {
+						return this.client.create(e);
+					}
+				},
 				deleteItem: this.client.delete,
-				createItem: this.client.create,
+        createItem: (e) => {
+					if (!e.config.apiUrl || e.config.apiUrl === "https://my-api.domain.com/v1/roles") {
+						alert(
+							"Please verify your API URL connection"
+						);
+					} else {
+						return this.client.create(e);
+					}
+				},
 				navigateTo: (item) => {
 					window.location = `/bo/dashboard/extensions/cloud-apim/biscuit/remote-facts/edit/${item.id}`;
 				},

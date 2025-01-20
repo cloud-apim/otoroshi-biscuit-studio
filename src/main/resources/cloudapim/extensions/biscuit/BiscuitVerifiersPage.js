@@ -127,22 +127,7 @@ class BiscuitVerifiersPage extends Component {
 				parentProps: this.props,
 				selfUrl: "extensions/cloud-apim/biscuit/verifiers",
 				defaultTitle: "All Biscuit Verifiers",
-				defaultValue: () => ({
-					id: `biscuit-verifier_${uuid()}`,
-					name: "Biscuit Verifier",
-					description: "A simple Biscuit Verifier",
-					tags: [],
-					metadata: {},
-					keypair_ref: "",
-					config: {
-						checks: [],
-						facts: [],
-						resources: [],
-						rules: [],
-						policies: [],
-						revokedIds: [],
-					},
-				}),
+				defaultValue: () => this.client.template(),
 				itemName: "Biscuit Verifier",
 				formSchema: this.formSchema,
 				formFlow: this.formFlow,
@@ -150,9 +135,25 @@ class BiscuitVerifiersPage extends Component {
 				stayAfterSave: true,
 				fetchTemplate: () => this.client.template(),
 				fetchItems: (paginationState) => this.client.findAll(),
-				updateItem: this.client.update,
+				updateItem: (e) => {
+					if (!e.keypair_ref) {
+						alert(
+							"Could not update entity if the keypair reference is not provided"
+						);
+					} else {
+						return this.client.update(e);
+					}
+				},
 				deleteItem: this.client.delete,
-				createItem: this.client.create,
+				createItem: (e) => {
+					if (!e.keypair_ref) {
+						alert(
+							"Could not create entity if the keypair reference is not provided"
+						);
+					} else {
+						return this.client.create(e);
+					}
+				},
 				navigateTo: (item) => {
 					window.location = `/bo/dashboard/extensions/cloud-apim/biscuit/verifiers/edit/${item.id}`;
 				},

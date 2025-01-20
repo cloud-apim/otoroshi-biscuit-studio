@@ -81,30 +81,7 @@ class BiscuitRbacPoliciesPage extends Component {
 				parentProps: this.props,
 				selfUrl: "extensions/cloud-apim/biscuit/rbac",
 				defaultTitle: "All Biscuit RBAC Policies",
-				defaultValue: () => ({
-					id: `biscuit-rbac-policy_${uuid()}`,
-					name: "Biscuit RBAC Policy",
-					description: "A simple Biscuit RBAC Policy",
-					tags: [],
-					metadata: {},
-					roles: {
-						admin: [
-							"billing:read",
-							"billing:write",
-							"address:read",
-							"address:write",
-						],
-						accounting: ["billing:read", "billing:write", "address:read"],
-						support: ["address:read", "address:write"],
-						pilot: ["spaceship:drive", "address:read"],
-						delivery: [
-							"address:read",
-							"package:load",
-							"package:unload",
-							"package:deliver",
-						],
-					},
-				}),
+        defaultValue: () => this.client.template(),
 				itemName: "Biscuit RBAC Policy",
 				formSchema: this.formSchema,
 				formFlow: this.formFlow,
@@ -112,9 +89,25 @@ class BiscuitRbacPoliciesPage extends Component {
 				stayAfterSave: true,
 				fetchTemplate: () => this.client.template(),
 				fetchItems: (paginationState) => this.client.findAll(),
-				updateItem: this.client.update,
+        updateItem: (e) => {
+					if (Object.keys(e.roles).length === 0) {
+						alert(
+							"Your roles list seems to be empty."
+						);
+					} else {
+						return this.client.update(e);
+					}
+				},
 				deleteItem: this.client.delete,
-				createItem: this.client.create,
+        createItem: (e) => {
+					if (Object.keys(e.roles).length === 0) {
+						alert(
+							"Your roles list seems to be empty."
+						);
+					} else {
+						return this.client.create(e);
+					}
+				},
 				navigateTo: (item) => {
 					window.location = `/bo/dashboard/extensions/cloud-apim/biscuit/rbac/edit/${item.id}`;
 				},

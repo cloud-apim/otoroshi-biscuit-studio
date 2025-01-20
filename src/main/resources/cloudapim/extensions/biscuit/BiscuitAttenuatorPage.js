@@ -90,17 +90,7 @@ class BiscuitAttenuatorPage extends Component {
 				parentProps: this.props,
 				selfUrl: "extensions/cloud-apim/biscuit/attenuators",
 				defaultTitle: "All Biscuit Attenuators",
-				defaultValue: () => ({
-					id: `biscuit-attenuator_${uuid()}`,
-					name: "Biscuit Attenuator",
-					description: "A simple Biscuit Attenuator",
-					tags: [],
-					metadata: {},
-					keypair_ref: "",
-					config: {
-						checks: [],
-					},
-				}),
+				defaultValue: () => this.client.template(),
 				itemName: "Biscuit Attenuator",
 				formSchema: this.formSchema,
 				formFlow: this.formFlow,
@@ -108,9 +98,29 @@ class BiscuitAttenuatorPage extends Component {
 				stayAfterSave: true,
 				fetchTemplate: () => this.client.template(),
 				fetchItems: (paginationState) => this.client.findAll(),
-				updateItem: this.client.update,
+				updateItem: (e) => {
+					if (!e.keypair_ref) {
+						alert(
+							"Could not update entity if the keypair reference is not provided"
+						);
+					} else if (e?.checks?.length === 0) {
+						alert("Your checks array is empty, please add check rules");
+					} else {
+						return this.client.update(e);
+					}
+				},
 				deleteItem: this.client.delete,
-				createItem: this.client.create,
+				createItem: (e) => {
+					if (!e.keypair_ref) {
+						alert(
+							"Could not create entity if the keypair reference is not provided"
+						);
+					} else if (e?.checks?.length === 0) {
+						alert("Your checks array is empty, please add check rules");
+					} else {
+						return this.client.create(e);
+					}
+				},
 				navigateTo: (item) => {
 					window.location = `/bo/dashboard/extensions/cloud-apim/biscuit/attenuators/edit/${item.id}`;
 				},

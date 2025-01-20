@@ -115,20 +115,7 @@ class BiscuitTokenForge extends Component {
 				parentProps: this.props,
 				selfUrl: "extensions/cloud-apim/biscuit/tokens-forge",
 				defaultTitle: "Tokens forge",
-				defaultValue: () => ({
-					id: `biscuit-token_${uuid()}`,
-					name: "Biscuit Token",
-					description: "A simple Biscuit Token",
-					tags: [],
-					metadata: {},
-					keypair_ref: "",
-					config: {
-						facts: [],
-						resources: [],
-						checks: [],
-						rules: [],
-					},
-				}),
+				defaultValue: () => this.client.template(),
 				itemName: "Biscuit Token",
 				formSchema: this.formSchema,
 				formFlow: this.formFlow,
@@ -136,9 +123,21 @@ class BiscuitTokenForge extends Component {
 				stayAfterSave: true,
 				fetchTemplate: () => this.client.template(),
 				fetchItems: (paginationState) => this.client.findAll(),
-				updateItem: this.client.update,
+				updateItem: (e) => {
+					if (!e.token) {
+						alert("Could not update entity if token is not generated");
+					} else {
+						return this.client.update(e);
+					}
+				},
 				deleteItem: this.client.delete,
-				createItem: this.client.create,
+				createItem: (e) => {
+					if (!e.token) {
+						alert("Could not create entity if token is not generated");
+					} else {
+						return this.client.create(e);
+					}
+				},
 				navigateTo: (item) => {
 					window.location = `/bo/dashboard/extensions/cloud-apim/biscuit/tokens-forge/edit/${item.id}`;
 				},
