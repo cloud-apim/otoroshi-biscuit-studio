@@ -328,7 +328,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
 
     val resp = client.call("GET", s"http://verifier.oto.tools:${port}", headers, None).awaitf(awaitFor)
     println(resp.body)
-    assertEquals(resp.status, 500, s"verifier route did not respond with 200")
+    assertEquals(resp.status, 500, s"verifier should thrown an internal server error")
     client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeVerifierId)
     client.forBiscuitEntity("biscuit-verifiers").deleteRaw(verifierId)
     client.forBiscuitEntity("biscuit-keypairs").deleteRaw(keypairID)
