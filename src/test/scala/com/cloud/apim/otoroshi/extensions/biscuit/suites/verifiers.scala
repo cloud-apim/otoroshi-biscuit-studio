@@ -14,6 +14,82 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 
 class TestVerifiers extends BiscuitExtensionSuite {
+  def testVerifierWithoutRef(client: OtoroshiClient, awaitFor: FiniteDuration)(implicit ec: ExecutionContext, mat: Materializer): Unit = {
+    val port = client.port
+
+    val routeVerifierId = s"route_${UUID.randomUUID().toString}"
+
+    val routeWithoutVerifier = client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertRaw(routeVerifierId, Json.parse(
+    s"""{
+         |  "id": "${routeVerifierId}",
+         |  "name": "biscuit-verifier",
+         |  "frontend": {
+         |    "domains": [
+         |      "verifier.oto.tools"
+         |    ]
+         |  },
+         |  "backend": {
+         |    "targets": [
+         |      {
+         |        "id": "target_1",
+         |        "hostname": "request.otoroshi.io",
+         |        "port": 443,
+         |        "tls": true
+         |      }
+         |    ],
+         |    "root": "/",
+         |    "rewrite": false,
+         |    "load_balancing": {
+         |      "type": "RoundRobin"
+         |    }
+         |  },
+         |   "backend_ref": null,
+         |  "plugins": [
+         |    {
+         |      "enabled": true,
+         |      "debug": false,
+         |      "plugin": "cp:otoroshi.next.plugins.OverrideHost",
+         |      "include": [],
+         |      "exclude": [],
+         |      "config": {},
+         |      "bound_listeners": [],
+         |      "plugin_index": {
+         |        "transform_request": 0
+         |      }
+         |    },
+         |    {
+         |      "enabled": true,
+         |      "debug": false,
+         |      "plugin": "cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenValidator",
+         |      "include": [],
+         |      "exclude": [],
+         |      "config": {
+         |        "verifier_ref": "",
+         |        "rbac_ref": "",
+         |        "enable_remote_facts": false,
+         |        "remote_facts_ref": "",
+         |        "enforce": true,
+         |        "extractor_type": "header",
+         |        "extractor_name": "biscuit-header"
+         |      },
+         |      "bound_listeners": [],
+         |      "plugin_index": {
+         |        "validate_access": 0
+         |      }
+         |    }
+         |  ]
+         |}""".stripMargin)).awaitf(awaitFor)
+    assert(routeWithoutVerifier.created, s"verifier route has not been created")
+    await(1300.millis)
+
+
+    val resp = client.call("GET", s"http://verifier.oto.tools:${port}", Map.empty, None).awaitf(awaitFor)
+    assertEquals(resp.status, 500, s"verifier did not thrown an error 500")
+    assert(resp.json.at("error").isDefined, s"error is not defined")
+    assertEquals(resp.json.at("error").as[String], "verifierRef not found", s"bad error message for verifier route")
+    client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeVerifierId)
+    await(1000.millis)
+  }
 
   def testBiscuitVerifier(client: OtoroshiClient, awaitFor: FiniteDuration)(implicit ec: ExecutionContext, mat: Materializer): Unit = {
     val port = client.port
@@ -121,7 +197,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
          |    }
          |  ]
          |}""".stripMargin)).awaitf(awaitFor)
-    assert(routeWithVerifier.created, s"verifier route chat has not been created")
+    assert(routeWithVerifier.created, s"verifier route has not been created")
     await(1300.millis)
 
     val headers = Map(
@@ -129,9 +205,11 @@ class TestVerifiers extends BiscuitExtensionSuite {
     )
 
     val resp = client.call("GET", s"http://verifier.oto.tools:${port}", headers, None).awaitf(awaitFor)
-    println(resp.body)
     assertEquals(resp.status, 200, s"verifier route did not respond with 200")
     client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeVerifierId)
+    client.forBiscuitEntity("biscuit-verifiers").deleteRaw(verifierId)
+    client.forBiscuitEntity("biscuit-keypairs").deleteRaw(keypairID)
+
     await(1300.millis)
   }
 
@@ -252,6 +330,8 @@ class TestVerifiers extends BiscuitExtensionSuite {
     println(resp.body)
     assertEquals(resp.status, 500, s"verifier route did not respond with 200")
     client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeVerifierId)
+    client.forBiscuitEntity("biscuit-verifiers").deleteRaw(verifierId)
+    client.forBiscuitEntity("biscuit-keypairs").deleteRaw(keypairID)
     await(1300.millis)
   }
 
@@ -301,13 +381,15 @@ class TestVerifiers extends BiscuitExtensionSuite {
 
     BiscuitVerifiersUtils.createVerifierEntity(client)(verifier)
 
+    val routeDomain = "verifier.oto.tools"
+
     val routeWithVerifier = client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertRaw(routeVerifierId, Json.parse(
       s"""{
          |  "id": "${routeVerifierId}",
          |  "name": "biscuit-verifier-2",
          |  "frontend": {
          |    "domains": [
-         |      "verifier.oto.tools"
+         |      "${routeDomain}"
          |    ]
          |  },
          |  "backend": {
@@ -368,10 +450,11 @@ class TestVerifiers extends BiscuitExtensionSuite {
       "biscuit-header" -> encodedToken
     )
 
-    val resp = client.call("GET", s"http://verifier.oto.tools:${port}", headers, None).awaitf(awaitFor)
-    println(resp.body)
-    assertEquals(resp.status, 200, s"verifier route did not respond with 200")
+    val resp = client.call("GET", s"http://${routeDomain}:${port}", headers, None).awaitf(awaitFor)
+    assertEquals(resp.status, 403, s"verifier should thrown a forbidden")
     client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeVerifierId)
+    client.forBiscuitEntity("biscuit-verifiers").deleteRaw(verifierId)
+    client.forBiscuitEntity("biscuit-keypairs").deleteRaw(keypairID)
     await(1300.millis)
   }
 
@@ -425,18 +508,23 @@ class TestVerifiers extends BiscuitExtensionSuite {
     BiscuitVerifiersUtils.createVerifierEntity(client)(verifier)
   }
 
-//  test(s"create verifier plugin should be good") {
-//    printHeader(verifier.name,  "testing verifier plugin")
-//    testBiscuitVerifier(client, 30.seconds)
-//  }
-//
-//  test(s"create verifier plugin should be wrong") {
-//    printHeader("", "testing verifier plugin")
-//    testWrongBiscuitTokenWithVerifier(client, 30.seconds)
-//  }
-//
-//  test(s"create verifier plugin should be wrong") {
-//    printHeader(verifier.name,  "testing verifier plugin with bad token")
-//    testBiscuitVerifierWithBadToken(client, 30.seconds)
-//  }
+  test(s"verifier plugin should throw an error - verifier not provided") {
+    printHeader(verifier.name,  "test verifier plugin without verifier_ref")
+    testVerifierWithoutRef(client, 30.seconds)
+  }
+
+  test(s"testing good verifier plugin policies") {
+    printHeader(verifier.name, "testing good verifier plugin policies")
+    testBiscuitVerifier(client, 30.seconds)
+  }
+
+  test(s"testing WRONG token plugin") {
+    printHeader("", "testing WRONG token plugin")
+    testWrongBiscuitTokenWithVerifier(client, 30.seconds)
+  }
+
+  test(s"testing verifier plugin with bad token") {
+    printHeader(verifier.name,  "testing verifier plugin with bad token")
+    testBiscuitVerifierWithBadToken(client, 30.seconds)
+  }
 }
