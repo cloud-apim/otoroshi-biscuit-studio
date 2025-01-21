@@ -207,8 +207,8 @@ class TestVerifiers extends BiscuitExtensionSuite {
     val resp = client.call("GET", s"http://verifier.oto.tools:${port}", headers, None).awaitf(awaitFor)
     assertEquals(resp.status, 200, s"verifier route did not respond with 200")
     client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeVerifierId)
-    client.forBiscuitEntity("biscuit-verifiers").deleteRaw(verifierId)
-    client.forBiscuitEntity("biscuit-keypairs").deleteRaw(keypairID)
+    client.forBiscuitEntity("biscuit-verifiers").deleteEntity(verifier)
+    client.forBiscuitEntity("biscuit-keypairs").deleteEntity(demoKeyPair)
 
     await(1300.millis)
   }
@@ -220,8 +220,8 @@ class TestVerifiers extends BiscuitExtensionSuite {
     // role("user");
     val encodedToken = "EcYBCiwKE2Jpc2N1aXQtc3R1ZGlvLXRlc3QYAyIJCgcIChIDGIAIIggKBggGEgIYChIkCAASIIjCXLU5A-JBhCzBWklpKOr4azUhMLMXQzrhcLXTqxsfGkA6aVZxS-uu8tpQtbK_NxeaGxpc-WPBYPgO83NZQZSdLbE4ELcfgn-6OoH-jp6Ych7M_T3t1vBoNnSp4Paah9UHIiIKIBvwbLEZSZUtv2sQCY_UUBI-wBjBk9gnHXW4uQRGHzSv"
 
-    val keypairID = s"biscuit-keypair_53105273-61db-4791-a8cf-04e98b5a2c12"
-    val verifierId = s"biscuit-verifier_603ad95d-b723-4883-817a-f9c739e157b8"
+    val keypairID = s"biscuit-keypair_072970c2-fb59-4757-aa27-ec6778702bfc"
+    val verifierId = s"biscuit-verifier_be4e215e-41e3-4d48-8cb5-e582347ccf78"
     val routeVerifierId = s"route_${UUID.randomUUID().toString}"
 
     val demoKeyPair = BiscuitKeyPair(
@@ -330,8 +330,9 @@ class TestVerifiers extends BiscuitExtensionSuite {
     println(resp.body)
     assertEquals(resp.status, 500, s"verifier should thrown an internal server error")
     client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeVerifierId)
-    client.forBiscuitEntity("biscuit-verifiers").deleteRaw(verifierId)
-    client.forBiscuitEntity("biscuit-keypairs").deleteRaw(keypairID)
+    client.forBiscuitEntity("biscuit-verifiers").deleteEntity(verifier)
+    client.forBiscuitEntity("biscuit-keypairs").deleteEntity(demoKeyPair)
+
     await(1300.millis)
   }
 
@@ -453,8 +454,8 @@ class TestVerifiers extends BiscuitExtensionSuite {
     val resp = client.call("GET", s"http://${routeDomain}:${port}", headers, None).awaitf(awaitFor)
     assertEquals(resp.status, 403, s"verifier should thrown a forbidden")
     client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeVerifierId)
-    client.forBiscuitEntity("biscuit-verifiers").deleteRaw(verifierId)
-    client.forBiscuitEntity("biscuit-keypairs").deleteRaw(keypairID)
+    client.forBiscuitEntity("biscuit-verifiers").deleteEntity(verifier)
+    client.forBiscuitEntity("biscuit-keypairs").deleteEntity(demoKeyPair)
     await(1300.millis)
   }
 
