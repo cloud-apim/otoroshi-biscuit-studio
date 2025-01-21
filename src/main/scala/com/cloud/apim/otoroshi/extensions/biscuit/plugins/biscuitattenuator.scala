@@ -51,7 +51,7 @@ class BiscuitTokenAttenuator extends NgRequestTransformer {
     val config = ctx.cachedConfig(internalName)(BiscuitAttenuatorConfig.format).getOrElse(BiscuitAttenuatorConfig.default)
 
     env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitAttenuator(config.ref)) match {
-      case None => Left(Results.InternalServerError(Json.obj("error" -> "attenuator config not found")))
+      case None => Left(Results.InternalServerError(Json.obj("error" -> "attenuatorRef not found")))
       case Some(attenuator) => {
         attenuator.config match {
           case None => Left(Results.InternalServerError(Json.obj("error" -> "bad attenuator config")))
@@ -73,9 +73,6 @@ class BiscuitTokenAttenuator extends NgRequestTransformer {
 
                             var finalRequest = ctx.otoroshiRequest
 
-                            Try(biscuitToken.authorizer().allow().authorize()).toEither match {
-                              case Left(error) => Left(Results.InternalServerError(Json.obj("error" -> s"Token unvalid : Failed to verify your token")))
-                              case Right(_) => {
                                 config.extractorType match {
                                   case "header" => finalRequest = finalRequest.copy(headers = finalRequest.headers.filterNot(_._1.toLowerCase() == config.extractorName.toLowerCase()))
                                   case "query" => {
@@ -104,8 +101,6 @@ class BiscuitTokenAttenuator extends NgRequestTransformer {
                                   }
                                   case _ => finalRequest.right
                                 }
-                              }
-                            }
                           }
                         }
                     }
