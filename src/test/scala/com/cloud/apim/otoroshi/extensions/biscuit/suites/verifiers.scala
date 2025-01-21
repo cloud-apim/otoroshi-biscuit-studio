@@ -96,7 +96,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
 
     // user("biscuit-studio-test");
     // role("user");
-    val encodedToken = "EpYBCiwKE2Jpc2N1aXQtc3R1ZGlvLXRlc3QYAyIJCgcIChIDGIAIIggKBggGEgIYChIkCAASIIjCXLU5A-JBhCzBWklpKOr4azUhMLMXQzrhcLXTqxsfGkA6aVZxS-uu8tpQtbK_NxeaGxpc-WPBYPgO83NZQZSdLbE4ELcfgn-6OoH-jp6Ych7M_T3t1vBoNnSp4Paah9UHIiIKIBvwbLEZSZUtv2sQCY_UUBI-wBjBk9gnHXW4uQRGHzSv"
+    val encodedToken = "EowBCiIKE2Jpc2N1aXQtc3R1ZGlvLXRlc3QYAyIJCgcIChIDGIAIEiQIABIg1J7SCEMRkgB3g7W5W-99Xatm0w3CJkWpFhYPxKxQQFsaQCulBZ8u-x6C8h9BdYEPCmEJhzKPC3n3SH-Hka55A6PsYhvcSeB6nJbqLWT61T8Gvu0V_UHwjlYYAkkAfaLgegQiIgogaTlcTS0Wrl6hw7ewN_41AWoDd3gbw3KvYGrwHA3kmfI="
 
     val keypairID = s"biscuit-keypair_53105273-61db-4791-a8cf-04e98b5a2c12"
     val verifierId = s"biscuit-verifier_603ad95d-b723-4883-817a-f9c739e157b8"
@@ -109,8 +109,8 @@ class TestVerifiers extends BiscuitExtensionSuite {
       metadata = Map.empty,
       tags = Seq.empty,
       location = EntityLocation.default,
-      pubKey = "0D6C7CBAECBA63916D7CAE5981C411EAF6A18929910709977FFDDFBD4433EF27",
-      privKey = "1304480d1d9eea4075de296d8d84c2522703778c01b0a1459145716a7c33a665"
+      pubKey = "C6895E147596F71984C6F2D70005A7915658C0076C95BA45FE34B0EB2541487B",
+      privKey = "DDCC600AE43F2C7E1FED87EEA7C6CBB7F9539FE6166D0A73A4FAFDD1AE4BFDD7"
     )
 
     BiscuitKeyPairsUtils.createKeypairEntity(client)(demoKeyPair)
