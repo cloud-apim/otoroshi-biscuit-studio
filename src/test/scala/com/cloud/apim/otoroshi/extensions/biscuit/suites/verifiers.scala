@@ -80,7 +80,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
          |  ]
          |}""".stripMargin)).awaitf(awaitFor)
     assert(routeWithoutVerifier.created, s"verifier route has not been created")
-    await(1300.millis)
+    await(1500.millis)
 
 
     val resp = client.call("GET", s"http://verifier.oto.tools:${port}", Map.empty, None).awaitf(awaitFor)
@@ -88,7 +88,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
     assert(resp.json.at("error").isDefined, s"error is not defined")
     assertEquals(resp.json.at("error").as[String], "verifierRef not found", s"bad error message for verifier route")
     client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeVerifierId)
-    await(1000.millis)
+    await(2500.millis)
   }
 
   def testBiscuitVerifier(client: OtoroshiClient, awaitFor: FiniteDuration)(implicit ec: ExecutionContext, mat: Materializer): Unit = {
@@ -200,7 +200,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
          |  ]
          |}""".stripMargin)).awaitf(awaitFor)
     assert(routeWithVerifier.created, s"verifier route has not been created")
-    await(1300.millis)
+    await(1500.millis)
 
     val headers = Map(
       "biscuit-header" -> encodedToken
@@ -214,7 +214,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
     client.forBiscuitEntity("biscuit-verifiers").deleteEntity(verifier)
     client.forBiscuitEntity("biscuit-keypairs").deleteEntity(demoKeyPair)
 
-    await(1300.millis)
+    await(2500.millis)
   }
 
   def testBiscuitVerifierWithBadToken(client: OtoroshiClient, awaitFor: FiniteDuration)(implicit ec: ExecutionContext, mat: Materializer): Unit = {
@@ -301,6 +301,19 @@ class TestVerifiers extends BiscuitExtensionSuite {
          |        "transform_request": 0
          |      }
          |    },
+         |     {
+         |      "plugin_index": {},
+         |      "nodeId": "cp:otoroshi.next.plugins.EchoBackend-0",
+         |      "plugin": "cp:otoroshi.next.plugins.EchoBackend",
+         |      "enabled": true,
+         |      "debug": false,
+         |      "include": [],
+         |      "exclude": [],
+         |      "bound_listeners": [],
+         |      "config": {
+         |        "limit": 524288
+         |      }
+         |    },
          |    {
          |      "enabled": true,
          |      "debug": false,
@@ -324,7 +337,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
          |  ]
          |}""".stripMargin)).awaitf(awaitFor)
     assert(routeWithVerifier.created, s"verifier route chat has not been created")
-    await(1300.millis)
+    await(1500.millis)
 
     val headers = Map(
       "biscuit-header" -> encodedToken
@@ -337,7 +350,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
     client.forBiscuitEntity("biscuit-verifiers").deleteEntity(verifier)
     client.forBiscuitEntity("biscuit-keypairs").deleteEntity(demoKeyPair)
 
-    await(1300.millis)
+    await(2500.millis)
   }
 
   def testWrongBiscuitTokenWithVerifier(client: OtoroshiClient, awaitFor: FiniteDuration)(implicit ec: ExecutionContext, mat: Materializer): Unit = {
@@ -426,6 +439,19 @@ class TestVerifiers extends BiscuitExtensionSuite {
          |        "transform_request": 0
          |      }
          |    },
+         |     {
+         |      "plugin_index": {},
+         |      "nodeId": "cp:otoroshi.next.plugins.EchoBackend-0",
+         |      "plugin": "cp:otoroshi.next.plugins.EchoBackend",
+         |      "enabled": true,
+         |      "debug": false,
+         |      "include": [],
+         |      "exclude": [],
+         |      "bound_listeners": [],
+         |      "config": {
+         |        "limit": 524288
+         |      }
+         |    },
          |    {
          |      "enabled": true,
          |      "debug": false,
@@ -449,7 +475,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
          |  ]
          |}""".stripMargin)).awaitf(awaitFor)
     assert(routeWithVerifier.created, s"verifier route chat has not been created")
-    await(1300.millis)
+    await(1500.millis)
 
     val headers = Map(
       "biscuit-header" -> encodedToken
@@ -464,7 +490,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
     client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeVerifierId)
     client.forBiscuitEntity("biscuit-verifiers").deleteEntity(verifier)
     client.forBiscuitEntity("biscuit-keypairs").deleteEntity(demoKeyPair)
-    await(1300.millis)
+    await(2500.millis)
   }
 
   def testRoleAdmin(client: OtoroshiClient, awaitFor: FiniteDuration)(implicit ec: ExecutionContext, mat: Materializer): Unit = {
@@ -553,6 +579,19 @@ class TestVerifiers extends BiscuitExtensionSuite {
          |        "transform_request": 0
          |      }
          |    },
+         |     {
+         |      "plugin_index": {},
+         |      "nodeId": "cp:otoroshi.next.plugins.EchoBackend-0",
+         |      "plugin": "cp:otoroshi.next.plugins.EchoBackend",
+         |      "enabled": true,
+         |      "debug": false,
+         |      "include": [],
+         |      "exclude": [],
+         |      "bound_listeners": [],
+         |      "config": {
+         |        "limit": 524288
+         |      }
+         |    },
          |    {
          |      "enabled": true,
          |      "debug": false,
@@ -576,7 +615,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
          |  ]
          |}""".stripMargin)).awaitf(awaitFor)
     assert(routeWithVerifier.created, s"verifier route has not been created")
-    await(1300.millis)
+    await(1500.millis)
 
     val headers = Map(
       "biscuit-header" -> encodedToken
@@ -588,7 +627,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
     client.forBiscuitEntity("biscuit-verifiers").deleteEntity(verifier)
     client.forBiscuitEntity("biscuit-keypairs").deleteEntity(demoKeyPair)
 
-    await(1300.millis)
+    await(2500.millis)
   }
 
   def printHeader(str: String, what: String): Unit = {
