@@ -5,6 +5,8 @@ ThisBuild / version          := "1.0.0-dev"
 ThisBuild / organization     := "com.cloud-apim"
 ThisBuild / organizationName := "Cloud-APIM"
 
+Test / parallelExecution := false
+
 lazy val jackson = Seq(
   ExclusionRule("com.fasterxml.jackson.core", "jackson-databind"),
   ExclusionRule("io.opentelemetry"),
