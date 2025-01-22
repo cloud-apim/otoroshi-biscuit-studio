@@ -102,6 +102,8 @@ class TestVerifiers extends BiscuitExtensionSuite {
     val verifierId = s"biscuit-verifier_603ad95d-b723-4883-817a-f9c739e157b8"
     val routeVerifierId = s"route_${UUID.randomUUID().toString}"
 
+    val routeDomain = s"verifier-${UUID.randomUUID().toString}.oto.tools"
+
     val demoKeyPair = BiscuitKeyPair(
       id = keypairID,
       name = "New Biscuit Key Pair",
@@ -145,7 +147,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
          |  "name": "biscuit-verifier",
          |  "frontend": {
          |    "domains": [
-         |      "verifier.oto.tools"
+         |      "${routeDomain}"
          |    ]
          |  },
          |  "backend": {
@@ -206,7 +208,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
       "biscuit-header" -> encodedToken
     )
 
-    val resp = client.call("GET", s"http://verifier.oto.tools:${port}", headers, None).awaitf(awaitFor)
+    val resp = client.call("GET", s"http://${routeDomain}:${port}", headers, None).awaitf(awaitFor)
     println("body = ", resp.body)
     println("status = ", resp.status)
     assertEquals(resp.status, 200, s"verifier route did not respond with 200")
@@ -227,6 +229,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
     val keypairID = s"biscuit-keypair_072970c2-fb59-4757-aa27-ec6778702bfc"
     val verifierId = s"biscuit-verifier_be4e215e-41e3-4d48-8cb5-e582347ccf78"
     val routeVerifierId = s"route_${UUID.randomUUID().toString}"
+    val routeDomain = s"verifier-${UUID.randomUUID().toString}.oto.tools"
 
     val demoKeyPair = BiscuitKeyPair(
       id = keypairID,
@@ -269,7 +272,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
          |  "name": "biscuit-verifier",
          |  "frontend": {
          |    "domains": [
-         |      "verifier.oto.tools"
+         |      "${routeDomain}"
          |    ]
          |  },
          |  "backend": {
@@ -343,7 +346,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
       "biscuit-header" -> encodedToken
     )
 
-    val resp = client.call("GET", s"http://verifier.oto.tools:${port}", headers, None).awaitf(awaitFor)
+    val resp = client.call("GET", s"http://${routeDomain}:${port}", headers, None).awaitf(awaitFor)
     println(resp.body)
     assertEquals(resp.status, 500, s"verifier should thrown an internal server error")
     client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeVerifierId)
@@ -363,6 +366,8 @@ class TestVerifiers extends BiscuitExtensionSuite {
     val keypairID = s"biscuit-keypair_9cf71a29-303e-40f2-88d0-b86805a73de0"
     val verifierId = s"biscuit-verifier_40770e97-825c-4abc-9f92-0051fa2eff67"
     val routeVerifierId = s"route_${UUID.randomUUID().toString}"
+
+    val routeDomain = s"verifier-${UUID.randomUUID().toString}.oto.tools"
 
     val demoKeyPair = BiscuitKeyPair(
       id = keypairID,
@@ -398,8 +403,6 @@ class TestVerifiers extends BiscuitExtensionSuite {
     )
 
     BiscuitVerifiersUtils.createVerifierEntity(client)(verifier)
-
-    val routeDomain = "verifier.oto.tools"
 
     val routeWithVerifier = client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertRaw(routeVerifierId, Json.parse(
       s"""{
@@ -503,6 +506,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
     val keypairID = s"biscuit-keypair_d0807da0-3e09-4e0d-b7d4-bf59a71abe47"
     val verifierId = s"biscuit-verifier_10b6ee8d-8704-474c-84a6-57fb17774a35"
     val routeVerifierId = s"route_${UUID.randomUUID().toString}"
+    val routeDomain = s"verifier-${UUID.randomUUID().toString}.oto.tools"
 
     val demoKeyPair = BiscuitKeyPair(
       id = keypairID,
@@ -547,7 +551,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
          |  "name": "biscuit-verifier",
          |  "frontend": {
          |    "domains": [
-         |      "verifier.oto.tools"
+         |      "${routeDomain}"
          |    ]
          |  },
          |  "backend": {
@@ -621,7 +625,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
       "biscuit-header" -> encodedToken
     )
 
-    val resp = client.call("GET", s"http://verifier.oto.tools:${port}", headers, None).awaitf(awaitFor)
+    val resp = client.call("GET", s"http://${routeDomain}:${port}", headers, None).awaitf(awaitFor)
     assertEquals(resp.status, 200, s"verifier route did not respond with 200")
     client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeVerifierId)
     client.forBiscuitEntity("biscuit-verifiers").deleteEntity(verifier)
