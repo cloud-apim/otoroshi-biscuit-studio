@@ -634,6 +634,144 @@ class TestVerifiers extends BiscuitExtensionSuite {
     await(2500.millis)
   }
 
+  def testRevokedToken(client: OtoroshiClient, awaitFor: FiniteDuration)(implicit ec: ExecutionContext, mat: Materializer): Unit = {
+    val port = client.port
+
+    val encodedToken = "En0KEwoEdGVzdBgDIgkKBwgKEgMYgAgSJAgAEiDl-JhUzDpvzauo_sL4EoMAhM8yYZ4L4Iry8_nQsc7PeRpAkc5RK5AJgfWciBsPcoAQ9r1LZJvuKqDVjdJSaYOcBeoZX__VC3x05LcAGfhRPM5NMwT3wkBmR6ulo2v8vaMdByIiCiBpypfqovlJc3kCa2AzEAV4xHWzJ3D53MGpNhoo73kVvA=="
+
+    val keypairID = s"biscuit-keypair_${UUID.randomUUID().toString}"
+    val verifierId = s"biscuit-verifier_${UUID.randomUUID().toString}"
+    val routeVerifierId = s"route_${UUID.randomUUID().toString}"
+    val routeDomain = s"verifier-${UUID.randomUUID().toString}.oto.tools"
+
+    val demoKeyPair = BiscuitKeyPair(
+      id = keypairID,
+      name = "New Biscuit Key Pair",
+      description = "New biscuit KeyPair",
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      pubKey = "5eb7e77fed63b366bd9f0aad29f34c54b213975d9b500d16781190d36fbef64b",
+      privKey = "284702b00861cdaaa5bc868768a06dbec3ebffe863db2c3d12aa413427a68493"
+    )
+
+    BiscuitKeyPairsUtils.createKeypairEntity(client)(demoKeyPair)
+
+    val conf = VerifierConfig(
+      checks = List.empty,
+      facts = List.empty,
+      resources = List.empty,
+      rules = List.empty,
+      policies = Seq(
+        "allow if user(\"test\");"
+      ),
+      revokedIds = Seq(
+        "91ce512b900981f59c881b0f728010f6bd4b649bee2aa0d58dd25269839c05ea195fffd50b7c74e4b70019f8513cce4d3304f7c2406647aba5a36bfcbda31d07"
+      )
+    )
+
+    val verifier = BiscuitVerifier(
+      id = verifierId,
+      name = "New Biscuit Verifier entity",
+      description = "New biscuit Verifier entity",
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      keypairRef = keypairID,
+      config =  conf.some
+    )
+
+    BiscuitVerifiersUtils.createVerifierEntity(client)(verifier)
+
+    val routeWithVerifier = client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertRaw(routeVerifierId, Json.parse(
+      s"""{
+         |  "id": "${routeVerifierId}",
+         |  "name": "biscuit-verifier",
+         |  "frontend": {
+         |    "domains": [
+         |      "${routeDomain}"
+         |    ]
+         |  },
+         |  "backend": {
+         |    "targets": [
+         |      {
+         |        "id": "target_1",
+         |        "hostname": "request.otoroshi.io",
+         |        "port": 443,
+         |        "tls": true
+         |      }
+         |    ],
+         |    "root": "/",
+         |    "rewrite": false,
+         |    "load_balancing": {
+         |      "type": "RoundRobin"
+         |    }
+         |  },
+         |   "backend_ref": null,
+         |  "plugins": [
+         |    {
+         |      "enabled": true,
+         |      "debug": false,
+         |      "plugin": "cp:otoroshi.next.plugins.OverrideHost",
+         |      "include": [],
+         |      "exclude": [],
+         |      "config": {},
+         |      "bound_listeners": [],
+         |      "plugin_index": {
+         |        "transform_request": 0
+         |      }
+         |    },
+         |     {
+         |      "plugin_index": {},
+         |      "nodeId": "cp:otoroshi.next.plugins.EchoBackend-0",
+         |      "plugin": "cp:otoroshi.next.plugins.EchoBackend",
+         |      "enabled": true,
+         |      "debug": false,
+         |      "include": [],
+         |      "exclude": [],
+         |      "bound_listeners": [],
+         |      "config": {
+         |        "limit": 524288
+         |      }
+         |    },
+         |    {
+         |      "enabled": true,
+         |      "debug": false,
+         |      "plugin": "cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenValidator",
+         |      "include": [],
+         |      "exclude": [],
+         |      "config": {
+         |        "verifier_ref": "${verifierId}",
+         |        "rbac_ref": "",
+         |        "enable_remote_facts": false,
+         |        "remote_facts_ref": "",
+         |        "enforce": true,
+         |        "extractor_type": "header",
+         |        "extractor_name": "biscuit-header"
+         |      },
+         |      "bound_listeners": [],
+         |      "plugin_index": {
+         |        "validate_access": 0
+         |      }
+         |    }
+         |  ]
+         |}""".stripMargin)).awaitf(awaitFor)
+    assert(routeWithVerifier.created, s"verifier route has not been created")
+    await(1500.millis)
+
+    val headers = Map(
+      "biscuit-header" -> encodedToken
+    )
+
+    val resp = client.call("GET", s"http://${routeDomain}:${port}", headers, None).awaitf(awaitFor)
+    assertEquals(resp.status, 403, s"verifier route did not respond with 200")
+    client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeVerifierId)
+    client.forBiscuitEntity("biscuit-verifiers").deleteEntity(verifier)
+    client.forBiscuitEntity("biscuit-keypairs").deleteEntity(demoKeyPair)
+
+    await(2500.millis)
+  }
+
   def printHeader(str: String, what: String): Unit = {
     println("\n\n-----------------------------------------")
     println(s"  [${str}] - ${what}")
@@ -707,5 +845,10 @@ class TestVerifiers extends BiscuitExtensionSuite {
   test(s"testing role admin") {
     printHeader(verifier.name,  "testing role admin")
     testRoleAdmin(client, 30.seconds)
+  }
+
+  test(s"testing token revoked") {
+    printHeader(verifier.name,  "testing token revoked")
+    testRevokedToken(client, 30.seconds)
   }
 }
