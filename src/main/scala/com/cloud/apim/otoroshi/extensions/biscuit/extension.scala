@@ -4,12 +4,12 @@ import com.cloud.apim.otoroshi.extensions.biscuit.entities._
 import akka.util.ByteString
 import akka.stream.scaladsl.{Source, StreamConverters}
 import biscuit.format.schema.Schema.PublicKey.Algorithm
-import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitForgeConfig, BiscuitUtils}
+import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitForgeConfig, BiscuitRemoteUtils, BiscuitUtils}
 import org.biscuitsec.biscuit.crypto.{KeyPair, PublicKey}
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.env.Env
 import otoroshi.models._
-import otoroshi.next.extensions._
+import otoroshi.next.extensions.{AdminExtensionBackofficeAuthRoute, _}
 import otoroshi.utils.cache.types.UnboundedTrieMap
 import otoroshi.utils.syntax.implicits._
 import play.api.Logger
@@ -156,6 +156,12 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       path = "/extensions/cloud-apim/extensions/biscuit/tokens/verifier/_test",
       wantsBody = true,
       handle = handleVerifierTester
+    ),
+    AdminExtensionBackofficeAuthRoute(
+      method = "POST",
+      path = "/extensions/cloud-apim/extensions/biscuit/remote-facts/_test",
+      wantsBody = true,
+      handle = handleTestRemoteFacts
     )
   )
 
@@ -276,6 +282,49 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
     }
   }
 
+  def handleTestRemoteFacts(ctx: AdminExtensionRouterContext[AdminExtensionBackofficeAuthRoute], req: RequestHeader, user: Option[BackOfficeUser], body: Option[Source[ByteString, _]]): Future[Result] = {
+    implicit val ec = env.otoroshiExecutionContext
+    implicit val mat = env.otoroshiMaterializer
+    implicit val ev = env
+
+    (body match {
+      case None => Results.Ok(Json.obj("done" -> false, "error" -> "no body")).vfuture
+      case Some(bodySource) => bodySource.runFold(ByteString.empty)(_ ++ _).flatMap { bodyRaw =>
+        val bodyJson = bodyRaw.utf8String.parseJson
+
+        val headersOpt = bodyJson.select("headers").asOpt[Map[String, String]]
+        val apiUrlOpt = bodyJson.select("apiUrl").asOpt[String]
+
+        apiUrlOpt match{
+          case None => Results.Ok(Json.obj("done" -> false, "error" -> "no api URL provided")).vfuture
+          case Some(apiURL) => {
+
+            BiscuitRemoteUtils.getRemoteFacts(apiURL, headersOpt.getOrElse(Map.empty)).flatMap {
+              case Left(error) => Results.Ok(Json.obj("done" -> false, "error" -> s"unable to load remote facts - ${error}")).vfuture
+              case Right(listFacts) => {
+                Results.Ok(
+                  Json.obj(
+                    "done" -> true,
+                    "loadedFacts" -> Json.obj(
+                      "rolesRemotes" -> listFacts._1,
+                      "revokedIds" -> listFacts._2,
+                      "facts" -> listFacts._3,
+                      "acl" -> listFacts._4
+                    )
+                  )
+                ).vfuture
+              }
+          }
+        }
+        }
+      }
+    }).recover {
+      case e: Throwable => {
+        Results.Ok(Json.obj("done" -> false, "error" -> e.getMessage))
+      }
+    }
+  }
+
   override def assets(): Seq[AdminExtensionAssetRoute] = Seq(
     AdminExtensionAssetRoute(
       path = "/extensions/assets/cloud-apim/extensions/biscuit/keypairs/generate",
@@ -293,19 +342,19 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
     AdminExtensionAssetRoute(
       path = "/extensions/assets/cloud-apim/extensions/biscuit/assets/tree-sitter.wasm",
       handle = (ctx: AdminExtensionRouterContext[AdminExtensionAssetRoute], req: RequestHeader) => {
-        Results.Ok(treeSitterComponent).future
+        Results.Ok(treeSitterComponent).as("application/wasm").vfuture
       }
     ),
     AdminExtensionAssetRoute(
       path = "/extensions/assets/cloud-apim/extensions/biscuit/assets/tree-sitter-biscuit.wasm",
       handle = (ctx: AdminExtensionRouterContext[AdminExtensionAssetRoute], req: RequestHeader) => {
-        Results.Ok(treeSitterBiscuitComponent).future
+        Results.Ok(treeSitterBiscuitComponent).as("application/wasm").vfuture
       }
     ),
     AdminExtensionAssetRoute(
       path = "/extensions/assets/cloud-apim/extensions/biscuit/assets/biscuit.wasm",
       handle = (ctx: AdminExtensionRouterContext[AdminExtensionAssetRoute], req: RequestHeader) => {
-        Results.Ok(biscuitWasmComponents).future
+        Results.Ok(biscuitWasmComponents).as("application/wasm").vfuture
       }
     ),
     AdminExtensionAssetRoute(
