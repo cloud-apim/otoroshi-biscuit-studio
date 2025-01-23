@@ -4,6 +4,7 @@ import com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitVerifierConfig
 import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitRemoteUtils, BiscuitUtils}
 import org.biscuitsec.biscuit.crypto.PublicKey
 import org.biscuitsec.biscuit.token.Biscuit
+import org.biscuitsec.biscuit.token.builder.Term.Str
 import otoroshi.env.Env
 import otoroshi.gateway.Errors
 import otoroshi.next.plugins.AccessValidatorContext
@@ -15,6 +16,7 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Results
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.jdk.CollectionConverters.{asScalaBufferConverter, asScalaSetConverter}
 import scala.util.Try
 
 class BiscuitTokenValidator extends NgAccessValidator {
@@ -48,14 +50,18 @@ class BiscuitTokenValidator extends NgAccessValidator {
     ().vfuture
   }
 
+  def handleError(message: String): Future[NgAccess] =
+    NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> message))).vfuture
+
+
   override def access(ctx: NgAccessContext)(implicit env: Env, ec: ExecutionContext): Future[NgAccess] = {
     val config = ctx.cachedConfig(internalName)(BiscuitVerifierConfig.format).getOrElse(BiscuitVerifierConfig.default)
 
     env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitVerifier(config.verifierRef)) match {
-      case None => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> "verifierRef not found"))).vfuture
+      case None => handleError("verifierRef not found")
       case Some(biscuitVerifier) => {
         env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(biscuitVerifier.keypairRef)) match {
-          case None => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> "keypairRef not found"))).vfuture
+          case None => handleError("keypairRef not found")
           case Some(keypair) => {
             val publicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)
             biscuitVerifier.config match {
@@ -72,11 +78,11 @@ class BiscuitTokenValidator extends NgAccessValidator {
 
                       if (config.enableRemoteFacts && config.remoteFactsRef.nonEmpty) {
                         env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitRemoteFactsLoader(config.remoteFactsRef)) match {
-                          case None => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> "remoteFactsRef not found"))).vfuture
+                          case None => handleError("remoteFactsRef not found")
                           case Some(remoteFactsEntity) => {
                             if (remoteFactsEntity.config.nonEmpty && remoteFactsEntity.config.get.apiUrl.nonEmpty && remoteFactsEntity.config.get.headers.nonEmpty) {
                               BiscuitRemoteUtils.getRemoteFacts(remoteFactsEntity.config.get.apiUrl, remoteFactsEntity.config.get.headers).flatMap {
-                                case Left(error) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Unable to get remote facts: ${error}"))).vfuture
+                                case Left(error) => handleError(s"Unable to get remote facts: ${error}")
                                 case Right(listFacts) => {
                                   val rolesRemotes = listFacts._1
                                   val remoteRevokedIt = listFacts._2
@@ -88,16 +94,18 @@ class BiscuitTokenValidator extends NgAccessValidator {
                                   BiscuitUtils.extractToken(ctx.request, config.extractorType, config.extractorName) match {
                                     case Some(token) => {
                                       Try(Biscuit.from_b64url(token, publicKey)).toEither match {
-                                        case Left(err) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Unable to deserialize Biscuit token : ${err}"))).vfuture
+                                        case Left(err) => handleError(s"Unable to deserialize Biscuit token : ${err}")
                                         case Right(biscuitUnverified) =>
 
                                           Try(biscuitUnverified.verify(publicKey)).toEither match {
-                                            case Left(err) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Biscuit token is not valid : ${err}"))).vfuture
+                                            case Left(err) => handleError(s"Biscuit token is not valid : ${err}")
                                             case Right(biscuitToken) => {
 
                                               BiscuitUtils.verify(biscuitToken, verifierConfig.copy(facts = finalListFacts, revokedIds = finalListOfRevokedId), AccessValidatorContext(ctx).some) match {
                                                 case Left(err) => forbidden(ctx)
-                                                case Right(_) => NgAccess.NgAllowed.vfuture
+                                                case Right(_) => {
+                                                  extractApiKey(ctx, biscuitToken)
+                                                }
                                               }
                                             }
                                           }
@@ -109,7 +117,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
                                 }
                               }
                             } else {
-                              NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Bad config for remoteFactsEntity"))).vfuture
+                              handleError(s"Bad config for remoteFactsEntity")
                             }
                           }
                         }
@@ -117,15 +125,17 @@ class BiscuitTokenValidator extends NgAccessValidator {
                         BiscuitUtils.extractToken(ctx.request, config.extractorType, config.extractorName) match {
                           case Some(token) => {
                             Try(Biscuit.from_b64url(token, publicKey)).toEither match {
-                              case Left(err) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Unable to deserialize Biscuit token : ${err}"))).vfuture
+                              case Left(err) => handleError(s"Unable to deserialize Biscuit token : ${err}")
                               case Right(biscuitUnverified) =>
 
                                 Try(biscuitUnverified.verify(publicKey)).toEither match {
-                                  case Left(err) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Biscuit token is not valid : ${err}"))).vfuture
+                                  case Left(err) => handleError(s"Biscuit token is not valid : ${err}")
                                   case Right(biscuitToken) => {
                                     BiscuitUtils.verify(biscuitToken, verifierConfig.copy(facts = verifierConfig.facts ++ rbacConf), AccessValidatorContext(ctx).some) match {
                                       case Left(err) => forbidden(ctx)
-                                      case Right(_) => NgAccess.NgAllowed.vfuture
+                                      case Right(_) => {
+                                        extractApiKey(ctx, biscuitToken)
+                                      }
                                     }
                                   }
                                 }
@@ -143,14 +153,16 @@ class BiscuitTokenValidator extends NgAccessValidator {
                   BiscuitUtils.extractToken(ctx.request, config.extractorType, config.extractorName) match {
                     case Some(token) => {
                       Try(Biscuit.from_b64url(token, publicKey)).toEither match {
-                        case Left(err) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Unable to deserialize Biscuit token : ${err}"))).vfuture
+                        case Left(err) => handleError(s"Unable to deserialize Biscuit token : ${err}")
                         case Right(biscuitUnverified) =>
                           Try(biscuitUnverified.verify(publicKey)).toEither match {
-                            case Left(err) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Biscuit token is not valid : ${err}"))).vfuture
+                            case Left(err) => handleError(s"Biscuit token is not valid : ${err}")
                             case Right(biscuitToken) => {
                               BiscuitUtils.verify(biscuitToken, verifierConfig, AccessValidatorContext(ctx).some) match {
                                 case Left(err) => forbidden(ctx)
-                                case Right(_) => NgAccess.NgAllowed.vfuture
+                                case Right(_) => {
+                                  extractApiKey(ctx, biscuitToken)
+                                }
                               }
                             }
                           }
@@ -161,11 +173,39 @@ class BiscuitTokenValidator extends NgAccessValidator {
                   }
                 }
               }
-              case None => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Bad biscuit verifier configuration"))).vfuture
+              case None => handleError(s"Bad biscuit verifier configuration")
             }
           }
         }
       }
+    }
+  }
+
+  def extractApiKey(ctx: NgAccessContext, biscuitToken: Biscuit)(implicit env: Env, ec: ExecutionContext): Future[NgAccess] = {
+    val otoroshiClientID = biscuitToken.authorizer().query("api_key_client_id($id) <- otoroshi_client_id($id)")
+
+    val client_id: Option[String]   = Try(otoroshiClientID).toOption
+      .map(_.asScala)
+      .flatMap(_.headOption)
+      .filter(_.name() == "api_key_client_id")
+      .map(_.terms().asScala)
+      .flatMap(_.headOption)
+      .flatMap {
+        case str: Str => str.getValue().some
+        case _        => None
+      }
+
+    if(client_id.isDefined){
+      env.datastores.apiKeyDataStore.findById(client_id.get).flatMap {
+        case Some(apikey) => {
+          ctx.attrs.put(otoroshi.plugins.Keys.ApiKeyKey -> apikey)
+
+          NgAccess.NgAllowed.vfuture
+        }
+        case _ => handleError(s"bad apikey - not found in biscuit token")
+      }
+    }else{
+      NgAccess.NgAllowed.vfuture
     }
   }
 
