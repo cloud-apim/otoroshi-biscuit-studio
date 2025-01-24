@@ -16,7 +16,15 @@ Each token is signed with a private ED25519 key and can be verified using the co
 
 This cryptographic mechanism guarantees that tokens cannot be tampered with or forged.
 
+A Biscuit KeyPair is a couple of a Public Key and a Private Key using ED25519 algorithm.
+
 ![](/screenshots/biscuit-keypair-creation.png)
+
+You can also generate new KeyPair by clicking on the "Generate new" button.
+
+It will create a public and a private key.
+
+![](/screenshots/biscuit-keypair-creation-generate-new.png)
 
 ## Example Keypair :
 
@@ -39,16 +47,10 @@ cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb
   "id": "biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9",
   "name": "My Biscuit KeyPair",
   "description": "A simple ED25519 Biscuit KeyPair",
-  "metadata": {
-    "created_at": "2024-12-16T12:19:21.589+01:00"
-  },
   "pubKey": "cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb",
   "privKey": "0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619",
   "tags": [],
-  "kind": "BiscuitKeyPair",
-  "_loc": {
-    "tenant": "default"
-  }
+  "kind": "BiscuitKeyPair"
 }
 ```
 
