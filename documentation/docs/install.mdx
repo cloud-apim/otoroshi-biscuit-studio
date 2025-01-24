@@ -6,26 +6,60 @@ import Terminal from '@site/src/components/Terminal';
 
 # Installation
 
+![App Installation](/img/undraw_app-installation_3czh.svg)
+
 ## Download Otoroshi
+
+First, download the Otoroshi jar file:
 
 ```sh
 curl -L -o otoroshi.jar 'https://github.com/MAIF/otoroshi/releases/download/v16.22.0/otoroshi.jar'
 ```
 
-## Download the Biscuit Studio extension
-  
-You can download the latest release of `otoroshi-biscuit-studio` from https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/latest
+## Download the Biscuit Studio Extension
+
+Next, download the Biscuit Studio extension for Otoroshi:
+
+You can download the latest release of `otoroshi-biscuit-studio` from [here](https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/latest).
 
 ```sh
-curl -L -o biscuit-studio-extension.jar 'https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/0.0.1/otoroshi-biscuit-studio_2.12-0.0.1.jar'
+curl -L -o biscuit-studio-extension.jar 'https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/0.0.1/otoroshi-biscuit-studio_2.12-0.0.1-alpha.jar'
 ```
 
 ## Run Otoroshi with the Biscuit Studio Extension
+
+Run Otoroshi with the Biscuit Studio extension by executing the following command:
 
 ```sh
 java -cp "./biscuit-studio-extension.jar:./otoroshi.jar" -Dotoroshi.adminLogin=admin -Dotoroshi.adminPassword=password -Dotoroshi.storage=file play.core.server.ProdServerStart
 ```
 
-Open http://otoroshi.oto.tools:8080/ in your browser
+This will start the Otoroshi API Gateway with Biscuit Studio integrated. You can access the Otoroshi UI by opening [http://otoroshi.oto.tools:8080/](http://otoroshi.oto.tools:8080/) in your browser.
 
-Default Otoroshi UI credentials : admin / password
+Default Otoroshi UI credentials:  
+**Username**: `admin`  
+**Password**: `password`
+
+## Use it on Cloud APIM with Otoroshi Managed Instances
+
+![](/img/cloud-apim-logo.png)
+
+Register on [Cloud APIM](https://cloud-apim.com)
+
+Go to your [Cloud APIM console](https://console.cloud-apim.com/) and now click on `Managed Instance` then `New instance` and select Otoroshi's logo.
+
+### Accessing the Otoroshi with Interface
+
+Once your Otoroshi instance is created you can click on 'console' button to open the interface and login with your credentials.
+
+Now you can use the Biscuit Studio extension, it is included in your Otoroshi managed instance.
+
+## Setting Up on Clever Cloud
+
+![](/img/clever-cloud-logo.webp)
+
+### Create a new Otoroshi add-on 
+
+1. [Create a new add-on](https://console.clever-cloud.com/users/me/addons/new) by selecting the **Create...** dropdown in the sidebar, then choose **Add-On**.
+2. Pick the **Otoroshi with LLM** add-on.
+3. Give your Otoroshi with LLM add-on a name and choose a deployment zone.
