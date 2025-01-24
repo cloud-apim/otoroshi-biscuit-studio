@@ -2,20 +2,20 @@ package com.cloud.apim.otoroshi.extensions.biscuit.utils
 
 import com.cloud.apim.otoroshi.extensions.biscuit.entities.VerifierConfig
 import org.biscuitsec.biscuit.crypto._
+import org.biscuitsec.biscuit.datalog.RunLimits
 import org.biscuitsec.biscuit.error.Error
 import org.biscuitsec.biscuit.token.builder.Utils.{fact, string}
 import org.biscuitsec.biscuit.token.builder.parser.Parser
-import org.biscuitsec.biscuit.token.{Authorizer, Biscuit}
+import org.biscuitsec.biscuit.token.Biscuit
 import org.biscuitsec.biscuit.token.builder.Block
 import otoroshi.env.Env
 import otoroshi.plugins.biscuit.VerificationContext
 import play.api.libs.json.{Format, JsError, JsResult, JsSuccess, JsValue, Json, Reads}
 import play.api.mvc.RequestHeader
-import play.api.libs.ws._
 
 import scala.concurrent.{ExecutionContext, Future}
 import java.security.SecureRandom
-import scala.concurrent.Future
+import scala.concurrent.duration.Duration
 import scala.jdk.CollectionConverters.{iterableAsScalaIterableConverter, seqAsJavaListConverter}
 import scala.util.{Failure, Success, Try}
 
@@ -140,6 +140,7 @@ object BiscuitUtils {
     val verifier = biscuitToken.authorizer()
     verifier.set_time()
 
+
     if (ctxOpt.nonEmpty) {
       val ctx = ctxOpt.get
 
@@ -160,21 +161,6 @@ object BiscuitUtils {
       verifier.add_fact(fact("req_domain", Seq(string(ctx.request.domain)).asJava))
       verifier.add_fact(fact("req_method", Seq(string(ctx.request.method.toLowerCase)).asJava))
       verifier.add_fact(fact("descriptor_id", Seq(string(ctx.descriptor.id)).asJava))
-
-      ctx.apikey.foreach { apikey =>
-        apikey.tags.foreach(tag => verifier.add_fact(fact("apikey_tag", Seq(string(tag)).asJava)))
-        apikey.metadata.foreach { case (key, value) =>
-          verifier.add_fact(fact("apikey_meta", Seq(string(key), string(value)).asJava))
-        }
-      }
-
-      // Add user-related facts if available
-      ctx.user.foreach { user =>
-        user.metadata.foreach { case (key, value) =>
-          verifier.add_fact(fact("user_meta", Seq(string(key), string(value)).asJava))
-        }
-      }
-
     }
 
     // Add resources from the configuration
@@ -220,8 +206,12 @@ object BiscuitUtils {
       return Left(new Error.FormatError.DeserializationError("Revoked token"))
     }
 
+    val maxFacts = 1000
+    val maxIterations = 100
+    val maxTime = java.time.Duration.ofMillis(100)
+
     // Perform authorization
-    Try(verifier.authorize()).toEither match {
+    Try(verifier.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
       case Left(err: org.biscuitsec.biscuit.error.Error) =>
         Left(err)
       case Left(err) =>
@@ -370,7 +360,7 @@ object BiscuitRemoteUtils {
             Right((roleFacts ++ userRoleFacts, revokedIdsRemote, factsStrings, aclStrings))
 
           case _ =>
-            Left(s"API request failed with status ${resp.status}: ${resp.body}")
+            Left(s"API request failed with status ${resp.status} (${resp.statusText})")
         }
       }
       .recover {

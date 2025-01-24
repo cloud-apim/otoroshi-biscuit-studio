@@ -14,7 +14,6 @@ import play.api.libs.json.Json
 import java.util.UUID
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
-import scala.util.Try
 
 class TestAttenuators extends BiscuitExtensionSuite {
   val port: Int = freePort
@@ -597,7 +596,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
   }
 
 
-  val entityTestId = s"biscuit-attenuator_0155dcd8-bda6-4c7f-a300-0f26f46de0a6"
+  val entityTestId = s"biscuit-attenuator_${UUID.randomUUID().toString}"
 
   val attenuatorTest = BiscuitAttenuator(
     id = entityTestId,
