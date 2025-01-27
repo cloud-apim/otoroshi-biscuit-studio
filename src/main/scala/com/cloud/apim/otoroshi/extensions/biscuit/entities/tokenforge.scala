@@ -83,8 +83,8 @@ object BiscuitTokenForge {
   def resource(env: Env, datastores: BiscuitExtensionDatastores, states: BiscuitExtensionState): Resource = {
     Resource(
       "BiscuitTokenForge",
-      "tokens-forge",
-      "tokens-forge",
+      "token-forges",
+      "token-forge",
       "biscuit.extensions.cloud-apim.com",
       ResourceVersion("v1", true, false, true),
       GenericResourceAccessApiWithState[BiscuitTokenForge](

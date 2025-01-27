@@ -77,13 +77,13 @@ object BiscuitVerifierConfig {
     )
   ))
   val default = BiscuitVerifierConfig(
-    "",
-    "",
-    false,
-    "",
-    true,
-    "Header",
-    "Authorization"
+    verifierRef = "",
+    rbacPolicyRef = "",
+    enableRemoteFacts = false,
+    remoteFactsRef = "",
+    enforce = true,
+    extractorType = "header",
+    extractorName = "Authorization"
   )
 
   val format = new Format[BiscuitVerifierConfig] {

@@ -13,6 +13,8 @@ import play.api.libs.json.{JsObject, JsValue}
 import play.api.libs.ws.ahc.{AhcWSClient, AhcWSClientConfig}
 import play.api.libs.ws.{WSClient, WSClientConfig, WSConfigParser, WSResponse}
 import play.core.server.ServerConfig
+import reactor.netty.DisposableServer
+import reactor.netty.http.server.{HttpServer, HttpServerRequest, HttpServerResponse, HttpServerRoutes}
 
 import java.net.ServerSocket
 import java.nio.charset.StandardCharsets
@@ -484,13 +486,41 @@ case class OtoroshiResponse(client: OtoroshiClient, group: String, pluralName: S
 }
 
 class BiscuitExtensionSuite extends munit.FunSuite {
+
+  private[biscuit] val testServers = scala.collection.mutable.ArraySeq.empty[(String, Int, DisposableServer)]
+
   def await(duration: FiniteDuration): Unit = Utils.await(duration)
   def freePort: Int = Utils.freePort
   def startOtoroshiServer(port: Int = freePort): Otoroshi = Utils.startOtoroshi(port)
   def clientFor(port: Int): OtoroshiClient = Utils.clientFor(port)
+
+  def createTestServerWithRoutes(name: String, f: HttpServerRoutes => HttpServerRoutes): (Int, DisposableServer) = {
+    println(s"starting test server: '${name}'")
+    val fakeApiServerPort = freePort
+    val fakeApiServer = HttpServer.create()
+      .host("0.0.0.0")
+      .port(fakeApiServerPort)
+      .route(routes => f(routes))
+      .bindNow()
+    testServers :+ (name, fakeApiServerPort, fakeApiServer)
+    (fakeApiServerPort, fakeApiServer)
+  }
+
+  def createTestServer(name: String, f: (HttpServerRequest, HttpServerResponse) => org.reactivestreams.Publisher[Void]): (Int, DisposableServer) = {
+    println(s"starting test server: '${name}'")
+    val fakeApiServerPort = freePort
+    val fakeApiServer = HttpServer.create()
+      .host("0.0.0.0")
+      .port(fakeApiServerPort)
+      .handle((req: HttpServerRequest, res: HttpServerResponse) => f(req, res))
+      .bindNow()
+    testServers :+ (name, fakeApiServerPort, fakeApiServer)
+    (fakeApiServerPort, fakeApiServer)
+  }
 }
 
 class BiscuitStudioOneOtoroshiServerPerSuite extends BiscuitExtensionSuite {
+
 
   val port: Int = freePort
   var otoroshi: Otoroshi = _
@@ -507,6 +537,12 @@ class BiscuitStudioOneOtoroshiServerPerSuite extends BiscuitExtensionSuite {
 
   override def afterAll(): Unit = {
     otoroshi.stop()
+    testServers.foreach {
+      case (name, _, server) => {
+        println(s"stopping test server '${name}'")
+        server.disposeNow()
+      }
+    }
   }
 }
 
@@ -527,5 +563,11 @@ class BiscuitStudioOneOtoroshiServerPerTest extends BiscuitExtensionSuite {
 
   override def afterEach(context: AfterEach): Unit = {
     otoroshi.stop()
+    testServers.foreach {
+      case (name, _, server) => {
+        println(s"stopping test server '${name}'")
+        server.disposeNow()
+      }
+    }
   }
 }

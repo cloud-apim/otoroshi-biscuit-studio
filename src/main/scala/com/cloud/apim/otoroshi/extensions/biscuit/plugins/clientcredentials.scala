@@ -15,24 +15,23 @@ import scala.concurrent.duration.{DurationInt, DurationLong, FiniteDuration}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
-case class NgClientCredentialBiscuitTokenEndpointBody(
+case class ClientCredentialBiscuitTokenEndpointBody(
   grantType: String,
   clientId: String,
   clientSecret: String,
-  scope: Option[String],
   bearerKind: String,
   aud: Option[String]
 )
 
-case class NgClientCredentialBiscuitTokenEndpointConfig(expiration: FiniteDuration, forgeRef: Option[String]) extends NgPluginConfig {
-  override def json: JsValue = NgClientCredentialBiscuitTokenEndpointConfig.format.writes(this)
+case class ClientCredentialBiscuitTokenEndpointConfig(expiration: FiniteDuration, forgeRef: Option[String]) extends NgPluginConfig {
+  override def json: JsValue = ClientCredentialBiscuitTokenEndpointConfig.format.writes(this)
 }
 
-object NgClientCredentialBiscuitTokenEndpointConfig {
-  val default = NgClientCredentialBiscuitTokenEndpointConfig(1.hour, None)
-  val format  = new Format[NgClientCredentialBiscuitTokenEndpointConfig] {
-    override def reads(json: JsValue): JsResult[NgClientCredentialBiscuitTokenEndpointConfig] = Try {
-      NgClientCredentialBiscuitTokenEndpointConfig(
+object ClientCredentialBiscuitTokenEndpointConfig {
+  val default = ClientCredentialBiscuitTokenEndpointConfig(1.hour, None)
+  val format  = new Format[ClientCredentialBiscuitTokenEndpointConfig] {
+    override def reads(json: JsValue): JsResult[ClientCredentialBiscuitTokenEndpointConfig] = Try {
+      ClientCredentialBiscuitTokenEndpointConfig(
         expiration = json.select("expiration").asOpt[Long].map(_.millis).getOrElse(1.hour),
         forgeRef = json.select("forge_ref").asOpt[String].filter(_.trim.nonEmpty)
       )
@@ -41,7 +40,7 @@ object NgClientCredentialBiscuitTokenEndpointConfig {
       case Failure(e) => JsError(e.getMessage)
     }
 
-    override def writes(o: NgClientCredentialBiscuitTokenEndpointConfig): JsValue = Json.obj(
+    override def writes(o: ClientCredentialBiscuitTokenEndpointConfig): JsValue = Json.obj(
       "expiration" -> o.expiration.toMillis,
       "forge_ref" -> o.forgeRef
     )
@@ -71,7 +70,7 @@ object NgClientCredentialBiscuitTokenEndpointConfig {
   ))
 }
 
-class NgClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
+class ClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
 
   override def name: String = "Client credential Biscuit token endpoint"
   override def description: Option[String] =
@@ -79,15 +78,15 @@ class NgClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
 
   override def useDelegates: Boolean = false
   override def multiInstance: Boolean = true
-  override def defaultConfigObject: Option[NgPluginConfig] = Some(NgClientCredentialBiscuitTokenEndpointConfig.default)
+  override def defaultConfigObject: Option[NgPluginConfig] = Some(ClientCredentialBiscuitTokenEndpointConfig.default)
   override def deprecated: Boolean = false
   override def core: Boolean = true
   override def visibility: NgPluginVisibility = NgPluginVisibility.NgUserLand
   override def categories: Seq[NgPluginCategory] = Seq(NgPluginCategory.Authentication)
   override def steps: Seq[NgStep] = Seq(NgStep.CallBackend)
   override def noJsForm: Boolean = true
-  override def configFlow: Seq[String] = NgClientCredentialBiscuitTokenEndpointConfig.configFlow
-  override def configSchema: Option[JsObject] = NgClientCredentialBiscuitTokenEndpointConfig.configSchema
+  override def configFlow: Seq[String] = ClientCredentialBiscuitTokenEndpointConfig.configFlow
+  override def configSchema: Option[JsObject] = ClientCredentialBiscuitTokenEndpointConfig.configSchema
 
   private def handleBody(
     ctx: NgbBackendCallContext
@@ -137,19 +136,18 @@ class NgClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
   }
 
   private def handleTokenRequest(
-                                  ccfb: NgClientCredentialBiscuitTokenEndpointBody,
-                                  conf: NgClientCredentialBiscuitTokenEndpointConfig,
-                                  ctx: NgbBackendCallContext
-                                )(implicit env: Env, ec: ExecutionContext): Future[Result] =
+    ccfb: ClientCredentialBiscuitTokenEndpointBody,
+    conf: ClientCredentialBiscuitTokenEndpointConfig,
+    ctx: NgbBackendCallContext
+  )(implicit env: Env, ec: ExecutionContext): Future[Result] =
     ccfb match {
-      case NgClientCredentialBiscuitTokenEndpointBody(
+      case ClientCredentialBiscuitTokenEndpointBody(
       "client_credentials",
       clientId,
       clientSecret,
-      scope,
-      bearerKind,
+      _,
       aud
-      ) => {
+    ) => {
         val possibleApiKey = env.datastores.apiKeyDataStore.findById(clientId)
         possibleApiKey.flatMap {
           case Some(apiKey) if apiKey.isValid(clientSecret) && apiKey.isActive() => {
@@ -158,7 +156,7 @@ class NgClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
               case None => Results.NotFound(
                 Json.obj(
                   "error"             -> "not_found",
-                  "error_description" -> s"forge reg not found"
+                  "error_description" -> s"forge_ref not found"
                 )
               ).vfuture
               case Some(ref) => {
@@ -170,7 +168,14 @@ class NgClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
                     )
                   ).vfuture
                   case Some(forge) => {
-                    forge.forgeToken() match {
+                    val newForge = forge.copy(
+                      config = forge.config.map(c => c.copy(facts = c.facts ++ Seq(s"""client_id("${clientId}")""", s"""client_name("${apiKey.clientName}")""")))
+                    ).applyOnWithOpt(aud) {
+                      case(forge, aud) => forge.copy(
+                        config = forge.config.map(c => c.copy(facts = c.facts ++ Seq(s"""aud("${aud}")""")))
+                      )
+                    }
+                    newForge.forgeToken() match {
                       case Left(err) => Results.NotFound(
                         Json.obj(
                           "error"             -> "internal_server_error",
@@ -218,20 +223,19 @@ class NgClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
                             mat: Materializer
                           ): Future[Either[NgProxyEngineError, BackendCallResponse]] = {
     val config = ctx
-      .cachedConfig(internalName)(NgClientCredentialBiscuitTokenEndpointConfig.format)
-      .getOrElse(NgClientCredentialBiscuitTokenEndpointConfig.default)
+      .cachedConfig(internalName)(ClientCredentialBiscuitTokenEndpointConfig.format)
+      .getOrElse(ClientCredentialBiscuitTokenEndpointConfig.default)
     handleBody(ctx) { body =>
       (
         body.get("grant_type"),
         body.get("client_id"),
         body.get("client_secret"),
-        body.get("scope"),
         body.get("bearer_kind"),
         body.get("aud")
       ) match {
-        case (Some(gtype), Some(clientId), Some(clientSecret), scope, kind, aud) =>
+        case (Some(gtype), Some(clientId), Some(clientSecret), kind, aud) =>
           handleTokenRequest(
-            NgClientCredentialBiscuitTokenEndpointBody(gtype, clientId, clientSecret, scope, kind.getOrElse("biscuit"), aud),
+            ClientCredentialBiscuitTokenEndpointBody(gtype, clientId, clientSecret, kind.getOrElse("biscuit"), aud),
             config,
             ctx
           )
@@ -247,11 +251,10 @@ class NgClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
             .map(v => (v.head, v.tail.mkString(":")))
             .map { case (clientId, clientSecret) =>
               handleTokenRequest(
-                NgClientCredentialBiscuitTokenEndpointBody(
+                ClientCredentialBiscuitTokenEndpointBody(
                   body.getOrElse("grant_type", "--"),
                   clientId,
                   clientSecret,
-                  None,
                   body.getOrElse("bearer_kind", "biscuit"),
                   body.get("aud")
                 ),

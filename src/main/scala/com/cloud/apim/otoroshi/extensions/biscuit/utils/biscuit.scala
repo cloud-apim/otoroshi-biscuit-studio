@@ -68,6 +68,7 @@ object BiscuitUtils {
         .replace("Bearer: ", "")
         .replace("Bearer:", "")
         .replace("Biscuit ", "")
+        .replace("Biscuit: ", "")
         .replace("Biscuit-Token ", "")
         .replace("Biscuit-Token", "")
         .replace("BiscuitToken ", "")
