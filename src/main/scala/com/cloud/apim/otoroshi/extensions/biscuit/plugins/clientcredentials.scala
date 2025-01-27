@@ -72,7 +72,7 @@ object ClientCredentialBiscuitTokenEndpointConfig {
 
 class ClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
 
-  override def name: String = "Client credential Biscuit token endpoint"
+  override def name: String = "Cloud APIM - Client credential Biscuit token endpoint"
   override def description: Option[String] =
     "This plugin provide the endpoint for the client_credential flow backed by a Biscuit access_token".some
 
@@ -80,9 +80,9 @@ class ClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
   override def multiInstance: Boolean = true
   override def defaultConfigObject: Option[NgPluginConfig] = Some(ClientCredentialBiscuitTokenEndpointConfig.default)
   override def deprecated: Boolean = false
-  override def core: Boolean = true
+  override def core: Boolean = false
   override def visibility: NgPluginVisibility = NgPluginVisibility.NgUserLand
-  override def categories: Seq[NgPluginCategory] = Seq(NgPluginCategory.Authentication)
+  override def categories: Seq[NgPluginCategory] = Seq(NgPluginCategory.Custom("Cloud APIM"), NgPluginCategory.Custom("Biscuit Tokens"), NgPluginCategory.Authentication)
   override def steps: Seq[NgStep] = Seq(NgStep.CallBackend)
   override def noJsForm: Boolean = true
   override def configFlow: Seq[String] = ClientCredentialBiscuitTokenEndpointConfig.configFlow
