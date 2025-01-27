@@ -121,8 +121,11 @@ object RemoteFactsLoader {
             tags = Seq.empty,
             location = EntityLocation.default,
             config = BiscuitRemoteFactsConfig(
-              apiUrl = "https://my-api.domain.com/v1/roles",
-              headers = Map("Authorization" -> "Bearer xxxx")
+              apiUrl = "https://my-api.domain.com/v1/facts",
+              headers = Map(
+                "Authorization" -> "Bearer xxxx",
+                "Content-Type" -> "application/json"
+              )
             ).some
           ).json
         },

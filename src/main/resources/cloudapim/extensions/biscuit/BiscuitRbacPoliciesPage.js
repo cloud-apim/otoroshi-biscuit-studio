@@ -31,7 +31,7 @@ class BiscuitRbacPoliciesPage extends Component {
 		roles: {
 			type: "object",
 			props: { label: "List of Roles" },
-		},
+		}
 	};
 
 	columns = [

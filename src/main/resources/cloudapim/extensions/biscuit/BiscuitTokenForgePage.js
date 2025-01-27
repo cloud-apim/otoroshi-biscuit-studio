@@ -94,7 +94,7 @@ class BiscuitTokenForge extends Component {
 		"config.resources",
 		">>>Rules",
 		"config.rules",
-		"<<<Token generator",
+		">>>Test Token generator",
 		"tokengen",
 	];
 
@@ -116,28 +116,16 @@ class BiscuitTokenForge extends Component {
 				selfUrl: "extensions/cloud-apim/biscuit/tokens-forge",
 				defaultTitle: "Tokens forge",
 				defaultValue: () => this.client.template(),
-				itemName: "Biscuit Token",
+				itemName: "Tokens Forge",
 				formSchema: this.formSchema,
 				formFlow: this.formFlow,
 				columns: this.columns,
 				stayAfterSave: true,
 				fetchTemplate: () => this.client.template(),
 				fetchItems: (paginationState) => this.client.findAll(),
-				updateItem: (e) => {
-					if (!e.token) {
-						alert("Could not update entity if token is not generated");
-					} else {
-						return this.client.update(e);
-					}
-				},
+				updateItem: this.client.update,
 				deleteItem: this.client.delete,
-				createItem: (e) => {
-					if (!e.token) {
-						alert("Could not create entity if token is not generated");
-					} else {
-						return this.client.create(e);
-					}
-				},
+				createItem: this.client.create,
 				navigateTo: (item) => {
 					window.location = `/bo/dashboard/extensions/cloud-apim/biscuit/tokens-forge/edit/${item.id}`;
 				},
@@ -157,33 +145,38 @@ class BiscuitTokenForge extends Component {
 
 class TokenGenerator extends Component {
 	state = {
-		token: this.props?.rawValue?.token || null,
+		token: null,
+		errorMessage: null,
 	};
 
 	generateNewToken = () => {
 		if (this.props?.rawValue?.keypair_ref && this.props?.rawValue?.config) {
-			fetch(
-				"/extensions/cloud-apim/extensions/biscuit/tokens/forge/_generate",
-				{
-					method: "POST",
-					credentials: "include",
-					headers: {
-						Accept: "application/json",
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({
-						keypair_ref: this.props.rawValue.keypair_ref,
-						config: this.props.rawValue.config,
-					}),
-				}
-			)
+			fetch("/extensions/cloud-apim/extensions/biscuit/tokens/_generate", {
+				method: "POST",
+				credentials: "include",
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					keypair_ref: this.props.rawValue.keypair_ref,
+					config: this.props.rawValue.config,
+				}),
+			})
 				.then((d) => d.json())
 				.then((data) => {
-					this.setState({ token: data.token });
-					this.props.changeValue("token", data.token);
+					if (!data?.done) {
+						this.setState({
+							error: `Generation error : ${data.error}`,
+						});
+					} else {
+						this.setState({ token: data.token, errorMessage: null });
+					}
 				});
 		} else {
-			console.error("no config and no keypair ref provided !");
+			this.setState({
+				errorMessage: `no config and no keypair ref provided !`,
+			});
 		}
 	};
 
@@ -194,6 +187,8 @@ class TokenGenerator extends Component {
 	};
 
 	render() {
+		const { errorMessage, token } = this.state;
+
 		if (!this.props?.rawValue?.keypair_ref) {
 			return [
 				React.createElement(
@@ -218,7 +213,7 @@ class TokenGenerator extends Component {
 				React.createElement(
 					"label",
 					{ className: "col-xs-12 col-sm-2 col-form-label" },
-					"Biscuit Token"
+					"Generate biscuit test token"
 				),
 				React.createElement(
 					"div",
@@ -239,12 +234,30 @@ class TokenGenerator extends Component {
 							disabled: true,
 							placeholder: "Your new generated token will be displayed here",
 							className: "form-control",
-							value: this.props.rawValue?.token,
+							value: token,
 						})
 					)
 				)
 			),
 
+			errorMessage &&
+				React.createElement(
+					"div",
+					{
+						style: { maxWidth: "80%", marginLeft: "15%", textAlign: "center" },
+					},
+					React.createElement(
+						"div",
+						{
+							className: "alert alert-danger rounded mx-auto",
+							style: { width: "100%", textAlign: "center" },
+						},
+						React.createElement("i", {
+							className: "fas fa-exclamation-circle",
+						}),
+						React.createElement("span", null, ` ${errorMessage}`)
+					)
+				),
 			React.createElement(
 				"div",
 				{ className: "mb-3" },
@@ -254,7 +267,7 @@ class TokenGenerator extends Component {
 					""
 				),
 				navigator.clipboard &&
-					this.state.token &&
+					token &&
 					React.createElement(
 						"button",
 						{
@@ -276,7 +289,7 @@ class TokenGenerator extends Component {
 					React.createElement(
 						"span",
 						{ disabled: this?.props?.rawValue?.keypair_ref },
-						"Generate new token"
+						"Generate new test token"
 					)
 				)
 			),

@@ -19,7 +19,6 @@ case class BiscuitTokenForge(
                               id: String,
                               name: String,
                               description: String,
-                              token: Option[String],
                               keypairRef: String,
                               config: Option[BiscuitForgeConfig],
                               tags: Seq[String],
@@ -56,7 +55,6 @@ object BiscuitTokenForge {
         "metadata" -> o.metadata,
         "keypair_ref" -> o.keypairRef,
         "config" -> o.config.map(_.json).getOrElse(JsNull).asValue,
-        "token" -> o.token,
         "tags" -> JsArray(o.tags.map(JsString.apply))
       )
     }
@@ -69,7 +67,6 @@ object BiscuitTokenForge {
           name = (json \ "name").as[String],
           description = (json \ "description").asOpt[String].getOrElse("--"),
           keypairRef = (json \ "keypair_ref").asOpt[String].getOrElse("--"),
-          token = (json \ "token").asOpt[String],
           metadata = (json \ "metadata").asOpt[Map[String, String]].getOrElse(Map.empty),
           tags = (json \ "tags").asOpt[Seq[String]].getOrElse(Seq.empty[String]),
           config = BiscuitForgeConfig.format.reads(json.select("config").getOrElse(JsNull)).asOpt
@@ -99,7 +96,6 @@ object BiscuitTokenForge {
             id = IdGenerator.namedId("biscuit-token", env),
             name = "New biscuit token",
             description = "New biscuit token",
-            token = None,
             keypairRef = "",
             metadata = Map.empty,
             tags = Seq.empty,
