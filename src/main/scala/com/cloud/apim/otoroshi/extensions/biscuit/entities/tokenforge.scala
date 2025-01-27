@@ -1,7 +1,9 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.entities
 
-import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitForgeConfig
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionDatastores, BiscuitExtensionState}
+import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitForgeConfig, BiscuitUtils}
+import org.biscuitsec.biscuit.crypto.KeyPair
+import org.biscuitsec.biscuit.token.Biscuit
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtension, BiscuitExtensionDatastores, BiscuitExtensionState}
 
 import scala.util.{Failure, Success, Try}
 import otoroshi.api.{GenericResourceAccessApiWithState, Resource, ResourceVersion}
@@ -35,6 +37,13 @@ case class BiscuitTokenForge(
   def theName: String = name
 
   def theTags: Seq[String] = tags
+
+  def forgeToken()(implicit env: Env): Either[String, Biscuit] = {
+    env.adminExtensions.extension[BiscuitExtension].get.states.keypair(keypairRef) match {
+      case None => "keypair not found".left
+      case Some(kp) =>  BiscuitUtils.createToken(kp.privKey, config.get).right
+    }
+  }
 }
 
 object BiscuitTokenForge {

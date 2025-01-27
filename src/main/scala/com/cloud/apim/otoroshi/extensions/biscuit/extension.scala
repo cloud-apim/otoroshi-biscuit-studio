@@ -1,21 +1,20 @@
 package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit
 
-import com.cloud.apim.otoroshi.extensions.biscuit.entities._
-import akka.util.ByteString
 import akka.stream.scaladsl.{Source, StreamConverters}
+import akka.util.ByteString
 import biscuit.format.schema.Schema.PublicKey.Algorithm
+import com.cloud.apim.otoroshi.extensions.biscuit.entities._
 import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitForgeConfig, BiscuitRemoteUtils, BiscuitUtils}
 import org.biscuitsec.biscuit.crypto.{KeyPair, PublicKey}
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.env.Env
 import otoroshi.models._
-import otoroshi.next.extensions.{AdminExtensionBackofficeAuthRoute, _}
+import otoroshi.next.extensions._
 import otoroshi.utils.cache.types.UnboundedTrieMap
 import otoroshi.utils.syntax.implicits._
 import play.api.Logger
-import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{RequestHeader, Result, Results}
-import otoroshi.plugins.biscuit.VerificationContext
 
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt

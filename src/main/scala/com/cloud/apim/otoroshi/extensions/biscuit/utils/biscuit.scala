@@ -55,6 +55,7 @@ object BiscuitForgeConfig {
 }
 
 object BiscuitUtils {
+
   def extractToken(req: RequestHeader, extractorType: String, extractorName: String): Option[String] = {
     (extractorType match {
       case "header" => req.headers.get(extractorName)
