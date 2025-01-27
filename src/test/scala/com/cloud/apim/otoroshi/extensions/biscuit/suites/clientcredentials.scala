@@ -47,7 +47,6 @@ class ClientcredentialsSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
       id = IdGenerator.namedId("biscuit-token", otoroshi.env),
       name = "New biscuit token",
       description = "New biscuit token",
-      token = None,
       keypairRef = keypair.id,
       metadata = Map.empty,
       tags = Seq.empty,

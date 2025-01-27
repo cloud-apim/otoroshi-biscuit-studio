@@ -72,7 +72,6 @@ class TestsTokensForge extends BiscuitExtensionSuite {
     location = EntityLocation.default,
     keypairRef = keypairID,
     config =  conf.some,
-    token = tokenDemo.some
   )
 
   def testWithVerifier(client: OtoroshiClient, awaitFor: FiniteDuration)(implicit ec: ExecutionContext, mat: Materializer): Unit = {

@@ -105,7 +105,7 @@ class BiscuitTokenForge extends Component {
 	client = BackOfficeServices.apisClient(
 		"biscuit.extensions.cloud-apim.com",
 		"v1",
-		"tokens-forge"
+		"token-forges"
 	);
 
 	render() {
@@ -113,7 +113,7 @@ class BiscuitTokenForge extends Component {
 			Table,
 			{
 				parentProps: this.props,
-				selfUrl: "extensions/cloud-apim/biscuit/tokens-forge",
+				selfUrl: "extensions/cloud-apim/biscuit/token-forges",
 				defaultTitle: "Tokens forge",
 				defaultValue: () => this.client.template(),
 				itemName: "Tokens Forge",
@@ -127,10 +127,10 @@ class BiscuitTokenForge extends Component {
 				deleteItem: this.client.delete,
 				createItem: this.client.create,
 				navigateTo: (item) => {
-					window.location = `/bo/dashboard/extensions/cloud-apim/biscuit/tokens-forge/edit/${item.id}`;
+					window.location = `/bo/dashboard/extensions/cloud-apim/biscuit/token-forges/edit/${item.id}`;
 				},
 				itemUrl: (item) =>
-					`/bo/dashboard/extensions/cloud-apim/biscuit/tokens-forge/edit/${item.id}`,
+					`/bo/dashboard/extensions/cloud-apim/biscuit/token-forges/edit/${item.id}`,
 				showActions: true,
 				showLink: true,
 				rowNavigation: true,

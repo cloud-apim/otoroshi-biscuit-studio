@@ -93,9 +93,9 @@ object BiscuitTokenForge {
         idFieldNamef = () => "id",
         tmpl = (v, p) => {
           BiscuitTokenForge(
-            id = IdGenerator.namedId("biscuit-token", env),
-            name = "New biscuit token",
-            description = "New biscuit token",
+            id = IdGenerator.namedId("biscuit-forge", env),
+            name = "New biscuit forge",
+            description = "New biscuit forge",
             keypairRef = "",
             metadata = Map.empty,
             tags = Seq.empty,
@@ -130,7 +130,7 @@ class KvBiscuitTokenForgeDataStore(extensionId: AdminExtensionId, redisCli: Redi
 
   override def redisLike(implicit env: Env): RedisLike = redisCli
 
-  override def key(id: String): String = s"${_env.storageRoot}:extensions:${extensionId.cleanup}:biscuit:tokens:$id"
+  override def key(id: String): String = s"${_env.storageRoot}:extensions:${extensionId.cleanup}:biscuit:forge:$id"
 
   override def extractId(value: BiscuitTokenForge): String = value.id
 }
