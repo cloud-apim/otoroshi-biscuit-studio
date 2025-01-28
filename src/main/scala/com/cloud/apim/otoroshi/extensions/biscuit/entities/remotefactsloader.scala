@@ -5,12 +5,14 @@ import otoroshi.api.{GenericResourceAccessApiWithState, Resource, ResourceVersio
 import otoroshi.env.Env
 import otoroshi.models.{EntityLocation, EntityLocationSupport}
 import otoroshi.next.extensions.AdminExtensionId
+import otoroshi.next.models.NgTlsConfig
 import otoroshi.security.IdGenerator
 import otoroshi.storage.{BasicStore, RedisLike, RedisLikeStore}
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionDatastores, BiscuitExtensionState}
 import play.api.libs.json._
 import otoroshi.utils.syntax.implicits._
 
+import scala.concurrent.duration.{DurationInt, DurationLong, FiniteDuration}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
@@ -52,6 +54,8 @@ object RemoteFactsData {
 case class BiscuitRemoteFactsConfig(
                                      apiUrl: String = "",
                                      headers: Map[String, String] = Map.empty,
+                                     tlsConfig: NgTlsConfig = NgTlsConfig(),
+                                     timeout: FiniteDuration = 10.seconds
                                    ) {
   def json: JsValue = BiscuitRemoteFactsConfig.format.writes(this)
 }
@@ -60,16 +64,20 @@ object BiscuitRemoteFactsConfig {
   val format = new Format[BiscuitRemoteFactsConfig] {
     override def writes(o: BiscuitRemoteFactsConfig): JsValue = {
       Json.obj(
-        "apiUrl" -> o.apiUrl,
+        "api_url" -> o.apiUrl,
+        "tls_config" -> o.tlsConfig.json,
         "headers" -> o.headers,
+        "timeout" -> o.timeout.toMillis,
       )
     }
 
     override def reads(json: JsValue): JsResult[BiscuitRemoteFactsConfig] =
       Try {
         BiscuitRemoteFactsConfig(
-          apiUrl = (json \ "apiUrl").asOpt[String].getOrElse(""),
-          headers = (json \ "headers").asOpt[Map[String, String]].getOrElse(Map.empty),
+          apiUrl = json.select("api_url").asOpt[String].orElse(json.select("apiUrl").asOpt[String]).getOrElse(""),
+          tlsConfig = json.select("tls_config").asOpt[JsObject].flatMap(o => NgTlsConfig.format.reads(o).asOpt).getOrElse(NgTlsConfig()),
+          headers = json.select("headers").asOpt[Map[String, String]].getOrElse(Map.empty),
+          timeout = json.select("timeout").asOpt[Long].map(_.millis).getOrElse(10.seconds),
         )
       } match {
         case Failure(e) => JsError(e.getMessage)
@@ -100,8 +108,8 @@ case class RemoteFactsLoader(
 
   def theTags: Seq[String] = tags
 
-  def loadFacts()(implicit env: Env, ec: ExecutionContext): Future[Either[String, RemoteFactsData]] = {
-    BiscuitRemoteUtils.getRemoteFacts(config.apiUrl, config.headers).flatMap {
+  def loadFacts(ctx: JsValue)(implicit env: Env, ec: ExecutionContext): Future[Either[String, RemoteFactsData]] = {
+    BiscuitRemoteUtils.getRemoteFacts(config, ctx).flatMap {
       case Left(err) => Left(s"unable to get remote facts ${err}").vfuture
       case Right(facts) => Right(facts).vfuture
     }

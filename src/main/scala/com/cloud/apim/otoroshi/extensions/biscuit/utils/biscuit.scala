@@ -1,6 +1,6 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.utils
 
-import com.cloud.apim.otoroshi.extensions.biscuit.entities.{RemoteFactsData, VerifierConfig}
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.{BiscuitRemoteFactsConfig, RemoteFactsData, VerifierConfig}
 import org.biscuitsec.biscuit.crypto._
 import org.biscuitsec.biscuit.datalog.RunLimits
 import org.biscuitsec.biscuit.error.Error
@@ -344,17 +344,17 @@ object BiscuitRemoteUtils {
   }
 
   def getRemoteFacts(
-                      apiUrl: String,
-                      headers: Map[String, String],
-                    )(implicit env: Env, ec: ExecutionContext): Future[Either[String, RemoteFactsData]] = {
-
-    env.Ws
-      .url(apiUrl)
+    config: BiscuitRemoteFactsConfig,
+    ctx: JsValue,
+  )(implicit env: Env, ec: ExecutionContext): Future[Either[String, RemoteFactsData]] = {
+    env.MtlsWs
+      .url(config.apiUrl, config.tlsConfig.legacy)
       .withHttpHeaders(
-        headers.toSeq: _*
+        config.headers.toSeq: _*
       )
-      .withRequestTimeout(scala.concurrent.duration.Duration("10s"))
-      .withMethod("GET")
+      .withRequestTimeout(config.timeout)
+      .withMethod("POST")
+      .withBody(Json.obj("context" -> ctx))
       .execute()
       .map { resp =>
         resp.status match {

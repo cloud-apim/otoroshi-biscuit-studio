@@ -10,10 +10,11 @@ import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.env.Env
 import otoroshi.models._
 import otoroshi.next.extensions._
+import otoroshi.next.utils.JsonHelpers
 import otoroshi.utils.cache.types.UnboundedTrieMap
 import otoroshi.utils.syntax.implicits._
 import play.api.Logger
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsError, JsNull, JsObject, JsSuccess, JsValue, Json}
 import play.api.mvc.{RequestHeader, Result, Results}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -244,7 +245,8 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                 env.adminExtensions.extension[BiscuitExtension].get.states.biscuitRemoteFactsLoader(remoteFactsRef) match {
                   case None => handleError("remote facts reference not found", adminApiRoute)
                   case Some(remoteFacts) => {
-                    remoteFacts.loadFacts().flatMap {
+                    val ctx = bodyJson.select("remote_ctx").asOpt[JsObject].getOrElse(Json.obj()) ++ Json.obj("phase" -> "backoffice_generate_token")
+                    remoteFacts.loadFacts(ctx).flatMap {
                       case Left(error) => handleError(error, adminApiRoute)
                       case Right(remoteFacts) => {
 
@@ -414,14 +416,11 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       case None => Results.Ok(Json.obj("done" -> false, "error" -> "no body")).vfuture
       case Some(bodySource) => bodySource.runFold(ByteString.empty)(_ ++ _).flatMap { bodyRaw =>
         val bodyJson = bodyRaw.utf8String.parseJson
-
-        val headersOpt = bodyJson.select("headers").asOpt[Map[String, String]]
-        val apiUrlOpt = bodyJson.select("apiUrl").asOpt[String]
-
-        apiUrlOpt match {
-          case None => Results.Ok(Json.obj("done" -> false, "error" -> "no api URL provided")).vfuture
-          case Some(apiURL) => {
-            BiscuitRemoteUtils.getRemoteFacts(apiURL, headersOpt.getOrElse(Map.empty)).flatMap {
+        BiscuitRemoteFactsConfig.format.reads(bodyJson) match {
+          case JsError(errors) => Results.Ok(Json.obj("done" -> false, "error" -> "no api URL provided")).vfuture
+          case JsSuccess(config, path) => {
+            val remoteCtx = bodyJson.select("remote_ctx").asOpt[JsObject].getOrElse(Json.obj()) ++ Json.obj("phase" -> "test_remote_facts_loader")
+            BiscuitRemoteUtils.getRemoteFacts(config, remoteCtx).flatMap {
               case Left(error) => Results.Ok(Json.obj("done" -> false, "error" -> s"unable to load remote facts - ${error}")).vfuture
               case Right(listFacts) => {
                 Results.Ok(
@@ -870,7 +869,18 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
             env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitTokenForge(forgeId)) match {
               case None => Results.NotFound(Json.obj("error" -> "Forge not found")).vfuture
               case Some(forge) => {
-                forge.forgeToken().flatMap  {
+                val remoteCtx = Json.obj(
+                  "snowflake"     -> JsNull,
+                  "backend"       -> JsNull,
+                  "apikey"        -> apk.lightJson,
+                  "user"          -> JsNull,
+                  "raw_request"   -> JsonHelpers.requestToJson(request),
+                  "config"        -> Json.obj(),
+                  "global_config" -> Json.obj(),
+                  "attrs"         -> Json.obj(),
+                  "phase" -> "admin_api_token_forge"
+                )
+                forge.forgeToken(remoteCtx).flatMap  {
                   case Left(err) => handleError(err, isAdminApiRoute = true)
                   case Right(token) => {
                     Results.Ok(

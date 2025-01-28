@@ -125,7 +125,7 @@ class ClientcredentialsSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
       clientId = clientId,
       clientSecret = IdGenerator.token(16),
       clientName = "test",
-      authorizedEntities = Seq(RouteIdentifier(routeApi.id)),
+      authorizedEntities = Seq(RouteIdentifier(routeApi.id), RouteIdentifier(routeCCEndpoint.id)),
     )
 
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair)

@@ -38,7 +38,7 @@ case class BiscuitTokenForge(
 
   def theTags: Seq[String] = tags
 
-  def forgeToken()(implicit env: Env, ec: ExecutionContext): Future[Either[String, Biscuit]] = {
+  def forgeToken(ctx: JsValue)(implicit env: Env, ec: ExecutionContext): Future[Either[String, Biscuit]] = {
     env.adminExtensions.extension[BiscuitExtension].get.states.keypair(keypairRef) match {
       case None => Left("keypair not found").vfuture
       case Some(kp) => {
@@ -48,7 +48,7 @@ case class BiscuitTokenForge(
             env.adminExtensions.extension[BiscuitExtension].get.states.biscuitRemoteFactsLoader(remoteFactsRef) match {
               case None => Left("remote facts reference not found").vfuture
               case Some(remoteFacts) => {
-                remoteFacts.loadFacts().flatMap {
+                remoteFacts.loadFacts(ctx).flatMap {
                   case Left(error) => Left(error).vfuture
                   case Right(remoteFacts) => {
 

@@ -28,7 +28,7 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 			type: "array",
 			props: { label: "Tags" },
 		},
-		"config.apiUrl": {
+		"config.api_url": {
 			type: "string",
 			props: {
 				label: "API URL",
@@ -71,7 +71,7 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 		"tags",
 		"metadata",
 		"<<<Configuration",
-		"config.apiUrl",
+		"config.api_url",
 		"config.headers",
 		"<<<Tester",
 		"tester",

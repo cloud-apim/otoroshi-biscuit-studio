@@ -209,30 +209,33 @@ class TestsTokensForge extends BiscuitExtensionSuite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  create API roles route                                        ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    val (tport, _) = createTestServerWithRoutes("test", routes => routes.get("/api/roles", (req, response) => {
-      response
-        .status(200)
-        .addHeader("Content-Type", "application/json")
-        .sendString(Mono.just(
-          s"""{
-             |"acl": [
-             |{
-             |"user": "1234",
-             |"resource": "resource1",
-             |"action": "read"
-             |},
-             |{
-             |"user": "1234",
-             |"resource": "resource1",
-             |"action": "write"
-             |},
-             |{
-             |"user": "1234",
-             |"resource": "resource2",
-             |"action": "read"
-             |}
-             |]
-             |}""".stripMargin))
+    val (tport, _) = createTestServerWithRoutes("test", routes => routes.post("/api/roles", (req, response) => {
+      req.receive().retain().asString().flatMap { body =>
+        println(body)
+        response
+          .status(200)
+          .addHeader("Content-Type", "application/json")
+          .sendString(Mono.just(
+            s"""{
+               |"acl": [
+               |{
+               |"user": "1234",
+               |"resource": "resource1",
+               |"action": "read"
+               |},
+               |{
+               |"user": "1234",
+               |"resource": "resource1",
+               |"action": "write"
+               |},
+               |{
+               |"user": "1234",
+               |"resource": "resource2",
+               |"action": "read"
+               |}
+               |]
+               |}""".stripMargin))
+      }
     }))
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -291,7 +294,7 @@ class TestsTokensForge extends BiscuitExtensionSuite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  test API Roles route                                          ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    val resp = client.call("GET", s"http://test.oto.tools:${tport}/api/roles", Map.empty, None).awaitf(awaitFor)
+    val resp = client.call("POST", s"http://test.oto.tools:${tport}/api/roles", Map("Content-Type" -> "application/json"), Some(Json.obj("foo" -> "bar"))).awaitf(awaitFor)
     assertEquals(resp.status, 200, s"verifier route did not respond with 200")
     assert(resp.json.at("acl").isDefined, s"acl array is not defined")
 

@@ -8,7 +8,7 @@ import otoroshi.env.Env
 import otoroshi.gateway.Errors
 import otoroshi.next.plugins.AccessValidatorContext
 import otoroshi.next.plugins.api._
-import otoroshi.utils.syntax.implicits.BetterSyntax
+import otoroshi.utils.syntax.implicits.{BetterJsReadable, BetterSyntax}
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.BiscuitExtension
 import play.api.Logger
 import play.api.libs.json.{JsObject, Json}
@@ -75,7 +75,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
                           case None => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> "remoteFactsRef not found"))).vfuture
                           case Some(remoteFactsEntity) => {
                             if (remoteFactsEntity.config.apiUrl.nonEmpty && remoteFactsEntity.config.headers.nonEmpty) {
-                              BiscuitRemoteUtils.getRemoteFacts(remoteFactsEntity.config.apiUrl, remoteFactsEntity.config.headers).flatMap {
+                              BiscuitRemoteUtils.getRemoteFacts(remoteFactsEntity.config, ctx.json.asObject ++ Json.obj("phase" -> "access", "plugin" -> "biscuit_verifier")).flatMap {
                                 case Left(error) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Unable to get remote facts: ${error}"))).vfuture
                                 case Right(factsData) => {
                                   val finalListFacts = verifierConfig.facts ++ factsData.roles ++ rbacConf ++ factsData.facts ++ factsData.acl

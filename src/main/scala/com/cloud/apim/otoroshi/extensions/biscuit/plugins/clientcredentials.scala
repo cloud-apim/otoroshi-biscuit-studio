@@ -175,7 +175,7 @@ class ClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
                         config = forge.config.copy(facts = forge.config.facts ++ Seq(s"""aud("${aud}")"""))
                       )
                     }
-                    newForge.forgeToken().flatMap {
+                    newForge.forgeToken(ctx.json.asObject ++ Json.obj("phase" -> "backend", "plugin" -> "biscuit_client_credentials")).flatMap {
                       case Left(err) => Results.NotFound(
                         Json.obj(
                           "error"             -> "internal_server_error",
