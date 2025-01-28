@@ -36,16 +36,21 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 			},
 		},
 		"config.method": {
-			type: "string",
+			type: "select",
 			props: {
-				label: "API method",
+				label: "API Method",
+				possibleValues: [
+					{ label: "POST", value: "POST" },
+					{ label: "PUT", value: "PUT" },
+					{ label: "PATCH", value: "PATCH" }
+				],
 			},
 		},
 		"config.timeout": {
 			type: "number",
 			props: {
 				label: "API timeout",
-				suffix: 'millis',
+				suffix: "millis",
 			},
 		},
 		"config.headers": {
@@ -119,8 +124,8 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 				fetchItems: (paginationState) => this.client.findAll(),
 				updateItem: (e) => {
 					if (
-						!e.config.apiUrl ||
-						e.config.apiUrl === "https://my-api.domain.com/v1/roles"
+						!e.config.api_url ||
+						e.config.api_url === "https://my-api.domain.com/v1/roles"
 					) {
 						alert("Please verify your API URL connection");
 					} else {
@@ -130,8 +135,8 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 				deleteItem: this.client.delete,
 				createItem: (e) => {
 					if (
-						!e.config.apiUrl ||
-						e.config.apiUrl === "https://my-api.domain.com/v1/roles"
+						!e.config.api_url ||
+						e.config.api_url === "https://my-api.domain.com/v1/roles"
 					) {
 						alert("Please verify your API URL connection");
 					} else {
