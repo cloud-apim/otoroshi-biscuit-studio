@@ -1263,6 +1263,14 @@ function _createMdxContent(props) {
       id: "download-otoroshi",
       children: "Download Otoroshi"
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: (0,jsx_runtime.jsxs)(_components.a, {
+        href: "https://github.com/MAIF/otoroshi/releases/download/v16.22.0/otoroshi.jar",
+        children: [" ", (0,jsx_runtime.jsx)(_components.img, {
+          src: "https://img.shields.io/github/release/MAIF/otoroshi.svg",
+          alt: "Download"
+        }), " "]
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: "First, download the Otoroshi jar file:"
     }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
       children: (0,jsx_runtime.jsx)(_components.code, {
@@ -1272,6 +1280,14 @@ function _createMdxContent(props) {
     }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
       id: "download-the-biscuit-studio-extension",
       children: "Download the Biscuit Studio Extension"
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: (0,jsx_runtime.jsxs)(_components.a, {
+        href: "https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/v0.0.1/otoroshi-biscuit-studio-v0.0.1.jar",
+        children: [(0,jsx_runtime.jsx)(_components.img, {
+          src: "https://img.shields.io/github/release/cloud-apim/otoroshi-biscuit-studio.svg",
+          alt: "Download Otoroshi Biscuit Studio extension"
+        }), " "]
+      })
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: "Next, download the Biscuit Studio extension for Otoroshi:"
     }), "\n", (0,jsx_runtime.jsxs)(_components.p, {
@@ -1284,7 +1300,7 @@ function _createMdxContent(props) {
     }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
       children: (0,jsx_runtime.jsx)(_components.code, {
         className: "language-sh",
-        children: "curl -L -o biscuit-studio-extension.jar 'https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/0.0.1/otoroshi-biscuit-studio_2.12-0.0.1-alpha.jar'\n"
+        children: "curl -L -o biscuit-studio-extension.jar 'https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/v0.0.1/otoroshi-biscuit-studio-v0.0.1.jar'\n"
       })
     }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
       id: "run-otoroshi-with-the-biscuit-studio-extension",
