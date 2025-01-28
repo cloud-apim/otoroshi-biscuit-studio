@@ -522,8 +522,8 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |        description: 'All the features provided the Cloud APIM Biscuit Studio extension',
              |        features: [
              |          {
-             |          title: 'Biscuit KeyPairs',
-             |          description: 'All your Biscuit KeyPairs',
+             |          title: 'Biscuit Keypairs',
+             |          description: 'All your Biscuit Keypairs',
              |          link: '/extensions/cloud-apim/biscuit/keypairs',
              |          display: () => true,
              |          icon: () => 'fa-key',
@@ -543,9 +543,9 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          icon: () => 'fa-volume-low',
              |        },
              |        {
-             |          title: 'Tokens Forge',
-             |          description: 'All your Biscuit Tokens',
-             |          link: '/extensions/cloud-apim/biscuit/token-forges',
+             |          title: 'Biscuit Forges',
+             |          description: 'All your Biscuit Forges',
+             |          link: '/extensions/cloud-apim/biscuit/biscuit-forges',
              |          display: () => true,
              |          icon: () => 'fa-hammer',
              |        },
@@ -567,8 +567,8 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |      }],
              |      features: [
              |        {
-             |          title: 'Biscuit KeyPairs',
-             |          description: 'All your Biscuit KeyPairs',
+             |          title: 'Biscuit Keypairs',
+             |          description: 'All your Biscuit Keypairs',
              |          link: '/extensions/cloud-apim/biscuit/keypairs',
              |          display: () => true,
              |          icon: () => 'fa-key',
@@ -588,9 +588,9 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          icon: () => 'fa-volume-low',
              |        },
              |        {
-             |          title: 'Tokens Forge',
-             |          description: 'All your Biscuit Tokens',
-             |          link: '/extensions/cloud-apim/biscuit/token-forges',
+             |          title: 'Biscuit Forges',
+             |          description: 'All your Biscuit Forges',
+             |          link: '/extensions/cloud-apim/biscuit/biscuit-forges',
              |          display: () => true,
              |          icon: () => 'fa-hammer',
              |        },
@@ -611,8 +611,8 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |      ],
              |      sidebarItems: [
              |        {
-             |          title: 'Biscuit KeyPairs',
-             |          text: 'All your Biscuit KeyPairs',
+             |          title: 'Biscuit Keypairs',
+             |          text: 'All your Biscuit Keypairs',
              |          path: 'extensions/cloud-apim/biscuit/keypairs',
              |          icon: 'key'
              |        },
@@ -629,9 +629,9 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          icon: 'volume-low'
              |        },
              |         {
-             |          title: 'Tokens Forge',
-             |          text: 'All your Biscuit Tokens',
-             |          path: 'extensions/cloud-apim/biscuit/token-forges',
+             |          title: 'Biscuit Forges',
+             |          text: 'All your Biscuit Forges',
+             |          path: 'extensions/cloud-apim/biscuit/biscuit-forges',
              |          icon: 'hammer'
              |        },
              |         {
@@ -654,7 +654,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |            window.location.href = `/bo/dashboard/extensions/cloud-apim/biscuit/keypairs`
              |          },
              |          env: React.createElement('span', { className: "fas fa-key" }, null),
-             |          label: 'Biscuit KeyPairs',
+             |          label: 'Biscuit Keypairs',
              |          value: 'biscuitkeypairs',
              |        },
              |         {
@@ -675,11 +675,11 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |        },
              |         {
              |          action: () => {
-             |            window.location.href = `/bo/dashboard/extensions/cloud-apim/biscuit/token-forges`
+             |            window.location.href = `/bo/dashboard/extensions/cloud-apim/biscuit/biscuit-forges`
              |          },
              |          env: React.createElement('span', { className: "fas fa-hammer" }, null),
-             |          label: 'Biscuit Tokens Forge',
-             |          value: 'tokens-forge',
+             |          label: 'Biscuit Forges',
+             |          value: 'biscuit-forges',
              |        },
              |          {
              |          action: () => {
@@ -736,19 +736,19 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          }
              |        },
              |        {
-             |          path: '/extensions/cloud-apim/biscuit/token-forges/:taction/:titem',
+             |          path: '/extensions/cloud-apim/biscuit/biscuit-forges/:taction/:titem',
              |          component: (props) => {
              |            return React.createElement(BiscuitTokenForge, props, null)
              |          }
              |        },
              |        {
-             |          path: '/extensions/cloud-apim/biscuit/token-forges/:taction',
+             |          path: '/extensions/cloud-apim/biscuit/biscuit-forges/:taction',
              |          component: (props) => {
              |            return React.createElement(BiscuitTokenForge, props, null)
              |          }
              |        },
              |        {
-             |          path: '/extensions/cloud-apim/biscuit/token-forges',
+             |          path: '/extensions/cloud-apim/biscuit/biscuit-forges',
              |          component: (props) => {
              |            return React.createElement(BiscuitTokenForge, props, null)
              |          }
@@ -861,7 +861,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
     ),
     AdminExtensionAdminApiRoute(
       "POST",
-      "/api/extensions/biscuit/token-forges/:id/_generate",
+      "/api/extensions/biscuit/biscuit-forges/:id/_generate",
       wantsBody = true,
       (ctx, request, apk, body) => {
         implicit val ev = env

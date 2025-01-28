@@ -247,7 +247,7 @@ class BiscuitVerifierTester extends Component {
 					value: forgeRef,
 					onChange: (forgeRef) => this.setState({ forgeRef }),
 					valuesFrom:
-						"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/token-forges",
+						"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-forges",
 					transformer: (item) => ({ label: item.name, value: item.id }),
 				})
 			),

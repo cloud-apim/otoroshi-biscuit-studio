@@ -11,13 +11,13 @@ class BiscuitTokenForge extends Component {
 		},
 		name: {
 			type: "string",
-			props: { label: "Name", placeholder: "My Awesome Context" },
+			props: { label: "Name", placeholder: "My Awesome forge" },
 		},
 		description: {
 			type: "string",
 			props: {
 				label: "Description",
-				placeholder: "Description of the Context",
+				placeholder: "Description of the forge",
 			},
 		},
 		metadata: {
@@ -111,13 +111,13 @@ class BiscuitTokenForge extends Component {
 	];
 
 	componentDidMount() {
-		this.props.setTitle(`Tokens Forge`);
+		this.props.setTitle(`Biscuit Forges`);
 	}
 
 	client = BackOfficeServices.apisClient(
 		"biscuit.extensions.cloud-apim.com",
 		"v1",
-		"token-forges"
+		"biscuit-forges"
 	);
 
 	render() {
@@ -125,10 +125,10 @@ class BiscuitTokenForge extends Component {
 			Table,
 			{
 				parentProps: this.props,
-				selfUrl: "extensions/cloud-apim/biscuit/token-forges",
-				defaultTitle: "Tokens forge",
+				selfUrl: "extensions/cloud-apim/biscuit/biscuit-forges",
+				defaultTitle: "Biscuit forges",
 				defaultValue: () => this.client.template(),
-				itemName: "Tokens Forge",
+				itemName: "Biscuit Forge",
 				formSchema: this.formSchema,
 				formFlow: this.formFlow,
 				columns: this.columns,
@@ -139,16 +139,16 @@ class BiscuitTokenForge extends Component {
 				deleteItem: this.client.delete,
 				createItem: this.client.create,
 				navigateTo: (item) => {
-					window.location = `/bo/dashboard/extensions/cloud-apim/biscuit/token-forges/edit/${item.id}`;
+					window.location = `/bo/dashboard/extensions/cloud-apim/biscuit/biscuit-forges/edit/${item.id}`;
 				},
 				itemUrl: (item) =>
-					`/bo/dashboard/extensions/cloud-apim/biscuit/token-forges/edit/${item.id}`,
+					`/bo/dashboard/extensions/cloud-apim/biscuit/biscuit-forges/edit/${item.id}`,
 				showActions: true,
 				showLink: true,
 				rowNavigation: true,
 				extractKey: (item) => item.id,
 				export: true,
-				kubernetesKind: "BiscuitTokenForge",
+				kubernetesKind: "BiscuitForge",
 			},
 			null
 		);

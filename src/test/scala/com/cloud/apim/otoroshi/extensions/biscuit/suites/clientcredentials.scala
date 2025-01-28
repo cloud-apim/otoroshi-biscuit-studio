@@ -130,7 +130,7 @@ class ClientcredentialsSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     )
 
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair)
-    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "token-forges").upsertEntity(forge)
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-forges").upsertEntity(forge)
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-verifiers").upsertEntity(validator)
     client.forEntity("apim.otoroshi.io", "v1", "apikeys").upsertEntity(apikey)
     client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertEntity(routeCCEndpoint)
@@ -157,7 +157,7 @@ class ClientcredentialsSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     /////////                                  teardown                                                      ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").deleteEntity(keypair)
-    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "token-forges").deleteEntity(forge)
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-forges").deleteEntity(forge)
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-verifiers").deleteEntity(validator)
     client.forEntity("apim.otoroshi.io", "v1", "apikeys").deleteEntity(apikey)
     client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteEntity(routeCCEndpoint)

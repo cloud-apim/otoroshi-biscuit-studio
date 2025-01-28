@@ -288,7 +288,7 @@ class TestsTokensForge extends BiscuitExtensionSuite {
 
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair)
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-remote-facts").upsertEntity(rfl)
-    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "token-forges").upsertEntity(forge)
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-forges").upsertEntity(forge)
     await(2500.millis)
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -368,7 +368,7 @@ class TestsTokensForge extends BiscuitExtensionSuite {
     )
 
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair)
-    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "token-forges").upsertEntity(forge)
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-forges").upsertEntity(forge)
     await(2500.millis)
 
 
@@ -376,7 +376,7 @@ class TestsTokensForge extends BiscuitExtensionSuite {
     /////////                                  test API                                                      ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val resp = client.call("POST", s"http://otoroshi-api.oto.tools:${port}/api/extensions/biscuit/token-forges/${forge.id}/_generate",
+    val resp = client.call("POST", s"http://otoroshi-api.oto.tools:${port}/api/extensions/biscuit/biscuit-forges/${forge.id}/_generate",
       Map(
         "Content-Type" -> s"application/json",
         "Otoroshi-Client-Id" -> "admin-api-apikey-id",
