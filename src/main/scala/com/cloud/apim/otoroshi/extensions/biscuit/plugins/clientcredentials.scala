@@ -2,7 +2,9 @@ package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
 import akka.stream.Materializer
 import akka.util.ByteString
+import org.joda.time.DateTime
 import otoroshi.env.Env
+import otoroshi.models.{ApiKey, EntityIdentifier, ServiceGroupIdentifier}
 import otoroshi.next.plugins.api._
 import otoroshi.next.proxy.NgProxyEngineError
 import otoroshi.utils.syntax.implicits._
@@ -23,17 +25,24 @@ case class ClientCredentialBiscuitTokenEndpointBody(
   aud: Option[String]
 )
 
-case class ClientCredentialBiscuitTokenEndpointConfig(expiration: FiniteDuration, forgeRef: Option[String]) extends NgPluginConfig {
+case class ClientCredentialBiscuitTokenEndpointConfig(
+    expiration: FiniteDuration,
+    forgeRef: Option[String],
+    allowedApikeys: Seq[String],
+    allowedGroups: Seq[String],
+) extends NgPluginConfig {
   override def json: JsValue = ClientCredentialBiscuitTokenEndpointConfig.format.writes(this)
 }
 
 object ClientCredentialBiscuitTokenEndpointConfig {
-  val default = ClientCredentialBiscuitTokenEndpointConfig(1.hour, None)
+  val default = ClientCredentialBiscuitTokenEndpointConfig(1.hour, None, Seq.empty, Seq.empty)
   val format  = new Format[ClientCredentialBiscuitTokenEndpointConfig] {
     override def reads(json: JsValue): JsResult[ClientCredentialBiscuitTokenEndpointConfig] = Try {
       ClientCredentialBiscuitTokenEndpointConfig(
         expiration = json.select("expiration").asOpt[Long].map(_.millis).getOrElse(1.hour),
-        forgeRef = json.select("forge_ref").asOpt[String].filter(_.trim.nonEmpty)
+        forgeRef = json.select("forge_ref").asOpt[String].filter(_.trim.nonEmpty),
+        allowedApikeys = json.select("allowed_apikeys").asOpt[Seq[String]].getOrElse(Seq.empty),
+        allowedGroups = json.select("allowed_groups").asOpt[Seq[String]].getOrElse(Seq.empty),
       )
     } match {
       case Success(s) => JsSuccess(s)
@@ -42,10 +51,12 @@ object ClientCredentialBiscuitTokenEndpointConfig {
 
     override def writes(o: ClientCredentialBiscuitTokenEndpointConfig): JsValue = Json.obj(
       "expiration" -> o.expiration.toMillis,
-      "forge_ref" -> o.forgeRef
+      "forge_ref" -> o.forgeRef,
+      "allowed_apikeys" -> o.allowedApikeys,
+      "allowed_groups" -> o.allowedGroups,
     )
   }
-  val configFlow: Seq[String] = Seq("expiration", "forge_ref")
+  val configFlow: Seq[String] = Seq("expiration", "forge_ref", "allowed_apikeys", "allowed_groups")
   val configSchema: Option[JsObject] = Some(Json.obj(
     "expiration" -> Json.obj(
       "type" -> "number",
@@ -61,6 +72,32 @@ object ClientCredentialBiscuitTokenEndpointConfig {
       "props" -> Json.obj(
         "isClearable" -> true,
         "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/token-forges",
+        "optionsTransformer" -> Json.obj(
+          "label" -> "name",
+          "value" -> "id",
+        ),
+      ),
+    ),
+    "allowed_apikeys" -> Json.obj(
+      "type" -> "select",
+      "label" -> s"Allowed apikeys",
+      "array" -> true,
+      "props" -> Json.obj(
+        "isClearable" -> true,
+        "optionsFrom" -> s"/bo/api/proxy/apis/apim.otoroshi.io/v1/apikeys",
+        "optionsTransformer" -> Json.obj(
+          "label" -> "clientName",
+          "value" -> "id",
+        ),
+      ),
+    ),
+    "allowed_groups" -> Json.obj(
+      "type" -> "select",
+      "label" -> s"Allowed groups",
+      "array" -> true,
+      "props" -> Json.obj(
+        "isClearable" -> true,
+        "optionsFrom" -> s"/bo/api/proxy/apis/organize.otoroshi.io/v1/service-groups",
         "optionsTransformer" -> Json.obj(
           "label" -> "name",
           "value" -> "id",
@@ -135,6 +172,21 @@ class ClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
     }
   }
 
+  private def apikeyAllowed(conf: ClientCredentialBiscuitTokenEndpointConfig, apikey: ApiKey, ctx: NgbBackendCallContext): Boolean = {
+    if (conf.allowedApikeys.isEmpty && conf.allowedGroups.isEmpty) {
+      apikey.authorizedOnServiceOrGroups(ctx.route.id, ctx.route.groups)
+    } else {
+      if (conf.allowedApikeys.contains(apikey.clientId)) {
+        true
+      } else {
+        val apkgroups = apikey.authorizedEntities.collect {
+          case ServiceGroupIdentifier(id) => id
+        }
+        conf.allowedGroups.exists(s => apkgroups.contains(s))
+      }
+    }
+  }
+
   private def handleTokenRequest(
     ccfb: ClientCredentialBiscuitTokenEndpointBody,
     conf: ClientCredentialBiscuitTokenEndpointConfig,
@@ -150,7 +202,7 @@ class ClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
     ) => {
         val possibleApiKey = env.datastores.apiKeyDataStore.findById(clientId)
         possibleApiKey.flatMap {
-          case Some(apiKey) if apiKey.isValid(clientSecret) && apiKey.isActive() && apiKey.authorizedOnServiceOrGroups(ctx.route.id, ctx.route.groups) => {
+          case Some(apiKey) if apiKey.isValid(clientSecret) && apiKey.isActive() && apikeyAllowed(conf, apiKey, ctx) => {
             val forgeRef                     = apiKey.metadata.get("biscuit-forge").orElse(conf.forgeRef)
             forgeRef match {
               case None => Results.NotFound(
@@ -169,7 +221,10 @@ class ClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
                   ).vfuture
                   case Some(forge) => {
                     val newForge = forge.copy(
-                      config = forge.config.copy(facts = forge.config.facts ++ Seq(s"""client_id("${clientId}")""", s"""client_name("${apiKey.clientName}")"""))
+                      config = forge.config.copy(
+                        facts = forge.config.facts ++ Seq(s"""client_id("${clientId}")""", s"""client_name("${apiKey.clientName}")"""),
+                        checks = forge.config.checks ++ Seq(s"""check if time($$time), $$time <= ${DateTime.now().plusMillis(conf.expiration.toMillis.toInt).toString()}""")
+                      )
                     ).applyOnWithOpt(aud) {
                       case(forge, aud) => forge.copy(
                         config = forge.config.copy(facts = forge.config.facts ++ Seq(s"""aud("${aud}")"""))
@@ -183,6 +238,7 @@ class ClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
                         )
                       ).vfuture
                       case Right(accessToken) => {
+                        println(accessToken.serialize_b64url())
                         Results
                           .Ok(
                             Json.obj(

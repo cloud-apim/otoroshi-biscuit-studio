@@ -31,31 +31,33 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 		"config.api_url": {
 			type: "string",
 			props: {
-				label: "API URL",
+				label: "URL",
 				placeholder: "Description of the Context",
 			},
 		},
 		"config.method": {
 			type: "select",
 			props: {
-				label: "API Method",
+				label: "HTTP method",
 				possibleValues: [
-					{ label: "POST", value: "POST" },
-					{ label: "PUT", value: "PUT" },
-					{ label: "PATCH", value: "PATCH" }
-				],
+					'GET',
+					'POST',
+					'PUT',
+					'DELETE',
+					'PATCH',
+				].map(v => ({ label: v, value: v }))
 			},
 		},
 		"config.timeout": {
 			type: "number",
 			props: {
-				label: "API timeout",
-				suffix: "millis",
+				label: "HTTP timeout",
+				suffix: 'milliseconds',
 			},
 		},
 		"config.headers": {
 			type: "object",
-			props: { label: "Headers" },
+			props: { label: "HTTP headers" },
 		},
 		tester: {
 			type: RemoteFactsTester,

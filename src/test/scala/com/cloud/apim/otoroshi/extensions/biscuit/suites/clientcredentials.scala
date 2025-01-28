@@ -97,6 +97,7 @@ class ClientcredentialsSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
       plugins = NgPlugins(Seq(NgPluginInstance(
         plugin = s"cp:${classOf[ClientCredentialBiscuitTokenEndpoint].getName}",
         config = NgPluginInstanceConfig(Json.obj(
+          "expiration" -> 6.hours.toMillis,
           "forge_ref" -> forge.id
         ))
       )))
