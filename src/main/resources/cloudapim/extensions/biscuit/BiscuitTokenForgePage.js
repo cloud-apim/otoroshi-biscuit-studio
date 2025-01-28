@@ -160,11 +160,12 @@ class TokenGenerator extends Component {
 		token: null,
 		errorMessage: null,
 		isReqLoading: false,
+    pubKey: undefined
 	};
 
 	generateNewToken = () => {
 		if (this.props?.rawValue?.keypair_ref && this.props?.rawValue?.config) {
-			this.setState({ errorMessage: null, isReqLoading: true });
+			this.setState({ errorMessage: null, isReqLoading: true, pubKey: undefined, token: null });
 			fetch("/extensions/cloud-apim/extensions/biscuit/tokens/_generate", {
 				method: "POST",
 				credentials: "include",
@@ -187,6 +188,7 @@ class TokenGenerator extends Component {
 						});
 					} else {
 						this.setState({
+              pubKey: data.pubKey,
 							token: data.token,
 							errorMessage: null,
 							isReqLoading: false,
@@ -207,7 +209,7 @@ class TokenGenerator extends Component {
 	};
 
 	render() {
-		const { errorMessage, token, isReqLoading } = this.state;
+		const { errorMessage, token, isReqLoading, pubKey } = this.state;
 
 		if (!this.props?.rawValue?.keypair_ref) {
 			return [
@@ -342,6 +344,32 @@ class TokenGenerator extends Component {
 					)
 				)
 			),
+
+      token &&
+				React.createElement(
+					"div",
+					{
+						style: { maxWidth: "80%", marginLeft: "15%", textAlign: "center" },
+					},
+					React.createElement(
+						"div",
+						{ className: "row mb-3" },
+						React.createElement(
+							"label",
+							{ className: "col-xs-12 col-sm-2 col-form-label" },
+							"Biscuit Playground test"
+						),
+						React.createElement(
+							"bc-token-printer",
+							{
+                readonly: true,
+                rootPublicKey: pubKey,
+                biscuit: token,
+								showauthorizer: "true",
+							}
+						)
+					)
+				),
 		];
 	}
 }

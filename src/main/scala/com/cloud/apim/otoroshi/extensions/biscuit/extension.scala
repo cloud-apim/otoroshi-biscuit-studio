@@ -183,7 +183,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
         val keypairPrivKey = bodyJson.select("privKey").asOpt[String]
 
         if (keypairPubKey.isDefined && keypairPrivKey.isDefined) {
-          createTokenWithConfig(bodyJson, keypairPrivKey.get, isAdminApiRoute)
+          createTokenWithConfig(bodyJson, keypairPubKey.get, keypairPrivKey.get, isAdminApiRoute)
         } else {
           bodyJson.select("keypair_ref").asOpt[String] match {
             case None => handleError("no keypair or keypair_ref provided", isAdminApiRoute)
@@ -191,7 +191,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
               env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(keyPairRef)) match {
                 case None => handleError("no keypair found", isAdminApiRoute)
                 case Some(keypairDb) => {
-                  createTokenWithConfig(bodyJson, keypairDb.privKey, isAdminApiRoute)
+                  createTokenWithConfig(bodyJson, keypairDb.pubKey, keypairDb.privKey, isAdminApiRoute)
                 }
               }
             }
@@ -209,7 +209,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
     }
   }
 
-  private def createTokenWithConfig(bodyJson: JsValue, privKey: String, adminApiRoute: Boolean)(implicit env: Env, ec: ExecutionContext): Future[Result] = {
+  private def createTokenWithConfig(bodyJson: JsValue, pubKey: String, privKey: String, adminApiRoute: Boolean)(implicit env: Env, ec: ExecutionContext): Future[Result] = {
     bodyJson.select("config").asOpt[JsValue] match {
       case None => handleError("no config provided", adminApiRoute)
       case Some(newTokenConfig) => {
@@ -229,6 +229,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                 if (adminApiRoute) {
                   Results.Ok(
                     Json.obj(
+                      "pubKey" -> pubKey,
                       "token" -> generatedToken
                     )
                   ).vfuture
@@ -236,6 +237,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                   Results.Ok(
                     Json.obj(
                       "done" -> true,
+                      "pubKey" -> pubKey,
                       "token" -> generatedToken
                     )
                   ).vfuture
@@ -259,6 +261,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                         if (adminApiRoute) {
                           Results.Ok(
                             Json.obj(
+                              "pubKey" -> pubKey,
                               "token" -> generatedToken
                             )
                           ).vfuture
@@ -266,6 +269,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                           Results.Ok(
                             Json.obj(
                               "done" -> true,
+                              "pubKey" -> pubKey,
                               "token" -> generatedToken
                             )
                           ).vfuture
