@@ -163,7 +163,7 @@ class TokenGenerator extends Component {
 
 	generateNewToken = () => {
 		if (this.props?.rawValue?.keypair_ref && this.props?.rawValue?.config) {
-      this.setState({isReqLoading: true})
+			this.setState({ errorMessage: null, isReqLoading: true });
 			fetch("/extensions/cloud-apim/extensions/biscuit/tokens/_generate", {
 				method: "POST",
 				credentials: "include",
@@ -181,11 +181,15 @@ class TokenGenerator extends Component {
 				.then((data) => {
 					if (!data?.done) {
 						this.setState({
-              isReqLoading: false,
+							isReqLoading: false,
 							errorMessage: `Something went wrong : ${data.error}`,
 						});
 					} else {
-						this.setState({ token: data.token, errorMessage: null, isReqLoading: false });
+						this.setState({
+							token: data.token,
+							errorMessage: null,
+							isReqLoading: false,
+						});
 					}
 				});
 		} else {
@@ -260,17 +264,17 @@ class TokenGenerator extends Component {
 					"div",
 					{
 						className:
-							"d-flex flex-column align-items-center justify-content-center vh-100 text-center",
+							"d-flex flex-column align-items-center justify-content-center text-center",
 					},
 					React.createElement("div", {
-						className: "spinner-border text-primary",
+						className: "spinner-border text-white",
 						role: "status",
-						style: { width: "3rem", height: "3rem" },
+						style: { width: "5rem", height: "5rem" },
 					}),
 					React.createElement(
 						"span",
 						{
-							className: "mt-3 text-muted",
+							className: "mt-3 text-white",
 						},
 						"The request is being processed"
 					)
@@ -315,18 +319,25 @@ class TokenGenerator extends Component {
 						React.createElement("span", null, " Copy token to clipboard")
 					),
 				React.createElement(
-					"button",
+					"div",
 					{
-						type: "button",
-						className: "btn btn-sm btn-success",
-						onClick: this.generateNewToken,
-						disabled: isReqLoading,
+						className:
+							"d-flex flex-column align-items-center justify-content-center text-center",
 					},
-					React.createElement("i", { className: "fas fa-rotate-right" }),
 					React.createElement(
-						"span",
-						{ disabled: this?.props?.rawValue?.keypair_ref },
-						"Generate new test token"
+						"button",
+						{
+							type: "button",
+							className: "btn btn-sm btn-success",
+							onClick: this.generateNewToken,
+							disabled: isReqLoading,
+						},
+						React.createElement("i", { className: "fas fa-rotate-right" }),
+						React.createElement(
+							"span",
+							{ disabled: this?.props?.rawValue?.keypair_ref },
+							"Generate new test token"
+						)
 					)
 				)
 			),
