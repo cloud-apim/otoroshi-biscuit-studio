@@ -1,6 +1,14 @@
 # Cloud APIM - Otoroshi Biscuit Studio
 
-The Otoroshi Biscuit Studio is set of Otoroshi plugins to use Biscuit Tokens into your Gateway. To know more about it, go to [documentation](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/overview)
+[![Tests Status](https://github.com/cloud-apim/otoroshi-biscuit-studio/actions/workflows/test-extension.yml/badge.svg)](https://github.com/cloud-apim/otoroshi-biscuit-studio/actions/workflows/test-extension.yml)
+
+![](/images/otoroshi-biscuit-studio-logo.png)
+
+The Otoroshi Biscuit Studio is set of Otoroshi plugins to use Biscuit Tokens into your Gateway.
+
+## Reference Documentation
+
+The Otoroshi Biscuit Studio documentation is available here : https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/overview
 
 ## Installation 
 
