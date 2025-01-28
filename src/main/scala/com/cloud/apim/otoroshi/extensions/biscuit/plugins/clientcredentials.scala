@@ -150,7 +150,7 @@ class ClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
     ) => {
         val possibleApiKey = env.datastores.apiKeyDataStore.findById(clientId)
         possibleApiKey.flatMap {
-          case Some(apiKey) if apiKey.isValid(clientSecret) && apiKey.isActive() => {
+          case Some(apiKey) if apiKey.isValid(clientSecret) && apiKey.isActive() && apiKey.authorizedOnServiceOrGroups(ctx.route.id, ctx.route.groups) => {
             val forgeRef                     = apiKey.metadata.get("biscuit-forge").orElse(conf.forgeRef)
             forgeRef match {
               case None => Results.NotFound(
