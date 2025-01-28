@@ -35,6 +35,19 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 				placeholder: "Description of the Context",
 			},
 		},
+		"config.method": {
+			type: "string",
+			props: {
+				label: "API method",
+			},
+		},
+		"config.timeout": {
+			type: "number",
+			props: {
+				label: "API timeout",
+				suffix: 'millis',
+			},
+		},
 		"config.headers": {
 			type: "object",
 			props: { label: "Headers" },
@@ -72,7 +85,9 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 		"metadata",
 		"<<<Configuration",
 		"config.api_url",
+		"config.method",
 		"config.headers",
+		"config.timeout",
 		"<<<Tester",
 		"tester",
 	];

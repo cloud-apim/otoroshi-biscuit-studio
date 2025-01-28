@@ -10,6 +10,7 @@ import org.biscuitsec.biscuit.token.Biscuit
 import org.biscuitsec.biscuit.token.builder.Block
 import otoroshi.env.Env
 import otoroshi.plugins.biscuit.VerificationContext
+import otoroshi.utils.syntax.implicits.BetterSyntax
 import play.api.libs.json.{Format, JsError, JsResult, JsSuccess, JsValue, Json, Reads}
 import play.api.mvc.RequestHeader
 
@@ -352,9 +353,11 @@ object BiscuitRemoteUtils {
       .withHttpHeaders(
         config.headers.toSeq: _*
       )
+      .withMethod(config.method)
+      .applyOnIf(config.method == "POST" || config.method == "PUT" || config.method == "PATCH") { builder =>
+        builder.withBody(Json.obj("context" -> ctx))
+      }
       .withRequestTimeout(config.timeout)
-      .withMethod("POST")
-      .withBody(Json.obj("context" -> ctx))
       .execute()
       .map { resp =>
         resp.status match {

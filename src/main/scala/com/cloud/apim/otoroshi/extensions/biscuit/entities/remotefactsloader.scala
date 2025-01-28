@@ -53,6 +53,7 @@ object RemoteFactsData {
 
 case class BiscuitRemoteFactsConfig(
                                      apiUrl: String = "",
+                                     method: String = "POST",
                                      headers: Map[String, String] = Map.empty,
                                      tlsConfig: NgTlsConfig = NgTlsConfig(),
                                      timeout: FiniteDuration = 10.seconds
@@ -67,6 +68,7 @@ object BiscuitRemoteFactsConfig {
         "api_url" -> o.apiUrl,
         "tls_config" -> o.tlsConfig.json,
         "headers" -> o.headers,
+        "method" -> o.method,
         "timeout" -> o.timeout.toMillis,
       )
     }
@@ -78,6 +80,7 @@ object BiscuitRemoteFactsConfig {
           tlsConfig = json.select("tls_config").asOpt[JsObject].flatMap(o => NgTlsConfig.format.reads(o).asOpt).getOrElse(NgTlsConfig()),
           headers = json.select("headers").asOpt[Map[String, String]].getOrElse(Map.empty),
           timeout = json.select("timeout").asOpt[Long].map(_.millis).getOrElse(10.seconds),
+          method = json.select("method").asOpt[String].getOrElse("POST"),
         )
       } match {
         case Failure(e) => JsError(e.getMessage)
