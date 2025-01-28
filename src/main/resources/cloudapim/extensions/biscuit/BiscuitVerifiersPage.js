@@ -31,6 +31,7 @@ class BiscuitVerifiersPage extends Component {
 		keypair_ref: {
 			type: "select",
 			props: {
+				isClearable: true,
 				label: "Key Pair Reference",
 				valuesFrom:
 					"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs",

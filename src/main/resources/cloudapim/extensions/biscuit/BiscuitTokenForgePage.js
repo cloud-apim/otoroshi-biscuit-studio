@@ -56,6 +56,7 @@ class BiscuitTokenForge extends Component {
 		remoteFactsLoaderRef: {
 			type: "select",
 			props: {
+        isClearable: true,
 				label: "Remote Facts Loader Reference",
 				valuesFrom:
 					"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-remote-facts",

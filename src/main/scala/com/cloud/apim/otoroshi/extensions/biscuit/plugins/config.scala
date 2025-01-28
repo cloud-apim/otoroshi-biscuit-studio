@@ -23,6 +23,7 @@ object BiscuitVerifierConfig {
       "type" -> "select",
       "label" -> s"Biscuit Verifier",
       "props" -> Json.obj(
+        "isClearable" -> true,
         "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/${name}",
         "optionsTransformer" -> Json.obj(
           "label" -> "name",
@@ -34,6 +35,7 @@ object BiscuitVerifierConfig {
       "type" -> "select",
       "label" -> s"RBAC Policy Reference",
       "props" -> Json.obj(
+        "isClearable" -> true,
         "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-rbac",
         "optionsTransformer" -> Json.obj(
           "label" -> "name",
@@ -49,6 +51,7 @@ object BiscuitVerifierConfig {
       "type" -> "select",
       "label" -> s"Load Remote Facts",
       "props" -> Json.obj(
+        "isClearable" -> true,
         "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-remote-facts",
         "optionsTransformer" -> Json.obj(
           "label" -> "name",
@@ -130,6 +133,7 @@ object BiscuitAttenuatorConfig {
       "type" -> "select",
       "label" -> s"Biscuit Attenuator",
       "props" -> Json.obj(
+        "isClearable" -> true,
         "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/${name}",
         "optionsTransformer" -> Json.obj(
           "label" -> "name",

@@ -60,7 +60,7 @@ object ClientCredentialBiscuitTokenEndpointConfig {
       "label" -> s"Forge",
       "props" -> Json.obj(
         "isClearable" -> true,
-        "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs",
+        "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/token-forges",
         "optionsTransformer" -> Json.obj(
           "label" -> "name",
           "value" -> "id",
