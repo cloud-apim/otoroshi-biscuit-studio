@@ -53,6 +53,15 @@ class BiscuitTokenForge extends Component {
 			type: "array",
 			props: { label: "Rules" },
 		},
+		remoteFactsLoaderRef: {
+			type: "select",
+			props: {
+				label: "Remote Facts Loader Reference",
+				valuesFrom:
+					"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-remote-facts",
+				transformer: (item) => ({ label: item.name, value: item.id }),
+			},
+		},
 		tokengen: {
 			type: TokenGenerator,
 		},
@@ -94,6 +103,8 @@ class BiscuitTokenForge extends Component {
 		"config.resources",
 		">>>Rules",
 		"config.rules",
+		"<<<Remote Facts Loader",
+		"remoteFactsLoaderRef",
 		">>>Test Token generator",
 		"tokengen",
 	];
@@ -147,10 +158,12 @@ class TokenGenerator extends Component {
 	state = {
 		token: null,
 		errorMessage: null,
+		isReqLoading: false,
 	};
 
 	generateNewToken = () => {
 		if (this.props?.rawValue?.keypair_ref && this.props?.rawValue?.config) {
+      this.setState({isReqLoading: true})
 			fetch("/extensions/cloud-apim/extensions/biscuit/tokens/_generate", {
 				method: "POST",
 				credentials: "include",
@@ -160,6 +173,7 @@ class TokenGenerator extends Component {
 				},
 				body: JSON.stringify({
 					keypair_ref: this.props.rawValue.keypair_ref,
+					remoteFactsLoaderRef: this.props.rawValue.remoteFactsLoaderRef,
 					config: this.props.rawValue.config,
 				}),
 			})
@@ -167,10 +181,11 @@ class TokenGenerator extends Component {
 				.then((data) => {
 					if (!data?.done) {
 						this.setState({
-							error: `Generation error : ${data.error}`,
+              isReqLoading: false,
+							errorMessage: `Something went wrong : ${data.error}`,
 						});
 					} else {
-						this.setState({ token: data.token, errorMessage: null });
+						this.setState({ token: data.token, errorMessage: null, isReqLoading: false });
 					}
 				});
 		} else {
@@ -187,7 +202,7 @@ class TokenGenerator extends Component {
 	};
 
 	render() {
-		const { errorMessage, token } = this.state;
+		const { errorMessage, token, isReqLoading } = this.state;
 
 		if (!this.props?.rawValue?.keypair_ref) {
 			return [
@@ -240,6 +255,27 @@ class TokenGenerator extends Component {
 				)
 			),
 
+			isReqLoading &&
+				React.createElement(
+					"div",
+					{
+						className:
+							"d-flex flex-column align-items-center justify-content-center vh-100 text-center",
+					},
+					React.createElement("div", {
+						className: "spinner-border text-primary",
+						role: "status",
+						style: { width: "3rem", height: "3rem" },
+					}),
+					React.createElement(
+						"span",
+						{
+							className: "mt-3 text-muted",
+						},
+						"The request is being processed"
+					)
+				),
+
 			errorMessage &&
 				React.createElement(
 					"div",
@@ -284,6 +320,7 @@ class TokenGenerator extends Component {
 						type: "button",
 						className: "btn btn-sm btn-success",
 						onClick: this.generateNewToken,
+						disabled: isReqLoading,
 					},
 					React.createElement("i", { className: "fas fa-rotate-right" }),
 					React.createElement(

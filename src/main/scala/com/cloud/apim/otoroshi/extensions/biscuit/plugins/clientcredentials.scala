@@ -169,13 +169,13 @@ class ClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
                   ).vfuture
                   case Some(forge) => {
                     val newForge = forge.copy(
-                      config = forge.config.map(c => c.copy(facts = c.facts ++ Seq(s"""client_id("${clientId}")""", s"""client_name("${apiKey.clientName}")""")))
+                      config = forge.config.copy(facts = forge.config.facts ++ Seq(s"""client_id("${clientId}")""", s"""client_name("${apiKey.clientName}")"""))
                     ).applyOnWithOpt(aud) {
                       case(forge, aud) => forge.copy(
-                        config = forge.config.map(c => c.copy(facts = c.facts ++ Seq(s"""aud("${aud}")""")))
+                        config = forge.config.copy(facts = forge.config.facts ++ Seq(s"""aud("${aud}")"""))
                       )
                     }
-                    newForge.forgeToken() match {
+                    newForge.forgeToken().flatMap {
                       case Left(err) => Results.NotFound(
                         Json.obj(
                           "error"             -> "internal_server_error",

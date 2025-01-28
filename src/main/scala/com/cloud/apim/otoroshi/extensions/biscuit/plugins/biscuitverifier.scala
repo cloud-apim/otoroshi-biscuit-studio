@@ -74,16 +74,12 @@ class BiscuitTokenValidator extends NgAccessValidator {
                         env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitRemoteFactsLoader(config.remoteFactsRef)) match {
                           case None => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> "remoteFactsRef not found"))).vfuture
                           case Some(remoteFactsEntity) => {
-                            if (remoteFactsEntity.config.nonEmpty && remoteFactsEntity.config.get.apiUrl.nonEmpty && remoteFactsEntity.config.get.headers.nonEmpty) {
-                              BiscuitRemoteUtils.getRemoteFacts(remoteFactsEntity.config.get.apiUrl, remoteFactsEntity.config.get.headers).flatMap {
+                            if (remoteFactsEntity.config.apiUrl.nonEmpty && remoteFactsEntity.config.headers.nonEmpty) {
+                              BiscuitRemoteUtils.getRemoteFacts(remoteFactsEntity.config.apiUrl, remoteFactsEntity.config.headers).flatMap {
                                 case Left(error) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Unable to get remote facts: ${error}"))).vfuture
-                                case Right(listFacts) => {
-                                  val rolesRemotes = listFacts._1
-                                  val remoteRevokedIt = listFacts._2
-                                  val remoteFacts = listFacts._3
-                                  val aclRemote = listFacts._4
-                                  val finalListFacts = verifierConfig.facts ++ rolesRemotes ++ rbacConf ++ remoteFacts ++ aclRemote
-                                  val finalListOfRevokedId = verifierConfig.revokedIds ++ remoteRevokedIt
+                                case Right(factsData) => {
+                                  val finalListFacts = verifierConfig.facts ++ factsData.roles ++ rbacConf ++ factsData.facts ++ factsData.acl
+                                  val finalListOfRevokedId = verifierConfig.revokedIds ++ factsData.revoked
 
                                   BiscuitUtils.extractToken(ctx.request, config.extractorType, config.extractorName) match {
                                     case Some(token) => {

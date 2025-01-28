@@ -44,7 +44,7 @@ class ClientcredentialsSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
       pubKey = biscuitKeyPair.public_key().toHex
     )
     val forge = BiscuitTokenForge(
-      id = IdGenerator.namedId("biscuit-token", otoroshi.env),
+      id = IdGenerator.namedId("biscuit-forge", otoroshi.env),
       name = "New biscuit token",
       description = "New biscuit token",
       keypairRef = keypair.id,
@@ -56,7 +56,8 @@ class ClientcredentialsSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
         facts = Seq.empty,
         resources = Seq.empty,
         rules = Seq.empty
-      ).some
+      ),
+      remoteFactsLoaderRef = None
     )
     val validator = BiscuitVerifier(
       id = IdGenerator.namedId("biscuit-verifier", otoroshi.env),

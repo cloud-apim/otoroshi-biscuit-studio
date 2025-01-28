@@ -182,7 +182,7 @@ class RemoteFactsTester extends Component {
 					});
 				} else {
 					const finalArray = [
-						...(data?.loadedFacts.rolesRemotes || []),
+						...(data?.loadedFacts.roles || []),
 						...(data?.loadedFacts.facts || []),
 						...(data?.loadedFacts.acl || []),
 					];

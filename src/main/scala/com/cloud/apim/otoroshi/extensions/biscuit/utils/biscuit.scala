@@ -1,6 +1,6 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.utils
 
-import com.cloud.apim.otoroshi.extensions.biscuit.entities.VerifierConfig
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.{RemoteFactsData, VerifierConfig}
 import org.biscuitsec.biscuit.crypto._
 import org.biscuitsec.biscuit.datalog.RunLimits
 import org.biscuitsec.biscuit.error.Error
@@ -15,15 +15,14 @@ import play.api.mvc.RequestHeader
 
 import scala.concurrent.{ExecutionContext, Future}
 import java.security.SecureRandom
-import scala.concurrent.duration.Duration
 import scala.jdk.CollectionConverters.{iterableAsScalaIterableConverter, seqAsJavaListConverter}
 import scala.util.{Failure, Success, Try}
 
 case class BiscuitForgeConfig(
-                               checks: Seq[String],
-                               facts: Seq[String],
-                               resources: Seq[String],
-                               rules: Seq[String],
+                               checks: Seq[String] = Seq.empty,
+                               facts: Seq[String] = Seq.empty,
+                               resources: Seq[String] = Seq.empty,
+                               rules: Seq[String] = Seq.empty,
                              ) {
   def json: JsValue = BiscuitForgeConfig.format.writes(this)
 }
@@ -63,23 +62,26 @@ object BiscuitUtils {
       case "cookie" => req.cookies.get(extractorName).map(_.value)
       case _ => None
     }).map { token =>
-      val tokenValue = token
-        .replace("Bearer ", "")
-        .replace("Bearer: ", "")
-        .replace("Bearer:", "")
-        .replace("Biscuit ", "")
-        .replace("Biscuit: ", "")
-        .replace("Biscuit-Token ", "")
-        .replace("Biscuit-Token", "")
-        .replace("BiscuitToken ", "")
-        .replace("BiscuitToken", "")
-        .replace("biscuit: ", "")
-        .replace("biscuit:", "")
-        .replace("sealed-biscuit: ", "")
-        .replace("sealed-biscuit:", "")
-        .trim
-      tokenValue
+      replaceHeader(token)
     }
+  }
+
+  def replaceHeader(token: String): String = {
+    token
+      .replace("Bearer ", "")
+      .replace("Bearer: ", "")
+      .replace("Bearer:", "")
+      .replace("Biscuit ", "")
+      .replace("Biscuit: ", "")
+      .replace("Biscuit-Token ", "")
+      .replace("Biscuit-Token", "")
+      .replace("BiscuitToken ", "")
+      .replace("BiscuitToken", "")
+      .replace("biscuit: ", "")
+      .replace("biscuit:", "")
+      .replace("sealed-biscuit: ", "")
+      .replace("sealed-biscuit:", "")
+      .trim
   }
 
   def createToken(privKeyValue: String, config: BiscuitForgeConfig): Biscuit = {
@@ -137,7 +139,7 @@ object BiscuitUtils {
               biscuitToken: Biscuit,
               config: VerifierConfig,
               ctxOpt: Option[VerificationContext]
-            )(implicit env: Env): Either[org.biscuitsec.biscuit.error.Error, Unit] = {
+            )(implicit env: Env): Either[String, Unit] = {
 
     val verifier = biscuitToken.authorizer()
     verifier.set_time()
@@ -205,7 +207,7 @@ object BiscuitUtils {
     // Check for token revocation
     val revokedIds = biscuitToken.revocation_identifiers().asScala.map(_.toHex).toList
     if (config.revokedIds.nonEmpty && config.revokedIds.exists(revokedIds.contains)) {
-      return Left(new Error.FormatError.DeserializationError("Revoked token"))
+      return Left(handleBiscuitErrors(new Error.FormatError.DeserializationError("Revoked token")))
     }
 
     val maxFacts = 1000
@@ -215,9 +217,9 @@ object BiscuitUtils {
     // Perform authorization
     Try(verifier.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
       case Left(err: org.biscuitsec.biscuit.error.Error) =>
-        Left(err)
+        Left(handleBiscuitErrors(err))
       case Left(err) =>
-        Left(new org.biscuitsec.biscuit.error.Error.InternalError())
+        Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError()))
       case Right(_) =>
         Right(())
     }
@@ -234,6 +236,51 @@ object BiscuitUtils {
       case "PUT" => "write"
       case _ => "none"
     }
+
+
+  def handleBiscuitErrors(error: org.biscuitsec.biscuit.error.Error)(implicit env: Env): String = {
+    error match {
+      case err: org.biscuitsec.biscuit.error.Error.FormatError.UnknownPublicKey => {
+        s"UnknownPublicKey"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.FormatError.DeserializationError => {
+        s"DeserializationError - ${err.e}"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.FailedLogic => {
+        s"FailedLogic - ${err.error.toString}"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.InvalidAuthorityIndex => {
+        s"InvalidAuthorityIndex - ${err.index}"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.InvalidBlockIndex => {
+        s"InvalidBlockIndex - expected:  ${err.expected} found: ${err.found}"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.MissingSymbols => {
+        s"Biscuit MissingSymbols"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.Timeout => {
+        s"Biscuit Timeout"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.InvalidType => {
+        s"Biscuit InvalidType"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.InternalError => {
+        "Biscuit InternalError"
+      }
+
+      case _ => {
+        error.toString
+      }
+    }
+  }
 }
 
 object BiscuitRemoteUtils {
@@ -299,7 +346,7 @@ object BiscuitRemoteUtils {
   def getRemoteFacts(
                       apiUrl: String,
                       headers: Map[String, String],
-                    )(implicit env: Env, ec: ExecutionContext): Future[Either[String, (List[String], List[String], List[String], List[String])]] = {
+                    )(implicit env: Env, ec: ExecutionContext): Future[Either[String, RemoteFactsData]] = {
 
     env.Ws
       .url(apiUrl)
@@ -359,7 +406,15 @@ object BiscuitRemoteUtils {
             val factsStrings = facts.map(fact => s"""${fact.name}("${fact.value}")""")
             val aclStrings = aclEntries.map(acl => s"""right("${acl.user}", "${acl.resource}", "${acl.action}");""")
 
-            Right((roleFacts ++ userRoleFacts, revokedIdsRemote, factsStrings, aclStrings))
+
+            val rfd = RemoteFactsData(
+              acl = aclStrings,
+              roles = roleFacts ++ userRoleFacts,
+              facts = factsStrings,
+              revoked = revokedIdsRemote
+            )
+
+            Right(rfd)
 
           case _ =>
             Left(s"API request failed with status ${resp.status} (${resp.statusText})")

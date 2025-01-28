@@ -218,7 +218,7 @@ class BiscuitVerifierTester extends Component {
 				if (!data?.done) {
 					this.setState({
 						successMessage: null,
-						errorMesage: `Bad verification : ${data.error}`,
+						errorMesage: data.error,
 					});
 				} else {
 					this.setState({
@@ -246,7 +246,7 @@ class BiscuitVerifierTester extends Component {
 					value: forgeRef,
 					onChange: (forgeRef) => this.setState({ forgeRef }),
 					valuesFrom:
-						"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/tokens-forge",
+						"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/token-forges",
 					transformer: (item) => ({ label: item.name, value: item.id }),
 				})
 			),

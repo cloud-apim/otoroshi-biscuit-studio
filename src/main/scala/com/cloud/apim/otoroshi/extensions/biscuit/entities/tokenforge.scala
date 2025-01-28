@@ -1,29 +1,30 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.entities
 
 import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitForgeConfig, BiscuitUtils}
-import org.biscuitsec.biscuit.crypto.KeyPair
 import org.biscuitsec.biscuit.token.Biscuit
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtension, BiscuitExtensionDatastores, BiscuitExtensionState}
-
-import scala.util.{Failure, Success, Try}
 import otoroshi.api.{GenericResourceAccessApiWithState, Resource, ResourceVersion}
 import otoroshi.env.Env
 import otoroshi.models._
 import otoroshi.next.extensions.AdminExtensionId
+import otoroshi.security.IdGenerator
 import otoroshi.storage._
 import otoroshi.utils.syntax.implicits._
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtension, BiscuitExtensionDatastores, BiscuitExtensionState}
 import play.api.libs.json._
-import otoroshi.security.IdGenerator
+
+import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success, Try}
 
 case class BiscuitTokenForge(
                               id: String,
                               name: String,
                               description: String,
                               keypairRef: String,
-                              config: Option[BiscuitForgeConfig],
+                              config: BiscuitForgeConfig,
                               tags: Seq[String],
                               metadata: Map[String, String],
-                              location: EntityLocation
+                              location: EntityLocation,
+                              remoteFactsLoaderRef: Option[String]
                             ) extends EntityLocationSupport {
   def json: JsValue = BiscuitTokenForge.format.writes(this)
 
@@ -37,10 +38,32 @@ case class BiscuitTokenForge(
 
   def theTags: Seq[String] = tags
 
-  def forgeToken()(implicit env: Env): Either[String, Biscuit] = {
+  def forgeToken()(implicit env: Env, ec: ExecutionContext): Future[Either[String, Biscuit]] = {
     env.adminExtensions.extension[BiscuitExtension].get.states.keypair(keypairRef) match {
-      case None => "keypair not found".left
-      case Some(kp) =>  BiscuitUtils.createToken(kp.privKey, config.get).right
+      case None => Left("keypair not found").vfuture
+      case Some(kp) => {
+        remoteFactsLoaderRef match {
+          case None => Right(BiscuitUtils.createToken(kp.privKey, config)).future
+          case Some(remoteFactsRef) => {
+            env.adminExtensions.extension[BiscuitExtension].get.states.biscuitRemoteFactsLoader(remoteFactsRef) match {
+              case None => Left("remote facts reference not found").vfuture
+              case Some(remoteFacts) => {
+                remoteFacts.loadFacts().flatMap {
+                  case Left(error) => Left(error).vfuture
+                  case Right(remoteFacts) => {
+
+                    val c = config.copy(
+                      facts = remoteFacts.facts ++ remoteFacts.acl ++ remoteFacts.roles
+                    )
+
+                    Right(BiscuitUtils.createToken(kp.privKey, c)).vfuture
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -54,8 +77,9 @@ object BiscuitTokenForge {
         "description" -> o.description,
         "metadata" -> o.metadata,
         "keypair_ref" -> o.keypairRef,
-        "config" -> o.config.map(_.json).getOrElse(JsNull).asValue,
-        "tags" -> JsArray(o.tags.map(JsString.apply))
+        "config" -> o.config.json,
+        "tags" -> JsArray(o.tags.map(JsString.apply)),
+        "remoteFactsLoaderRef" -> o.remoteFactsLoaderRef
       )
     }
 
@@ -69,7 +93,8 @@ object BiscuitTokenForge {
           keypairRef = (json \ "keypair_ref").asOpt[String].getOrElse("--"),
           metadata = (json \ "metadata").asOpt[Map[String, String]].getOrElse(Map.empty),
           tags = (json \ "tags").asOpt[Seq[String]].getOrElse(Seq.empty[String]),
-          config = BiscuitForgeConfig.format.reads(json.select("config").getOrElse(JsNull)).asOpt
+          config = json.select("config").asOpt(BiscuitForgeConfig.format).getOrElse(BiscuitForgeConfig()),
+          remoteFactsLoaderRef = json.select("remoteFactsLoaderRef").asOpt[String]
         )
       } match {
         case Failure(e) => JsError(e.getMessage)
@@ -100,12 +125,13 @@ object BiscuitTokenForge {
             metadata = Map.empty,
             tags = Seq.empty,
             location = EntityLocation.default,
+            remoteFactsLoaderRef = None,
             config = BiscuitForgeConfig(
               checks = Seq.empty,
               facts = Seq.empty,
               resources = Seq.empty,
               rules = Seq.empty
-            ).some
+            )
           ).json
         },
         canRead = true,
