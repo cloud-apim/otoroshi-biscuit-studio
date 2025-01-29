@@ -37,7 +37,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
 
   override def visibility: NgPluginVisibility = NgPluginVisibility.NgUserLand
 
-  override def categories: Seq[NgPluginCategory] = Seq(NgPluginCategory.Custom("Cloud APIM"), NgPluginCategory.Custom("Biscuit Tokens"), NgPluginCategory.AccessControl)
+  override def categories: Seq[NgPluginCategory] = Seq(NgPluginCategory.Custom("Cloud APIM"), NgPluginCategory.Custom("Biscuit Studio"), NgPluginCategory.AccessControl)
 
   override def steps: Seq[NgStep] = Seq(NgStep.ValidateAccess)
 

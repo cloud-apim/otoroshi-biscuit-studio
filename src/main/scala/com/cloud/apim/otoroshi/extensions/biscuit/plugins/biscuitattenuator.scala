@@ -27,7 +27,7 @@ class BiscuitTokenAttenuator extends NgRequestTransformer {
 
   override def visibility: NgPluginVisibility = NgPluginVisibility.NgUserLand
 
-  override def categories: Seq[NgPluginCategory] = Seq(NgPluginCategory.Custom("Cloud APIM"), NgPluginCategory.Custom("Biscuit Tokens"))
+  override def categories: Seq[NgPluginCategory] = Seq(NgPluginCategory.Custom("Cloud APIM"), NgPluginCategory.Custom("Biscuit Studio"))
 
   override def steps: Seq[NgStep] = Seq(NgStep.TransformRequest)
 

@@ -119,7 +119,7 @@ class ClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
   override def deprecated: Boolean = false
   override def core: Boolean = false
   override def visibility: NgPluginVisibility = NgPluginVisibility.NgUserLand
-  override def categories: Seq[NgPluginCategory] = Seq(NgPluginCategory.Custom("Cloud APIM"), NgPluginCategory.Custom("Biscuit Tokens"), NgPluginCategory.Authentication)
+  override def categories: Seq[NgPluginCategory] = Seq(NgPluginCategory.Custom("Cloud APIM"), NgPluginCategory.Custom("Biscuit Studio"), NgPluginCategory.Authentication)
   override def steps: Seq[NgStep] = Seq(NgStep.CallBackend)
   override def noJsForm: Boolean = true
   override def configFlow: Seq[String] = ClientCredentialBiscuitTokenEndpointConfig.configFlow
