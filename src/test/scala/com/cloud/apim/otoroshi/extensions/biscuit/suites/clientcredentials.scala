@@ -6,12 +6,15 @@ import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitForgeConfig
 import org.biscuitsec.biscuit.crypto.KeyPair
 import otoroshi.models.{ApiKey, EntityLocation, RouteIdentifier}
 import otoroshi.next.models._
+import otoroshi.next.plugins.OverrideHost
 import otoroshi.security.IdGenerator
 import otoroshi.utils.syntax.implicits._
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.{BiscuitTokenValidator, ClientCredentialBiscuitTokenEndpoint}
 import play.api.libs.json.Json
 import reactor.core.publisher.Mono
 
+import java.io.File
+import java.nio.file.Files
 import java.util.UUID
 import scala.concurrent.duration.DurationInt
 
@@ -119,8 +122,8 @@ class ClientcredentialsSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
         plugin = s"cp:${classOf[BiscuitTokenValidator].getName}",
         config = NgPluginInstanceConfig(Json.obj(
           "verifier_ref" -> validator.id
-        ))
-      )))
+        )))
+      ))
     )
     val apikey = ApiKey(
       clientId = clientId,
@@ -135,6 +138,14 @@ class ClientcredentialsSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     client.forEntity("apim.otoroshi.io", "v1", "apikeys").upsertEntity(apikey)
     client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertEntity(routeCCEndpoint)
     client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertEntity(routeApi)
+
+    // Files.writeString(new File("./examples/keypair.json").toPath, keypair.json.prettify)
+    // Files.writeString(new File("./examples/forge.json").toPath, forge.json.prettify)
+    // Files.writeString(new File("./examples/verifier.json").toPath, validator.json.prettify)
+    // Files.writeString(new File("./examples/apikey.json").toPath, apikey.json.prettify)
+    // Files.writeString(new File("./examples/endpoint_route.json").toPath, routeCCEndpoint.json.prettify)
+    // Files.writeString(new File("./examples/api_route.json").toPath, routeApi.json.prettify)
+
     await(2.seconds)
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  test                                                          ///////////
@@ -148,9 +159,11 @@ class ClientcredentialsSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
       "aud" -> s"http://test.oto.tools:${port}",
     ))).awaitf(30.seconds)
     assertEquals(res0.status, 200, "status should be 200")
+    // Files.writeString(new File("./examples/response_cc.json").toPath, res0.json.prettify)
     val token = res0.json.select("access_token").asOptString.getOrElse("--")
     assertNotEquals(token, "--", "should not be --")
     val res = client.call("GET", s"http://test.oto.tools:${port}/api", Map("Authorization" -> s"Bearer ${token}"), None).awaitf(30.seconds)
+    // Files.writeString(new File("./examples/response_api.json").toPath, res.json.prettify)
     assertEquals(res.status, 200, "status should be 200")
     assert(res.body.contains("foobar"), "body contains foobar")
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

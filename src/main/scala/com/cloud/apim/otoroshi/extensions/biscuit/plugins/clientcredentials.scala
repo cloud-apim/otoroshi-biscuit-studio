@@ -222,8 +222,13 @@ class ClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
                   case Some(forge) => {
                     val newForge = forge.copy(
                       config = forge.config.copy(
-                        facts = forge.config.facts ++ Seq(s"""client_id("${clientId}")""", s"""client_name("${apiKey.clientName}")"""),
-                        checks = forge.config.checks ++ Seq(s"""check if time($$time), $$time <= ${DateTime.now().plusMillis(conf.expiration.toMillis.toInt).toString()}""")
+                        facts = forge.config.facts ++ Seq(s"""client_id("${clientId}")""", s"""client_name("${apiKey.clientName}")""")
+                          ++ apiKey.metadata.filter(_._1.startsWith("biscuit_fact_")).map(t => s"""${t._1.replaceFirst("biscuit_fact_", "")}(${t._2})""").toSeq,
+                        checks = forge.config.checks ++ Seq(
+                          s"""check if time($$time), $$time <= ${DateTime.now().plusMillis(conf.expiration.toMillis.toInt).toString()}"""
+                        ) ++ apiKey.metadata.filter(_._1.startsWith("biscuit_check_")).values,
+                        resources = apiKey.metadata.filter(_._1.startsWith("biscuit_resource_")).map(t => s"""resource(${t._2})""").toSeq,
+                        rules = apiKey.metadata.filter(_._1.startsWith("biscuit_rule_")).values.toSeq,
                       )
                     ).applyOnWithOpt(aud) {
                       case(forge, aud) => forge.copy(
