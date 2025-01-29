@@ -100,7 +100,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
                                               BiscuitUtils.verify(biscuitToken, verifierConfig.copy(facts = finalListFacts, revokedIds = finalListOfRevokedId), AccessValidatorContext(ctx).some) match {
                                                 case Left(err) => forbidden(ctx)
                                                 case Right(_) => {
-                                                  extractApiKey(ctx, biscuitToken)
+                                                  extractApiKey(ctx, biscuitToken, config)
                                                 }
                                               }
                                             }
@@ -130,7 +130,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
                                     BiscuitUtils.verify(biscuitToken, verifierConfig.copy(facts = verifierConfig.facts ++ rbacConf), AccessValidatorContext(ctx).some) match {
                                       case Left(err) => forbidden(ctx)
                                       case Right(_) => {
-                                        extractApiKey(ctx, biscuitToken)
+                                        extractApiKey(ctx, biscuitToken, config)
                                       }
                                     }
                                   }
@@ -157,7 +157,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
                               BiscuitUtils.verify(biscuitToken, verifierConfig, AccessValidatorContext(ctx).some) match {
                                 case Left(err) => forbidden(ctx)
                                 case Right(_) => {
-                                  extractApiKey(ctx, biscuitToken)
+                                  extractApiKey(ctx, biscuitToken, config)
                                 }
                               }
                             }
@@ -177,7 +177,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
     }
   }
 
-  def extractApiKey(ctx: NgAccessContext, biscuitToken: Biscuit)(implicit env: Env, ec: ExecutionContext): Future[NgAccess] = {
+  def extractApiKey(ctx: NgAccessContext, biscuitToken: Biscuit, config: BiscuitVerifierConfig)(implicit env: Env, ec: ExecutionContext): Future[NgAccess] = {
     val otoroshiClientID = biscuitToken.authorizer().query("api_key_client_id($id) <- client_id($id)")
 
     val client_id: Option[String]   = Try(otoroshiClientID).toOption
@@ -191,17 +191,20 @@ class BiscuitTokenValidator extends NgAccessValidator {
         case _        => None
       }
 
-    if(client_id.isDefined){
-      env.datastores.apiKeyDataStore.findById(client_id.get).flatMap {
-        case Some(apikey) => {
-          ctx.attrs.put(otoroshi.plugins.Keys.ApiKeyKey -> apikey)
+    client_id match {
+      case None => NgAccess.NgAllowed.vfuture
+      case Some(clientId) => {
+        env.datastores.apiKeyDataStore.findById(clientId).flatMap {
+          case Some(apikey) if apikey.isInactive() && config.enforce => handleError(s"bad apikey")
+          case Some(apikey) if apikey.isInactive() => NgAccess.NgAllowed.vfuture
+          case Some(apikey) => {
+            ctx.attrs.put(otoroshi.plugins.Keys.ApiKeyKey -> apikey)
 
-          NgAccess.NgAllowed.vfuture
+            NgAccess.NgAllowed.vfuture
+          }
+          case _ => handleError(s"Api Key (based on biscuit fact 'client_id') doesn't exist")
         }
-        case _ => handleError(s"bad apikey - not found in biscuit token")
       }
-    }else{
-      NgAccess.NgAllowed.vfuture
     }
   }
 
