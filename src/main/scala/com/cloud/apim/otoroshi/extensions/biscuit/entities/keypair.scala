@@ -34,6 +34,8 @@ case class BiscuitKeyPair(
   def theName: String = name
 
   def theTags: Seq[String] = tags
+
+  def keyPair: KeyPair = new KeyPair(privKey)
 }
 
 object BiscuitKeyPair {

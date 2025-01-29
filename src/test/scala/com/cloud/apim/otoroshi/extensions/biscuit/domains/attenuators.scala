@@ -3,7 +3,7 @@ package com.cloud.apim.otoroshi.extensions.biscuit.domains
 import com.cloud.apim.otoroshi.extensions.biscuit.OtoroshiClient
 import com.cloud.apim.otoroshi.extensions.biscuit.entities.{BiscuitAttenuator}
 import munit.Assertions
-import otoroshi.utils.syntax.implicits.{BetterFuture, BetterJsValue}
+import otoroshi.utils.syntax.implicits.BetterFuture
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.DurationInt

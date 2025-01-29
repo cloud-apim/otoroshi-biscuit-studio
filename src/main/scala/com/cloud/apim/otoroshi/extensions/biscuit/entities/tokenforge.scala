@@ -1,28 +1,30 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.entities
 
-import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitForgeConfig
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionDatastores, BiscuitExtensionState}
-
-import scala.util.{Failure, Success, Try}
+import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitForgeConfig, BiscuitUtils}
+import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.api.{GenericResourceAccessApiWithState, Resource, ResourceVersion}
 import otoroshi.env.Env
 import otoroshi.models._
 import otoroshi.next.extensions.AdminExtensionId
+import otoroshi.security.IdGenerator
 import otoroshi.storage._
 import otoroshi.utils.syntax.implicits._
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtension, BiscuitExtensionDatastores, BiscuitExtensionState}
 import play.api.libs.json._
-import otoroshi.security.IdGenerator
+
+import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success, Try}
 
 case class BiscuitTokenForge(
                               id: String,
                               name: String,
                               description: String,
-                              token: Option[String],
                               keypairRef: String,
-                              config: Option[BiscuitForgeConfig],
+                              config: BiscuitForgeConfig,
                               tags: Seq[String],
                               metadata: Map[String, String],
-                              location: EntityLocation
+                              location: EntityLocation,
+                              remoteFactsLoaderRef: Option[String]
                             ) extends EntityLocationSupport {
   def json: JsValue = BiscuitTokenForge.format.writes(this)
 
@@ -35,6 +37,35 @@ case class BiscuitTokenForge(
   def theName: String = name
 
   def theTags: Seq[String] = tags
+
+  def forgeToken(ctx: JsValue)(implicit env: Env, ec: ExecutionContext): Future[Either[String, Biscuit]] = {
+    env.adminExtensions.extension[BiscuitExtension].get.states.keypair(keypairRef) match {
+      case None => Left("keypair not found").vfuture
+      case Some(kp) => {
+        remoteFactsLoaderRef match {
+          case None => Right(BiscuitUtils.createToken(kp.privKey, config)).future
+          case Some(remoteFactsRef) => {
+            env.adminExtensions.extension[BiscuitExtension].get.states.biscuitRemoteFactsLoader(remoteFactsRef) match {
+              case None => Left("remote facts reference not found").vfuture
+              case Some(remoteFacts) => {
+                remoteFacts.loadFacts(ctx).flatMap {
+                  case Left(error) => Left(error).vfuture
+                  case Right(remoteFacts) => {
+
+                    val c = config.copy(
+                      facts = remoteFacts.facts ++ remoteFacts.acl ++ remoteFacts.roles
+                    )
+
+                    Right(BiscuitUtils.createToken(kp.privKey, c)).vfuture
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 object BiscuitTokenForge {
@@ -46,9 +77,9 @@ object BiscuitTokenForge {
         "description" -> o.description,
         "metadata" -> o.metadata,
         "keypair_ref" -> o.keypairRef,
-        "config" -> o.config.map(_.json).getOrElse(JsNull).asValue,
-        "token" -> o.token,
-        "tags" -> JsArray(o.tags.map(JsString.apply))
+        "config" -> o.config.json,
+        "tags" -> JsArray(o.tags.map(JsString.apply)),
+        "remoteFactsLoaderRef" -> o.remoteFactsLoaderRef
       )
     }
 
@@ -60,10 +91,10 @@ object BiscuitTokenForge {
           name = (json \ "name").as[String],
           description = (json \ "description").asOpt[String].getOrElse("--"),
           keypairRef = (json \ "keypair_ref").asOpt[String].getOrElse("--"),
-          token = (json \ "token").asOpt[String],
           metadata = (json \ "metadata").asOpt[Map[String, String]].getOrElse(Map.empty),
           tags = (json \ "tags").asOpt[Seq[String]].getOrElse(Seq.empty[String]),
-          config = BiscuitForgeConfig.format.reads(json.select("config").getOrElse(JsNull)).asOpt
+          config = json.select("config").asOpt(BiscuitForgeConfig.format).getOrElse(BiscuitForgeConfig()),
+          remoteFactsLoaderRef = json.select("remoteFactsLoaderRef").asOpt[String]
         )
       } match {
         case Failure(e) => JsError(e.getMessage)
@@ -73,9 +104,9 @@ object BiscuitTokenForge {
 
   def resource(env: Env, datastores: BiscuitExtensionDatastores, states: BiscuitExtensionState): Resource = {
     Resource(
-      "BiscuitTokenForge",
-      "tokens-forge",
-      "tokens-forge",
+      "BiscuitForge",
+      "biscuit-forges",
+      "biscuit-forge",
       "biscuit.extensions.cloud-apim.com",
       ResourceVersion("v1", true, false, true),
       GenericResourceAccessApiWithState[BiscuitTokenForge](
@@ -87,20 +118,20 @@ object BiscuitTokenForge {
         idFieldNamef = () => "id",
         tmpl = (v, p) => {
           BiscuitTokenForge(
-            id = IdGenerator.namedId("biscuit-token", env),
-            name = "New biscuit token",
-            description = "New biscuit token",
-            token = None,
+            id = IdGenerator.namedId("biscuit-forge", env),
+            name = "New biscuit forge",
+            description = "New biscuit forge",
             keypairRef = "",
             metadata = Map.empty,
             tags = Seq.empty,
             location = EntityLocation.default,
+            remoteFactsLoaderRef = None,
             config = BiscuitForgeConfig(
               checks = Seq.empty,
               facts = Seq.empty,
               resources = Seq.empty,
               rules = Seq.empty
-            ).some
+            )
           ).json
         },
         canRead = true,
@@ -125,7 +156,7 @@ class KvBiscuitTokenForgeDataStore(extensionId: AdminExtensionId, redisCli: Redi
 
   override def redisLike(implicit env: Env): RedisLike = redisCli
 
-  override def key(id: String): String = s"${_env.storageRoot}:extensions:${extensionId.cleanup}:biscuit:tokens:$id"
+  override def key(id: String): String = s"${_env.storageRoot}:extensions:${extensionId.cleanup}:biscuit:forge:$id"
 
   override def extractId(value: BiscuitTokenForge): String = value.id
 }

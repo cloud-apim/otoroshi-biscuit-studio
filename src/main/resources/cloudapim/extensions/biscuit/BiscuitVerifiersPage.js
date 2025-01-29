@@ -31,6 +31,7 @@ class BiscuitVerifiersPage extends Component {
 		keypair_ref: {
 			type: "select",
 			props: {
+				isClearable: true,
 				label: "Key Pair Reference",
 				valuesFrom:
 					"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs",
@@ -174,9 +175,9 @@ class BiscuitVerifierTester extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			biscuitTokenRef: "",
-			error: "",
-			warning: "",
+			forgeRef: undefined,
+			tokenInput: undefined,
+			errorMesage: "",
 			successMessage: "",
 		};
 	}
@@ -186,10 +187,10 @@ class BiscuitVerifierTester extends Component {
 	};
 
 	send = () => {
-		const { biscuitTokenRef } = this.state;
+		const { forgeRef, tokenInput } = this.state;
 
 		// Validate that either a Biscuit token or a provider is provided
-		if (!biscuitTokenRef) {
+		if (!forgeRef && !tokenInput && forgeRef !== "" && tokenInput !== "") {
 			this.setState({
 				error: "Please provide either a Biscuit token or select a provider.",
 			});
@@ -197,7 +198,7 @@ class BiscuitVerifierTester extends Component {
 		}
 
 		// Clear previous errors and warnings
-		this.setState({ error: "", warning: "" });
+		this.setState({ error: "", warning: "", successMessage: "" });
 
 		fetch("/extensions/cloud-apim/extensions/biscuit/tokens/verifier/_test", {
 			method: "POST",
@@ -207,56 +208,69 @@ class BiscuitVerifierTester extends Component {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({
-				...this.props.rawValue?.config,
+				config: { ...this.props.rawValue?.config },
 				keypairRef: this.props.rawValue?.keypair_ref,
-				biscuitTokenRef,
+				biscuitForgeRef: forgeRef,
+				biscuitToken: tokenInput,
 			}),
 		})
 			.then((r) => r.json())
 			.then((data) => {
-				if (data?.valid === false) {
-					this.setState({
-						warning: "The provided Biscuit token is not valid.",
-					});
-				} else if (data?.done === false) {
+				if (!data?.done) {
 					this.setState({
 						successMessage: null,
-						error: null,
-						warning: `Bad verification : ${data.error}`,
+						errorMesage: data.error,
 					});
 				} else {
 					this.setState({
-						warning: null,
-						error: null,
+						errorMesage: null,
 						successMessage: data.message,
 					});
 				}
 			})
 			.catch((error) => {
-				console.error("Error:", error);
 				this.setState({
-					error: "An error occurred while processing your request.",
+					errorMesage: "An error occurred while processing your request.",
 				});
 			});
 	};
 
 	render() {
-		const { error, warning, successMessage, biscuitTokenRef } = this.state;
+		const { errorMesage, successMessage, forgeRef, tokenInput } = this.state;
 
 		return React.createElement("div", { className: "row mb-3" }, [
 			React.createElement(
 				"div",
 				{ className: "form-group" },
 				React.createElement(SelectInput, {
-					label: "Tokens from forge",
-					value: biscuitTokenRef,
-					onChange: (biscuitTokenRef) => this.setState({ biscuitTokenRef }),
+					label: "Use a token forge",
+					value: forgeRef,
+					onChange: (forgeRef) => this.setState({ forgeRef }),
 					valuesFrom:
-						"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/tokens-forge",
+						"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-forges",
 					transformer: (item) => ({ label: item.name, value: item.id }),
 				})
 			),
-			error &&
+			React.createElement(
+				"div",
+				{
+					style: { maxWidth: "80%", marginLeft: "15%", textAlign: "center" },
+				},
+				React.createElement(
+					"div",
+					{ className: "form-group" },
+					React.createElement("label", null, "Biscuit token bas64 encoded"),
+					React.createElement("textarea", {
+						type: "text",
+						rows: 5,
+						placeholder: "Your biscuit base64 encoded token",
+						className: "form-control",
+						value: tokenInput,
+						onChange: (e) => this.setState({ tokenInput: e.target.value }),
+					})
+				)
+			),
+			errorMesage &&
 				React.createElement(
 					"div",
 					{
@@ -271,25 +285,7 @@ class BiscuitVerifierTester extends Component {
 						React.createElement("i", {
 							className: "fas fa-exclamation-circle",
 						}),
-						React.createElement("span", null, ` ${error}`)
-					)
-				),
-			warning &&
-				React.createElement(
-					"div",
-					{
-						style: { maxWidth: "80%", marginLeft: "15%", textAlign: "center" },
-					},
-					React.createElement(
-						"div",
-						{
-							className: "alert alert-warning rounded mx-auto",
-							style: { maxWidth: "75%", textAlign: "center" },
-						},
-						React.createElement("i", {
-							className: "fas fa-exclamation-triangle",
-						}),
-						React.createElement("span", null, ` ${warning}`)
+						React.createElement("span", null, ` ${errorMesage}`)
 					)
 				),
 			successMessage &&

@@ -1,29 +1,29 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.utils
 
-import com.cloud.apim.otoroshi.extensions.biscuit.entities.VerifierConfig
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.{BiscuitRemoteFactsConfig, RemoteFactsData, VerifierConfig}
 import org.biscuitsec.biscuit.crypto._
+import org.biscuitsec.biscuit.datalog.RunLimits
 import org.biscuitsec.biscuit.error.Error
 import org.biscuitsec.biscuit.token.builder.Utils.{fact, string}
 import org.biscuitsec.biscuit.token.builder.parser.Parser
-import org.biscuitsec.biscuit.token.{Authorizer, Biscuit}
+import org.biscuitsec.biscuit.token.Biscuit
 import org.biscuitsec.biscuit.token.builder.Block
 import otoroshi.env.Env
 import otoroshi.plugins.biscuit.VerificationContext
+import otoroshi.utils.syntax.implicits.BetterSyntax
 import play.api.libs.json.{Format, JsError, JsResult, JsSuccess, JsValue, Json, Reads}
 import play.api.mvc.RequestHeader
-import play.api.libs.ws._
 
 import scala.concurrent.{ExecutionContext, Future}
 import java.security.SecureRandom
-import scala.concurrent.Future
 import scala.jdk.CollectionConverters.{iterableAsScalaIterableConverter, seqAsJavaListConverter}
 import scala.util.{Failure, Success, Try}
 
 case class BiscuitForgeConfig(
-                               checks: Seq[String],
-                               facts: Seq[String],
-                               resources: Seq[String],
-                               rules: Seq[String],
+                               checks: Seq[String] = Seq.empty,
+                               facts: Seq[String] = Seq.empty,
+                               resources: Seq[String] = Seq.empty,
+                               rules: Seq[String] = Seq.empty,
                              ) {
   def json: JsValue = BiscuitForgeConfig.format.writes(this)
 }
@@ -55,6 +55,7 @@ object BiscuitForgeConfig {
 }
 
 object BiscuitUtils {
+
   def extractToken(req: RequestHeader, extractorType: String, extractorName: String): Option[String] = {
     (extractorType match {
       case "header" => req.headers.get(extractorName)
@@ -62,22 +63,26 @@ object BiscuitUtils {
       case "cookie" => req.cookies.get(extractorName).map(_.value)
       case _ => None
     }).map { token =>
-      val tokenValue = token
-        .replace("Bearer ", "")
-        .replace("Bearer: ", "")
-        .replace("Bearer:", "")
-        .replace("Biscuit ", "")
-        .replace("Biscuit-Token ", "")
-        .replace("Biscuit-Token", "")
-        .replace("BiscuitToken ", "")
-        .replace("BiscuitToken", "")
-        .replace("biscuit: ", "")
-        .replace("biscuit:", "")
-        .replace("sealed-biscuit: ", "")
-        .replace("sealed-biscuit:", "")
-        .trim
-      tokenValue
+      replaceHeader(token)
     }
+  }
+
+  def replaceHeader(token: String): String = {
+    token
+      .replace("Bearer ", "")
+      .replace("Bearer: ", "")
+      .replace("Bearer:", "")
+      .replace("Biscuit ", "")
+      .replace("Biscuit: ", "")
+      .replace("Biscuit-Token ", "")
+      .replace("Biscuit-Token", "")
+      .replace("BiscuitToken ", "")
+      .replace("BiscuitToken", "")
+      .replace("biscuit: ", "")
+      .replace("biscuit:", "")
+      .replace("sealed-biscuit: ", "")
+      .replace("sealed-biscuit:", "")
+      .trim
   }
 
   def createToken(privKeyValue: String, config: BiscuitForgeConfig): Biscuit = {
@@ -88,12 +93,12 @@ object BiscuitUtils {
 
     // Resources
     config.resources
-      .map(_.stripSuffix(";"))
+      .map(_.trim.stripSuffix(";"))
       .foreach(r => authority_builder.add_fact(s"""resource("${r}")"""))
 
     // Checks
     config.checks
-      .map(_.stripSuffix(";"))
+      .map(_.trim.stripSuffix(";"))
       .map(Parser.check)
       .filter(_.isRight)
       .map(_.get()._2)
@@ -101,7 +106,7 @@ object BiscuitUtils {
 
     // Facts
     config.facts
-      .map(_.stripSuffix(";"))
+      .map(_.trim.stripSuffix(";"))
       .map(Parser.fact)
       .filter(_.isRight)
       .map(_.get()._2)
@@ -109,7 +114,7 @@ object BiscuitUtils {
 
     // Rules
     config.rules
-      .map(_.stripSuffix(";"))
+      .map(_.trim.stripSuffix(";"))
       .map(Parser.rule)
       .filter(_.isRight)
       .map(_.get()._2)
@@ -122,7 +127,7 @@ object BiscuitUtils {
     var block = biscuitToken.create_block()
 
     checkConfig
-      .map(_.stripSuffix(";"))
+      .map(_.trim.stripSuffix(";"))
       .map(Parser.check)
       .filter(_.isRight)
       .map(_.get()._2)
@@ -135,10 +140,11 @@ object BiscuitUtils {
               biscuitToken: Biscuit,
               config: VerifierConfig,
               ctxOpt: Option[VerificationContext]
-            )(implicit env: Env): Either[org.biscuitsec.biscuit.error.Error, Unit] = {
+            )(implicit env: Env): Either[String, Unit] = {
 
     val verifier = biscuitToken.authorizer()
     verifier.set_time()
+
 
     if (ctxOpt.nonEmpty) {
       val ctx = ctxOpt.get
@@ -160,31 +166,16 @@ object BiscuitUtils {
       verifier.add_fact(fact("req_domain", Seq(string(ctx.request.domain)).asJava))
       verifier.add_fact(fact("req_method", Seq(string(ctx.request.method.toLowerCase)).asJava))
       verifier.add_fact(fact("descriptor_id", Seq(string(ctx.descriptor.id)).asJava))
-
-      ctx.apikey.foreach { apikey =>
-        apikey.tags.foreach(tag => verifier.add_fact(fact("apikey_tag", Seq(string(tag)).asJava)))
-        apikey.metadata.foreach { case (key, value) =>
-          verifier.add_fact(fact("apikey_meta", Seq(string(key), string(value)).asJava))
-        }
-      }
-
-      // Add user-related facts if available
-      ctx.user.foreach { user =>
-        user.metadata.foreach { case (key, value) =>
-          verifier.add_fact(fact("user_meta", Seq(string(key), string(value)).asJava))
-        }
-      }
-
     }
 
     // Add resources from the configuration
     config.resources
-      .map(_.stripSuffix(";"))
+      .map(_.trim.stripSuffix(";"))
       .foreach(r => verifier.add_fact(s"""resource("${r}")"""))
 
     // Checks
     config.checks
-      .map(_.stripSuffix(";"))
+      .map(_.trim.stripSuffix(";"))
       .map(Parser.check)
       .filter(_.isRight)
       .map(_.get()._2)
@@ -192,7 +183,7 @@ object BiscuitUtils {
 
     // Facts
     config.facts
-      .map(_.stripSuffix(";"))
+      .map(_.trim.stripSuffix(";"))
       .map(Parser.fact)
       .filter(_.isRight)
       .map(_.get()._2)
@@ -200,7 +191,7 @@ object BiscuitUtils {
 
     // Rules
     config.rules
-      .map(_.stripSuffix(";"))
+      .map(_.trim.stripSuffix(";"))
       .map(Parser.rule)
       .filter(_.isRight)
       .map(_.get()._2)
@@ -208,7 +199,7 @@ object BiscuitUtils {
 
     // Policies : allow or deny
     config.policies
-      .map(_.stripSuffix(";"))
+      .map(_.trim.stripSuffix(";"))
       .map(Parser.policy)
       .filter(_.isRight)
       .map(_.get()._2)
@@ -217,15 +208,19 @@ object BiscuitUtils {
     // Check for token revocation
     val revokedIds = biscuitToken.revocation_identifiers().asScala.map(_.toHex).toList
     if (config.revokedIds.nonEmpty && config.revokedIds.exists(revokedIds.contains)) {
-      return Left(new Error.FormatError.DeserializationError("Revoked token"))
+      return Left(handleBiscuitErrors(new Error.FormatError.DeserializationError("Revoked token")))
     }
 
+    val maxFacts = 1000
+    val maxIterations = 100
+    val maxTime = java.time.Duration.ofMillis(100)
+
     // Perform authorization
-    Try(verifier.authorize()).toEither match {
+    Try(verifier.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
       case Left(err: org.biscuitsec.biscuit.error.Error) =>
-        Left(err)
+        Left(handleBiscuitErrors(err))
       case Left(err) =>
-        Left(new org.biscuitsec.biscuit.error.Error.InternalError())
+        Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError()))
       case Right(_) =>
         Right(())
     }
@@ -242,6 +237,51 @@ object BiscuitUtils {
       case "PUT" => "write"
       case _ => "none"
     }
+
+
+  def handleBiscuitErrors(error: org.biscuitsec.biscuit.error.Error)(implicit env: Env): String = {
+    error match {
+      case err: org.biscuitsec.biscuit.error.Error.FormatError.UnknownPublicKey => {
+        s"UnknownPublicKey"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.FormatError.DeserializationError => {
+        s"DeserializationError - ${err.e}"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.FailedLogic => {
+        s"FailedLogic - ${err.error.toString}"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.InvalidAuthorityIndex => {
+        s"InvalidAuthorityIndex - ${err.index}"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.InvalidBlockIndex => {
+        s"InvalidBlockIndex - expected:  ${err.expected} found: ${err.found}"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.MissingSymbols => {
+        s"Biscuit MissingSymbols"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.Timeout => {
+        s"Biscuit Timeout"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.InvalidType => {
+        s"Biscuit InvalidType"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.InternalError => {
+        "Biscuit InternalError"
+      }
+
+      case _ => {
+        error.toString
+      }
+    }
+  }
 }
 
 object BiscuitRemoteUtils {
@@ -305,17 +345,19 @@ object BiscuitRemoteUtils {
   }
 
   def getRemoteFacts(
-                      apiUrl: String,
-                      headers: Map[String, String],
-                    )(implicit env: Env, ec: ExecutionContext): Future[Either[String, (List[String], List[String], List[String], List[String])]] = {
-
-    env.Ws
-      .url(apiUrl)
+    config: BiscuitRemoteFactsConfig,
+    ctx: JsValue,
+  )(implicit env: Env, ec: ExecutionContext): Future[Either[String, RemoteFactsData]] = {
+    env.MtlsWs
+      .url(config.apiUrl, config.tlsConfig.legacy)
       .withHttpHeaders(
-        headers.toSeq: _*
+        config.headers.toSeq: _*
       )
-      .withRequestTimeout(scala.concurrent.duration.Duration("10s"))
-      .withMethod("GET")
+      .withMethod(config.method)
+      .applyOnIf(config.method == "POST" || config.method == "PUT" || config.method == "PATCH") { builder =>
+        builder.withBody(Json.obj("context" -> ctx))
+      }
+      .withRequestTimeout(config.timeout)
       .execute()
       .map { resp =>
         resp.status match {
@@ -367,10 +409,18 @@ object BiscuitRemoteUtils {
             val factsStrings = facts.map(fact => s"""${fact.name}("${fact.value}")""")
             val aclStrings = aclEntries.map(acl => s"""right("${acl.user}", "${acl.resource}", "${acl.action}");""")
 
-            Right((roleFacts ++ userRoleFacts, revokedIdsRemote, factsStrings, aclStrings))
+
+            val rfd = RemoteFactsData(
+              acl = aclStrings,
+              roles = roleFacts ++ userRoleFacts,
+              facts = factsStrings,
+              revoked = revokedIdsRemote
+            )
+
+            Right(rfd)
 
           case _ =>
-            Left(s"API request failed with status ${resp.status}: ${resp.body}")
+            Left(s"API request failed with status ${resp.status} (${resp.statusText})")
         }
       }
       .recover {

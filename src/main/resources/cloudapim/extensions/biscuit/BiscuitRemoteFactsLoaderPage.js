@@ -28,16 +28,39 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 			type: "array",
 			props: { label: "Tags" },
 		},
-		"config.apiUrl": {
+		"config.api_url": {
 			type: "string",
 			props: {
-				label: "API URL",
+				label: "URL",
 				placeholder: "Description of the Context",
+			},
+		},
+		"config.method": {
+			type: "select",
+			props: {
+				label: "HTTP method",
+				possibleValues: [
+					'GET',
+					'POST',
+					'PUT',
+					'DELETE',
+					'PATCH',
+				].map(v => ({ label: v, value: v }))
+			},
+		},
+		"config.timeout": {
+			type: "number",
+			props: {
+				label: "HTTP timeout",
+				suffix: 'milliseconds',
 			},
 		},
 		"config.headers": {
 			type: "object",
-			props: { label: "Headers" },
+			props: { label: "HTTP headers" },
+		},
+		tester: {
+			type: RemoteFactsTester,
 		},
 	};
 
@@ -68,8 +91,12 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 		"tags",
 		"metadata",
 		"<<<Configuration",
-		"config.apiUrl",
+		"config.api_url",
+		"config.method",
 		"config.headers",
+		"config.timeout",
+		"<<<Tester",
+		"tester",
 	];
 
 	componentDidMount() {
@@ -89,7 +116,7 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 				parentProps: this.props,
 				selfUrl: "extensions/cloud-apim/biscuit/remote-facts",
 				defaultTitle: "All Biscuit Remote Facts",
-        defaultValue: () => this.client.template(),
+				defaultValue: () => this.client.template(),
 				itemName: "Biscuit Remote Facts Loader",
 				formSchema: this.formSchema,
 				formFlow: this.formFlow,
@@ -97,21 +124,23 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 				stayAfterSave: true,
 				fetchTemplate: () => this.client.template(),
 				fetchItems: (paginationState) => this.client.findAll(),
-        updateItem: (e) => {
-					if (!e.config.apiUrl || e.config.apiUrl === "https://my-api.domain.com/v1/roles") {
-						alert(
-							"Please verify your API URL connection"
-						);
+				updateItem: (e) => {
+					if (
+						!e.config.api_url ||
+						e.config.api_url === "https://my-api.domain.com/v1/roles"
+					) {
+						alert("Please verify your API URL connection");
 					} else {
-						return this.client.create(e);
+						return this.client.update(e);
 					}
 				},
 				deleteItem: this.client.delete,
-        createItem: (e) => {
-					if (!e.config.apiUrl || e.config.apiUrl === "https://my-api.domain.com/v1/roles") {
-						alert(
-							"Please verify your API URL connection"
-						);
+				createItem: (e) => {
+					if (
+						!e.config.api_url ||
+						e.config.api_url === "https://my-api.domain.com/v1/roles"
+					) {
+						alert("Please verify your API URL connection");
 					} else {
 						return this.client.create(e);
 					}
@@ -130,5 +159,173 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 			},
 			null
 		);
+	}
+}
+
+class RemoteFactsTester extends Component {
+	state = {
+		isTesting: false,
+		isLoadedSuccess: false,
+		loadedFacts: [],
+		errorMessage: "",
+	};
+
+	reset = () => {
+		this.setState({
+			isTesting: true,
+			isLoadedSuccess: false,
+			errorMessage: "",
+			loadedFacts: [],
+		});
+	};
+
+	handleTest = () => {
+		this.reset();
+
+		fetch("/extensions/cloud-apim/extensions/biscuit/remote-facts/_test", {
+			method: "POST",
+			credentials: "include",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				...this.props.rawValue?.config,
+			}),
+		})
+			.then((r) => r.json())
+			.then((data) => {
+				if (data.error) {
+					this.setState({
+						isTesting: false,
+						isLoadedSuccess: false,
+						error: true,
+						errorMessage: data.error,
+					});
+				} else {
+					const finalArray = [
+						...(data?.loadedFacts.roles || []),
+						...(data?.loadedFacts.facts || []),
+						...(data?.loadedFacts.acl || []),
+					];
+
+					this.setState({
+						isTesting: false,
+						isLoadedSuccess: true,
+						loadedFacts: finalArray,
+					});
+				}
+			})
+			.catch((err) => {
+				this.setState({
+					isTesting: false,
+					isLoadedSuccess: false,
+					errorMessage: err,
+				});
+			});
+	};
+
+	handleTokenGenerated = (event) => {
+		const token = event.detail.token; // Assuming the token is passed in the detail object
+		console.log("Generated Token:", token);
+		// Perform additional actions with the generated token
+	};
+
+	render() {
+		return [
+			React.createElement(
+				"div",
+				{ className: "row mb-3" },
+				React.createElement(
+					"label",
+					{ className: "col-xs-12 col-sm-2 col-form-label" },
+					""
+				),
+				React.createElement(
+					"div",
+					{ className: "col-sm-10", style: { display: "flex" } },
+					React.createElement(
+						"div",
+						{ style: { width: "100%" }, className: "input-group" },
+						React.createElement(
+							"button",
+							{
+								type: "button",
+								className: "btn btn-sm btn-success",
+								onClick: this.handleTest,
+								disabled: this.state.isTesting,
+							},
+							React.createElement("i", { className: "fas fa-play" }),
+							React.createElement("span", null, " Test")
+						)
+					)
+				)
+			),
+			this.state.errorMessage &&
+				React.createElement(
+					"div",
+					{
+						style: { maxWidth: "80%", marginLeft: "15%", textAlign: "center" },
+					},
+					React.createElement(
+						"div",
+						{
+							className: "alert alert-danger rounded mx-auto",
+							style: { maxWidth: "75%", textAlign: "center" },
+						},
+						React.createElement("i", {
+							className: "fas fa-exclamation-triangle",
+						}),
+						React.createElement("span", null, ` ${this.state.errorMessage}`)
+					)
+				),
+
+			this.state.isLoadedSuccess &&
+				React.createElement(
+					"div",
+					{
+						style: { maxWidth: "80%", marginLeft: "15%", textAlign: "center" },
+					},
+					React.createElement(
+						"div",
+						{
+							className: "alert alert-success rounded mx-auto",
+							style: { maxWidth: "75%", textAlign: "center" },
+						},
+						React.createElement("i", {
+							className: "fas fa-check",
+						}),
+						React.createElement("span", null, `Facts loaded successfully !`)
+					)
+				),
+
+			this.state.isLoadedSuccess &&
+				this.state?.loadedFacts &&
+				React.createElement(
+					"div",
+					{
+						style: { maxWidth: "80%", marginLeft: "15%", textAlign: "center" },
+					},
+					React.createElement(
+						"div",
+						{ className: "row mb-3" },
+						React.createElement(
+							"label",
+							{ className: "col-xs-12 col-sm-2 col-form-label" },
+							"Biscuit Playground test"
+						),
+						React.createElement(
+							"bc-token-printer",
+							{
+								showauthorizer: "true",
+								authorizer: this.state?.loadedFacts
+									.map((line) => line.trim())
+									.join("\n"),
+							},
+							""
+						)
+					)
+				),
+		];
 	}
 }

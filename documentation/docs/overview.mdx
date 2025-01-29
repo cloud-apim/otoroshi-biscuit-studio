@@ -6,24 +6,39 @@ import Terminal from '@site/src/components/Terminal';
 
 # Overview
 
-Otoroshi Biscuit Studio is an Otoroshi extension that allows you to use and integrate Biscuit Tokens into your Gateway.
+![Otoroshi Biscuit Studio](/img/undraw_features-overview_uone.svg)
 
-Biscuit tokens are a powerful and flexible tool designed for secure and efficient access control. 
+[**Otoroshi Biscuit Studio**](https://github.com/cloud-apim/otoroshi-biscuit-studio) is a powerful extension for [Otoroshi](https://maif.github.io/otoroshi/manual/index.html), designed to integrate and manage [Biscuit Tokens](https://biscuitsec.org) seamlessly within your beloved API Gateway. 
 
-They combine modern cryptographic techniques with a compact, extensible structure, enabling developers to implement secure systems with ease. 
+Biscuit tokens offer a cutting-edge approach to secure and efficient access control. By combining advanced cryptographic techniques with a compact, extensible format, Biscuit tokens empower developers to create robust, scalable security solutions. 
 
-With their unique features, Biscuit tokens stand out as a cutting-edge solution for token-based authentication and authorization.
+Their versatility and unique features make them an ideal choice for modern token-based authentication and authorization systems, enabling fine-grained control over user access and permissions.
 
-## Supported Entities
+### Supported Entities in Otoroshi Biscuit Studio
 
-* [Biscuit KeyPairs](/docs/entities/keypairs)
-* [Biscuit Verifiers](/docs/entities/verifiers)
-* [Biscuit Attenuators](/docs/entities/attenuators)
-* [Biscuit RBAC Policies](/docs/entities/rbac_policies)
-* [Biscuit Remote Facts Loader](/docs/entities/remote_facts)
-* [Biscuit Tokens Forge](/docs/entities/tokens_forge)
+* **[Biscuit KeyPairs](/docs/entities/keypairs)**  
+  Create Biscuit Keypairs to generate and verify Biscuit tokens. 
+  
+  Keypairs are essential for signing and verifying tokens, ensuring the integrity and authenticity of requests.
 
-## Supported Plugins
+* **[Biscuit Verifiers](/docs/entities/verifiers)**  
+  Manage and configure verifiers that check the validity of incoming Biscuit tokens against defined rules and policies, ensuring proper authorization and security.
 
-* [Verifiers](/docs/plugins/verifiers)
-* [Attenuators](/docs/plugins/attenuators)
+* **[Biscuit Attenuators](/docs/entities/attenuators)**  
+  Configure attenuators to modify and return Biscuit tokens that have been "attenuated" (limited in scope or permissions), ensuring fine-grained control over access levels in your API routes.
+  
+### Supported Plugins in Otoroshi Biscuit Studio
+
+* **[Verifier plugin](/docs/plugins/verifiers)**  
+  Integrate verifiers plugins into your Otoroshi routes to check the validity of Biscuit tokens. 
+  
+  This ensures that only authorized requests are processed, providing additional layers of security and control over your API traffic.
+
+* **[Attenuator plugin](/docs/plugins/attenuators)**  
+  Add attenuator plugins to your Otoroshi routes that apply attenuation to Biscuit tokens, allowing you to reduce or modify the scope of access granted by a token. 
+  
+  This can be used to tailor access permissions dynamically based on the specific needs of your routes or services.
+
+* **[Client Credentials plugin](/docs/plugins/clientcredentials)**
+
+  The Client Credentials Plugin is a `Backend` plugin that enables the OAuth2 `client_credentials` flow, using a [Biscuit Token](/docs/introduction) as the `access_token`.

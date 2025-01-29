@@ -93,7 +93,7 @@ __webpack_require__.d(__webpack_exports__, {
 });
 
 ;// ./.docusaurus/docusaurus-plugin-content-docs/default/site-docs-api-mdx-246.json
-const site_docs_api_mdx_246_namespaceObject = /*#__PURE__*/JSON.parse('{"id":"api","title":"API Documentation","description":"","source":"@site/docs/api.mdx","sourceDirName":".","slug":"/api","permalink":"/otoroshi-biscuit-studio/docs/api","draft":false,"unlisted":false,"tags":[],"version":"current","frontMatter":{"id":"api","title":"API Documentation"},"sidebar":"tutorialSidebar","previous":{"title":"Biscuit Tokens Forge","permalink":"/otoroshi-biscuit-studio/docs/tokens_forge"}}');
+const site_docs_api_mdx_246_namespaceObject = /*#__PURE__*/JSON.parse('{"id":"api","title":"API Documentation","description":"","source":"@site/docs/api.mdx","sourceDirName":".","slug":"/api","permalink":"/otoroshi-biscuit-studio/docs/api","draft":false,"unlisted":false,"tags":[],"version":"current","frontMatter":{"id":"api","title":"API Documentation"},"sidebar":"tutorialSidebar","previous":{"title":"Client Credentials plugin","permalink":"/otoroshi-biscuit-studio/docs/plugins/clientcredentials"}}');
 // EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
 var jsx_runtime = __webpack_require__(4848);
 // EXTERNAL MODULE: ./node_modules/@mdx-js/react/lib/index.js
@@ -279,7 +279,7 @@ __webpack_require__.d(__webpack_exports__, {
 });
 
 ;// ./.docusaurus/docusaurus-plugin-content-docs/default/site-docs-entities-attenuators-mdx-fd7.json
-const site_docs_entities_attenuators_mdx_fd7_namespaceObject = /*#__PURE__*/JSON.parse('{"id":"entities/attenuators","title":"Attenuators","description":"What biscuit attenuators are ?","source":"@site/docs/entities/attenuators.mdx","sourceDirName":"entities","slug":"/entities/attenuators","permalink":"/otoroshi-biscuit-studio/docs/entities/attenuators","draft":false,"unlisted":false,"tags":[],"version":"current","sidebarPosition":3,"frontMatter":{"sidebar_position":3},"sidebar":"tutorialSidebar","previous":{"title":"Verifiers","permalink":"/otoroshi-biscuit-studio/docs/entities/verifiers"},"next":{"title":"Biscuit RBAC Policies","permalink":"/otoroshi-biscuit-studio/docs/entities/rbac_policies"}}');
+const site_docs_entities_attenuators_mdx_fd7_namespaceObject = /*#__PURE__*/JSON.parse('{"id":"entities/attenuators","title":"Attenuators","description":"What biscuit attenuators are ?","source":"@site/docs/entities/attenuators.mdx","sourceDirName":"entities","slug":"/entities/attenuators","permalink":"/otoroshi-biscuit-studio/docs/entities/attenuators","draft":false,"unlisted":false,"tags":[],"version":"current","sidebarPosition":3,"frontMatter":{"sidebar_position":3},"sidebar":"tutorialSidebar","previous":{"title":"Verifiers","permalink":"/otoroshi-biscuit-studio/docs/entities/verifiers"},"next":{"title":"Plugins","permalink":"/otoroshi-biscuit-studio/docs/category/plugins"}}');
 // EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
 var jsx_runtime = __webpack_require__(4848);
 // EXTERNAL MODULE: ./node_modules/@mdx-js/react/lib/index.js
@@ -428,6 +428,10 @@ const assets = {
 
 
 const toc = [{
+  "value": "Create your first Biscuit KeyPair",
+  "id": "create-your-first-biscuit-keypair",
+  "level": 2
+}, {
   "value": "Example Keypair :",
   "id": "example-keypair-",
   "level": 2
@@ -458,6 +462,7 @@ const toc = [{
 }];
 function _createMdxContent(props) {
   const _components = {
+    a: "a",
     code: "code",
     h1: "h1",
     h2: "h2",
@@ -481,8 +486,11 @@ function _createMdxContent(props) {
         width: "924",
         height: "531"
       })
-    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
-      children: "Biscuit Auth tokens are flexible, decentralized, and cryptographically secure authorization tokens."
+    }), "\n", (0,jsx_runtime.jsxs)(_components.p, {
+      children: [(0,jsx_runtime.jsx)(_components.a, {
+        href: "https://doc.biscuitsec.org/",
+        children: "Biscuit Auth tokens"
+      }), " are flexible, decentralized, and cryptographically secure authorization tokens."]
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: "They use ED25519 keypairs for digital signature generation and verification, ensuring integrity and authenticity."
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
@@ -490,10 +498,29 @@ function _createMdxContent(props) {
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: "This cryptographic mechanism guarantees that tokens cannot be tampered with or forged."
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "A Biscuit KeyPair is a couple of a Public Key and a Private Key using ED25519 algorithm."
+    }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
+      id: "create-your-first-biscuit-keypair",
+      children: "Create your first Biscuit KeyPair"
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "To create your first Biscuit KeyPair open your Otoroshi UI interface and go to Categories > Biscuit Studio > Biscuit KeyPairs"
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "Then, click on \"Add item\" top right button to display the entity form."
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: (0,jsx_runtime.jsx)(_components.img, {
         src: (__webpack_require__(2024)/* ["default"] */ .A) + "",
-        width: "2832",
-        height: "1590"
+        width: "2830",
+        height: "1626"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "You can also generate new KeyPair by clicking on the \"Generate new\" button."
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "It will create a public and a private key."
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: (0,jsx_runtime.jsx)(_components.img, {
+        src: (__webpack_require__(9103)/* ["default"] */ .A) + "",
+        width: "2830",
+        height: "1626"
       })
     }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
       id: "example-keypair-",
@@ -522,7 +549,7 @@ function _createMdxContent(props) {
     }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
       children: (0,jsx_runtime.jsx)(_components.code, {
         className: "language-javascript",
-        children: "{\n  \"id\": \"biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9\",\n  \"name\": \"My Biscuit KeyPair\",\n  \"description\": \"A simple ED25519 Biscuit KeyPair\",\n  \"metadata\": {\n    \"created_at\": \"2024-12-16T12:19:21.589+01:00\"\n  },\n  \"pubKey\": \"cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb\",\n  \"privKey\": \"0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619\",\n  \"tags\": [],\n  \"kind\": \"BiscuitKeyPair\",\n  \"_loc\": {\n    \"tenant\": \"default\"\n  }\n}\n"
+        children: "{\n  \"id\": \"biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9\",\n  \"name\": \"My Biscuit KeyPair\",\n  \"description\": \"A simple ED25519 Biscuit KeyPair\",\n  \"pubKey\": \"cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb\",\n  \"privKey\": \"0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619\",\n  \"tags\": [],\n  \"kind\": \"BiscuitKeyPair\"\n}\n"
       })
     }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
       id: "create-a-keypair-with-otoroshis-api",
@@ -562,348 +589,6 @@ function _createMdxContent(props) {
         className: "language-js",
         children: "{\"status\":201,\"created\":true,\"id\":\"bulk_keypair1\",\"id_field\":\"id\"}\n{\"status\":201,\"created\":true,\"id\":\"bulk_keypair2\",\"id_field\":\"id\"}\n"
       })
-    })]
-  });
-}
-function MDXContent(props = {}) {
-  const {wrapper: MDXLayout} = {
-    ...(0,lib/* useMDXComponents */.R)(),
-    ...props.components
-  };
-  return MDXLayout ? (0,jsx_runtime.jsx)(MDXLayout, {
-    ...props,
-    children: (0,jsx_runtime.jsx)(_createMdxContent, {
-      ...props
-    })
-  }) : _createMdxContent(props);
-}
-
-
-
-/***/ }),
-
-/***/ 6580:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-// ESM COMPAT FLAG
-__webpack_require__.r(__webpack_exports__);
-
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, {
-  assets: () => (/* binding */ assets),
-  contentTitle: () => (/* binding */ contentTitle),
-  "default": () => (/* binding */ MDXContent),
-  frontMatter: () => (/* binding */ frontMatter),
-  metadata: () => (/* reexport */ site_docs_entities_rbac_policies_mdx_f96_namespaceObject),
-  toc: () => (/* binding */ toc)
-});
-
-;// ./.docusaurus/docusaurus-plugin-content-docs/default/site-docs-entities-rbac-policies-mdx-f96.json
-const site_docs_entities_rbac_policies_mdx_f96_namespaceObject = /*#__PURE__*/JSON.parse('{"id":"entities/rbac_policies","title":"Biscuit RBAC Policies","description":"Integrate RBAC to a verifier plugin","source":"@site/docs/entities/rbac_policies.mdx","sourceDirName":"entities","slug":"/entities/rbac_policies","permalink":"/otoroshi-biscuit-studio/docs/entities/rbac_policies","draft":false,"unlisted":false,"tags":[],"version":"current","sidebarPosition":4,"frontMatter":{"sidebar_position":4},"sidebar":"tutorialSidebar","previous":{"title":"Attenuators","permalink":"/otoroshi-biscuit-studio/docs/entities/attenuators"},"next":{"title":"Remote Facts Loader","permalink":"/otoroshi-biscuit-studio/docs/entities/remote_facts"}}');
-// EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
-var jsx_runtime = __webpack_require__(4848);
-// EXTERNAL MODULE: ./node_modules/@mdx-js/react/lib/index.js
-var lib = __webpack_require__(8453);
-// EXTERNAL MODULE: ./src/components/Terminal/index.js
-var Terminal = __webpack_require__(9229);
-;// ./docs/entities/rbac_policies.mdx
-
-
-const frontMatter = {
-	sidebar_position: 4
-};
-const contentTitle = 'Biscuit RBAC Policies';
-
-const assets = {
-
-};
-
-
-
-
-const toc = [{
-  "value": "Integrate RBAC to a verifier plugin",
-  "id": "integrate-rbac-to-a-verifier-plugin",
-  "level": 2
-}];
-function _createMdxContent(props) {
-  const _components = {
-    code: "code",
-    h1: "h1",
-    h2: "h2",
-    header: "header",
-    p: "p",
-    pre: "pre",
-    ...(0,lib/* useMDXComponents */.R)(),
-    ...props.components
-  };
-  return (0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
-    children: [(0,jsx_runtime.jsx)(_components.header, {
-      children: (0,jsx_runtime.jsx)(_components.h1, {
-        id: "biscuit-rbac-policies",
-        children: "Biscuit RBAC Policies"
-      })
-    }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
-      id: "integrate-rbac-to-a-verifier-plugin",
-      children: "Integrate RBAC to a verifier plugin"
-    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
-      children: "You could use your RBAC entities into a verifier plugin."
-    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
-      children: (0,jsx_runtime.jsx)(_components.code, {
-        className: "language-js",
-        children: "  {\n    \"verifier_ref\": \"YOUR_BISCUIT_VERIFIER_ENTITY_REF\",\n    \"rbac_ref\": \"RBAC_POLICY_ENTITY_REF\" // optional\n    \"enforce\": false, // true or false\n    \"extractor_type\": \"header\", // header, query or cookies\n    \"extractor_name\": \"Authorization\"\n  }\n"
-      })
-    })]
-  });
-}
-function MDXContent(props = {}) {
-  const {wrapper: MDXLayout} = {
-    ...(0,lib/* useMDXComponents */.R)(),
-    ...props.components
-  };
-  return MDXLayout ? (0,jsx_runtime.jsx)(MDXLayout, {
-    ...props,
-    children: (0,jsx_runtime.jsx)(_createMdxContent, {
-      ...props
-    })
-  }) : _createMdxContent(props);
-}
-
-
-
-/***/ }),
-
-/***/ 3680:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-// ESM COMPAT FLAG
-__webpack_require__.r(__webpack_exports__);
-
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, {
-  assets: () => (/* binding */ assets),
-  contentTitle: () => (/* binding */ contentTitle),
-  "default": () => (/* binding */ MDXContent),
-  frontMatter: () => (/* binding */ frontMatter),
-  metadata: () => (/* reexport */ site_docs_entities_remote_facts_mdx_8b7_namespaceObject),
-  toc: () => (/* binding */ toc)
-});
-
-;// ./.docusaurus/docusaurus-plugin-content-docs/default/site-docs-entities-remote-facts-mdx-8b7.json
-const site_docs_entities_remote_facts_mdx_8b7_namespaceObject = /*#__PURE__*/JSON.parse('{"id":"entities/remote_facts","title":"Remote Facts Loader","description":"The Remote Facts Loader entity facilitates the loading of external facts provided by an API. This entity is particularly useful for dynamic role and permission management based on external data sources.","source":"@site/docs/entities/remote_facts.mdx","sourceDirName":"entities","slug":"/entities/remote_facts","permalink":"/otoroshi-biscuit-studio/docs/entities/remote_facts","draft":false,"unlisted":false,"tags":[],"version":"current","sidebarPosition":5,"frontMatter":{"sidebar_position":5},"sidebar":"tutorialSidebar","previous":{"title":"Biscuit RBAC Policies","permalink":"/otoroshi-biscuit-studio/docs/entities/rbac_policies"},"next":{"title":"Plugins","permalink":"/otoroshi-biscuit-studio/docs/category/plugins"}}');
-// EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
-var jsx_runtime = __webpack_require__(4848);
-// EXTERNAL MODULE: ./node_modules/@mdx-js/react/lib/index.js
-var lib = __webpack_require__(8453);
-// EXTERNAL MODULE: ./src/components/Terminal/index.js
-var Terminal = __webpack_require__(9229);
-;// ./docs/entities/remote_facts.mdx
-
-
-const frontMatter = {
-	sidebar_position: 5
-};
-const contentTitle = 'Remote Facts Loader';
-
-const assets = {
-
-};
-
-
-
-
-const toc = [{
-  "value": "Overview",
-  "id": "overview",
-  "level": 2
-}, {
-  "value": "API Input Example",
-  "id": "api-input-example",
-  "level": 2
-}, {
-  "value": "Key Fields in the JSON:",
-  "id": "key-fields-in-the-json",
-  "level": 3
-}, {
-  "value": "Entity Configuration Example",
-  "id": "entity-configuration-example",
-  "level": 2
-}, {
-  "value": "Key Fields in the Configuration :",
-  "id": "key-fields-in-the-configuration-",
-  "level": 3
-}, {
-  "value": "Usage",
-  "id": "usage",
-  "level": 2
-}];
-function _createMdxContent(props) {
-  const _components = {
-    code: "code",
-    h1: "h1",
-    h2: "h2",
-    h3: "h3",
-    header: "header",
-    img: "img",
-    li: "li",
-    ol: "ol",
-    p: "p",
-    pre: "pre",
-    strong: "strong",
-    ul: "ul",
-    ...(0,lib/* useMDXComponents */.R)(),
-    ...props.components
-  };
-  return (0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
-    children: [(0,jsx_runtime.jsx)(_components.header, {
-      children: (0,jsx_runtime.jsx)(_components.h1, {
-        id: "remote-facts-loader",
-        children: "Remote Facts Loader"
-      })
-    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
-      children: (0,jsx_runtime.jsx)(_components.img, {
-        src: (__webpack_require__(7605)/* ["default"] */ .A) + "",
-        width: "845",
-        height: "576"
-      })
-    }), "\n", (0,jsx_runtime.jsxs)(_components.p, {
-      children: ["The ", (0,jsx_runtime.jsx)(_components.strong, {
-        children: "Remote Facts Loader"
-      }), " entity facilitates the loading of external facts provided by an API. This entity is particularly useful for dynamic role and permission management based on external data sources."]
-    }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
-      id: "overview",
-      children: "Overview"
-    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
-      children: "The Remote Facts Loader connects to an API endpoint to fetch data, such as roles and their associated permissions, and integrates it into your system. This entity is configured with metadata and API details to ensure smooth interaction."
-    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
-      children: (0,jsx_runtime.jsx)(_components.img, {
-        src: (__webpack_require__(7462)/* ["default"] */ .A) + "",
-        width: "2824",
-        height: "1568"
-      })
-    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
-      children: (0,jsx_runtime.jsx)(_components.img, {
-        src: (__webpack_require__(5284)/* ["default"] */ .A) + "",
-        width: "2824",
-        height: "1568"
-      })
-    }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
-      id: "api-input-example",
-      children: "API Input Example"
-    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
-      children: "Below is an example of the data structure that your API might return. This JSON array defines roles and their associated permissions:"
-    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
-      children: (0,jsx_runtime.jsx)(_components.code, {
-        className: "language-json",
-        children: "{\n  \"roles\": [\n    {\n      \"admin\": [\"billing:read\", \"billing:write\", \"address:read\", \"address:write\"]\n    },\n    {\n      \"accounting\": [\"billing:read\", \"billing:write\", \"address:read\"]\n    },\n    {\n      \"support\": [\"address:read\", \"address:write\"]\n    },\n    {\n      \"pilot\":  [\"spaceship:drive\", \"address:read\"]\n    },\n    {\n      \"delivery\":  [\"address:read\", \"package:load\", \"package:unload\", \"package:deliver\"]\n    }\n  ]\n}\n"
-      })
-    }), "\n", (0,jsx_runtime.jsx)(_components.h3, {
-      id: "key-fields-in-the-json",
-      children: "Key Fields in the JSON:"
-    }), "\n", (0,jsx_runtime.jsxs)(_components.ul, {
-      children: ["\n", (0,jsx_runtime.jsxs)(_components.li, {
-        children: [(0,jsx_runtime.jsx)(_components.strong, {
-          children: "roles"
-        }), ": An array of objects, each representing a role."]
-      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
-        children: ["Each role object contains a key-value pair where the key is the role name (e.g., ", (0,jsx_runtime.jsx)(_components.code, {
-          children: "admin"
-        }), ") and the value is an array of permissions associated with the role."]
-      }), "\n"]
-    }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
-      id: "entity-configuration-example",
-      children: "Entity Configuration Example"
-    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
-      children: "Below is an example configuration for the Remote Facts Loader entity:"
-    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
-      children: (0,jsx_runtime.jsx)(_components.code, {
-        className: "language-json",
-        children: "{\n  \"enabled\": true,\n  \"id\": \"biscuit_remote_facts_2ae76425-194d-436b-9977-0cdeb8680fbb\",\n  \"name\": \"Remote fact loader example\",\n  \"description\": \"\",\n  \"metadata\": {\n    \"created_at\": \"2024-12-23T15:30:01.241+01:00\"\n  },\n  \"tags\": [],\n  \"config\": {\n    \"apiUrl\": \"http://localhost:3333/api/facts\",\n    \"headers\": {\n      \"Accept\": \"application/json\",\n      \"Authorization\": \"Bearer: xxxxx\"\n    }\n  },\n  \"kind\": \"BiscuitRemoteFactsLoader\",\n  \"_loc\": {\n    \"tenant\": \"default\"\n  }\n}\n"
-      })
-    }), "\n", (0,jsx_runtime.jsx)(_components.h3, {
-      id: "key-fields-in-the-configuration-",
-      children: "Key Fields in the Configuration :"
-    }), "\n", (0,jsx_runtime.jsxs)(_components.ul, {
-      children: ["\n", (0,jsx_runtime.jsxs)(_components.li, {
-        children: [(0,jsx_runtime.jsx)(_components.strong, {
-          children: "enabled"
-        }), ": A boolean indicating if the loader is active."]
-      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
-        children: [(0,jsx_runtime.jsx)(_components.strong, {
-          children: "id"
-        }), ": A unique identifier for the entity."]
-      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
-        children: [(0,jsx_runtime.jsx)(_components.strong, {
-          children: "name"
-        }), ": A human-readable name for the loader."]
-      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
-        children: [(0,jsx_runtime.jsx)(_components.strong, {
-          children: "description"
-        }), ": Optional, for documenting the purpose or details of the loader."]
-      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
-        children: [(0,jsx_runtime.jsx)(_components.strong, {
-          children: "metadata"
-        }), ": Contains system-generated metadata such as creation time."]
-      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
-        children: [(0,jsx_runtime.jsx)(_components.strong, {
-          children: "tags"
-        }), ": Optional tags for categorization or searching."]
-      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
-        children: [(0,jsx_runtime.jsx)(_components.strong, {
-          children: "config"
-        }), ":", "\n", (0,jsx_runtime.jsxs)(_components.ul, {
-          children: ["\n", (0,jsx_runtime.jsxs)(_components.li, {
-            children: [(0,jsx_runtime.jsx)(_components.strong, {
-              children: "apiUrl"
-            }), ": The endpoint URL where the API data is fetched."]
-          }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
-            children: [(0,jsx_runtime.jsx)(_components.strong, {
-              children: "headers"
-            }), ": HTTP headers to include in the request, such as ", (0,jsx_runtime.jsx)(_components.code, {
-              children: "Authorization"
-            }), " or ", (0,jsx_runtime.jsx)(_components.code, {
-              children: "Accept"
-            }), "."]
-          }), "\n"]
-        }), "\n"]
-      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
-        children: [(0,jsx_runtime.jsx)(_components.strong, {
-          children: "kind"
-        }), ": Specifies the type of loader, in this case, ", (0,jsx_runtime.jsx)(_components.code, {
-          children: "BiscuitRemoteFactsLoader"
-        }), "."]
-      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
-        children: [(0,jsx_runtime.jsx)(_components.strong, {
-          children: "_loc"
-        }), ": Location or tenant-specific details, useful for multi-tenant applications."]
-      }), "\n"]
-    }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
-      id: "usage",
-      children: "Usage"
-    }), "\n", (0,jsx_runtime.jsxs)(_components.ol, {
-      children: ["\n", (0,jsx_runtime.jsxs)(_components.li, {
-        children: [(0,jsx_runtime.jsx)(_components.strong, {
-          children: "Define the API Endpoint"
-        }), ": Ensure the API serving the roles data is operational and adheres to the required JSON format."]
-      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
-        children: [(0,jsx_runtime.jsx)(_components.strong, {
-          children: "Configure the Entity"
-        }), ": Update the ", (0,jsx_runtime.jsx)(_components.code, {
-          children: "config.apiUrl"
-        }), " and ", (0,jsx_runtime.jsx)(_components.code, {
-          children: "headers"
-        }), " fields with the API endpoint and authentication details."]
-      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
-        children: [(0,jsx_runtime.jsx)(_components.strong, {
-          children: "Activate the Loader"
-        }), ": Set the ", (0,jsx_runtime.jsx)(_components.code, {
-          children: "enabled"
-        }), " field to ", (0,jsx_runtime.jsx)(_components.code, {
-          children: "true"
-        }), " to activate the entity."]
-      }), "\n"]
     })]
   });
 }
@@ -1492,7 +1177,7 @@ __webpack_require__.d(__webpack_exports__, {
 });
 
 ;// ./.docusaurus/docusaurus-plugin-content-docs/default/site-docs-install-mdx-046.json
-const site_docs_install_mdx_046_namespaceObject = /*#__PURE__*/JSON.parse('{"id":"install","title":"Installation","description":"Download Otoroshi","source":"@site/docs/install.mdx","sourceDirName":".","slug":"/install","permalink":"/otoroshi-biscuit-studio/docs/install","draft":false,"unlisted":false,"tags":[],"version":"current","sidebarPosition":3,"frontMatter":{"sidebar_position":3},"sidebar":"tutorialSidebar","previous":{"title":"Introduction","permalink":"/otoroshi-biscuit-studio/docs/introduction"},"next":{"title":"Entities","permalink":"/otoroshi-biscuit-studio/docs/category/entities"}}');
+const site_docs_install_mdx_046_namespaceObject = /*#__PURE__*/JSON.parse('{"id":"install","title":"Installation","description":"App Installation","source":"@site/docs/install.mdx","sourceDirName":".","slug":"/install","permalink":"/otoroshi-biscuit-studio/docs/install","draft":false,"unlisted":false,"tags":[],"version":"current","sidebarPosition":3,"frontMatter":{"sidebar_position":3},"sidebar":"tutorialSidebar","previous":{"title":"Introduction","permalink":"/otoroshi-biscuit-studio/docs/introduction"},"next":{"title":"Entities","permalink":"/otoroshi-biscuit-studio/docs/category/entities"}}');
 // EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
 var jsx_runtime = __webpack_require__(4848);
 // EXTERNAL MODULE: ./node_modules/@mdx-js/react/lib/index.js
@@ -1519,23 +1204,45 @@ const toc = [{
   "id": "download-otoroshi",
   "level": 2
 }, {
-  "value": "Download the Biscuit Studio extension",
+  "value": "Download the Biscuit Studio Extension",
   "id": "download-the-biscuit-studio-extension",
   "level": 2
 }, {
   "value": "Run Otoroshi with the Biscuit Studio Extension",
   "id": "run-otoroshi-with-the-biscuit-studio-extension",
   "level": 2
+}, {
+  "value": "Use it on Cloud APIM with Otoroshi Managed Instances",
+  "id": "use-it-on-cloud-apim-with-otoroshi-managed-instances",
+  "level": 2
+}, {
+  "value": "Accessing the Otoroshi with Interface",
+  "id": "accessing-the-otoroshi-with-interface",
+  "level": 3
+}, {
+  "value": "Setting Up on Clever Cloud",
+  "id": "setting-up-on-clever-cloud",
+  "level": 2
+}, {
+  "value": "Create a new Otoroshi add-on",
+  "id": "create-a-new-otoroshi-add-on",
+  "level": 3
 }];
 function _createMdxContent(props) {
   const _components = {
     a: "a",
+    br: "br",
     code: "code",
     h1: "h1",
     h2: "h2",
+    h3: "h3",
     header: "header",
+    img: "img",
+    li: "li",
+    ol: "ol",
     p: "p",
     pre: "pre",
+    strong: "strong",
     ...(0,lib/* useMDXComponents */.R)(),
     ...props.components
   };
@@ -1545,9 +1252,26 @@ function _createMdxContent(props) {
         id: "installation",
         children: "Installation"
       })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: (0,jsx_runtime.jsx)(_components.img, {
+        alt: "App Installation",
+        src: (__webpack_require__(8333)/* ["default"] */ .A) + "",
+        width: "738",
+        height: "729"
+      })
     }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
       id: "download-otoroshi",
       children: "Download Otoroshi"
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: (0,jsx_runtime.jsxs)(_components.a, {
+        href: "https://github.com/MAIF/otoroshi/releases/download/v16.22.0/otoroshi.jar",
+        children: [" ", (0,jsx_runtime.jsx)(_components.img, {
+          src: "https://img.shields.io/github/release/MAIF/otoroshi.svg",
+          alt: "Download"
+        }), " "]
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "First, download the Otoroshi jar file:"
     }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
       children: (0,jsx_runtime.jsx)(_components.code, {
         className: "language-sh",
@@ -1555,34 +1279,113 @@ function _createMdxContent(props) {
       })
     }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
       id: "download-the-biscuit-studio-extension",
-      children: "Download the Biscuit Studio extension"
+      children: "Download the Biscuit Studio Extension"
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: (0,jsx_runtime.jsxs)(_components.a, {
+        href: "https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/v0.0.2/otoroshi-biscuit-studio-v0.0.2.jar",
+        children: [(0,jsx_runtime.jsx)(_components.img, {
+          src: "https://img.shields.io/github/release/cloud-apim/otoroshi-biscuit-studio.svg",
+          alt: "Download Otoroshi Biscuit Studio extension"
+        }), " "]
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "Next, download the Biscuit Studio extension for Otoroshi:"
     }), "\n", (0,jsx_runtime.jsxs)(_components.p, {
       children: ["You can download the latest release of ", (0,jsx_runtime.jsx)(_components.code, {
         children: "otoroshi-biscuit-studio"
       }), " from ", (0,jsx_runtime.jsx)(_components.a, {
         href: "https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/latest",
-        children: "https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/latest"
-      })]
+        children: "here"
+      }), "."]
     }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
       children: (0,jsx_runtime.jsx)(_components.code, {
         className: "language-sh",
-        children: "curl -L -o biscuit-studio-extension.jar 'https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/0.0.1/otoroshi-biscuit-studio_2.12-0.0.1.jar'\n"
+        children: "curl -L -o biscuit-studio-extension.jar 'https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/v0.0.2/otoroshi-biscuit-studio-v0.0.2.jar'\n"
       })
     }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
       id: "run-otoroshi-with-the-biscuit-studio-extension",
       children: "Run Otoroshi with the Biscuit Studio Extension"
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "Run Otoroshi with the Biscuit Studio extension by executing the following command:"
     }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
       children: (0,jsx_runtime.jsx)(_components.code, {
         className: "language-sh",
         children: "java -cp \"./biscuit-studio-extension.jar:./otoroshi.jar\" -Dotoroshi.adminLogin=admin -Dotoroshi.adminPassword=password -Dotoroshi.storage=file play.core.server.ProdServerStart\n"
       })
     }), "\n", (0,jsx_runtime.jsxs)(_components.p, {
-      children: ["Open ", (0,jsx_runtime.jsx)(_components.a, {
+      children: ["This will start the Otoroshi API Gateway with Biscuit Studio integrated. You can access the Otoroshi UI by opening ", (0,jsx_runtime.jsx)(_components.a, {
         href: "http://otoroshi.oto.tools:8080/",
         children: "http://otoroshi.oto.tools:8080/"
-      }), " in your browser"]
+      }), " in your browser."]
+    }), "\n", (0,jsx_runtime.jsxs)(_components.p, {
+      children: ["Default Otoroshi UI credentials:", (0,jsx_runtime.jsx)(_components.br, {}), "\n", (0,jsx_runtime.jsx)(_components.strong, {
+        children: "Username"
+      }), ": ", (0,jsx_runtime.jsx)(_components.code, {
+        children: "admin"
+      }), (0,jsx_runtime.jsx)(_components.br, {}), "\n", (0,jsx_runtime.jsx)(_components.strong, {
+        children: "Password"
+      }), ": ", (0,jsx_runtime.jsx)(_components.code, {
+        children: "password"
+      })]
+    }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
+      id: "use-it-on-cloud-apim-with-otoroshi-managed-instances",
+      children: "Use it on Cloud APIM with Otoroshi Managed Instances"
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
-      children: "Default Otoroshi UI credentials : admin / password"
+      children: (0,jsx_runtime.jsx)(_components.img, {
+        src: (__webpack_require__(9778)/* ["default"] */ .A) + "",
+        width: "256",
+        height: "256"
+      })
+    }), "\n", (0,jsx_runtime.jsxs)(_components.p, {
+      children: ["Register on ", (0,jsx_runtime.jsx)(_components.a, {
+        href: "https://cloud-apim.com",
+        children: "Cloud APIM"
+      })]
+    }), "\n", (0,jsx_runtime.jsxs)(_components.p, {
+      children: ["Go to your ", (0,jsx_runtime.jsx)(_components.a, {
+        href: "https://console.cloud-apim.com/",
+        children: "Cloud APIM console"
+      }), " and now click on ", (0,jsx_runtime.jsx)(_components.code, {
+        children: "Managed Instance"
+      }), " then ", (0,jsx_runtime.jsx)(_components.code, {
+        children: "New instance"
+      }), " and select Otoroshi's logo."]
+    }), "\n", (0,jsx_runtime.jsx)(_components.h3, {
+      id: "accessing-the-otoroshi-with-interface",
+      children: "Accessing the Otoroshi with Interface"
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "Once your Otoroshi instance is created you can click on 'console' button to open the interface and login with your credentials."
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "Now you can use the Biscuit Studio extension, it is included in your Otoroshi managed instance."
+    }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
+      id: "setting-up-on-clever-cloud",
+      children: "Setting Up on Clever Cloud"
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: (0,jsx_runtime.jsx)(_components.img, {
+        src: (__webpack_require__(2743)/* ["default"] */ .A) + "",
+        width: "1536",
+        height: "592"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.h3, {
+      id: "create-a-new-otoroshi-add-on",
+      children: "Create a new Otoroshi add-on"
+    }), "\n", (0,jsx_runtime.jsxs)(_components.ol, {
+      children: ["\n", (0,jsx_runtime.jsxs)(_components.li, {
+        children: [(0,jsx_runtime.jsx)(_components.a, {
+          href: "https://console.clever-cloud.com/users/me/addons/new",
+          children: "Create a new add-on"
+        }), " by selecting the ", (0,jsx_runtime.jsx)(_components.strong, {
+          children: "Create..."
+        }), " dropdown in the sidebar, then choose ", (0,jsx_runtime.jsx)(_components.strong, {
+          children: "Add-On"
+        }), "."]
+      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
+        children: ["Pick the ", (0,jsx_runtime.jsx)(_components.strong, {
+          children: "Otoroshi with LLM"
+        }), " add-on."]
+      }), "\n", (0,jsx_runtime.jsx)(_components.li, {
+        children: "Give your Otoroshi with LLM add-on a name and choose a deployment zone."
+      }), "\n"]
     })]
   });
 }
@@ -1657,6 +1460,7 @@ function _createMdxContent(props) {
     h3: "h3",
     header: "header",
     hr: "hr",
+    img: "img",
     li: "li",
     p: "p",
     strong: "strong",
@@ -1669,6 +1473,12 @@ function _createMdxContent(props) {
       children: (0,jsx_runtime.jsx)(_components.h1, {
         id: "introduction",
         children: "Introduction"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: (0,jsx_runtime.jsx)(_components.img, {
+        src: (__webpack_require__(5424)/* ["default"] */ .A) + "",
+        width: "863",
+        height: "551"
       })
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: "Biscuit tokens bring a new level of security and adaptability to token-based systems. By leveraging cryptographic primitives and a unique capability-based design, they enable:"
@@ -1758,7 +1568,7 @@ __webpack_require__.d(__webpack_exports__, {
 });
 
 ;// ./.docusaurus/docusaurus-plugin-content-docs/default/site-docs-overview-mdx-188.json
-const site_docs_overview_mdx_188_namespaceObject = /*#__PURE__*/JSON.parse('{"id":"overview","title":"Overview","description":"Otoroshi Biscuit Studio is an Otoroshi extension that allows you to use and integrate Biscuit Tokens into your Gateway.","source":"@site/docs/overview.mdx","sourceDirName":".","slug":"/overview","permalink":"/otoroshi-biscuit-studio/docs/overview","draft":false,"unlisted":false,"tags":[],"version":"current","sidebarPosition":1,"frontMatter":{"sidebar_position":1},"sidebar":"tutorialSidebar","next":{"title":"Introduction","permalink":"/otoroshi-biscuit-studio/docs/introduction"}}');
+const site_docs_overview_mdx_188_namespaceObject = /*#__PURE__*/JSON.parse('{"id":"overview","title":"Overview","description":"Otoroshi Biscuit Studio","source":"@site/docs/overview.mdx","sourceDirName":".","slug":"/overview","permalink":"/otoroshi-biscuit-studio/docs/overview","draft":false,"unlisted":false,"tags":[],"version":"current","sidebarPosition":1,"frontMatter":{"sidebar_position":1},"sidebar":"tutorialSidebar","next":{"title":"Introduction","permalink":"/otoroshi-biscuit-studio/docs/introduction"}}');
 // EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
 var jsx_runtime = __webpack_require__(4848);
 // EXTERNAL MODULE: ./node_modules/@mdx-js/react/lib/index.js
@@ -1781,22 +1591,26 @@ const assets = {
 
 
 const toc = [{
-  "value": "Supported Entities",
-  "id": "supported-entities",
-  "level": 2
+  "value": "Supported Entities in Otoroshi Biscuit Studio",
+  "id": "supported-entities-in-otoroshi-biscuit-studio",
+  "level": 3
 }, {
-  "value": "Supported Plugins",
-  "id": "supported-plugins",
-  "level": 2
+  "value": "Supported Plugins in Otoroshi Biscuit Studio",
+  "id": "supported-plugins-in-otoroshi-biscuit-studio",
+  "level": 3
 }];
 function _createMdxContent(props) {
   const _components = {
     a: "a",
+    br: "br",
+    code: "code",
     h1: "h1",
-    h2: "h2",
+    h3: "h3",
     header: "header",
+    img: "img",
     li: "li",
     p: "p",
+    strong: "strong",
     ul: "ul",
     ...(0,lib/* useMDXComponents */.R)(),
     ...props.components
@@ -1808,62 +1622,109 @@ function _createMdxContent(props) {
         children: "Overview"
       })
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
-      children: "Otoroshi Biscuit Studio is an Otoroshi extension that allows you to use and integrate Biscuit Tokens into your Gateway."
+      children: (0,jsx_runtime.jsx)(_components.img, {
+        alt: "Otoroshi Biscuit Studio",
+        src: (__webpack_require__(4705)/* ["default"] */ .A) + "",
+        width: "652",
+        height: "613"
+      })
+    }), "\n", (0,jsx_runtime.jsxs)(_components.p, {
+      children: [(0,jsx_runtime.jsx)(_components.a, {
+        href: "https://github.com/cloud-apim/otoroshi-biscuit-studio",
+        children: (0,jsx_runtime.jsx)(_components.strong, {
+          children: "Otoroshi Biscuit Studio"
+        })
+      }), " is a powerful extension for ", (0,jsx_runtime.jsx)(_components.a, {
+        href: "https://maif.github.io/otoroshi/manual/index.html",
+        children: "Otoroshi"
+      }), ", designed to integrate and manage ", (0,jsx_runtime.jsx)(_components.a, {
+        href: "https://biscuitsec.org",
+        children: "Biscuit Tokens"
+      }), " seamlessly within your beloved API Gateway."]
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
-      children: "Biscuit tokens are a powerful and flexible tool designed for secure and efficient access control."
+      children: "Biscuit tokens offer a cutting-edge approach to secure and efficient access control. By combining advanced cryptographic techniques with a compact, extensible format, Biscuit tokens empower developers to create robust, scalable security solutions."
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
-      children: "They combine modern cryptographic techniques with a compact, extensible structure, enabling developers to implement secure systems with ease."
-    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
-      children: "With their unique features, Biscuit tokens stand out as a cutting-edge solution for token-based authentication and authorization."
-    }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
-      id: "supported-entities",
-      children: "Supported Entities"
+      children: "Their versatility and unique features make them an ideal choice for modern token-based authentication and authorization systems, enabling fine-grained control over user access and permissions."
+    }), "\n", (0,jsx_runtime.jsx)(_components.h3, {
+      id: "supported-entities-in-otoroshi-biscuit-studio",
+      children: "Supported Entities in Otoroshi Biscuit Studio"
     }), "\n", (0,jsx_runtime.jsxs)(_components.ul, {
-      children: ["\n", (0,jsx_runtime.jsx)(_components.li, {
-        children: (0,jsx_runtime.jsx)(_components.a, {
-          href: "/docs/entities/keypairs",
-          children: "Biscuit KeyPairs"
-        })
-      }), "\n", (0,jsx_runtime.jsx)(_components.li, {
-        children: (0,jsx_runtime.jsx)(_components.a, {
-          href: "/docs/entities/verifiers",
-          children: "Biscuit Verifiers"
-        })
-      }), "\n", (0,jsx_runtime.jsx)(_components.li, {
-        children: (0,jsx_runtime.jsx)(_components.a, {
-          href: "/docs/entities/attenuators",
-          children: "Biscuit Attenuators"
-        })
-      }), "\n", (0,jsx_runtime.jsx)(_components.li, {
-        children: (0,jsx_runtime.jsx)(_components.a, {
-          href: "/docs/entities/rbac_policies",
-          children: "Biscuit RBAC Policies"
-        })
-      }), "\n", (0,jsx_runtime.jsx)(_components.li, {
-        children: (0,jsx_runtime.jsx)(_components.a, {
-          href: "/docs/entities/remote_facts",
-          children: "Biscuit Remote Facts Loader"
-        })
-      }), "\n", (0,jsx_runtime.jsx)(_components.li, {
-        children: (0,jsx_runtime.jsx)(_components.a, {
-          href: "/docs/entities/tokens_forge",
-          children: "Biscuit Tokens Forge"
-        })
+      children: ["\n", (0,jsx_runtime.jsxs)(_components.li, {
+        children: ["\n", (0,jsx_runtime.jsxs)(_components.p, {
+          children: [(0,jsx_runtime.jsx)(_components.strong, {
+            children: (0,jsx_runtime.jsx)(_components.a, {
+              href: "/docs/entities/keypairs",
+              children: "Biscuit KeyPairs"
+            })
+          }), (0,jsx_runtime.jsx)(_components.br, {}), "\n", "Create Biscuit Keypairs to generate and verify Biscuit tokens."]
+        }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+          children: "Keypairs are essential for signing and verifying tokens, ensuring the integrity and authenticity of requests."
+        }), "\n"]
+      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
+        children: ["\n", (0,jsx_runtime.jsxs)(_components.p, {
+          children: [(0,jsx_runtime.jsx)(_components.strong, {
+            children: (0,jsx_runtime.jsx)(_components.a, {
+              href: "/docs/entities/verifiers",
+              children: "Biscuit Verifiers"
+            })
+          }), (0,jsx_runtime.jsx)(_components.br, {}), "\n", "Manage and configure verifiers that check the validity of incoming Biscuit tokens against defined rules and policies, ensuring proper authorization and security."]
+        }), "\n"]
+      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
+        children: ["\n", (0,jsx_runtime.jsxs)(_components.p, {
+          children: [(0,jsx_runtime.jsx)(_components.strong, {
+            children: (0,jsx_runtime.jsx)(_components.a, {
+              href: "/docs/entities/attenuators",
+              children: "Biscuit Attenuators"
+            })
+          }), (0,jsx_runtime.jsx)(_components.br, {}), "\n", "Configure attenuators to modify and return Biscuit tokens that have been \"attenuated\" (limited in scope or permissions), ensuring fine-grained control over access levels in your API routes."]
+        }), "\n"]
       }), "\n"]
-    }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
-      id: "supported-plugins",
-      children: "Supported Plugins"
+    }), "\n", (0,jsx_runtime.jsx)(_components.h3, {
+      id: "supported-plugins-in-otoroshi-biscuit-studio",
+      children: "Supported Plugins in Otoroshi Biscuit Studio"
     }), "\n", (0,jsx_runtime.jsxs)(_components.ul, {
-      children: ["\n", (0,jsx_runtime.jsx)(_components.li, {
-        children: (0,jsx_runtime.jsx)(_components.a, {
-          href: "/docs/plugins/verifiers",
-          children: "Verifiers"
-        })
-      }), "\n", (0,jsx_runtime.jsx)(_components.li, {
-        children: (0,jsx_runtime.jsx)(_components.a, {
-          href: "/docs/plugins/attenuators",
-          children: "Attenuators"
-        })
+      children: ["\n", (0,jsx_runtime.jsxs)(_components.li, {
+        children: ["\n", (0,jsx_runtime.jsxs)(_components.p, {
+          children: [(0,jsx_runtime.jsx)(_components.strong, {
+            children: (0,jsx_runtime.jsx)(_components.a, {
+              href: "/docs/plugins/verifiers",
+              children: "Verifier plugin"
+            })
+          }), (0,jsx_runtime.jsx)(_components.br, {}), "\n", "Integrate verifiers plugins into your Otoroshi routes to check the validity of Biscuit tokens."]
+        }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+          children: "This ensures that only authorized requests are processed, providing additional layers of security and control over your API traffic."
+        }), "\n"]
+      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
+        children: ["\n", (0,jsx_runtime.jsxs)(_components.p, {
+          children: [(0,jsx_runtime.jsx)(_components.strong, {
+            children: (0,jsx_runtime.jsx)(_components.a, {
+              href: "/docs/plugins/attenuators",
+              children: "Attenuator plugin"
+            })
+          }), (0,jsx_runtime.jsx)(_components.br, {}), "\n", "Add attenuator plugins to your Otoroshi routes that apply attenuation to Biscuit tokens, allowing you to reduce or modify the scope of access granted by a token."]
+        }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+          children: "This can be used to tailor access permissions dynamically based on the specific needs of your routes or services."
+        }), "\n"]
+      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
+        children: ["\n", (0,jsx_runtime.jsx)(_components.p, {
+          children: (0,jsx_runtime.jsx)(_components.strong, {
+            children: (0,jsx_runtime.jsx)(_components.a, {
+              href: "/docs/plugins/clientcredentials",
+              children: "Client Credentials plugin"
+            })
+          })
+        }), "\n", (0,jsx_runtime.jsxs)(_components.p, {
+          children: ["The Client Credentials Plugin is a ", (0,jsx_runtime.jsx)(_components.code, {
+            children: "Backend"
+          }), " plugin that enables the OAuth2 ", (0,jsx_runtime.jsx)(_components.code, {
+            children: "client_credentials"
+          }), " flow, using a ", (0,jsx_runtime.jsx)(_components.a, {
+            href: "/docs/introduction",
+            children: "Biscuit Token"
+          }), " as the ", (0,jsx_runtime.jsx)(_components.code, {
+            children: "access_token"
+          }), "."]
+        }), "\n"]
       }), "\n"]
     })]
   });
@@ -1903,7 +1764,7 @@ __webpack_require__.d(__webpack_exports__, {
 });
 
 ;// ./.docusaurus/docusaurus-plugin-content-docs/default/site-docs-plugins-attenuators-mdx-920.json
-const site_docs_plugins_attenuators_mdx_920_namespaceObject = /*#__PURE__*/JSON.parse('{"id":"plugins/attenuators","title":"Attenuator plugin","description":"When attenuating a Biscuit token from sources such as headers, cookies, or query parameters, the process begins by extracting and validating the original token.","source":"@site/docs/plugins/attenuators.mdx","sourceDirName":"plugins","slug":"/plugins/attenuators","permalink":"/otoroshi-biscuit-studio/docs/plugins/attenuators","draft":false,"unlisted":false,"tags":[],"version":"current","sidebarPosition":2,"frontMatter":{"sidebar_position":2},"sidebar":"tutorialSidebar","previous":{"title":"Verifier plugin","permalink":"/otoroshi-biscuit-studio/docs/plugins/verifiers"},"next":{"title":"Biscuit Tokens Forge","permalink":"/otoroshi-biscuit-studio/docs/tokens_forge"}}');
+const site_docs_plugins_attenuators_mdx_920_namespaceObject = /*#__PURE__*/JSON.parse('{"id":"plugins/attenuators","title":"Attenuator plugin","description":"When attenuating a Biscuit token from sources such as headers, cookies, or query parameters, the process begins by extracting and validating the original token.","source":"@site/docs/plugins/attenuators.mdx","sourceDirName":"plugins","slug":"/plugins/attenuators","permalink":"/otoroshi-biscuit-studio/docs/plugins/attenuators","draft":false,"unlisted":false,"tags":[],"version":"current","sidebarPosition":2,"frontMatter":{"sidebar_position":2},"sidebar":"tutorialSidebar","previous":{"title":"Verifier plugin","permalink":"/otoroshi-biscuit-studio/docs/plugins/verifiers"},"next":{"title":"Client Credentials plugin","permalink":"/otoroshi-biscuit-studio/docs/plugins/clientcredentials"}}');
 // EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
 var jsx_runtime = __webpack_require__(4848);
 // EXTERNAL MODULE: ./node_modules/@mdx-js/react/lib/index.js
@@ -2004,7 +1865,7 @@ function _createMdxContent(props) {
     }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
       children: (0,jsx_runtime.jsx)(_components.code, {
         className: "language-js",
-        children: "  {\n    \"ref\": \"YOUR_BISCUIT_ATTENUATOR_REF\",\n    \"extractor_type\": \"header\", // header, query or cookies\n    \"extractor_name\": \"Authorization\"\n    \"token_replace_loc\": \"query\", // header, query or cookies\n    \"token_replace_name\": \"auth\"\n  }\n"
+        children: "  {\n    \"ref\": \"YOUR_BISCUIT_ATTENUATOR_REF\",\n    \"extractor_type\": \"header\", // header, query or cookies\n    \"extractor_name\": \"Authorization\",\n    \"token_replace_loc\": \"query\", // header, query or cookies\n    \"token_replace_name\": \"auth\"\n  }\n"
       })
     }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
       id: "example",
@@ -2099,6 +1960,206 @@ function _createMdxContent(props) {
       }), "\n"]
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: "This flexibility allows secure propagation of tokens while adapting to different application needs."
+    })]
+  });
+}
+function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = {
+    ...(0,lib/* useMDXComponents */.R)(),
+    ...props.components
+  };
+  return MDXLayout ? (0,jsx_runtime.jsx)(MDXLayout, {
+    ...props,
+    children: (0,jsx_runtime.jsx)(_createMdxContent, {
+      ...props
+    })
+  }) : _createMdxContent(props);
+}
+
+
+
+/***/ }),
+
+/***/ 9953:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+// ESM COMPAT FLAG
+__webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, {
+  assets: () => (/* binding */ assets),
+  contentTitle: () => (/* binding */ contentTitle),
+  "default": () => (/* binding */ MDXContent),
+  frontMatter: () => (/* binding */ frontMatter),
+  metadata: () => (/* reexport */ site_docs_plugins_clientcredentials_mdx_c71_namespaceObject),
+  toc: () => (/* binding */ toc)
+});
+
+;// ./.docusaurus/docusaurus-plugin-content-docs/default/site-docs-plugins-clientcredentials-mdx-c71.json
+const site_docs_plugins_clientcredentials_mdx_c71_namespaceObject = /*#__PURE__*/JSON.parse('{"id":"plugins/clientcredentials","title":"Client Credentials plugin","description":"Client Credentials plugin","source":"@site/docs/plugins/clientcredentials.mdx","sourceDirName":"plugins","slug":"/plugins/clientcredentials","permalink":"/otoroshi-biscuit-studio/docs/plugins/clientcredentials","draft":false,"unlisted":false,"tags":[],"version":"current","sidebarPosition":3,"frontMatter":{"sidebar_position":3},"sidebar":"tutorialSidebar","previous":{"title":"Attenuator plugin","permalink":"/otoroshi-biscuit-studio/docs/plugins/attenuators"},"next":{"title":"API Documentation","permalink":"/otoroshi-biscuit-studio/docs/api"}}');
+// EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
+var jsx_runtime = __webpack_require__(4848);
+// EXTERNAL MODULE: ./node_modules/@mdx-js/react/lib/index.js
+var lib = __webpack_require__(8453);
+// EXTERNAL MODULE: ./src/components/Terminal/index.js
+var Terminal = __webpack_require__(9229);
+;// ./docs/plugins/clientcredentials.mdx
+
+
+const frontMatter = {
+	sidebar_position: 3
+};
+const contentTitle = 'Client Credentials plugin';
+
+const assets = {
+
+};
+
+
+
+
+const toc = [{
+  "value": "Demo",
+  "id": "demo",
+  "level": 2
+}, {
+  "value": "Setup the <code>client_credentials</code> plugin",
+  "id": "setup-the-client_credentials-plugin",
+  "level": 3
+}, {
+  "value": "Setup API route",
+  "id": "setup-api-route",
+  "level": 3
+}];
+function _createMdxContent(props) {
+  const _components = {
+    code: "code",
+    h1: "h1",
+    h2: "h2",
+    h3: "h3",
+    header: "header",
+    img: "img",
+    p: "p",
+    pre: "pre",
+    ...(0,lib/* useMDXComponents */.R)(),
+    ...props.components
+  };
+  return (0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+    children: [(0,jsx_runtime.jsx)(_components.header, {
+      children: (0,jsx_runtime.jsx)(_components.h1, {
+        id: "client-credentials-plugin",
+        children: "Client Credentials plugin"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: (0,jsx_runtime.jsx)(_components.img, {
+        alt: "Client Credentials plugin",
+        src: (__webpack_require__(9121)/* ["default"] */ .A) + "",
+        width: "574",
+        height: "411"
+      })
+    }), "\n", (0,jsx_runtime.jsxs)(_components.p, {
+      children: ["this plugin can be used implement the OAuth2 ", (0,jsx_runtime.jsx)(_components.code, {
+        children: "client_credentials"
+      }), " flow with the ", (0,jsx_runtime.jsx)(_components.code, {
+        children: "access_token"
+      }), " being a biscuit.\nthis plugin is of kind ", (0,jsx_runtime.jsx)(_components.code, {
+        children: "Backend"
+      }), ". It expects a ", (0,jsx_runtime.jsx)(_components.code, {
+        children: "POST"
+      }), " with a typical OAuth2 ", (0,jsx_runtime.jsx)(_components.code, {
+        children: "client_credentials"
+      }), " flow payload."]
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-javascript",
+        children: "{\n  \"grant_type\": \"client_credentials\",\n  \"client_id\": \"apikey_client_id\",\n  \"client_secret\": \"apikey_client_secret\",\n  \"bearer_kind\": \"biscuit\",\n  \"aud\": \"https://api.foo.bar\" // optional\n}\n"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
+      id: "demo",
+      children: "Demo"
+    }), "\n", (0,jsx_runtime.jsxs)(_components.p, {
+      children: ["let's try to implement a route protected by a biscuit tokens verifier where the token is issued by the ", (0,jsx_runtime.jsx)(_components.code, {
+        children: "client_credentials"
+      }), " plugin"]
+    }), "\n", (0,jsx_runtime.jsxs)(_components.h3, {
+      id: "setup-the-client_credentials-plugin",
+      children: ["Setup the ", (0,jsx_runtime.jsx)(_components.code, {
+        children: "client_credentials"
+      }), " plugin"]
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "first let's create an apikey"
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-sh",
+        children: "curl -X POST \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Basic xxxx' \\\n  \"http://otoroshi-api.oto.tools:8080/apis/apim.otoroshi.io/v1/apikeys\" \\\n  -d '{\n  \"_loc\" : {\n    \"tenant\" : \"default\",\n    \"teams\" : [ \"default\" ]\n  },\n  \"clientId\" : \"N5COev7kEpPBrbVg\",\n  \"clientSecret\" : \"iDba0Ahz2AMYU7Ao\",\n  \"clientName\" : \"test\",\n  \"description\" : \"\",\n  \"authorizedGroup\" : null,\n  \"authorizedEntities\" : [ \"route_bfda6474-0f81-4880-966e-8dae5c2683de\", \"route_4874704c-56a2-4460-9a21-ff8055a19c75\" ],\n  \"authorizations\" : [ {\n    \"kind\" : \"route\",\n    \"id\" : \"bfda6474-0f81-4880-966e-8dae5c2683de\"\n  }, {\n    \"kind\" : \"route\",\n    \"id\" : \"4874704c-56a2-4460-9a21-ff8055a19c75\"\n  } ],\n  \"enabled\" : true,\n  \"readOnly\" : false,\n  \"allowClientIdOnly\" : false,\n  \"throttlingQuota\" : 10000000,\n  \"dailyQuota\" : 10000000,\n  \"monthlyQuota\" : 10000000,\n  \"constrainedServicesOnly\" : false,\n  \"restrictions\" : {\n    \"enabled\" : false,\n    \"allowLast\" : true,\n    \"allowed\" : [ ],\n    \"forbidden\" : [ ],\n    \"notFound\" : [ ]\n  },\n  \"rotation\" : {\n    \"enabled\" : false,\n    \"rotationEvery\" : 744,\n    \"gracePeriod\" : 168,\n    \"nextSecret\" : null\n  },\n  \"validUntil\" : null,\n  \"tags\" : [ ],\n  \"metadata\" : { }\n}'\n"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "then let's create a keypair"
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-sh",
+        children: "curl -X POST \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Basic xxxx' \\\n  \"http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs\" \\\n  -d '{\n  \"id\" : \"biscuit-keypair_dev_d25612c6-b4d0-43ed-a711-16b6c09a5155\",\n  \"name\" : \"New Biscuit Key Pair\",\n  \"description\" : \"New biscuit KeyPair\",\n  \"metadata\" : { },\n  \"pubKey\" : \"771F9E7FE62784502FE34CE862220586D3DB637D6A5ABAD254F7330369D3B357\",\n  \"privKey\" : \"4379BE5B9AFA1A84F59D2417C20020EF1E47E0805945535B45616209D8867E50\",\n  \"tags\" : [ ]\n}'\n"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "then let's create a forge"
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-sh",
+        children: "curl -X POST \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Basic xxxx' \\\n  \"http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-forges\" \\\n  -d '{\n  \"id\" : \"biscuit-forge_dev_7580094c-47e0-495e-80fc-b9c9e8fb8129\",\n  \"name\" : \"New biscuit token\",\n  \"description\" : \"New biscuit token\",\n  \"metadata\" : { },\n  \"keypair_ref\" : \"biscuit-keypair_dev_d25612c6-b4d0-43ed-a711-16b6c09a5155\",\n  \"config\" : {\n    \"checks\" : [ ],\n    \"facts\" : [ ],\n    \"resources\" : [ ],\n    \"rules\" : [ ]\n  },\n  \"tags\" : [ ],\n  \"remoteFactsLoaderRef\" : null\n}'\n"
+      })
+    }), "\n", (0,jsx_runtime.jsxs)(_components.p, {
+      children: ["and finally let's create a route that uses the ", (0,jsx_runtime.jsx)(_components.code, {
+        children: "client_credentials"
+      }), " plugin"]
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-sh",
+        children: "curl -X POST \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Basic xxxx' \\\n  \"http://otoroshi-api.oto.tools:8080/apis/proxy.otoroshi.io/v1/routes\" \\\n  -d '{\n  \"_loc\" : {\n    \"tenant\" : \"default\",\n    \"teams\" : [ \"default\" ]\n  },\n  \"id\" : \"4874704c-56a2-4460-9a21-ff8055a19c75\",\n  \"name\" : \"test route\",\n  \"description\" : \"test route\",\n  \"tags\" : [ ],\n  \"metadata\" : { },\n  \"enabled\" : true,\n  \"groups\" : [ \"default\" ],\n  \"bound_listeners\" : [ ],\n  \"frontend\" : {\n    \"domains\" : [ \"test.oto.tools/token\" ],\n    \"strip_path\" : true,\n    \"exact\" : false,\n    \"headers\" : { },\n    \"query\" : { },\n    \"methods\" : [ ]\n  },\n  \"backend\" : {\n    \"targets\" : [ {\n      \"id\" : \"www.otoroshi.io\",\n      \"hostname\" : \"www.otoroshi.io\",\n      \"port\" : 443,\n      \"tls\" : true,\n      \"weight\" : 1,\n      \"predicate\" : {\n        \"type\" : \"AlwaysMatch\"\n      },\n      \"protocol\" : \"HTTP/1.1\",\n      \"ip_address\" : null,\n      \"tls_config\" : {\n        \"certs\" : [ ],\n        \"trusted_certs\" : [ ],\n        \"enabled\" : false,\n        \"loose\" : false,\n        \"trust_all\" : false\n      }\n    } ],\n    \"root\" : \"/\",\n    \"rewrite\" : false,\n    \"load_balancing\" : {\n      \"type\" : \"RoundRobin\"\n    }\n  },\n  \"backend_ref\" : null,\n  \"plugins\" : [ {\n    \"enabled\" : true,\n    \"debug\" : false,\n    \"plugin\" : \"cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.ClientCredentialBiscuitTokenEndpoint\",\n    \"include\" : [ ],\n    \"exclude\" : [ ],\n    \"config\" : {\n      \"expiration\" : 21600000,\n      \"forge_ref\" : \"biscuit-forge_dev_7580094c-47e0-495e-80fc-b9c9e8fb8129\"\n    },\n    \"bound_listeners\" : [ ]\n  } ]\n}'\n"
+      })
+    }), "\n", (0,jsx_runtime.jsxs)(_components.p, {
+      children: ["now we can call this route to get an ", (0,jsx_runtime.jsx)(_components.code, {
+        children: "access_token"
+      })]
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-sh",
+        children: "curl -X POST -H 'Content-Type: application/json' \"http://test.oto.tools:8080/token\" -d '{\n  \"grant_type\": \"client_credentials\",\n  \"client_id\": \"apikey_client_id\",\n  \"client_secret\": \"apikey_client_secret\",\n  \"bearer_kind\": \"biscuit\",\n  \"aud\": \"http://test.oto.tools:8080\"\n}'\n"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "the result of this call might look something like"
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-json",
+        children: "{\n  \"access_token\" : \"EosCCqABCgljbGllbnRfaWQKEHdWc0R3bTJYWmxWd0RCQjkKC2NsaWVudF9uYW1lCgR0ZXN0CgNhdWQKG2h0dHA6Ly90ZXN0Lm90by50b29sczo1MDQ1MxgDIgoKCAiACBIDGIEIIgoKCAiCCBIDGIMIIgoKCAiECBIDGIUIMiYKJAoCCBsSBggFEgIIBRoWCgQKAggFCggKBiCi9ei8BgoEGgIIAhIkCAASIO_5F8o1lXRmahr6IPCxyW1X6Mu1Xsk_AsXtNYEySbTLGkDS_usafk7IFXbiXHwJao7_dFt_6CLB6k6dyK56PHP6Pbl-O9Jn3TxbYT4KNVgIW6DAjkHiisM8sB1YSXeTYqAFIiIKINaTmcs4QrNLiGZ45qvOn_ov589DIwNSfLhAeyiWj9bB\",\n  \"token_type\" : \"Bearer\",\n  \"expires_in\" : 21600\n}\n"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.h3, {
+      id: "setup-api-route",
+      children: "Setup API route"
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "let's create a biscuit verifier that check if the biscuit token is valid and issued for the right domain with the right apikey"
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-sh",
+        children: "curl -X POST \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Basic xxxx' \\\n  \"http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers\" \\\n  -d '{\n  \"enabled\" : true,\n  \"id\" : \"biscuit-verifier_dev_1808df91-1878-4be8-9510-c5ea19098852\",\n  \"keypair_ref\" : \"biscuit-keypair_dev_d25612c6-b4d0-43ed-a711-16b6c09a5155\",\n  \"name\" : \"New biscuit verifier\",\n  \"description\" : \"New biscuit verifier\",\n  \"metadata\" : { },\n  \"strict\" : true,\n  \"tags\" : [ ],\n  \"config\" : {\n    \"checks\" : [ \"check if client_id(\\\"apikey_client_id\\\")\", \"check if aud(\\\"http://test.oto.tools:8080\\\")\" ],\n    \"facts\" : [ ],\n    \"resources\" : [ ],\n    \"rules\" : [ ],\n    \"policies\" : [ \"allow if true\" ],\n    \"revokedIds\" : [ ]\n  }\n}'\n"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: "then let's create the route with the verifier"
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-sh",
+        children: "curl -X POST \\\n  -H 'Content-Type: application/json' \\\n  -H 'Authorization: Basic xxxx' \\\n  \"http://otoroshi-api.oto.tools:8080/apis/proxy.otoroshi.io/v1/routes\" \\\n  -d '{\n  \"_loc\" : {\n    \"tenant\" : \"default\",\n    \"teams\" : [ \"default\" ]\n  },\n  \"id\" : \"bfda6474-0f81-4880-966e-8dae5c2683de\",\n  \"name\" : \"test route\",\n  \"description\" : \"test route\",\n  \"tags\" : [ ],\n  \"metadata\" : { },\n  \"enabled\" : true,\n  \"groups\" : [ \"default\" ],\n  \"bound_listeners\" : [ ],\n  \"frontend\" : {\n    \"domains\" : [ \"test.oto.tools/api\" ],\n    \"strip_path\" : false,\n    \"exact\" : false,\n    \"headers\" : { },\n    \"query\" : { },\n    \"methods\" : [ ]\n  },\n  \"backend\" : {\n    \"targets\" : [ {\n      \"id\" : \"mirror.otoroshi.io\",\n      \"hostname\" : \"mirror.otoroshi.io\",\n      \"port\" : 443,\n      \"tls\" : true,\n      \"weight\" : 1,\n      \"predicate\" : {\n        \"type\" : \"AlwaysMatch\"\n      },\n      \"protocol\" : \"HTTP/1.1\",\n      \"ip_address\" : null,\n      \"tls_config\" : {\n        \"certs\" : [ ],\n        \"trusted_certs\" : [ ],\n        \"enabled\" : false,\n        \"loose\" : false,\n        \"trust_all\" : false\n      }\n    } ],\n    \"root\" : \"/\",\n    \"rewrite\" : false,\n    \"load_balancing\" : {\n      \"type\" : \"RoundRobin\"\n    },\n    \"health_check\" : null\n  },\n  \"backend_ref\" : null,\n  \"plugins\" : [ {\n    \"enabled\" : true,\n    \"debug\" : false,\n    \"plugin\" : \"cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenValidator\",\n    \"include\" : [ ],\n    \"exclude\" : [ ],\n    \"config\" : {\n      \"verifier_ref\" : \"biscuit-verifier_dev_1808df91-1878-4be8-9510-c5ea19098852\"\n    },\n    \"bound_listeners\" : [ ]\n  }, {\n      \"enabled\": true,\n      \"debug\": false,\n      \"plugin\": \"cp:otoroshi.next.plugins.OverrideHost\",\n      \"include\": [],\n      \"exclude\": [],\n      \"config\": {},\n      \"bound_listeners\": [],\n      \"plugin_index\": {\n        \"transform_request\": 1\n      }\n  } ]\n}'\n"
+      })
+    }), "\n", (0,jsx_runtime.jsxs)(_components.p, {
+      children: ["and now let call the route with the biscuit ", (0,jsx_runtime.jsx)(_components.code, {
+        children: "access_token"
+      })]
+    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
+      children: (0,jsx_runtime.jsx)(_components.code, {
+        className: "language-sh",
+        children: "curl \"http://test.oto.tools:8080/api\" \\\n  -H 'Authorization: Bearer EosCCqABCgljbGllbnRfaWQKEHdWc0R3bTJYWmxWd0RCQjkKC2NsaWVudF9uYW1lCgR0ZXN0CgNhdWQKG2h0dHA6Ly90ZXN0Lm90by50b29sczo1MDQ1MxgDIgoKCAiACBIDGIEIIgoKCAiCCBIDGIMIIgoKCAiECBIDGIUIMiYKJAoCCBsSBggFEgIIBRoWCgQKAggFCggKBiCi9ei8BgoEGgIIAhIkCAASIO_5F8o1lXRmahr6IPCxyW1X6Mu1Xsk_AsXtNYEySbTLGkDS_usafk7IFXbiXHwJao7_dFt_6CLB6k6dyK56PHP6Pbl-O9Jn3TxbYT4KNVgIW6DAjkHiisM8sB1YSXeTYqAFIiIKINaTmcs4QrNLiGZ45qvOn_ov589DIwNSfLhAeyiWj9bB'\n\n{\n  \"method\" : \"GET\",\n  \"path\" : \"/api\",\n  \"headers\" : {\n    \"host\" : \"mirror.otoroshi.io\",\n    \"accept\" : \"*/*\",\n    \"user-agent\" : \"AHC/2.1\",\n    \"authorization\" : \"Bearer EosCCqABCgljbGllbnRfaWQKEHdWc0R3bTJYWmxWd0RCQjkKC2NsaWVudF9uYW1lCgR0ZXN0CgNhdWQKG2h0dHA6Ly90ZXN0Lm90by50b29sczo1MDQ1MxgDIgoKCAiACBIDGIEIIgoKCAiCCBIDGIMIIgoKCAiECBIDGIUIMiYKJAoCCBsSBggFEgIIBRoWCgQKAggFCggKBiCi9ei8BgoEGgIIAhIkCAASIO_5F8o1lXRmahr6IPCxyW1X6Mu1Xsk_AsXtNYEySbTLGkDS_usafk7IFXbiXHwJao7_dFt_6CLB6k6dyK56PHP6Pbl-O9Jn3TxbYT4KNVgIW6DAjkHiisM8sB1YSXeTYqAFIiIKINaTmcs4QrNLiGZ45qvOn_ov589DIwNSfLhAeyiWj9bB\",\n    \"x-forwarded-for\" : \"45.80.20.1\",\n    \"forwarded\" : \"proto=https;for=45.80.20.1:51029;by=91.208.207.223\",\n    \"x-forwarded-port\" : \"443\",\n    \"x-forwarded-proto\" : \"https\",\n    \"sozu-id\" : \"01JJRK7TERSK9776XHKM7590BS\"\n  },\n  \"body\" : null\n}\n"
+      })
     })]
   });
 }
@@ -2314,137 +2375,6 @@ function _createMdxContent(props) {
       children: (0,jsx_runtime.jsx)(_components.code, {
         className: "language-js",
         children: "  {\n    \"verifier_ref\": \"YOUR_BISCUIT_VERIFIER_ENTITY_REF\",\n    \"rbac_ref\": \"RBAC_POLICY_ENTITY_REF\" // optional\n    \"enforce\": true, // true or false\n    \"extractor_type\": \"header\", // header, query or cookies\n    \"extractor_name\": \"Authorization\"\n  }\n"
-      })
-    })]
-  });
-}
-function MDXContent(props = {}) {
-  const {wrapper: MDXLayout} = {
-    ...(0,lib/* useMDXComponents */.R)(),
-    ...props.components
-  };
-  return MDXLayout ? (0,jsx_runtime.jsx)(MDXLayout, {
-    ...props,
-    children: (0,jsx_runtime.jsx)(_createMdxContent, {
-      ...props
-    })
-  }) : _createMdxContent(props);
-}
-
-
-
-/***/ }),
-
-/***/ 7423:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-// ESM COMPAT FLAG
-__webpack_require__.r(__webpack_exports__);
-
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, {
-  assets: () => (/* binding */ assets),
-  contentTitle: () => (/* binding */ contentTitle),
-  "default": () => (/* binding */ MDXContent),
-  frontMatter: () => (/* binding */ frontMatter),
-  metadata: () => (/* reexport */ site_docs_tokens_forge_mdx_326_namespaceObject),
-  toc: () => (/* binding */ toc)
-});
-
-;// ./.docusaurus/docusaurus-plugin-content-docs/default/site-docs-tokens-forge-mdx-326.json
-const site_docs_tokens_forge_mdx_326_namespaceObject = /*#__PURE__*/JSON.parse('{"id":"tokens_forge","title":"Biscuit Tokens Forge","description":"Prerequisites","source":"@site/docs/tokens_forge.mdx","sourceDirName":".","slug":"/tokens_forge","permalink":"/otoroshi-biscuit-studio/docs/tokens_forge","draft":false,"unlisted":false,"tags":[],"version":"current","sidebarPosition":5,"frontMatter":{"sidebar_position":5},"sidebar":"tutorialSidebar","previous":{"title":"Attenuator plugin","permalink":"/otoroshi-biscuit-studio/docs/plugins/attenuators"},"next":{"title":"API Documentation","permalink":"/otoroshi-biscuit-studio/docs/api"}}');
-// EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
-var jsx_runtime = __webpack_require__(4848);
-// EXTERNAL MODULE: ./node_modules/@mdx-js/react/lib/index.js
-var lib = __webpack_require__(8453);
-// EXTERNAL MODULE: ./src/components/Terminal/index.js
-var Terminal = __webpack_require__(9229);
-;// ./docs/tokens_forge.mdx
-
-
-const frontMatter = {
-	sidebar_position: 5
-};
-const contentTitle = 'Biscuit Tokens Forge';
-
-const assets = {
-
-};
-
-
-
-
-const toc = [{
-  "value": "Prerequisites",
-  "id": "prerequisites",
-  "level": 2
-}, {
-  "value": "Generate a Biscuit Token from command line (using the Forge entity)",
-  "id": "generate-a-biscuit-token-from-command-line-using-the-forge-entity",
-  "level": 2
-}];
-function _createMdxContent(props) {
-  const _components = {
-    a: "a",
-    code: "code",
-    h1: "h1",
-    h2: "h2",
-    header: "header",
-    li: "li",
-    p: "p",
-    pre: "pre",
-    ul: "ul",
-    ...(0,lib/* useMDXComponents */.R)(),
-    ...props.components
-  };
-  return (0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
-    children: [(0,jsx_runtime.jsx)(_components.header, {
-      children: (0,jsx_runtime.jsx)(_components.h1, {
-        id: "biscuit-tokens-forge",
-        children: "Biscuit Tokens Forge"
-      })
-    }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
-      id: "prerequisites",
-      children: "Prerequisites"
-    }), "\n", (0,jsx_runtime.jsxs)(_components.ul, {
-      children: ["\n", (0,jsx_runtime.jsxs)(_components.li, {
-        children: ["\n", (0,jsx_runtime.jsxs)(_components.p, {
-          children: ["A ", (0,jsx_runtime.jsx)(_components.a, {
-            href: "/docs/entities/keypairs",
-            children: "Biscuit KeyPair"
-          })]
-        }), "\n"]
-      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
-        children: ["\n", (0,jsx_runtime.jsx)(_components.p, {
-          children: "A datalog :"
-        }), "\n", (0,jsx_runtime.jsxs)(_components.ul, {
-          children: ["\n", (0,jsx_runtime.jsx)(_components.li, {
-            children: "An array of biscuit Facts (could be empty)"
-          }), "\n", (0,jsx_runtime.jsx)(_components.li, {
-            children: "An array of biscuit Checks (could be empty)"
-          }), "\n", (0,jsx_runtime.jsx)(_components.li, {
-            children: "An array of biscuit Resources (could be empty)"
-          }), "\n", (0,jsx_runtime.jsx)(_components.li, {
-            children: "An array of biscuit Rules (could be empty)"
-          }), "\n"]
-        }), "\n"]
-      }), "\n"]
-    }), "\n", (0,jsx_runtime.jsx)(_components.h1, {
-      id: "example--a-generated-token-with-the-biscuit-forge",
-      children: "Example : a Generated token with the Biscuit Forge"
-    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
-      children: (0,jsx_runtime.jsx)(_components.code, {
-        className: "language-javascript",
-        children: "{\n  \"id\": \"biscuit_token_0531505a-ae44-4022-983d-9b035786f55a\",\n  \"name\": \"Biscuit Token Name\",\n  \"description\": \"A simple Biscuit Token\",\n  \"keypair_ref\": \"biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9\",\n  \"config\": {\n    \"checks\": [\n      \"check if time($date), $date <= 2024-12-30T19:00:10Z;\"\n    ],\n    \"facts\": [\n      \"user(\\\"demo\\\")\",\n      \"role(\\\"dev\\\")\",\n      \"time(2024-12-18T20:00:00Z)\"\n    ],\n    \"resources\": [],\n    \"rules\": []\n  },\n  \"token\": \"GENERATED_TOKEN_HERE\",\n  \"tags\": [],\n  \"kind\": \"biscuit.extensions.cloud-apim.com/BiscuitTokenForge\"\n}\n"
-      })
-    }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
-      id: "generate-a-biscuit-token-from-command-line-using-the-forge-entity",
-      children: "Generate a Biscuit Token from command line (using the Forge entity)"
-    }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
-      children: (0,jsx_runtime.jsx)(_components.code, {
-        className: "language-bash",
-        children: "curl -X POST -H 'Content-Type: application/json' 'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/tokens-forge' -u admin-api-apikey-id:admin-api-apikey-secret -d '{\n  \"id\": \"biscuit_token_0531505a-ae44-4022-983d-9b035786f55a\",\n  \"name\": \"Biscuit Token Name\",\n  \"description\": \"A simple Biscuit Token\",\n  \"keypair_ref\": \"biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9\",\n  \"config\": {\n    \"checks\": [\n      \"check if time($date), $date <= 2024-12-30T19:00:10Z;\"\n    ],\n    \"facts\": [\n      \"user(\\\"demo\\\")\",\n      \"role(\\\"dev\\\")\",\n      \"time(2024-12-18T20:00:00Z)\"\n    ],\n    \"resources\": [],\n    \"rules\": []\n  },\n  \"token\": \"GENERATED_TOKEN_HERE\",\n  \"tags\": [],\n  \"kind\": \"biscuit.extensions.cloud-apim.com/BiscuitTokenForge\"\n}'\n"
       })
     })]
   });
@@ -4262,9 +4192,9 @@ function _interopRequireWildcard(e, r) {
 var lib = __webpack_require__(3259);
 var lib_default = /*#__PURE__*/__webpack_require__.n(lib);
 ;// ./.docusaurus/routesChunkNames.json
-const routesChunkNames_namespaceObject = /*#__PURE__*/JSON.parse('{"/otoroshi-biscuit-studio/markdown-page-6b3":{"__comp":"1f391b9e","__context":{"plugin":"a7456010"},"content":"393be207"},"/otoroshi-biscuit-studio/docs-25a":{"__comp":"5e95c892","__context":{"plugin":"aba21aa0"}},"/otoroshi-biscuit-studio/docs-427":{"__comp":"a7bd4aaa","__props":"d467179c"},"/otoroshi-biscuit-studio/docs-5b9":{"__comp":"a94703ab"},"/otoroshi-biscuit-studio/docs/api-fba":{"__comp":"17896441","content":"2461ffa2"},"/otoroshi-biscuit-studio/docs/category/entities-7da":{"__comp":"14eb3368","__props":"3564e3a7"},"/otoroshi-biscuit-studio/docs/category/plugins-bef":{"__comp":"14eb3368","__props":"aeecb766"},"/otoroshi-biscuit-studio/docs/entities/attenuators-7fb":{"__comp":"17896441","content":"fd744dac"},"/otoroshi-biscuit-studio/docs/entities/keypairs-12f":{"__comp":"17896441","content":"cabb12cd"},"/otoroshi-biscuit-studio/docs/entities/rbac_policies-784":{"__comp":"17896441","content":"f9604eb2"},"/otoroshi-biscuit-studio/docs/entities/remote_facts-45b":{"__comp":"17896441","content":"8b7184ae"},"/otoroshi-biscuit-studio/docs/entities/verifiers-8b1":{"__comp":"17896441","content":"b2cafd49"},"/otoroshi-biscuit-studio/docs/install-966":{"__comp":"17896441","content":"046e2194"},"/otoroshi-biscuit-studio/docs/introduction-c56":{"__comp":"17896441","content":"972d9d57"},"/otoroshi-biscuit-studio/docs/overview-22c":{"__comp":"17896441","content":"18891827"},"/otoroshi-biscuit-studio/docs/plugins/attenuators-d1f":{"__comp":"17896441","content":"92063559"},"/otoroshi-biscuit-studio/docs/plugins/verifiers-d40":{"__comp":"17896441","content":"723d447c"},"/otoroshi-biscuit-studio/docs/tokens_forge-9b6":{"__comp":"17896441","content":"326c7620"},"/otoroshi-biscuit-studio/-8de":{"__comp":"c4f5d8e4","__context":{"plugin":"a7456010"},"config":"5e9f5e1a"}}');
+const routesChunkNames_namespaceObject = /*#__PURE__*/JSON.parse('{"/otoroshi-biscuit-studio/markdown-page-6b3":{"__comp":"1f391b9e","__context":{"plugin":"a7456010"},"content":"393be207"},"/otoroshi-biscuit-studio/docs-7f8":{"__comp":"5e95c892","__context":{"plugin":"aba21aa0"}},"/otoroshi-biscuit-studio/docs-d48":{"__comp":"a7bd4aaa","__props":"d467179c"},"/otoroshi-biscuit-studio/docs-349":{"__comp":"a94703ab"},"/otoroshi-biscuit-studio/docs/api-fba":{"__comp":"17896441","content":"2461ffa2"},"/otoroshi-biscuit-studio/docs/category/entities-7da":{"__comp":"14eb3368","__props":"3564e3a7"},"/otoroshi-biscuit-studio/docs/category/plugins-bef":{"__comp":"14eb3368","__props":"aeecb766"},"/otoroshi-biscuit-studio/docs/entities/attenuators-7fb":{"__comp":"17896441","content":"fd744dac"},"/otoroshi-biscuit-studio/docs/entities/keypairs-12f":{"__comp":"17896441","content":"cabb12cd"},"/otoroshi-biscuit-studio/docs/entities/verifiers-8b1":{"__comp":"17896441","content":"b2cafd49"},"/otoroshi-biscuit-studio/docs/install-966":{"__comp":"17896441","content":"046e2194"},"/otoroshi-biscuit-studio/docs/introduction-c56":{"__comp":"17896441","content":"972d9d57"},"/otoroshi-biscuit-studio/docs/overview-22c":{"__comp":"17896441","content":"18891827"},"/otoroshi-biscuit-studio/docs/plugins/attenuators-d1f":{"__comp":"17896441","content":"92063559"},"/otoroshi-biscuit-studio/docs/plugins/clientcredentials-9c8":{"__comp":"17896441","content":"c7125c20"},"/otoroshi-biscuit-studio/docs/plugins/verifiers-d40":{"__comp":"17896441","content":"723d447c"},"/otoroshi-biscuit-studio/-8de":{"__comp":"c4f5d8e4","__context":{"plugin":"a7456010"},"config":"5e9f5e1a"}}');
 ;// ./.docusaurus/registry.js
-/* harmony default export */ const registry = ({"046e2194":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(7716))),"@site/docs/install.mdx",/*require.resolve*/(7716)],"14eb3368":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(2499))),"@theme/DocCategoryGeneratedIndexPage",/*require.resolve*/(2499)],"17896441":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(8950))),"@theme/DocItem",/*require.resolve*/(8950)],"18891827":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(3829))),"@site/docs/overview.mdx",/*require.resolve*/(3829)],"1f391b9e":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(4250))),"@theme/MDXPage",/*require.resolve*/(4250)],"2461ffa2":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(6992))),"@site/docs/api.mdx",/*require.resolve*/(6992)],"326c7620":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(7423))),"@site/docs/tokens_forge.mdx",/*require.resolve*/(7423)],"3564e3a7":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(6609))),"@generated/docusaurus-plugin-content-docs/default/p/otoroshi-biscuit-studio-docs-category-entities-f71.json",/*require.resolve*/(6609)],"393be207":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(591))),"@site/src/pages/markdown-page.md",/*require.resolve*/(591)],"5e95c892":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(7121))),"@theme/DocsRoot",/*require.resolve*/(7121)],"5e9f5e1a":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(4784))),"@generated/docusaurus.config",/*require.resolve*/(4784)],"723d447c":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(9956))),"@site/docs/plugins/verifiers.mdx",/*require.resolve*/(9956)],"8b7184ae":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(3680))),"@site/docs/entities/remote_facts.mdx",/*require.resolve*/(3680)],"92063559":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(6995))),"@site/docs/plugins/attenuators.mdx",/*require.resolve*/(6995)],"972d9d57":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(1916))),"@site/docs/introduction.mdx",/*require.resolve*/(1916)],"a7456010":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(8552))),"@generated/docusaurus-plugin-content-pages/default/__plugin.json",/*require.resolve*/(8552)],"a7bd4aaa":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(1723))),"@theme/DocVersionRoot",/*require.resolve*/(1723)],"a94703ab":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(8319))),"@theme/DocRoot",/*require.resolve*/(8319)],"aba21aa0":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(7093))),"@generated/docusaurus-plugin-content-docs/default/__plugin.json",/*require.resolve*/(7093)],"aeecb766":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(2058))),"@generated/docusaurus-plugin-content-docs/default/p/otoroshi-biscuit-studio-docs-category-plugins-86f.json",/*require.resolve*/(2058)],"b2cafd49":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(1179))),"@site/docs/entities/verifiers.mdx",/*require.resolve*/(1179)],"c4f5d8e4":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(2259))),"@site/src/pages/index.js",/*require.resolve*/(2259)],"cabb12cd":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(8685))),"@site/docs/entities/keypairs.mdx",/*require.resolve*/(8685)],"d467179c":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(1383))),"@generated/docusaurus-plugin-content-docs/default/p/otoroshi-biscuit-studio-docs-aaa.json",/*require.resolve*/(1383)],"f9604eb2":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(6580))),"@site/docs/entities/rbac_policies.mdx",/*require.resolve*/(6580)],"fd744dac":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(2149))),"@site/docs/entities/attenuators.mdx",/*require.resolve*/(2149)]});
+/* harmony default export */ const registry = ({"046e2194":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(7716))),"@site/docs/install.mdx",/*require.resolve*/(7716)],"14eb3368":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(2499))),"@theme/DocCategoryGeneratedIndexPage",/*require.resolve*/(2499)],"17896441":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(8950))),"@theme/DocItem",/*require.resolve*/(8950)],"18891827":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(3829))),"@site/docs/overview.mdx",/*require.resolve*/(3829)],"1f391b9e":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(4250))),"@theme/MDXPage",/*require.resolve*/(4250)],"2461ffa2":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(6992))),"@site/docs/api.mdx",/*require.resolve*/(6992)],"3564e3a7":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(6609))),"@generated/docusaurus-plugin-content-docs/default/p/otoroshi-biscuit-studio-docs-category-entities-f71.json",/*require.resolve*/(6609)],"393be207":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(591))),"@site/src/pages/markdown-page.md",/*require.resolve*/(591)],"5e95c892":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(7121))),"@theme/DocsRoot",/*require.resolve*/(7121)],"5e9f5e1a":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(4784))),"@generated/docusaurus.config",/*require.resolve*/(4784)],"723d447c":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(9956))),"@site/docs/plugins/verifiers.mdx",/*require.resolve*/(9956)],"92063559":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(6995))),"@site/docs/plugins/attenuators.mdx",/*require.resolve*/(6995)],"972d9d57":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(1916))),"@site/docs/introduction.mdx",/*require.resolve*/(1916)],"a7456010":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(8552))),"@generated/docusaurus-plugin-content-pages/default/__plugin.json",/*require.resolve*/(8552)],"a7bd4aaa":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(1723))),"@theme/DocVersionRoot",/*require.resolve*/(1723)],"a94703ab":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(8319))),"@theme/DocRoot",/*require.resolve*/(8319)],"aba21aa0":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(7093))),"@generated/docusaurus-plugin-content-docs/default/__plugin.json",/*require.resolve*/(7093)],"aeecb766":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(2058))),"@generated/docusaurus-plugin-content-docs/default/p/otoroshi-biscuit-studio-docs-category-plugins-86f.json",/*require.resolve*/(2058)],"b2cafd49":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(1179))),"@site/docs/entities/verifiers.mdx",/*require.resolve*/(1179)],"c4f5d8e4":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(2259))),"@site/src/pages/index.js",/*require.resolve*/(2259)],"c7125c20":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(9953))),"@site/docs/plugins/clientcredentials.mdx",/*require.resolve*/(9953)],"cabb12cd":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(8685))),"@site/docs/entities/keypairs.mdx",/*require.resolve*/(8685)],"d467179c":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(1383))),"@generated/docusaurus-plugin-content-docs/default/p/otoroshi-biscuit-studio-docs-aaa.json",/*require.resolve*/(1383)],"fd744dac":[()=>Promise.resolve().then(()=>_interopRequireWildcard(__webpack_require__(2149))),"@site/docs/entities/attenuators.mdx",/*require.resolve*/(2149)]});
 // EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
 var jsx_runtime = __webpack_require__(4848);
 ;// ./node_modules/@docusaurus/core/lib/client/theme-fallback/Loading/index.js
@@ -4328,7 +4258,7 @@ if(typeof chunk==='object'||typeof chunk==='function'){Object.keys(loadedModule)
 let val=loadedModules;const keyPaths=keyPath.split('.');keyPaths.slice(0,-1).forEach(k=>{val=val[k];});val[keyPaths[keyPaths.length-1]]=chunk;});/* eslint-disable no-underscore-dangle */const Component=loadedModules.__comp;delete loadedModules.__comp;const routeContext=loadedModules.__context;delete loadedModules.__context;const routeProps=loadedModules.__props;delete loadedModules.__props;/* eslint-enable no-underscore-dangle */// Is there any way to put this RouteContextProvider upper in the tree?
 return/*#__PURE__*/(0,jsx_runtime.jsx)(client_routeContext/* RouteContextProvider */.W,{value:routeContext,children:/*#__PURE__*/(0,jsx_runtime.jsx)(Component,{...loadedModules,...routeProps,...props})});}});}
 ;// ./.docusaurus/routes.js
-/* harmony default export */ const routes = ([{path:'/otoroshi-biscuit-studio/markdown-page',component:ComponentCreator('/otoroshi-biscuit-studio/markdown-page','6b3'),exact:true},{path:'/otoroshi-biscuit-studio/docs',component:ComponentCreator('/otoroshi-biscuit-studio/docs','25a'),routes:[{path:'/otoroshi-biscuit-studio/docs',component:ComponentCreator('/otoroshi-biscuit-studio/docs','427'),routes:[{path:'/otoroshi-biscuit-studio/docs',component:ComponentCreator('/otoroshi-biscuit-studio/docs','5b9'),routes:[{path:'/otoroshi-biscuit-studio/docs/api',component:ComponentCreator('/otoroshi-biscuit-studio/docs/api','fba'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/category/entities',component:ComponentCreator('/otoroshi-biscuit-studio/docs/category/entities','7da'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/category/plugins',component:ComponentCreator('/otoroshi-biscuit-studio/docs/category/plugins','bef'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/entities/attenuators',component:ComponentCreator('/otoroshi-biscuit-studio/docs/entities/attenuators','7fb'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/entities/keypairs',component:ComponentCreator('/otoroshi-biscuit-studio/docs/entities/keypairs','12f'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/entities/rbac_policies',component:ComponentCreator('/otoroshi-biscuit-studio/docs/entities/rbac_policies','784'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/entities/remote_facts',component:ComponentCreator('/otoroshi-biscuit-studio/docs/entities/remote_facts','45b'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/entities/verifiers',component:ComponentCreator('/otoroshi-biscuit-studio/docs/entities/verifiers','8b1'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/install',component:ComponentCreator('/otoroshi-biscuit-studio/docs/install','966'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/introduction',component:ComponentCreator('/otoroshi-biscuit-studio/docs/introduction','c56'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/overview',component:ComponentCreator('/otoroshi-biscuit-studio/docs/overview','22c'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/plugins/attenuators',component:ComponentCreator('/otoroshi-biscuit-studio/docs/plugins/attenuators','d1f'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/plugins/verifiers',component:ComponentCreator('/otoroshi-biscuit-studio/docs/plugins/verifiers','d40'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/tokens_forge',component:ComponentCreator('/otoroshi-biscuit-studio/docs/tokens_forge','9b6'),exact:true,sidebar:"tutorialSidebar"}]}]}]},{path:'/otoroshi-biscuit-studio/',component:ComponentCreator('/otoroshi-biscuit-studio/','8de'),exact:true},{path:'*',component:ComponentCreator('*')}]);
+/* harmony default export */ const routes = ([{path:'/otoroshi-biscuit-studio/markdown-page',component:ComponentCreator('/otoroshi-biscuit-studio/markdown-page','6b3'),exact:true},{path:'/otoroshi-biscuit-studio/docs',component:ComponentCreator('/otoroshi-biscuit-studio/docs','7f8'),routes:[{path:'/otoroshi-biscuit-studio/docs',component:ComponentCreator('/otoroshi-biscuit-studio/docs','d48'),routes:[{path:'/otoroshi-biscuit-studio/docs',component:ComponentCreator('/otoroshi-biscuit-studio/docs','349'),routes:[{path:'/otoroshi-biscuit-studio/docs/api',component:ComponentCreator('/otoroshi-biscuit-studio/docs/api','fba'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/category/entities',component:ComponentCreator('/otoroshi-biscuit-studio/docs/category/entities','7da'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/category/plugins',component:ComponentCreator('/otoroshi-biscuit-studio/docs/category/plugins','bef'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/entities/attenuators',component:ComponentCreator('/otoroshi-biscuit-studio/docs/entities/attenuators','7fb'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/entities/keypairs',component:ComponentCreator('/otoroshi-biscuit-studio/docs/entities/keypairs','12f'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/entities/verifiers',component:ComponentCreator('/otoroshi-biscuit-studio/docs/entities/verifiers','8b1'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/install',component:ComponentCreator('/otoroshi-biscuit-studio/docs/install','966'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/introduction',component:ComponentCreator('/otoroshi-biscuit-studio/docs/introduction','c56'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/overview',component:ComponentCreator('/otoroshi-biscuit-studio/docs/overview','22c'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/plugins/attenuators',component:ComponentCreator('/otoroshi-biscuit-studio/docs/plugins/attenuators','d1f'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/plugins/clientcredentials',component:ComponentCreator('/otoroshi-biscuit-studio/docs/plugins/clientcredentials','9c8'),exact:true,sidebar:"tutorialSidebar"},{path:'/otoroshi-biscuit-studio/docs/plugins/verifiers',component:ComponentCreator('/otoroshi-biscuit-studio/docs/plugins/verifiers','d40'),exact:true,sidebar:"tutorialSidebar"}]}]}]},{path:'/otoroshi-biscuit-studio/',component:ComponentCreator('/otoroshi-biscuit-studio/','8de'),exact:true},{path:'*',component:ComponentCreator('*')}]);
 
 /***/ }),
 
@@ -4397,7 +4327,7 @@ var react = __webpack_require__(6540);
 // EXTERNAL MODULE: ./.docusaurus/docusaurus.config.mjs
 var docusaurus_config = __webpack_require__(4784);
 ;// ./.docusaurus/globalData.json
-const globalData_namespaceObject = /*#__PURE__*/JSON.parse('{"docusaurus-plugin-content-docs":{"default":{"path":"/otoroshi-biscuit-studio/docs","versions":[{"name":"current","label":"Next","isLast":true,"path":"/otoroshi-biscuit-studio/docs","mainDocId":"overview","docs":[{"id":"api","path":"/otoroshi-biscuit-studio/docs/api","sidebar":"tutorialSidebar"},{"id":"entities/attenuators","path":"/otoroshi-biscuit-studio/docs/entities/attenuators","sidebar":"tutorialSidebar"},{"id":"entities/keypairs","path":"/otoroshi-biscuit-studio/docs/entities/keypairs","sidebar":"tutorialSidebar"},{"id":"entities/rbac_policies","path":"/otoroshi-biscuit-studio/docs/entities/rbac_policies","sidebar":"tutorialSidebar"},{"id":"entities/remote_facts","path":"/otoroshi-biscuit-studio/docs/entities/remote_facts","sidebar":"tutorialSidebar"},{"id":"entities/verifiers","path":"/otoroshi-biscuit-studio/docs/entities/verifiers","sidebar":"tutorialSidebar"},{"id":"install","path":"/otoroshi-biscuit-studio/docs/install","sidebar":"tutorialSidebar"},{"id":"introduction","path":"/otoroshi-biscuit-studio/docs/introduction","sidebar":"tutorialSidebar"},{"id":"overview","path":"/otoroshi-biscuit-studio/docs/overview","sidebar":"tutorialSidebar"},{"id":"plugins/attenuators","path":"/otoroshi-biscuit-studio/docs/plugins/attenuators","sidebar":"tutorialSidebar"},{"id":"plugins/verifiers","path":"/otoroshi-biscuit-studio/docs/plugins/verifiers","sidebar":"tutorialSidebar"},{"id":"tokens_forge","path":"/otoroshi-biscuit-studio/docs/tokens_forge","sidebar":"tutorialSidebar"},{"id":"/category/entities","path":"/otoroshi-biscuit-studio/docs/category/entities","sidebar":"tutorialSidebar"},{"id":"/category/plugins","path":"/otoroshi-biscuit-studio/docs/category/plugins","sidebar":"tutorialSidebar"}],"draftIds":[],"sidebars":{"tutorialSidebar":{"link":{"path":"/otoroshi-biscuit-studio/docs/overview","label":"overview"}}}}],"breadcrumbs":true}}}');
+const globalData_namespaceObject = /*#__PURE__*/JSON.parse('{"docusaurus-plugin-content-docs":{"default":{"path":"/otoroshi-biscuit-studio/docs","versions":[{"name":"current","label":"Next","isLast":true,"path":"/otoroshi-biscuit-studio/docs","mainDocId":"overview","docs":[{"id":"api","path":"/otoroshi-biscuit-studio/docs/api","sidebar":"tutorialSidebar"},{"id":"entities/attenuators","path":"/otoroshi-biscuit-studio/docs/entities/attenuators","sidebar":"tutorialSidebar"},{"id":"entities/keypairs","path":"/otoroshi-biscuit-studio/docs/entities/keypairs","sidebar":"tutorialSidebar"},{"id":"entities/verifiers","path":"/otoroshi-biscuit-studio/docs/entities/verifiers","sidebar":"tutorialSidebar"},{"id":"install","path":"/otoroshi-biscuit-studio/docs/install","sidebar":"tutorialSidebar"},{"id":"introduction","path":"/otoroshi-biscuit-studio/docs/introduction","sidebar":"tutorialSidebar"},{"id":"overview","path":"/otoroshi-biscuit-studio/docs/overview","sidebar":"tutorialSidebar"},{"id":"plugins/attenuators","path":"/otoroshi-biscuit-studio/docs/plugins/attenuators","sidebar":"tutorialSidebar"},{"id":"plugins/clientcredentials","path":"/otoroshi-biscuit-studio/docs/plugins/clientcredentials","sidebar":"tutorialSidebar"},{"id":"plugins/verifiers","path":"/otoroshi-biscuit-studio/docs/plugins/verifiers","sidebar":"tutorialSidebar"},{"id":"/category/entities","path":"/otoroshi-biscuit-studio/docs/category/entities","sidebar":"tutorialSidebar"},{"id":"/category/plugins","path":"/otoroshi-biscuit-studio/docs/category/plugins","sidebar":"tutorialSidebar"}],"draftIds":[],"sidebars":{"tutorialSidebar":{"link":{"path":"/otoroshi-biscuit-studio/docs/overview","label":"overview"}}}}],"breadcrumbs":true}}}');
 ;// ./.docusaurus/i18n.json
 const i18n_namespaceObject = /*#__PURE__*/JSON.parse('{"defaultLocale":"en","locales":["en"],"path":"i18n","currentLocale":"en","localeConfigs":{"en":{"label":"English","direction":"ltr","htmlLang":"en","calendar":"gregory","path":"en"}}}');
 // EXTERNAL MODULE: ./.docusaurus/codeTranslations.json
@@ -14217,14 +14147,58 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 /***/ }),
 
-/***/ 7605:
+/***/ 2743:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4NDQuNjY5MyIgaGVpZ2h0PSI1NzYiIHZpZXdCb3g9IjAgMCA4NDQuNjY5MyA1NzYiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiByb2xlPSJpbWciIGFydGlzdD0iS2F0ZXJpbmEgTGltcGl0c291bmkiIHNvdXJjZT0iaHR0cHM6Ly91bmRyYXcuY28vIj48cGF0aCBpZD0iZmZiNTNlMTUtOTZhOC00OWU0LTg0NzQtZGRlMzFmNDdjODM4LTM4NSIgZGF0YS1uYW1lPSJQYXRoIDEzMyIgZD0iTTY4MC4zOTMxNyw3MjIuNjQwMzJhNTAuODA3MzksNTAuODA3MzksMCwwLDEtMi4zNzM2NiwxNC4wNDQ2OWMtLjAzMjA4LjEwNTUzLS4wNjc2OC4yMDk0Ni0uMTAyMzMuMzE1aC04Ljg1NzI5Yy4wMDkzLS4wOTQ2Mi4wMTg5My0uMjAwMTYuMDI4MjQtLjMxNS41OTA1Mi02Ljc4OTMyLTIuNzgzMjgtNDcuNjE4NTQtNi44NTQ0My01NC42ODVDNjYyLjU5MDM4LDY4Mi41NzMyMiw2ODEuMDc5OTIsNzAxLjA2NzU3LDY4MC4zOTMxNyw3MjIuNjQwMzJaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTc3LjY2NTM1IC0xNjIpIiBmaWxsPSIjZTZlNmU2Ii8+PHBhdGggaWQ9ImIwZDUzNzM2LTkzZTctNDA1Ny1iZTE4LTllOWNkMTdmMzkxYi0zODYiIGRhdGEtbmFtZT0iUGF0aCAxMzQiIGQ9Ik02NzkuNzI4NTMsNzM2LjY4NWMtLjA3NDEuMTA1NTMtLjE1MTA5LjIxMTA3LS4yMy4zMTVoLTYuNjQ1Yy4wNTAzNy0uMDg5ODIuMTA4NzQtLjE5NTM1LjE3NjQyLS4zMTUsMS4wOTc2Ni0xLjk4MSw0LjM0NjY5LTcuOTA0Myw3LjM2MjUyLTE0LjA0NDY5LDMuMjM5NzMtNi41OTg3OSw2LjIxNDUtMTMuNDQ3NzYsNS45NjQtMTUuOTI2NjJDNjg2LjQzNDEyLDcwNy4yNzI0NSw2ODguNjc2OSw3MjQuMzE2LDY3OS43Mjg1Myw3MzYuNjg1WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny42NjUzNSAtMTYyKSIgZmlsbD0iI2U2ZTZlNiIvPjxwYXRoIGQ9Ik0xMDIwLjk3ODU1LDU1Ny41Mzk0OWExLjM1NDQ2LDEuMzU0NDYsMCwwLDEtMS4zNDk3My0xLjI1OTYyLDYwLjQ0Niw2MC40NDYsMCwwLDAtNjAuMTIwMjUtNTYuMDFjLTEuODI2MjcsMC0zLjc0MTUuMDkyNTktNS42OTI2LjI3NTQ3YTEuMzU4ODMsMS4zNTg4MywwLDAsMS0xLjMwMTc5LS42NzUyOCw3MS43NTcsNzEuNzU3LDAsMCwwLTEzMS4yMjIzNCwxNS42MDcyMSwxLjM2Mjc4LDEuMzYyNzgsMCwwLDEtMS4zMzEzLjk3NzJsLS40NTMzLS4wMTM1NmMtLjIzNzUyLS4wMDc5My0uNDc1LS4wMTYyLS43MTQ1NS0uMDE2MkE1MC43MTE4OCw1MC43MTE4OCwwLDAsMCw3NjkuMzc1MSw1NTYuNDY0NGExLjM1NDQzLDEuMzU0NDMsMCwwLDEtMS4zMjUzNSwxLjA3NTA5SDY1NC4xMjU4OWExLjM1NDUzLDEuMzU0NTMsMCwxLDEsMC0yLjcwOTA2SDc2Ni45NjI3NWE1My40NDM1Niw1My40NDM1NiwwLDAsMSw1MS44Mjk5NC00MS4xMTQ4Yy4wNjU2NCwwLC4xMzExMi4wMDA2Ni4xOTY1Mi4wMDEzMmE3NS4wOTE4OCw3NS4wOTE4OCwwLDAsMSwyNi4xMDk3MS0zNy40OTA3QTczLjc1NTI5LDczLjc1NTI5LDAsMCwxLDg5MC4yMTM0OSw0NjFhNzQuNzA0LDc0LjcwNCwwLDAsMSw2NC4yMTU0MiwzNi43NzI0M2MxLjczNjE2LS4xNDA1NSwzLjQ0MTA2LS4yMTE2NSw1LjA3OTY2LS4yMTE2NWE2My4xNjQxNCw2My4xNjQxNCwwLDAsMSw2Mi44MjI3LDU4LjUyOTI3LDEuMzU0NDQsMS4zNTQ0NCwwLDAsMS0xLjI1NjQ4LDEuNDQ2MTRDMTAyMS4wNDI1NCw1NTcuNTM4NSwxMDIxLjAxMDQ3LDU1Ny41Mzk0OSwxMDIwLjk3ODU1LDU1Ny41Mzk0OVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xNzcuNjY1MzUgLTE2MikiIGZpbGw9IiNlNWU1ZTUiLz48cGF0aCBkPSJNOTU1Ljc0NTU3LDU3OS4zNDNINzIxLjg2NDQ2YTEuMzU0NTQsMS4zNTQ1NCwwLDAsMSwwLTIuNzA5MDdIOTU1Ljc0NTU3YTEuMzU0NTQsMS4zNTQ1NCwwLDAsMSwwLDIuNzA5MDdaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTc3LjY2NTM1IC0xNjIpIiBmaWxsPSIjZTVlNWU1Ii8+PHBhdGggZD0iTTc4OS44ODQzLDYwNEg2OTYuMzU3YTEuMzU0NTMsMS4zNTQ1MywwLDEsMSwwLTIuNzA5MDZINzg5Ljg4NDNhMS4zNTQ1MywxLjM1NDUzLDAsMCwxLDAsMi43MDkwNloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xNzcuNjY1MzUgLTE2MikiIGZpbGw9IiNlNWU1ZTUiLz48cGF0aCBkPSJNNjExLjEzMDY4LDI3Ni4zNTY0NWExLjk5OTg5LDEuOTk5ODksMCwwLDEtMS45OTI5Mi0xLjg1OTg3QTcwLjY4NCw3MC42ODQsMCwwLDAsNTM4LjgzNDU0LDIwOWMtMi4xMzIwOCwwLTQuMzcxODMuMTA4NC02LjY1NzQ3LjMyMjI3YTEuOTk5MjYsMS45OTkyNiwwLDAsMS0xLjkyMTg4LS45OTcwNyw4My45ODg1NCw4My45ODg1NCwwLDAsMC0xNTMuNTkwMzMsMTguMjY3MDksMS45OTA3NCwxLjk5MDc0LDAsMCwxLTEuOTY2OCwxLjQ0Mjg3bC0uNTMxNzQtLjAxNjEyYy0uMjc2NjEtLjAwOTI3LS41NTMtLjAxOS0uODMxNzgtLjAxOWE1OS4yMzUxNCw1OS4yMzUxNCwwLDAsMC01Ny43MjMxNSw0Ni43NjksMiwyLDAsMCwxLTEuOTU3LDEuNTg3NDFoLTEzMy45ODlhMiwyLDAsMCwxLDAtNEgzMTIuMDUzNzhBNjMuMjcwNzIsNjMuMjcwNzIsMCwwLDEsMzczLjI2NTQ1LDIyNGE4Ny45ODc3OSw4Ny45ODc3OSwwLDAsMSwxNTkuODE2MTYtMTguNzY5NTNjMS45NjcyOC0uMTUzMzIsMy44OTcyMS0uMjMwNDcsNS43NTI5My0uMjMwNDdBNzQuNjk3MDYsNzQuNjk3MDYsMCwwLDEsNjEzLjEyOCwyNzQuMjE2MzFhMS45OTk4NCwxLjk5OTg0LDAsMCwxLTEuODU1MjIsMi4xMzUyNUM2MTEuMjI1MTYsMjc2LjM1NSw2MTEuMTc3OCwyNzYuMzU2NDUsNjExLjEzMDY4LDI3Ni4zNTY0NVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xNzcuNjY1MzUgLTE2MikiIGZpbGw9IiNlNWU1ZTUiLz48cGF0aCBkPSJNNTg3LjMzNDU0LDMwMmgtMzI4YTIsMiwwLDAsMSwwLTRoMzI4YTIsMiwwLDAsMSwwLDRaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTc3LjY2NTM1IC0xNjIpIiBmaWxsPSIjZTVlNWU1Ii8+PHBhdGggZD0iTTMzOS4zMzQ1NCwzMzFoLTExMGEyLDIsMCwwLDEsMC00aDExMGEyLDIsMCwxLDEsMCw0WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny42NjUzNSAtMTYyKSIgZmlsbD0iI2U1ZTVlNSIvPjxwb2x5Z29uIHBvaW50cz0iMzY4Ljk2NSA1NTEuNzQ4IDM3My4xNjQgNTQwLjk0NiAzMzMuNTAxIDUxOS42MDkgMzI3LjMwMyA1MzUuNTUxIDM2OC45NjUgNTUxLjc0OCIgZmlsbD0iIzlmNjE2YSIvPjxwYXRoIGQ9Ik01NjkuMTI5NDcsNjg1LjU3MDE4YTE0LjUzNywxNC41MzcsMCwwLDAtMTguODI1NDEsOC4yODYxMWwtMi44MzI4Nyw3LjI4MTQxTDU0My4xMDM4Niw3MTIuMzc3bC0xLjA2NzY0LDIuNzU1ODMsMTMuOTk1NjksNS40NDQyOSwxMy41Mzc2LTM0LjgzMjMyWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny42NjUzNSAtMTYyKSIgZmlsbD0iIzJmMmU0MSIvPjxwYXRoIGQ9Ik01NDMuMTA1NTMsNjkyLjk2MDQ1bC0xLjgyNjQsNC44NDMxMi00LjU1NzkxLDEyLjA4ODMxLS4xMDkzMy4zMDIzMmMtMTEuNjEyNTMsMS40OTIwOC0yNC4zNDI5LTEuNDMzLTM2LjExNzU1LTUuOTc3MTVhMTQ2LjgxMDM1LDE0Ni44MTAzNSwwLDAsMS0xMy44MjQtNi4xNjg1OWMtNi42NTg3MS0zLjM2NDQ5LTEyLjYyMDc0LTYuOTE1NDYtMTcuMzc3MDYtOS45NTI1LTcuMTYxMjMtNC41OTYyMS0xMS41ODkzLTguMDQ3MjktMTEuNTg5My04LjA0NzI5cy0xLjE2OTgzLDEuMDU3MTMtMy4yODY2NywyLjg2OTkzYy0yLjgzNzIzLDIuNDI3NTgtNy4zNzA4OSw2LjIxODQxLTEzLjExMzU4LDEwLjY4MDcxcS0zLjI4NiwyLjU3MTI0LTcuMDU2MjEsNS4zNzg5Yy0xOC41MjgzLDEzLjc0MzA4LTQyLjMwNi0yMi45Mjg0OS00Mi4zMDYtMjIuOTI4NDlzNi42ODczNS00LjI1NzUxLDguNDM0MzgtNS4wODQyYzUuNjI1NDUtMi42NjE0NiwxOC44NDEzMy04Ljk0MTU2LDMwLjI0MzE4LTE0LjUyMjU2LDUuODc0MTMtMi44Nzk2OCwxMS4yNTk4NC01LjU3OTQ5LDE0Ljg3NTc5LTcuNDk4MzEsMTIuODA0MzktNi44MTcyMiwyOC43MjExOSw2LjA4MjUyLDI4LjcyMTE5LDYuMDgyNTJaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTc3LjY2NTM1IC0xNjIpIiBmaWxsPSIjMmYyZTQxIi8+PHBhdGggZD0iTTU0My4xMDU1Myw2OTIuOTYwNDVsLTEuODI2NCw0Ljg0MzEyLTQuNTU3OTEsMTIuMDg4MzEtLjEwOTMzLjMwMjMyYy0xMS42MTI1MywxLjQ5MjA4LTI0LjM0MjktMS40MzMtMzYuMTE3NTUtNS45NzcxNWExNDYuODEwMzUsMTQ2LjgxMDM1LDAsMCwxLTEzLjgyNC02LjE2ODU5Yy02LjY1ODcxLTMuMzY0NDktMTIuNjIwNzQtNi45MTU0Ni0xNy4zNzcwNi05Ljk1MjUtNy4xNjEyMy00LjU5NjIxLTExLjU4OTMtOC4wNDcyOS0xMS41ODkzLTguMDQ3MjlzLTEuMTY5ODMsMS4wNTcxMy0zLjI4NjY3LDIuODY5OTNjLTIuODM3MjMsMi40Mjc1OC03LjM3MDg5LDYuMjE4NDEtMTMuMTEzNTgsMTAuNjgwNzFxLTMuMjg2LDIuNTcxMjQtNy4wNTYyMSw1LjM3ODljLTE4LjUyODMsMTMuNzQzMDgtNDIuMzA2LTIyLjkyODQ5LTQyLjMwNi0yMi45Mjg0OXM2LjY4NzM1LTQuMjU3NTEsOC40MzQzOC01LjA4NDJjNS42MjU0NS0yLjY2MTQ2LDE4Ljg0MTMzLTguOTQxNTYsMzAuMjQzMTgtMTQuNTIyNTYsNS44NzQxMy0yLjg3OTY4LDExLjI1OTg0LTUuNTc5NDksMTQuODc1NzktNy40OTgzMSwxMi44MDQzOS02LjgxNzIyLDI4LjcyMTE5LDYuMDgyNTIsMjguNzIxMTksNi4wODI1MloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xNzcuNjY1MzUgLTE2MikiIG9wYWNpdHk9IjAuMTQiLz48cGF0aCBkPSJNNDA5LjkxNTI0LDYyMC45Nzg3OUE4Ljg2Mzc0LDguODYzNzQsMCwwLDAsNDAzLjEyMyw2MzIuNzUxNGwtMTQuOTA4MywxMy43MTE4NSw2LjEyMywxMS4wOTIsMjAuNzgxNDQtMTkuNjU5NDhhOC45MTE3OCw4LjkxMTc4LDAsMCwwLTUuMjAzOTMtMTYuOTE3WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny42NjUzNSAtMTYyKSIgZmlsbD0iIzlmNjE2YSIvPjxwYXRoIGQ9Ik0zNjUuMDU3LDY4My4zMjA2OXEtMS4wMTAxMSwwLTIuMDIzMjMtLjA4NzI0YTIzLjgyLDIzLjgyLDAsMCwxLTE5LjE4NjY2LTEyLjgxMzI2bC0yMy44ODQzOC00NS45NzFhMTMuMTkwNDIsMTMuMTkwNDIsMCwwLDEsMjIuODA5MTgtMTMuMjAwNWwyMi4wMzQ5Myw0OS40NDEsMjkuOTgzMTUtMjQuMzYxMzksMTcuMzYwNTEsNi43NTgxTDM4Mi44MzIsNjc1LjQ1MzkyQTI0LjA4OTg5LDI0LjA4OTg5LDAsMCwxLDM2NS4wNTcsNjgzLjMyMDY5WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny42NjUzNSAtMTYyKSIgZmlsbD0iI2NjYyIvPjxwYXRoIGQ9Ik0yNjkuMjk4MzksNzM3LjI5MmE4Ljg2MzczLDguODYzNzMsMCwwLDAsNi4xNzQ0NC0xMi4xMDhsMTQuMTc5NDEtMTQuNDY0MzJMMjgyLjk2MzkyLDY5OS45NTlsLTE5LjczNzE3LDIwLjcwNzY3YTguOTExNzcsOC45MTE3NywwLDAsMCw2LjA3MTY0LDE2LjYyNTMzWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny42NjUzNSAtMTYyKSIgZmlsbD0iIzlmNjE2YSIvPjxwYXRoIGQ9Ik00MDQuMjA2ODEsNDgyLjA5MzZoMS4zODk0NFY0NDQuMDMwMTJBMjIuMDMwMSwyMi4wMzAxLDAsMCwxLDQyNy42MjYzNCw0MjJINTA4LjI2OWEyMi4wMzAxMSwyMi4wMzAxMSwwLDAsMSwyMi4wMzAxNSwyMi4wMzAwNVY2NTIuODQ5MzFhMjIuMDMwMTEsMjIuMDMwMTEsMCwwLDEtMjIuMDMwMDksMjIuMDMwMTJINDI3LjYyNjQ0YTIyLjAzMDEsMjIuMDMwMSwwLDAsMS0yMi4wMzAxNi0yMi4wM1Y1MDkuMTg3ODNoLTEuMzg5NDdaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTc3LjY2NTM1IC0xNjIpIiBmaWxsPSIjM2YzZDU2Ii8+PHBhdGggZD0iTTQyNi43Mzc1LDQyNy43MzE0N0g0MzcuMjY0YTcuODE2MjMsNy44MTYyMywwLDAsMCw3LjIzNjc2LDEwLjc2ODIxaDQ2LjE5OTE0YTcuODE2MjEsNy44MTYyMSwwLDAsMCw3LjIzNjc2LTEwLjc2ODIyaDkuODMxODFhMTYuNDUxODQsMTYuNDUxODQsMCwwLDEsMTYuNDUxODUsMTYuNDUxODJWNjUyLjY5NjEyQTE2LjQ1MTg0LDE2LjQ1MTg0LDAsMCwxLDUwNy43Njg1Miw2NjkuMTQ4aC04MS4wMzFhMTYuNDUxODQsMTYuNDUxODQsMCwwLDEtMTYuNDUxODUtMTYuNDUxODNoMFY0NDQuMTgzMjlBMTYuNDUxODMsMTYuNDUxODMsMCwwLDEsNDI2LjczNzUsNDI3LjczMTQ3WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny42NjUzNSAtMTYyKSIgZmlsbD0iI2ZmZiIvPjxjaXJjbGUgY3g9IjI4OS42MzA2NCIgY3k9IjM4Ni42ODUxOSIgcj0iNDYuNjkxIiBmaWxsPSIjNmM2M2ZmIi8+PHBvbHlnb24gcG9pbnRzPSIyODUuMTgxIDQwNi4zOTUgMjcxLjIwNyAzODguNDI2IDI3OS4zMzMgMzgyLjEwNSAyODUuOTUgMzkwLjYxMyAzMDguMzA0IDM2Ny4wMTYgMzE1Ljc3OSAzNzQuMDk4IDI4NS4xODEgNDA2LjM5NSIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik0zNTcuNzc2NTksNTkxLjI5NTdIMzAyLjk1MTFhNC4yNTg1LDQuMjU4NSwwLDAsMS00LjI1MzctNC4yNTM3VjU2My40MTAzMmEzMS42NjY0NSwzMS42NjY0NSwwLDAsMSw2My4zMzI4OSwwVjU4Ny4wNDJBNC4yNTg1LDQuMjU4NSwwLDAsMSwzNTcuNzc2NTksNTkxLjI5NTdaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTc3LjY2NTM1IC0xNjIpIiBmaWxsPSIjMmYyZTQxIi8+PHBvbHlnb24gcG9pbnRzPSIzNjUuNjE1IDU2Ni45NCAzNzAuNjMxIDU1Ni40OTMgMzMyLjcyNCA1MzIuMTcxIDMyNS4zMiA1NDcuNTkgMzY1LjYxNSA1NjYuOTQiIGZpbGw9IiM5ZjYxNmEiLz48cGF0aCBkPSJNNTY3Ljg3NzQ1LDcwMi41NzM4MWExNC41MzcsMTQuNTM3LDAsMCwwLTE5LjQwNjM2LDYuODE1MzRsLTMuMzgzOSw3LjA0MjI1LTUuMjE3OSwxMC44NzA1Ny0xLjI3NjIsMi42NjU2NiwxMy41MzYwNiw2LjUwMzQ1LDE2LjE3MzYyLTMzLjY4OTM0WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny42NjUzNSAtMTYyKSIgZmlsbD0iIzJmMmU0MSIvPjxwYXRoIGQ9Ik01NDEuMzYyNjYsNzA3Ljk0MjkybC0yLjE5MzA4LDQuNjg4NDktNS40NzMxNCwxMS43MDI0MS0uMTMyMjMuMjkzYy0xMS42OTI4NC41OTU1Mi0yNC4xNjA4NS0zLjI5OS0zNS41NTE2LTguNzM0MjZhMTQ2LjgwOTA4LDE0Ni44MDkwOCwwLDAsMS0xMy4zMDkyLTcuMjEyMzljLTYuMzgwNTYtMy44NjYxMS0xMi4wNTIxNi03Ljg2NDYzLTE2LjU2MTEtMTEuMjU4MTEtNi43ODctNS4xMzI3OS0xMC45MzY4MS04LjkxMzg2LTEwLjkzNjgxLTguOTEzODZzLTEuMjQ3NTguOTY0MTQtMy40OTc0NCwyLjYwODk1Yy0zLjAxNTM1LDIuMjAyNDMtNy44MjY4NCw1LjYzMzc1LTEzLjg5NTM4LDkuNjQxNjhxLTMuNDczNzksMi4zMTExOS03LjQ0ODU5LDQuODIwODljLTE5LjUyOTM3LDEyLjI3OS00Ny4zMDEyMSwyNy4yMzMxNS03MC45MjM2NSwzMC4zOTAzMS00MS40ODc2Nyw1LjU0ODcxLTMxLjcyMy00OS44MTU1My0zMS43MjMtNDkuODE1NTNsMzMuMDE4MTItMTcuMTQ3MTYsMTQuMDE4MzgsMi44NDUyNiwxNS42MDYzNywzLjE1NzE2LDUuNTI5NjcsMS4xMjQ4N3MxLjA0OTM1LS4zOTcsMi44NTQ3My0xLjA4N2M1LjgxMzMtMi4yMjE0MSwxOS40NzI1OS03LjQ2NzY0LDMxLjI2OTUxLTEyLjE1NjE4LDYuMDc4LTIuNDE5ODgsMTEuNjU1MjEtNC42OTgsMTUuNDA3OS02LjMzMzMsMTMuMjkwMjgtNS44MTMzNiwyOC4xNjksOC4yNzEwOSwyOC4xNjksOC4yNzEwOVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xNzcuNjY1MzUgLTE2MikiIGZpbGw9IiMyZjJlNDEiLz48Y2lyY2xlIGN4PSIxNjAuNDYwOTIiIGN5PSI0MDguMjQ0NjEiIHI9IjIyLjEwNjI1IiBmaWxsPSIjOWY2MTZhIi8+PHBhdGggZD0iTTMwOS4zNjY3NSw2MzEuNjA4ODVsMTkuMjU2ODEsNTQuNTk0NzItLjExNTYyLjE5MTA4Yy0yLjY3ODQxLDQuNDI3NzEtMy41NTM3NSw3Ljk5OTIzLTIuNTMxMTcsMTAuMzI4MjRhNC41MDA1Myw0LjUwMDUzLDAsMCwwLDIuODUzMzQsMi40NjE0OGw0NS41NzAxMy0zMS44NTI0NS0xLjU5NTYtMTIuNzY2MTguMDg4ODUtLjE0MjYzYzQuNDA0NjMtNy4wNDc1LDUuODMwODQtMTMuNDI5OSw0LjIzOTYzLTE4Ljk2OS0yLjA2NDc3LTcuMTg3ODItOC42MjYtMTAuNDUxLTguNjkyLTEwLjQ4MzMzbC0uMTU4NzctLjEyNTA4TDM0NS41NTM0NCw1OTcuMTgyM2wtMzAuMzgyODYsNS4zOTc5WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny42NjUzNSAtMTYyKSIgZmlsbD0iI2NjYyIvPjxwYXRoIGQ9Ik0yODAuMDgyMzksNzI3LjQzNTc3bC0xMi45MDA1LTE1Ljg3NzU0LDMxLjA5ODc0LTUxLjMzNywxNC40OTkwOS00NC44MTc1Ni40NDk3OS4xNDUzOS0uNDQ5NzktLjE0NTM5YTE4LjAwNDA2LDE4LjAwNDA2LDAsMSwxLDMyLjEwNDcsMTUuNTM2OUwzMTguMjY2LDY3MC44MjAzNloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xNzcuNjY1MzUgLTE2MikiIGZpbGw9IiNjY2MiLz48cGF0aCBkPSJNMzY5LjUyMTgxLDU2NS43NzM0OUgzMzUuOTk3MzdsLS4zNDM4Ni00LjgxMzExLTEuNzE4ODQsNC44MTMxMWgtNS4xNjJsLS42ODEyNi05LjUzOTQ0LTMuNDA2NzQsOS41Mzk0NGgtOS45ODgzMXYtLjQ3MjYzYTI1LjA3NzcyLDI1LjA3NzcyLDAsMCwxLDI1LjA0OTM1LTI1LjA0OTU4aDQuNzI2NTZhMjUuMDc3OTEsMjUuMDc3OTEsMCwwLDEsMjUuMDQ5NTgsMjUuMDQ5NThaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTc3LjY2NTM1IC0xNjIpIiBmaWxsPSIjMmYyZTQxIi8+PHBhdGggZD0iTTMzNS43MjMsNTk1LjcwN2E0LjM0NTEyLDQuMzQ1MTIsMCwwLDEtLjc1MjgtLjA2NjQ2bC0yNC41NDgxLTQuMzMxMjVWNTUwLjczODUzaDI3LjAyMjczbC0uNjY5Ljc4Yy05LjMwODIxLDEwLjg1NTgxLTIuMjk1NTUsMjguNDU4NjQsMi43MTMsMzcuOTg1MTZhNC4xOTA3NCw0LjE5MDc0LDAsMCwxLS4zMzMsNC40NDk0QTQuMjM2Niw0LjIzNjYsMCwwLDEsMzM1LjcyMyw1OTUuNzA3WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ny42NjUzNSAtMTYyKSIgZmlsbD0iIzJmMmU0MSIvPjxwYXRoIGQ9Ik03NzIuMDg2NTEsNzM4aC01MzlhMSwxLDAsMSwxLDAtMmg1MzlhMSwxLDAsMSwxLDAsMloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xNzcuNjY1MzUgLTE2MikiIGZpbGw9IiNjYmNiY2IiLz48L3N2Zz4=");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("data:image/webp;base64,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");
+
+/***/ }),
+
+/***/ 9778:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("data:image/png;base64,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");
+
+/***/ }),
+
+/***/ 8333:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/images/undraw_app-installation_3czh-8cb66dd4db1fe37ba2ce827b12816585.svg");
+
+/***/ }),
+
+/***/ 9121:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NzQuMTcwNzkiIGhlaWdodD0iNDExLjA4NDU3IiB2aWV3Qm94PSIwIDAgNTc0LjE3MDc5IDQxMS4wODQ1NyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHJvbGU9ImltZyIgYXJ0aXN0PSJLYXRlcmluYSBMaW1waXRzb3VuaSIgc291cmNlPSJodHRwczovL3VuZHJhdy5jby8iPjxwYXRoIGQ9Ik04NzAuMTA5ODMsMzY0LjkyMjI4SDU1NS45MTYyM2ExNi42OTU0MSwxNi42OTU0MSwwLDAsMC0xNi42ODAyOSwxNi42ODAzdjUwLjkxODc5YTE2LjY5NTQxLDE2LjY5NTQxLDAsMCwwLDE2LjY4MDI5LDE2LjY4MDI5aDMxNC4xOTM2YTE2LjY5NTQxLDE2LjY5NTQxLDAsMCwwLDE2LjY4MDI5LTE2LjY4MDI5VjM4MS42MDI1OEExNi42OTU0MSwxNi42OTU0MSwwLDAsMCw4NzAuMTA5ODMsMzY0LjkyMjI4WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMxMi45MTQ2IC0yNDQuNDU3NzEpIiBmaWxsPSIjZjJmMmYyIi8+PHBhdGggZD0iTTQzOC45MTQ2LDY1NS41NDIyOWgtMTI1YTEsMSwwLDEsMSwwLTJoMTI1YTEsMSwwLDAsMSwwLDJaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMzEyLjkxNDYgLTI0NC40NTc3MSkiIGZpbGw9IiMzZjNkNTYiLz48cGF0aCBkPSJNNDIwLjU2MTExLDM0Mi40MzYxM2E5LjM3Nyw5LjM3NywwLDAsMC0xLjkyMjExLDE0LjI0OTQxbC05LjA4NzQ2LDE5LjQwNTU5LDEwLjQ0NTgxLDguMzk4NjUsMTIuNDQ4MzctMjcuNTg0NjlhOS40Mjc3OSw5LjQyNzc5LDAsMCwwLTExLjg4NDYxLTE0LjQ2OVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zMTIuOTE0NiAtMjQ0LjQ1NzcxKSIgZmlsbD0iI2ZmYjhiOCIvPjxwYXRoIGQ9Ik0zNjguMzM5MzgsMzUwLjMxMTA1bDAsMGExMy4wNTgxMiwxMy4wNTgxMiwwLDAsMSwxNy41ODI5NSwzLjk0MTU5bDE4LjU5NDc2LDI3Ljg0MjMxLDYuNDU1NDYtMTQuMjMxNDFhNCw0LDAsMCwxLDQuODM1NDEtMi4xNjU2OGw5Ljc0MzMyLDMuMDQzNTVhNCw0LDAsMCwxLDIuNTk2LDUuMTAxMWwtNi42Njk2MSwxOS42OTQzYTE3LjAxOTEzLDE3LjAxOTEzLDAsMCwxLTI1Ljc1ODQ1LDguNTY3NmwwLDBhMTcuMDE4ODQsMTcuMDE4ODQsMCwwLDEtMi43ODc0Mi0yLjM5NzIyTDM2NS41MjkzLDM3MC40Mjc3OUExMy4wNTgxMSwxMy4wNTgxMSwwLDAsMSwzNjguMzM5MzgsMzUwLjMxMTA1WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMxMi45MTQ2IC0yNDQuNDU3NzEpIiBmaWxsPSIjY2NjIi8+PHBhdGggZD0iTTQyOC40OTI0NywzMjEuNTQyODdhMS44ODI0NSwxLjg4MjQ1LDAsMCwxLDEuODM1MTQsMS45Mjg1OWwtLjE2MDUxLDYuNDYyNjYuMzI0MDYuMDI5NTItLjExNjM0LDQuMzg5NC0uMzE2NTItLjAzOTUtLjU3NTA3LDIzLjE1MjQzYTMuMjY0NTMsMy4yNjQ1MywwLDAsMS0yLjkyMTc0LDMuMTY1NTRsLTE0LjcyMTgzLDEuNTQ5ODVhMi40NzEsMi40NzEsMCwwLDEtMi43MjQxNC0yLjYyNDQ0bDIuMjMyOC0zMi45Njc0MWEzLjA1NzQsMy4wNTc0LDAsMCwxLDIuNTgxMDctMi44MTQ1OWwxNC4yMTE5NC0yLjIwNzg2aDBBMS44ODAzOSwxLjg4MDM5LDAsMCwxLDQyOC40OTI0NywzMjEuNTQyODdaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMzEyLjkxNDYgLTI0NC40NTc3MSkiIGZpbGw9IiMzZjNkNTYiLz48cGF0aCBkPSJNNDE3LjA5ODkzLDMyNC45NzQwOGw3LjQ3MTM1LTEuMTYwN2EuNjE4NzcuNjE4NzcsMCwwLDAsLjUyMDE2LS41NDQyMWgwYS43MDA4OS43MDA4OSwwLDAsMSwuNTg5MTQtLjYxNjQ0bDEuNTczNzktLjI0NDQ5YTEuNDg1MTYsMS40ODUxNiwwLDAsMSwxLjcxMjcsMS41MDMyNmwtLjgwODksMzMuNTY3MTFhMS42OTU1OSwxLjY5NTU5LDAsMCwxLTEuNTQ1LDEuNjQ4MWwtMTQuNzExLDEuMzA3OTFhMS4zMDkyNiwxLjMwOTI2LDAsMCwxLTEuNDIyNzgtMS4zODM1MWwxLjk4NDkzLTMyLjY2Mjc3YTIuMTEyOTMsMi4xMTI5MywwLDAsMSwxLjc4NDY5LTEuOTU5NzFsMS42NTktLjI1NzczQTEuMDU3NjksMS4wNTc2OSwwLDAsMCw0MTcuMDk4OTMsMzI0Ljk3NDA4WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMxMi45MTQ2IC0yNDQuNDU3NzEpIiBmaWxsPSIjZmZmIi8+PHBvbHlnb24gcG9pbnRzPSI2OS41MjIgMzk4Ljk0NiA4MC45NTQgMzk4Ljk0NSA4Ni4zOTEgMzU0Ljg0OSA2OS41MTggMzU0Ljg1MSA2OS41MjIgMzk4Ljk0NiIgZmlsbD0iI2ZmYjhiOCIvPjxwYXRoIGQ9Ik0zNzkuOTg2ODksNjQwLjEzNjM4aDM1LjkyOTc1YTAsMCwwLDAsMSwwLDB2MTMuODgxOTVhMCwwLDAsMCwxLDAsMEgzOTMuODY4ODJhMTMuODgxOTMsMTMuODgxOTMsMCwwLDEtMTMuODgxOTMtMTMuODgxOTN2MEEwLDAsMCwwLDEsMzc5Ljk4Njg5LDY0MC4xMzYzOFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ4My4wNDczIDEwNDkuNjYxMDkpIHJvdGF0ZSgxNzkuOTk0ODMpIiBmaWxsPSIjMmYyZTQxIi8+PHBvbHlnb24gcG9pbnRzPSIzNC4zODYgMzk4Ljk0NiA0NS44MTggMzk4Ljk0NSA1MS4yNTUgMzU0Ljg0OSAzNC4zODIgMzU0Ljg1MSAzNC4zODYgMzk4Ljk0NiIgZmlsbD0iI2ZmYjhiOCIvPjxwYXRoIGQ9Ik0zNDQuODUxMTksNjQwLjEzNjM4aDM1LjkyOTc1YTAsMCwwLDAsMSwwLDB2MTMuODgxOTVhMCwwLDAsMCwxLDAsMEgzNTguNzMzMTJhMTMuODgxOTMsMTMuODgxOTMsMCwwLDEtMTMuODgxOTMtMTMuODgxOTN2MEEwLDAsMCwwLDEsMzQ0Ljg1MTE5LDY0MC4xMzYzOFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQxMi43NzU5MSAxMDQ5LjY2NDI2KSByb3RhdGUoMTc5Ljk5NDgzKSIgZmlsbD0iIzJmMmU0MSIvPjxjaXJjbGUgY3g9IjY3Ljg2Njk2IiBjeT0iNjYuMzA1NzQiIHI9IjI0LjU2MTAzIiBmaWxsPSIjZmZiOGI4Ii8+PHBhdGggZD0iTTM5My40MjIxMSwzNzYuNDc2YTM3Ljg1OTA2LDM3Ljg1OTA2LDAsMCwwLTE4LjI3OTU4LTMxLjIxMjIzYy02LjM0NTMzLTMuNzM5MDgtMTMuMjkwODEtNS4xOTcyOC0xOC44MTY0OC4zMjgzOWEzOC4zNTQwOSwzOC4zNTQwOSwwLDAsMC03LjgzNiwxMS43NjExNCw1MC41MDUxLDUwLjUwNTEsMCwwLDAtLjkzNCwzNy40OTA0bDEzLjE1MTU0LDM2LjMzMzkxLDMwLjQzOTE5LDMuMjk3NThhNCw0LDAsMCwwLDQuNDI3NjItNC4xMzY0NFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zMTIuOTE0NiAtMjQ0LjQ1NzcxKSIgZmlsbD0iIzJmMmU0MSIvPjxwYXRoIGQ9Ik0zNjIuNjM3NTgsNDI2LjcwMzM5cy0yMi43NDEzNSw4LjQ4OTY5LTE2Ljc5NTY3LDQ0LjQzODUzYzUuMzM1MzIsMzIuMjU4MzgsMS4wOTU0MywxMzkuMzI5NzUuMTY4NjksMTYwLjk3MzM0YTMuOTk2MzMsMy45OTYzMywwLDAsMCwzLjY2NDMsNC4xNTM1MmwxMy4yNzUsMS4xMDYyNWE0LDQsMCwwLDAsNC4zMDg2OS0zLjU1MzI3bDYuODU1OTQtNjIuOTczNjlhMSwxLDAsMCwxLDEuOTkwNTkuMDI0MjJsNS4xMDg3MSw2MC41OTUyN2E0LDQsMCwwLDAsNC4xMTIzNiwzLjY2MmwxMS4xNTAxOC0uMzUyNzlhNCw0LDAsMCwwLDMuODcxMzUtNC4xMjk0NmwtNi41NjgyLTE5OS43NDVaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMzEyLjkxNDYgLTI0NC40NTc3MSkiIGZpbGw9IiMyZjJlNDEiLz48cGF0aCBkPSJNMzg1LjcxMDg0LDMwOS4xNDUyM2M4LjIxNDMyLDMuMzY4OTQsMTguNzA0MzktLjU2NjQ5LDIyLjY3NTg4LTguNTA3cy44Mjg0NC0xOC42OTQ2MS02Ljc5NDE4LTIzLjI0NjU5LTE4LjU4MS0yLjIxODc3LTIzLjY4ODEyLDUuMDQzNTdjLTQuMTU0NDMtNy40ODQ2LTE1LjAzNzktOS4zOTI3NC0yMi41MTAzMy01LjIxNjQ1cy0xMS41NDI2LDEyLjkyMzk0LTEyLjAyNTM0LDIxLjQ3MDYxLDIuMTE1NjQsMTYuOTY2Myw1LjI4NTM0LDI0LjkxODEzYzUuMTI3MTYsMTIuODYyNTcsMjEuNjMzLDE5Ljc4ODI4LDM0LjQwMzIyLDE0LjQzNTM1QzM3Ny4yMTExMSwzMjkuMzM1NTQsMzc4LjM2NTE4LDMxNi41OTMzNywzODUuNzEwODQsMzA5LjE0NTIzWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMxMi45MTQ2IC0yNDQuNDU3NzEpIiBmaWxsPSIjMmYyZTQxIi8+PHBhdGggaWQ9ImI3N2M2OTY1LWNkZmMtNDcxMy1iZDlhLTAzZmFmZDljN2M5OC0xMTQzIiBkYXRhLW5hbWU9IlBhdGggMzk1IiBkPSJNNDE4LjgxMjA1LDM0NS40MTRhMS4wMDc4MSwxLjAwNzgxLDAsMCwxLS42MDYyOS0uMjAxNDlsLS4wMTA4NC0uMDA4MTQtMi4yODM2LTEuNzQ2ODdhMS4wMTQ4MSwxLjAxNDgxLDAsMCwxLDEuMjM0ODctMS42MTA3NGwxLjQ3OTEzLDEuMTM0MjYsMy40OTUyNS00LjU2YTEuMDE0MzksMS4wMTQzOSwwLDAsMSwxLjQyMjIyLS4xODc4NWwuMDAwMjkuMDAwMjItLjAyMTY5LjAzMDEyLjAyMjI4LS4wMzAxMmExLjAxNTYsMS4wMTU2LDAsMCwxLC4xODc2MywxLjQyMjQ5bC00LjExMTE4LDUuMzYxMTFhMS4wMTUsMS4wMTUsMCwwLDEtLjgwNzE4LjM5NTc2WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMxMi45MTQ2IC0yNDQuNDU3NzEpIiBmaWxsPSIjNmM2M2ZmIi8+PHBhdGggZD0iTTg3MC40MDUxLDI0NC40NTc3MUg1NTYuMjExNTFhMTYuNjk1NDMsMTYuNjk1NDMsMCwwLDAtMTYuNjgwMywxNi42ODAzVjMxMi4wNTY4YTE2LjY5NTQyLDE2LjY5NTQyLDAsMCwwLDE2LjY4MDMsMTYuNjgwMjlIODcwLjQwNTFhMTYuNjk1NDIsMTYuNjk1NDIsMCwwLDAsMTYuNjgwMy0xNi42ODAyOVYyNjEuMTM4QTE2LjY5NTQzLDE2LjY5NTQzLDAsMCwwLDg3MC40MDUxLDI0NC40NTc3MVptMTQuOTI0NDgsNjcuNTk5MDlhMTQuOTQ1NjUsMTQuOTQ1NjUsMCwwLDEtMTQuOTI0NDgsMTQuOTI0NDdINTU2LjIxMTUxQTE0Ljk0NTY1LDE0Ljk0NTY1LDAsMCwxLDU0MS4yODcsMzEyLjA1NjhWMjYxLjEzOGExNC45NDU2NSwxNC45NDU2NSwwLDAsMSwxNC45MjQ0OC0xNC45MjQ0OEg4NzAuNDA1MUExNC45NDU2NSwxNC45NDU2NSwwLDAsMSw4ODUuMzI5NTgsMjYxLjEzOFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zMTIuOTE0NiAtMjQ0LjQ1NzcxKSIgZmlsbD0iIzNmM2Q1NiIvPjxwYXRoIGQ9Ik02MjAuMTUwNCwzMTUuNjI5NTlhMjkuMDMyMjMsMjkuMDMyMjMsMCwxLDEsMjkuMDMyLTI5LjAzMjIzQTI5LjA2NTE5LDI5LjA2NTE5LDAsMCwxLDYyMC4xNTA0LDMxNS42Mjk1OVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zMTIuOTE0NiAtMjQ0LjQ1NzcxKSIgZmlsbD0iIzZjNjNmZiIvPjxwYXRoIGQ9Ik04MjcuNTM2MTUsMzEwLjMwMUg2NzYuNjMzODVhNy4wMjMyOCw3LjAyMzI4LDAsMSwxLDAtMTQuMDQ2NTZoMTUwLjkwMjNhNy4wMjMyOCw3LjAyMzI4LDAsMCwxLDAsMTQuMDQ2NTZaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMzEyLjkxNDYgLTI0NC40NTc3MSkiIGZpbGw9IiNjY2MiLz48cGF0aCBkPSJNNzI2LjU3NjQ4LDI4MC40NTJINjc2LjYzMzg1YTcuMDIzMjgsNy4wMjMyOCwwLDEsMSwwLTE0LjA0NjU2aDQ5Ljk0MjYzYTcuMDIzMjgsNy4wMjMyOCwwLDAsMSwwLDE0LjA0NjU2WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMxMi45MTQ2IC0yNDQuNDU3NzEpIiBmaWxsPSIjY2NjIi8+PHBhdGggaWQ9ImI4MzdjNGUxLWUzMzYtNDM3MC1iYTljLWYwNmZiZDMzM2QzMy0xMTQ0IiBkYXRhLW5hbWU9IlBhdGggMzk1IiBkPSJNNjE4LjY2NzU2LDI5Ni44MDk0NmEzLjMyMDgyLDMuMzIwODIsMCwwLDEtMS45OTc4MS0uNjYzOTVsLS4wMzU3NC0uMDI2ODEtNy41MjQ3NS01Ljc1NjJhMy4zNDM5NSwzLjM0Mzk1LDAsMSwxLDQuMDY5MDUtNS4zMDc2MWw0Ljg3MzkzLDMuNzM3NTYsMTEuNTE3MzctMTUuMDI1NjhhMy4zNDI1MywzLjM0MjUzLDAsMCwxLDQuNjg2MzktLjYxOWwuMDAxLjAwMDcyLS4wNzE0OC4wOTkyNi4wNzM0Mi0uMDk5MjZhMy4zNDY1NywzLjM0NjU3LDAsMCwxLC42MTgyOCw0LjY4NzM0bC0xMy41NDY5NCwxNy42NjU2YTMuMzQ0NTgsMy4zNDQ1OCwwLDAsMS0yLjY1OTc2LDEuMzA0MDhaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMzEyLjkxNDYgLTI0NC40NTc3MSkiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNzM1LjQwNTEsMzgxLjQ1NzcxSDQyMS4yMTE1MWExNi42OTU0MywxNi42OTU0MywwLDAsMC0xNi42ODAzLDE2LjY4MDNWNDQ5LjA1NjhhMTYuNjk1NDIsMTYuNjk1NDIsMCwwLDAsMTYuNjgwMywxNi42ODAyOUg3MzUuNDA1MWExNi42OTU0MiwxNi42OTU0MiwwLDAsMCwxNi42ODAzLTE2LjY4MDI5VjM5OC4xMzhBMTYuNjk1NDMsMTYuNjk1NDMsMCwwLDAsNzM1LjQwNTEsMzgxLjQ1NzcxWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMxMi45MTQ2IC0yNDQuNDU3NzEpIiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTczNS40MDUxLDM4MS40NTc3MUg0MjEuMjExNTFhMTYuNjk1NDMsMTYuNjk1NDMsMCwwLDAtMTYuNjgwMywxNi42ODAzVjQ0OS4wNTY4YTE2LjY5NTQyLDE2LjY5NTQyLDAsMCwwLDE2LjY4MDMsMTYuNjgwMjlINzM1LjQwNTFhMTYuNjk1NDIsMTYuNjk1NDIsMCwwLDAsMTYuNjgwMy0xNi42ODAyOVYzOTguMTM4QTE2LjY5NTQzLDE2LjY5NTQzLDAsMCwwLDczNS40MDUxLDM4MS40NTc3MVptMTQuOTI0NDgsNjcuNTk5MDlhMTQuOTQ1NjUsMTQuOTQ1NjUsMCwwLDEtMTQuOTI0NDgsMTQuOTI0NDdINDIxLjIxMTUxQTE0Ljk0NTY1LDE0Ljk0NTY1LDAsMCwxLDQwNi4yODcsNDQ5LjA1NjhWMzk4LjEzOGExNC45NDU2NSwxNC45NDU2NSwwLDAsMSwxNC45MjQ0OC0xNC45MjQ0OEg3MzUuNDA1MUExNC45NDU2NSwxNC45NDU2NSwwLDAsMSw3NTAuMzI5NTgsMzk4LjEzOFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zMTIuOTE0NiAtMjQ0LjQ1NzcxKSIgZmlsbD0iIzNmM2Q1NiIvPjxwYXRoIGQ9Ik00ODUuMTUwNCw0NTIuNjI5NTlhMjkuMDMyMjMsMjkuMDMyMjMsMCwxLDEsMjkuMDMyLTI5LjAzMjIzQTI5LjA2NTE5LDI5LjA2NTE5LDAsMCwxLDQ4NS4xNTA0LDQ1Mi42Mjk1OVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zMTIuOTE0NiAtMjQ0LjQ1NzcxKSIgZmlsbD0iIzZjNjNmZiIvPjxwYXRoIGQ9Ik02OTIuNTM2MTUsNDQ3LjMwMUg1NDEuNjMzODVhNy4wMjMyOCw3LjAyMzI4LDAsMSwxLDAtMTQuMDQ2NTZoMTUwLjkwMjNhNy4wMjMyOCw3LjAyMzI4LDAsMCwxLDAsMTQuMDQ2NTZaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMzEyLjkxNDYgLTI0NC40NTc3MSkiIGZpbGw9IiNjY2MiLz48cGF0aCBkPSJNNTkxLjU3NjQ4LDQxNy40NTJINTQxLjYzMzg1YTcuMDIzMjgsNy4wMjMyOCwwLDEsMSwwLTE0LjA0NjU2aDQ5Ljk0MjYzYTcuMDIzMjgsNy4wMjMyOCwwLDAsMSwwLDE0LjA0NjU2WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMxMi45MTQ2IC0yNDQuNDU3NzEpIiBmaWxsPSIjY2NjIi8+PHBhdGggaWQ9ImFlMTAzZTFhLWExZDAtNDM2Ni1iZGJmLWFkYWFjNTU2NzYzMC0xMTQ1IiBkYXRhLW5hbWU9IlBhdGggMzk1IiBkPSJNNDgzLjY2NzU2LDQzMy44MDk0NmEzLjMyMDgyLDMuMzIwODIsMCwwLDEtMS45OTc4MS0uNjYzOTVsLS4wMzU3NC0uMDI2ODEtNy41MjQ3NS01Ljc1NjJhMy4zNDM5NSwzLjM0Mzk1LDAsMSwxLDQuMDY5MDUtNS4zMDc2MWw0Ljg3MzkzLDMuNzM3NTYsMTEuNTE3MzctMTUuMDI1NjhhMy4zNDI1MywzLjM0MjUzLDAsMCwxLDQuNjg2MzktLjYxOWwuMDAxLjAwMDcyLS4wNzE0OC4wOTkyNi4wNzM0Mi0uMDk5MjZhMy4zNDY1NywzLjM0NjU3LDAsMCwxLC42MTgyOCw0LjY4NzM0bC0xMy41NDY5NCwxNy42NjU2YTMuMzQ0NTgsMy4zNDQ1OCwwLDAsMS0yLjY1OTc2LDEuMzA0MDhaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMzEyLjkxNDYgLTI0NC40NTc3MSkiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNDExLjAyMzA4LDM5Mi45NDM4OGE5LjM3NjkyLDkuMzc2OTIsMCwwLDAtMTIuNzk2MjMsNi41NTcxOGwtMjEuMTIwMzMsMy42MTgxMS0uOTMxNjUsMTMuMzcxLDI5Ljc1NDIyLTUuNTI4MzhhOS40Mjc3OSw5LjQyNzc5LDAsMCwwLDUuMDk0LTE4LjAxNzkzWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMxMi45MTQ2IC0yNDQuNDU3NzEpIiBmaWxsPSIjZmZiOGI4Ii8+PHBhdGggZD0iTTM3NC43NDM0MiwzNTQuNTY1MzhsMCwwYTEzLjA1ODEyLDEzLjA1ODEyLDAsMCwxLDYuODAyMzQsMTYuNjg2MDVsLTEyLjI0MjY4LDMxLjE2MjEsMTUuMzY5NjMtMi44MjVhNCw0LDAsMCwxLDQuNTM4NjYsMi43MzM0OGwzLjA2Mzg2LDkuNzM2OTVhNCw0LDAsMCwxLTIuNzA2LDUuMDQzNjNsLTE5Ljk3Njk1LDUuNzY4YTE3LjAxOTEzLDE3LjAxOTEzLDAsMCwxLTIxLjc0LTE2LjI1NjQ4djBhMTcuMDE4OTEsMTcuMDE4OTEsMCwwLDEsLjM3Njc0LTMuNjU3MWw4LjM5NC0zOS4yMTM3NUExMy4wNTgxMSwxMy4wNTgxMSwwLDAsMSwzNzQuNzQzNDIsMzU0LjU2NTM4WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMxMi45MTQ2IC0yNDQuNDU3NzEpIiBmaWxsPSIjY2NjIi8+PC9zdmc+");
+
+/***/ }),
+
+/***/ 4705:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/images/undraw_features-overview_uone-56ac9a0423f3d2ac06bc3cdbc60908e0.svg");
 
 /***/ }),
 
@@ -14236,6 +14210,17 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 /* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MjQuMjU1NzEiIGhlaWdodD0iNTMwLjU5MTQxIiB2aWV3Qm94PSIwIDAgOTI0LjI1NTcxIDUzMC41OTE0MSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHJvbGU9ImltZyIgYXJ0aXN0PSJLYXRlcmluYSBMaW1waXRzb3VuaSIgc291cmNlPSJodHRwczovL3VuZHJhdy5jby8iPjxwYXRoIGQ9Ik0xNTMuOTk4MzksMzQzLjk2NjQ2YTEyLjQxNTY3LDEyLjQxNTY3LDAsMCwxLTE1LjgyMDIzLTE0LjU4Nzc5YzcuMjIzNy0zMC4wNTI2MSwzNC42OTE2MS0xMDMuNTQ2NDIsMTM0Ljc1ODEtMTM0LjQ1Nzg0LDQzLjM0NTIyLTEzLjM4OTczLDg0LjkxMzU3LTEzLjYxODMsMTIzLjQ5OTktLjY4NDQyLDMxLjc0MzU4LDEwLjU5NjMsNTIuODE2NjYsMjcuMTc4MTcsNjIuODk2OSwzNS4xOTI3NmExMi4zMTM0MSwxMi4zMTM0MSwwLDAsMSwyLjAxNjg0LDE3LjI5NjZxLS4wMzc2OS4wNDc1Ni0uMDc1NzguMDk0NzhhMTIuNjAzMzksMTIuNjAzMzksMCwwLDEtMTcuNTYwNjgsMS45OTMzN2MtMTguMjYyOTItMTQuMzg5NjUtNzMuNjg0MTktNTguMTA1MDctMTYzLjUwNy0zMC4zNThDMTkyLjUwMDEyLDI0NS41NDkxNywxNjguNjc1NTksMzA4LjkyMiwxNjIuNDk2MTMsMzM0Ljg0OThhMTIuMjMxLDEyLjIzMSwwLDAsMS04LjQ5NzcyLDkuMTE2NjNaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTM3Ljg3MjE0IC0xODQuNzA0MykiIGZpbGw9IiM2YzYzZmYiLz48cGF0aCBkPSJNNDI2LjczODQ1LDUxNC4xODUzM2ExMi4zNDYzNywxMi4zNDYzNywwLDAsMS0zLjA2NzY2LjU3NjY2Yy03OC4xNzUwNiw0LjIxMDQ4LTEyNy45MTMyNi02MC43MzUyOS0xMjkuOTU1MzEtNjMuNDQzbC0uMzc4NTQtLjYyNWMtMS4yNDY0MS0xLjkzMzQtMzEuMzQxODQtNDcuNzIyNTEtMTguMDkyODEtODQuMDg3NzksNi4wODU1Ny0xNi42MjUwOCwxOS41NDQ0NS0yOC4yOTQzNyw0MC4xMTY0OC0zNC42NDkyNSwxOS4xMzI4Ni01LjkxMDMxLDM0Ljc4OS00LjE2MjI4LDQ4LjExNTA2LDUuMzUzNTIsMTAuOTI2ODIsNy43NTMwNiwxNy45Mjk2NCwxOS4zMTQ5MiwyNC43MTcwNiwzMC40Nzk2NSwxNC4xMTY0OCwyMy4xODIyMywyMi43Njc3MywzNC45NzY3OCw0OS41OTk2NSwyOC4xNzE5NCwxMS43ODEzLTIuOTkwMTgsMTcuMjgyMjctMTIuMjAxMjIsMTkuNzk1MzgtMTkuMzc2MzcsNi43NjYzNC0xOS41MjQ3NS43Njk1Ni00Ni4xNDI2MS0xNS4wOTU5NC02Ni4yODA2NC0yMC40OTczNy0yNi4xMjYxNy03Ny44NTk1OC02OS41MjAyNS0xNDguNjM0MTktNDcuNjU3MzQtMzAuMjIzMTMsOS4zMzYxOS01NC45NTc1NCwyNy43MzQzOC03MS41MjE2Niw1My4wNjc4Ny0xMy43MjIxLDIxLjAyNDMtMjEuNjk5MzMsNDcuMTM2NTEtMjEuODc0MjIsNzEuNDg3NjUtLjI3NTM1LDQ1LjM0MDc2LDM2Ljg4NDExLDEwNC45OTEyNywzNy4yMzY0OSwxMDUuNTMxNTlhMTIuMjkwMjEsMTIuMjkwMjEsMCwwLDEtMy45MDU3MywxNi45MzY1cS0uMDU2OTQuMDM1NjktLjExNDMyLjA3MDY0YTEyLjU4NDIxLDEyLjU4NDIxLDAsMCwxLTE3LjIzNS0zLjg1N2MtMS42NzcyMy0yLjcyNzY5LTQxLjM1NTY2LTY2LjMyOTY0LTQxLjAzNi0xMTguNzMyMTMuNDQ1LTU2Ljc5OTg5LDM0Ljk2MTM2LTEyNC41ODgzNSwxMTEuMTU0MTEtMTQ4LjEyNSwzNS4yMTgtMTAuODc5MTUsNzIuMjI4NTEtOS4wNTA2MywxMDcuMDU3NTQsNS4yMjk0LDI2Ljk5NTE2LDExLjEzNTc1LDUxLjk3OSwyOS41Njk5Miw2OC40OTY4OSw1MC42MTkyNCwyMS4wOTc1MywyNi44NjgxNSwyOC41MzA0Nyw2Mi4wMzc4NSwxOC45MjYxMiw4OS40ODczNC02LjQwMjkxLDE4LjI5OTYzLTE5LjY1ODc4LDMwLjkyNjMyLTM3LjI3NTMyLDM1LjQ0MDg1LTQ1LjkxMzc5LDExLjY3OTI2LTYzLjkwMDI0LTE3LjcyNjQ1LTc3LjAxODA5LTM5LjE3Njk0LTEzLjQ3MDI0LTIxLjk5MDgxLTIwLjkyMTE1LTMyLjMwMTM4LTQ0LjIwMjI3LTI1LjEwOTY0LTEyLjc4MzQ2LDMuOTQ4OTMtMjAuNjU4OSwxMC4yNzY2OS0yMy45NzExNCwxOS4zNjgtNC41MDcyMiwxMi40MjgtLjIzNTYsMjguMzU3Niw0LjE0MTQ4LDM5LjUyNXEuMDY4LjE3NTEzLjEzNjMyLjM0OTQxYTEwMC45NDYyNCwxMDAuOTQ2MjQsMCwwLDAsMjUuNjEzMTksMzcuMjUyNWMxOC4wMTIxMywxNi42MzM1OSw1MS40NTEwOCw0MC4zNDcsOTQuMDY5ODYsMzguMDYwMzlhMTIuMzA4NjIsMTIuMzA4NjIsMCwwLDEsMTMuMDQ4MDksMTEuNTIxNzZxLjAwMzY2LjA1OS4wMDY3Ni4xMTgwOGExMi41Nzg4NywxMi41Nzg4NywwLDAsMS04Ljg1MjMxLDEyLjQ3MloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMzcuODcyMTQgLTE4NC43MDQzKSIgZmlsbD0iIzZjNjNmZiIvPjxwYXRoIGQ9Ik0zMzEuOTQwMjcsNTM3LjUzNDE4YTEyLjYxNTU0LDEyLjYxNTU0LDAsMCwxLTkuODcwNTEtMS4wMzEzNmMtMzguNTU3MTUtMjEuODQ1Ny02NS42MjQ3LTUxLjIyODI2LTg1LjExNi05Mi40MTA0M2wtLjA3ODQ1LS4yNTRjLTEyLjI4NDE3LTI3LjQ1Nzc0LTE5LjY3OS02OS40MDktMy4zNjcyMi0xMDQuODY1NjUsMTIuMDQyMTktMjYuMTYyMzQsMzQuNjQ2NC00NC41NTE2NCw2Ny4wNzA2NC01NC41Njc3NywzOC4zNTAzNC0xMS44NDY3Niw3NC4wNTkxNC0zLjEyNDUzLDEwMy4zNjYzOSwyNS4xMDI1NEExNTMuMTcwNDUsMTUzLjE3MDQ1LDAsMCwxLDQzNS45MjkxNSwzNTQuODA2YTEyLjUxNjQ2LDEyLjUxNjQ2LDAsMCwxLTIzLjAzMDY3LDkuODAzNzUsMTI4LjI2MDY5LDEyOC4yNjA2OSwwLDAsMC0yNi45NjYxMi0zNy43NjAyOWMtMjIuNTg5ODktMjEuNDkyMS00OC44NTAxMS0yNy44NDctNzguMTQyLTE4Ljc5ODUzLTI1LjMxMjkyLDcuODE5MzgtNDIuNzQzMjIsMjEuNjQyODQtNTEuNjY1OTQsNDEuMDkxODMtMTIuODY3NDksMjcuOTkzOC02LjI0MjU3LDYyLjk0OTQxLDMuMzcwNiw4NC40NjI0NCwxNy4xODY0NSwzNi40MjI2Nyw0MS4wMjU0Miw2Mi4yNTg0OCw3NC45NjA5LDgxLjQ1MTM5YTEyLjI1NTMxLDEyLjI1NTMxLDAsMCwxLDQuNjU0NTgsMTYuNjk0OTJxLS4wNDcuMDgzMjgtLjA5NTI5LjE2NTlBMTIuNTY4NjEsMTIuNTY4NjEsMCwwLDEsMzMxLjk0MDI3LDUzNy41MzQxOFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMzcuODcyMTQgLTE4NC43MDQzKSIgZmlsbD0iIzZjNjNmZiIvPjxjaXJjbGUgY3g9IjE5OC4xMjg0OCIgY3k9IjIxMy43NjgyMSIgcj0iMTUuOTQ5MDUiIGZpbGw9IiNlNmU2ZTYiLz48cGF0aCBkPSJNNjIzLjU3NTU5LDU5My4yMjQ0N2E2LjU2OTc0LDYuNTY5NzQsMCwwLDEtLjk4NDM3LS4wNzQyMSw2LjQ1OTI0LDYuNDU5MjQsMCwwLDEtNC4yNjA3NS0yLjU2OTM0TDYwOS41Njk3Myw1NzguNzAyYTYuNDk4NTMsNi40OTg1MywwLDAsMSwxLjM3My05LjA4ODg2bDc0Ljg5OTQxLTU1LjI0MDI0YTYuNDk5ODksNi40OTk4OSwwLDAsMSw5LjA4OTg1LDEuMzczbDguNzU5NzYsMTEuODc3OTNhNi41MDA4Nyw2LjUwMDg3LDAsMCwxLTEuMzcyMDcsOS4wODk4NEw2MjcuNDIwMzIsNTkxLjk1NEE2LjQ1Mzc0LDYuNDUzNzQsMCwwLDEsNjIzLjU3NTU5LDU5My4yMjQ0N1oiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMzcuODcyMTQgLTE4NC43MDQzKSIgZmlsbD0iIzZjNjNmZiIvPjxwYXRoIGQ9Ik02NzYuNzY4NzYsNTQ4Ljc0ODM0LDY2NS4zMDUyNCw1MzMuMjA1MWE2LDYsMCwwLDEsMS4yNjc0My04LjM5MDA5bDQzLjg2MTA2LTM4LjQyOTkzYTYsNiwwLDAsMSw4LjM5MDA5LDEuMjY3NDNsMjAuOTYzNTIsMjUuMDQzMjRhNiw2LDAsMCwxLTEuMjY3NDMsOC4zOTAwOWwtNTMuMzYxMDYsMjguOTI5OTNBNiw2LDAsMCwxLDY3Ni43Njg3Niw1NDguNzQ4MzRaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTM3Ljg3MjE0IC0xODQuNzA0MykiIGZpbGw9IiMyZjJlNDEiLz48cGF0aCBkPSJNNzQ3LjI0NTUxLDcxNC45NTU5Mkg3MzIuNDg2NzJhNi41MDc1Myw2LjUwNzUzLDAsMCwxLTYuNS02LjVWNTg1LjQ0MTI3YTYuNTA3NTMsNi41MDc1MywwLDAsMSw2LjUtNi41aDE0Ljc1ODc5YTYuNTA3NTMsNi41MDc1MywwLDAsMSw2LjUsNi41VjcwOC40NTU5MkE2LjUwNzUzLDYuNTA3NTMsMCwwLDEsNzQ3LjI0NTUxLDcxNC45NTU5MloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMzcuODcyMTQgLTE4NC43MDQzKSIgZmlsbD0iIzZjNjNmZiIvPjxwYXRoIGQ9Ik03NzYuNDM3OSw3MTQuOTU1OTJINzYxLjY3ODEzYTYuNTA3NTMsNi41MDc1MywwLDAsMS02LjUtNi41VjU4NS40NDEyN2E2LjUwNzUzLDYuNTA3NTMsMCwwLDEsNi41LTYuNUg3NzYuNDM3OWE2LjUwNzUzLDYuNTA3NTMsMCwwLDEsNi41LDYuNVY3MDguNDU1OTJBNi41MDc1Myw2LjUwNzUzLDAsMCwxLDc3Ni40Mzc5LDcxNC45NTU5MloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMzcuODcyMTQgLTE4NC43MDQzKSIgZmlsbD0iIzZjNjNmZiIvPjxyZWN0IHg9IjQ1Mi45MjI2OSIgeT0iNTI4LjM1MDY4IiB3aWR0aD0iMzI0LjAzMjYxIiBoZWlnaHQ9IjIuMjQwNzIiIGZpbGw9IiMzZjNkNTYiLz48Y2lyY2xlIGN4PSI2MTAuMjE2NDUiIGN5PSIxOTUuNzQyNDciIHI9IjUzLjUxOTE2IiBmaWxsPSIjNmM2M2ZmIi8+PHBhdGggZD0iTTgzMC45NDQ0OSw2NTEuODc5MjYsNzk5Ljk1MDQxLDUxNC4yMzM3NVY0ODEuNzEyMjdhOC4wMDAyLDguMDAwMiwwLDAsMC04LThINzYyLjI1OTkyVjQ1Mi43OTkxOGE3Ljk5OTg5LDcuOTk5ODksMCwwLDAtOC04aC0xNmE3Ljk5OTg4LDcuOTk5ODgsMCwwLDAtOCw4djIwLjkxMzA5SDcwMC41Njk0M2E4LjAwMDIsOC4wMDAyLDAsMCwwLTgsOFY2NTIuNzk5MThhNy45NjgxNCw3Ljk2ODE0LDAsMCwwLC41ODQyOSwyLjk5MjY4LDcuODM0MjgsNy44MzQyOCwwLDAsMCw3LjM3NzEzLDYuMjA2NTRMODI1Ljk1NTM1LDY2Ni4xOEM4MzMuNDUxMiw2NjYuMzc2ODIsODM2Ljg1MjQ1LDY1Ni42Mjc3OSw4MzAuOTQ0NDksNjUxLjg3OTI2WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEzNy44NzIxNCAtMTg0LjcwNDMpIiBmaWxsPSIjMmYyZTQxIi8+PHBhdGggZD0iTTc0OC42MDI5NCwzOTkuNDYwOGMtMy4zMDU2Ny0uMDkyNzctNy40MTk5My0uMjA4LTEwLjU4ODg3LTIuNTIzNDRhOC4xMzE0OCw4LjEzMTQ4LDAsMCwxLTMuMjAwMi02LjA3MDMxLDUuNDcxMzIsNS40NzEzMiwwLDAsMSwxLjg2MDM1LTQuNDk1MTJjMS42NTcyMy0xLjM5ODQzLDQuMDc2MTgtMS43MjU1OCw2LjY3Nzc0LS45NjA5M2wtMi42OTkyMi0xOS43MjY1NywxLjk4MjQyLS4yNzE0OCwzLjE3MTg4LDIzLjE5MDQzLTEuNjU0My0uNzU4NzljLTEuOTE4OTUtLjg4MDg2LTQuNTUxNzYtMS4zMjgxMi02LjE4NzUuMDU0NjlhMy41MTMzNiwzLjUxMzM2LDAsMCwwLTEuMTUyMzQsMi44OTY0OCw2LjE0MzM1LDYuMTQzMzUsMCwwLDAsMi4zODA4Niw0LjUyNjM3YzIuNDY2NzksMS44MDE3Niw1Ljc0NjA5LDIuMDM1MTYsOS40NjU4MiwyLjEzODY3WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEzNy44NzIxNCAtMTg0LjcwNDMpIiBmaWxsPSIjMmYyZTQxIi8+PHJlY3QgeD0iNTgyLjIxMDI4IiB5PSIxODIuNjgyMjkiIHdpZHRoPSIxMC43NzE0OCIgaGVpZ2h0PSIyIiBmaWxsPSIjMmYyZTQxIi8+PHJlY3QgeD0iNjE2LjIxMDI4IiB5PSIxODIuNjgyMjkiIHdpZHRoPSIxMC43NzE0OCIgaGVpZ2h0PSIyIiBmaWxsPSIjMmYyZTQxIi8+PHBhdGggZD0iTTcwMS4yMjEzLDM0NS44NTM3NWMtOS41MDY2LTUuNzYxNDgtMTMuOTgzNzItMTYuNjkwODEtMTMuOTkyLTI3LjUwMDE5YTM5LjYzNzIyLDM5LjYzNzIyLDAsMCwxLDE0LjAxMjItMzAuMjc1MjZjOS43OTE2NS04LjQ2ODUxLDIyLjgzMTM5LTEyLjYxMjg0LDM1LjU3MDM3LTEzLjY2NTg3LDE1LjQxMzE0LTEuMjc0MDcsMzAuNzI2LDIuMDc2MTIsNDUuNDQ1NjEsNi4zNTIwNSwxNS43NjEzMiw0LjU3ODU1LDMxLjIwNTIxLDEwLjMzOTQsNDcuMzM5MTYsMTMuNTQ0NzgsMTUuNjU2NDgsMy4xMTA1MiwzMS4zNTQxNSwzLjQxNzI2LDQ2Ljc2ODI4LTEuMDgwOCwxNC4yMjY4Ni00LjE1MTU5LDI4LjY2Nzc4LTExLjQ4NzY1LDQzLjg2MzczLTEwLjIxNjMsMTMuMTI0NzMsMS4wOTgwNywyMy4wOTIsOS44MzIxOSwyOS43OTcsMjAuNjIzLDEzLjMxMTcsMjEuNDIzNiwxNC4zNjMxMSw1MC4xNzgzOSwzMy41MDY1Myw2OC4wMTg0Nyw4LjI3Nyw3LjcxMzQ2LDE5LjA1OTUyLDExLjIwNzY0LDI5LjgzNjQzLDEzLjgxOTMxLDEwLjMzNCwyLjUwNDM0LDIxLjM1NzY3LDQuMTA4OTIsMzAuODQwNjcsOS4xNzcxNSwxMC4xNjg3MSw1LjQzNDcyLDE2LjMyNDY2LDE1LjY0OTY2LDE0LjczMzg0LDI3LjM1NDMtMS44MDY4MSwxMy4yOTM3MS0xMS4yNjY0OCwyNC43MzUyLTIxLjY4MTI5LDMyLjU0NDY2QTkxLjczMDgsOTEuNzMwOCwwLDAsMSw5NTkuODY3NTUsNDY5LjY3NWMtMjcuNjMyMzgtNy4zMzA2OC01MC4wODc4LTI4Ljc0NjE3LTc5LjUyNzU0LTMwLjA4ODIyLTE2LjQyMzUxLS43NDg2OS0zMi41OTQxMywzLjcyNTYxLTQ5LjAxNTMyLDIuOTgzNzMtMTEuMzgwNTgtLjUxNDE1LTIzLjYzMDEtNC43MjE1NC0zMS41NTY3LTEzLjE4NTFhMjQuNzA4ODYsMjQuNzA4ODYsMCwwLDEtNi43NTY4OC0xNC41MzcxOWMtLjE3OTM1LTEuOTA1NjUtMy4xODExMS0xLjkyNDM3LTMsMCwxLjEyNTMxLDExLjk1NjkyLDkuOTI2NTYsMjAuNzg4NzUsMjAuNDMsMjUuNjQ0MjdhNTYuMzU1MzIsNTYuMzU1MzIsMCwwLDAsMTcuNDc5Nyw0LjgxMjFjOC4wMzYwNS44ODc1NiwxNi4yMjkwNS4wNDc5MywyNC4yMjgzMS0uODI5MDYsOC40NTUtLjkyNywxNi45MjQtMi4wNjg3NSwyNS40NDc3OS0xLjk2NjYxYTcyLjczOTg5LDcyLjczOTg5LDAsMCwxLDIyLjgzNzI5LDQuMDYxNDZjMTQuMTA1NjIsNC44MzgsMjYuODEyODMsMTIuODY0NzksNDAuMjg4MjUsMTkuMTE2MjcsMTMuMDQyMjUsNi4wNTA1MSwyNi42OTk4Niw5LjgwMTgsNDEuMTQ1NjQsOS44OTQ4NWE5Ni4yMTEsOTYuMjExLDAsMCwwLDQwLjM2NzYxLTguNjU3MTZjMTIuNDc3NzgtNS42ODQzMywyNC4yMDMyOC0xNC4xNjkzOCwzMS45NzIxNS0yNS42MDc4MSw3LjI4Mzg5LTEwLjcyNDM2LDExLjEwODE1LTI0Ljc5MzE3LDQuNTUzMDktMzYuNzk5MTYtNS4xMzc2NS05LjQwOTkyLTE0LjkzNjE3LTE0LjE3MTc0LTI0LjgxNTk1LTE3LjEwMzQtMTAuOTUyMjQtMy4yNDk5LTIyLjM5OS00LjczNDI3LTMzLjExOTgtOC43ODE0MWE0NS41OTMyOCw0NS41OTMyOCwwLDAsMS0xNS4xNzE3OS05LjEwMDIxLDU3LjAwMzA3LDU3LjAwMzA3LDAsMCwxLTExLjUzMS0xNS45MTA5MWMtNi4xMzc2OC0xMS45NzMwOS05LjI3Mzc4LTI1LjEyMzI2LTE0LjQ0Mjc2LTM3LjQ5MDQ5LTQuNzg4LTExLjQ1NTgtMTEuMzQwMTQtMjMuMDAyMi0yMS44OTM3LTMwLjA2MjE5YTM3LjI0NDQ0LDM3LjI0NDQ0LDAsMCwwLTE5LjA1NzQxLTYuMTUxNzJjLTcuNTE3NzMtLjM0LTE0Ljk4ODQ4LDEuMzg1NzgtMjIuMTMzNTMsMy41NjA1NS03LjU2MSwyLjMwMTM3LTE0LjkzOTQxLDUuMTc1ODUtMjIuNTU3NTUsNy4yOTM5NGE4MS42NzE3MSw4MS42NzE3MSwwLDAsMS0yNC42Njg4MSwyLjk0NjE1Yy0xNy4xMjItLjU1Nzg2LTMzLjY2MTgtNS42NDQxLTQ5Ljg3MTEzLTEwLjc3MjIzLTI4LjM5NTU5LTguOTgzNDgtNTkuOTc2LTE4LjYwMDY3LTg4LjUyNDU5LTQuNzUzMDYtMTEuMTIzNjksNS4zOTU1OS0yMC41NDYsMTQuNDQ4MjUtMjQuNTE4NTEsMjYuMzM1MzYtMy41MTUsMTAuNTE4MTItMy4wMjkzLDIyLjc4NywyLjM4OTY0LDMyLjU4NjI0YTMwLjQ1NTI5LDMwLjQ1NTI5LDAsMCwwLDEwLjg2MzA3LDExLjMzMDE2YzEuNjU1NCwxLjAwMzI2LDMuMTY0ODgtMS41OSwxLjUxNDE2LTIuNTkwNDFaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTM3Ljg3MjE0IC0xODQuNzA0MykiIGZpbGw9IiMyZjJlNDEiLz48cGF0aCBkPSJNNzgzLjk2MDM2LDYxMy4yOTg2OUg3NjkuMjAwNTlhNi41MDc1Myw2LjUwNzUzLDAsMCwxLTYuNS02LjVWNTIxLjU0MzgxYTYuNTA3NTMsNi41MDc1MywwLDAsMSw2LjUtNi41aDE0Ljc1OTc3YTYuNTA3NTMsNi41MDc1MywwLDAsMSw2LjUsNi41djg1LjI1NDg4QTYuNTA3NTMsNi41MDc1MywwLDAsMSw3ODMuOTYwMzYsNjEzLjI5ODY5WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEzNy44NzIxNCAtMTg0LjcwNDMpIiBmaWxsPSIjNmM2M2ZmIi8+PHBhdGggZD0iTTcyNi45ODg0LDMzMi42MTE3M2ExMi43MzU4NiwxMi43MzU4NiwwLDAsMCwyMS42NTg2LDcuMjAwNzJsLTIuNTA3MDgtLjY2MTlhMjEuMjA0OSwyMS4yMDQ5LDAsMCwwLDM3LjE1MTY1LDQuMzk2NjljMS4xMjk1OS0xLjU2OTQxLTEuNDcxNTMtMy4wNjg3LTIuNTkwNDEtMS41MTQxNmExOC4yMDk5MywxOC4yMDk5MywwLDAsMS0zMS42Njg0LTMuNjgsMS41MjIxMywxLjUyMjEzLDAsMCwwLTIuNTA3MDgtLjY2MTksOS43NTgxNSw5Ljc1ODE1LDAsMCwxLTE2LjY0NDQ0LTUuODc2OTJjLS4yNjc2OC0xLjkwMzg1LTMuMTU4NzUtMS4wOTM3OC0yLjg5Mjg0Ljc5NzUyWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEzNy44NzIxNCAtMTg0LjcwNDMpIiBmaWxsPSIjMmYyZTQxIi8+PHBhdGggaWQ9ImY2YWQ4ODgxLTUzMWYtNDUwZi1hZjhjLWVlNDMwZjkxYzk0NC0zMzgiIGRhdGEtbmFtZT0iUGF0aCAzMyIgZD0iTTYzMi40MjQyOSw1NDUuNTk3bC0uMzEyODEuMjEyMDctNS44MDc2Ni04LjU2Njc2YTUuOTksNS45OSwwLDAsMC04LjMxOTMtMS41OTY4NWgwbC0xOC4xNDk5MSwxMi4zMDQzNmE1Ljk5LDUuOTksMCwwLDAtMS41OTY4NSw4LjMxOTNsMzEuODYxMzQsNDYuOTk4YTUuOTksNS45OSwwLDAsMCw4LjMxOTI5LDEuNTk2ODVoMGwxOC4xNDk4NC0xMi4zMDQzYTUuOTksNS45OSwwLDAsMCwxLjU5Njg1LTguMzE5M2gwbC0yMS45MTk2OS0zMi4zMzMyOC4zMTI4MS0uMjEyMDdaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTM3Ljg3MjE0IC0xODQuNzA0MykiIGZpbGw9IiMzZjNkNTYiLz48cGF0aCBpZD0iZmM4ODZiNTMtOGY3Zi00NTlhLThmNDYtZGM4ODk3MmYwM2MwLTMzOSIgZGF0YS1uYW1lPSJQYXRoIDM0IiBkPSJNNjE5LjM1NzQxLDUzNy44N2wtMi4yOTMxMiwxLjU1NDU3YTIuMDU3MTEsMi4wNTcxMSwwLDAsMSwuMDEzOTEsMy40MTQ4MWwtMTAuMDY0MDcsNi44MjI3M2EyLjA1NzExLDIuMDU3MTEsMCwwLDEtMy4xNjY3NS0xLjI3NzA3bC0yLjE0MjExLDEuNDUyMmE0LjMyOTg1LDQuMzI5ODUsMCwwLDAtMS4xNTQyOCw2LjAxMzU2aDBsMzAuNzkzMzEsNDUuNDIyNTdhNC4zMjk4NCw0LjMyOTg0LDAsMCwwLDYuMDEzNTUsMS4xNTQyOGgwbDE3LjY1MTYyLTExLjk2NjU2YTQuMzI5ODUsNC4zMjk4NSwwLDAsMCwxLjE1NDI4LTYuMDEzNTVoMGwtMzAuNzkzNDYtNDUuNDIyOGE0LjMyOTg1LDQuMzI5ODUsMCwwLDAtNi4wMTM1Ni0xLjE1NDI3aDBaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTM3Ljg3MjE0IC0xODQuNzA0MykiIGZpbGw9IiNmZmYiLz48L3N2Zz4=");
+
+/***/ }),
+
+/***/ 5424:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/images/undraw_presentation-95fd27c65ba3f4e72e1de641ec8476e5.svg");
 
 /***/ }),
 
@@ -14261,6 +14246,17 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 /***/ }),
 
+/***/ 9103:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/images/biscuit-keypair-creation-generate-new-29decb7d7cb66c260eee153bf2b58deb.png");
+
+/***/ }),
+
 /***/ 2024:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -14268,29 +14264,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/images/biscuit-keypair-creation-5c225dfa665d59f2afc5a43d01cecaf1.png");
-
-/***/ }),
-
-/***/ 5284:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/images/biscuit-remote-facts-loader-create-entity-configuration-5cf155b475513700f06035f22c135252.png");
-
-/***/ }),
-
-/***/ 7462:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/images/biscuit-remote-facts-loader-create-entity-2e7034440dd8f66814dbbb6a5a90338e.png");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/images/biscuit-keypair-creation-159c55faa3d07806ebd6960cc3ef6b1f.png");
 
 /***/ }),
 
@@ -18620,7 +18594,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"name":"docusaurus-plugin-content-doc
 /***/ ((module) => {
 
 "use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"version":{"pluginId":"default","version":"current","label":"Next","banner":null,"badge":false,"noIndex":false,"className":"docs-version-current","isLast":true,"docsSidebars":{"tutorialSidebar":[{"type":"link","label":"Overview","href":"/otoroshi-biscuit-studio/docs/overview","docId":"overview","unlisted":false},{"type":"link","label":"Introduction","href":"/otoroshi-biscuit-studio/docs/introduction","docId":"introduction","unlisted":false},{"type":"link","label":"Installation","href":"/otoroshi-biscuit-studio/docs/install","docId":"install","unlisted":false},{"type":"category","label":"Entities","collapsible":true,"collapsed":true,"items":[{"type":"link","label":"KeyPairs","href":"/otoroshi-biscuit-studio/docs/entities/keypairs","docId":"entities/keypairs","unlisted":false},{"type":"link","label":"Verifiers","href":"/otoroshi-biscuit-studio/docs/entities/verifiers","docId":"entities/verifiers","unlisted":false},{"type":"link","label":"Attenuators","href":"/otoroshi-biscuit-studio/docs/entities/attenuators","docId":"entities/attenuators","unlisted":false},{"type":"link","label":"Biscuit RBAC Policies","href":"/otoroshi-biscuit-studio/docs/entities/rbac_policies","docId":"entities/rbac_policies","unlisted":false},{"type":"link","label":"Remote Facts Loader","href":"/otoroshi-biscuit-studio/docs/entities/remote_facts","docId":"entities/remote_facts","unlisted":false}],"href":"/otoroshi-biscuit-studio/docs/category/entities"},{"type":"category","label":"Plugins","collapsible":true,"collapsed":true,"items":[{"type":"link","label":"Verifier plugin","href":"/otoroshi-biscuit-studio/docs/plugins/verifiers","docId":"plugins/verifiers","unlisted":false},{"type":"link","label":"Attenuator plugin","href":"/otoroshi-biscuit-studio/docs/plugins/attenuators","docId":"plugins/attenuators","unlisted":false}],"href":"/otoroshi-biscuit-studio/docs/category/plugins"},{"type":"link","label":"Biscuit Tokens Forge","href":"/otoroshi-biscuit-studio/docs/tokens_forge","docId":"tokens_forge","unlisted":false},{"type":"link","label":"API Documentation","href":"/otoroshi-biscuit-studio/docs/api","docId":"api","unlisted":false}]},"docs":{"api":{"id":"api","title":"API Documentation","description":"","sidebar":"tutorialSidebar"},"entities/attenuators":{"id":"entities/attenuators","title":"Attenuators","description":"What biscuit attenuators are ?","sidebar":"tutorialSidebar"},"entities/keypairs":{"id":"entities/keypairs","title":"KeyPairs","description":"Biscuit Auth tokens are flexible, decentralized, and cryptographically secure authorization tokens.","sidebar":"tutorialSidebar"},"entities/rbac_policies":{"id":"entities/rbac_policies","title":"Biscuit RBAC Policies","description":"Integrate RBAC to a verifier plugin","sidebar":"tutorialSidebar"},"entities/remote_facts":{"id":"entities/remote_facts","title":"Remote Facts Loader","description":"The Remote Facts Loader entity facilitates the loading of external facts provided by an API. This entity is particularly useful for dynamic role and permission management based on external data sources.","sidebar":"tutorialSidebar"},"entities/verifiers":{"id":"entities/verifiers","title":"Verifiers","description":"A Biscuit Verifier is a key component in the Biscuit token framework, used to validate and enforce additional constraints on a Biscuit token.","sidebar":"tutorialSidebar"},"install":{"id":"install","title":"Installation","description":"Download Otoroshi","sidebar":"tutorialSidebar"},"introduction":{"id":"introduction","title":"Introduction","description":"Biscuit tokens bring a new level of security and adaptability to token-based systems. By leveraging cryptographic primitives and a unique capability-based design, they enable:","sidebar":"tutorialSidebar"},"overview":{"id":"overview","title":"Overview","description":"Otoroshi Biscuit Studio is an Otoroshi extension that allows you to use and integrate Biscuit Tokens into your Gateway.","sidebar":"tutorialSidebar"},"plugins/attenuators":{"id":"plugins/attenuators","title":"Attenuator plugin","description":"When attenuating a Biscuit token from sources such as headers, cookies, or query parameters, the process begins by extracting and validating the original token.","sidebar":"tutorialSidebar"},"plugins/verifiers":{"id":"plugins/verifiers","title":"Verifier plugin","description":"Example Request Before Using a Biscuit Verifier","sidebar":"tutorialSidebar"},"tokens_forge":{"id":"tokens_forge","title":"Biscuit Tokens Forge","description":"Prerequisites","sidebar":"tutorialSidebar"}}}}');
+module.exports = /*#__PURE__*/JSON.parse('{"version":{"pluginId":"default","version":"current","label":"Next","banner":null,"badge":false,"noIndex":false,"className":"docs-version-current","isLast":true,"docsSidebars":{"tutorialSidebar":[{"type":"link","label":"Overview","href":"/otoroshi-biscuit-studio/docs/overview","docId":"overview","unlisted":false},{"type":"link","label":"Introduction","href":"/otoroshi-biscuit-studio/docs/introduction","docId":"introduction","unlisted":false},{"type":"link","label":"Installation","href":"/otoroshi-biscuit-studio/docs/install","docId":"install","unlisted":false},{"type":"category","label":"Entities","collapsible":true,"collapsed":true,"items":[{"type":"link","label":"KeyPairs","href":"/otoroshi-biscuit-studio/docs/entities/keypairs","docId":"entities/keypairs","unlisted":false},{"type":"link","label":"Verifiers","href":"/otoroshi-biscuit-studio/docs/entities/verifiers","docId":"entities/verifiers","unlisted":false},{"type":"link","label":"Attenuators","href":"/otoroshi-biscuit-studio/docs/entities/attenuators","docId":"entities/attenuators","unlisted":false}],"href":"/otoroshi-biscuit-studio/docs/category/entities"},{"type":"category","label":"Plugins","collapsible":true,"collapsed":true,"items":[{"type":"link","label":"Verifier plugin","href":"/otoroshi-biscuit-studio/docs/plugins/verifiers","docId":"plugins/verifiers","unlisted":false},{"type":"link","label":"Attenuator plugin","href":"/otoroshi-biscuit-studio/docs/plugins/attenuators","docId":"plugins/attenuators","unlisted":false},{"type":"link","label":"Client Credentials plugin","href":"/otoroshi-biscuit-studio/docs/plugins/clientcredentials","docId":"plugins/clientcredentials","unlisted":false}],"href":"/otoroshi-biscuit-studio/docs/category/plugins"},{"type":"link","label":"API Documentation","href":"/otoroshi-biscuit-studio/docs/api","docId":"api","unlisted":false}]},"docs":{"api":{"id":"api","title":"API Documentation","description":"","sidebar":"tutorialSidebar"},"entities/attenuators":{"id":"entities/attenuators","title":"Attenuators","description":"What biscuit attenuators are ?","sidebar":"tutorialSidebar"},"entities/keypairs":{"id":"entities/keypairs","title":"KeyPairs","description":"Biscuit Auth tokens are flexible, decentralized, and cryptographically secure authorization tokens.","sidebar":"tutorialSidebar"},"entities/verifiers":{"id":"entities/verifiers","title":"Verifiers","description":"A Biscuit Verifier is a key component in the Biscuit token framework, used to validate and enforce additional constraints on a Biscuit token.","sidebar":"tutorialSidebar"},"install":{"id":"install","title":"Installation","description":"App Installation","sidebar":"tutorialSidebar"},"introduction":{"id":"introduction","title":"Introduction","description":"Biscuit tokens bring a new level of security and adaptability to token-based systems. By leveraging cryptographic primitives and a unique capability-based design, they enable:","sidebar":"tutorialSidebar"},"overview":{"id":"overview","title":"Overview","description":"Otoroshi Biscuit Studio","sidebar":"tutorialSidebar"},"plugins/attenuators":{"id":"plugins/attenuators","title":"Attenuator plugin","description":"When attenuating a Biscuit token from sources such as headers, cookies, or query parameters, the process begins by extracting and validating the original token.","sidebar":"tutorialSidebar"},"plugins/clientcredentials":{"id":"plugins/clientcredentials","title":"Client Credentials plugin","description":"Client Credentials plugin","sidebar":"tutorialSidebar"},"plugins/verifiers":{"id":"plugins/verifiers","title":"Verifier plugin","description":"Example Request Before Using a Biscuit Verifier","sidebar":"tutorialSidebar"}}}}');
 
 /***/ }),
 
@@ -18636,7 +18610,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"categoryGeneratedIndex":{"title":"En
 /***/ ((module) => {
 
 "use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"categoryGeneratedIndex":{"title":"Plugins","description":"All Biscuit Plugins","slug":"/category/plugins","permalink":"/otoroshi-biscuit-studio/docs/category/plugins","sidebar":"tutorialSidebar","navigation":{"previous":{"title":"Remote Facts Loader","permalink":"/otoroshi-biscuit-studio/docs/entities/remote_facts"},"next":{"title":"Verifier plugin","permalink":"/otoroshi-biscuit-studio/docs/plugins/verifiers"}}}}');
+module.exports = /*#__PURE__*/JSON.parse('{"categoryGeneratedIndex":{"title":"Plugins","description":"All Biscuit Plugins","slug":"/category/plugins","permalink":"/otoroshi-biscuit-studio/docs/category/plugins","sidebar":"tutorialSidebar","navigation":{"previous":{"title":"Attenuators","permalink":"/otoroshi-biscuit-studio/docs/entities/attenuators"},"next":{"title":"Verifier plugin","permalink":"/otoroshi-biscuit-studio/docs/plugins/verifiers"}}}}');
 
 /***/ }),
 

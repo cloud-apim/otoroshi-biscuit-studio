@@ -1,11 +1,21 @@
 # Cloud APIM - Otoroshi Biscuit Studio
 
-The Otoroshi Biscuit Studio is set of Otoroshi plugins to use Biscuit Tokens into your Gateway. To know more about it, go to [documentation](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/overview)
+[![Tests Status](https://github.com/cloud-apim/otoroshi-biscuit-studio/actions/workflows/test-extension.yml/badge.svg)](https://github.com/cloud-apim/otoroshi-biscuit-studio/actions/workflows/test-extension.yml)
+
+![](/images/otoroshi-biscuit-studio-logo.png)
+
+The Otoroshi Biscuit Studio is set of Otoroshi plugins to use Biscuit Tokens into your Gateway.
+
+## Reference Documentation
+
+The Otoroshi Biscuit Studio documentation is available here : https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/overview
 
 ## Installation 
 
 Follow this guide in order to get Otoroshi with the Biscuit Studio Extension.
 ### Download Otoroshi
+
+[ ![Download Otoroshi](https://img.shields.io/github/release/MAIF/otoroshi.svg) ](https://github.com/MAIF/otoroshi/releases/download/v16.22.0/otoroshi.jar)
 
 ```sh
 curl -L -o otoroshi.jar 'https://github.com/MAIF/otoroshi/releases/download/v16.22.0/otoroshi.jar'
@@ -13,10 +23,12 @@ curl -L -o otoroshi.jar 'https://github.com/MAIF/otoroshi/releases/download/v16.
 
 ### Download the Biscuit Studio extension
   
+[![Download Otoroshi Biscuit Studio extension](https://img.shields.io/github/release/cloud-apim/otoroshi-biscuit-studio.svg) ](https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/v0.0.2/otoroshi-biscuit-studio-v0.0.2.jar)
+
 You can download the latest release of `otoroshi-biscuit-studio` from https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/latest
 
 ```sh
-curl -L -o biscuit-studio-extension.jar 'https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/0.0.1/otoroshi-biscuit-studio_2.12-0.0.1.jar'
+curl -L -o biscuit-studio-extension.jar 'https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/v0.0.2/otoroshi-biscuit-studio-v0.0.2.jar'
 ```
 
 ### Run Otoroshi with the Biscuit Studio Extension

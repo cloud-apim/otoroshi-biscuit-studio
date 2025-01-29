@@ -9,7 +9,7 @@ import otoroshi.env.Env
 import otoroshi.gateway.Errors
 import otoroshi.next.plugins.AccessValidatorContext
 import otoroshi.next.plugins.api._
-import otoroshi.utils.syntax.implicits.BetterSyntax
+import otoroshi.utils.syntax.implicits.{BetterJsReadable, BetterSyntax}
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.BiscuitExtension
 import play.api.Logger
 import play.api.libs.json.{JsObject, Json}
@@ -39,7 +39,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
 
   override def visibility: NgPluginVisibility = NgPluginVisibility.NgUserLand
 
-  override def categories: Seq[NgPluginCategory] = Seq(NgPluginCategory.Custom("Cloud APIM"), NgPluginCategory.Custom("Biscuit Tokens"), NgPluginCategory.AccessControl)
+  override def categories: Seq[NgPluginCategory] = Seq(NgPluginCategory.Custom("Cloud APIM"), NgPluginCategory.Custom("Biscuit Studio"), NgPluginCategory.AccessControl)
 
   override def steps: Seq[NgStep] = Seq(NgStep.ValidateAccess)
 
@@ -80,16 +80,12 @@ class BiscuitTokenValidator extends NgAccessValidator {
                         env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitRemoteFactsLoader(config.remoteFactsRef)) match {
                           case None => handleError("remoteFactsRef not found")
                           case Some(remoteFactsEntity) => {
-                            if (remoteFactsEntity.config.nonEmpty && remoteFactsEntity.config.get.apiUrl.nonEmpty && remoteFactsEntity.config.get.headers.nonEmpty) {
-                              BiscuitRemoteUtils.getRemoteFacts(remoteFactsEntity.config.get.apiUrl, remoteFactsEntity.config.get.headers).flatMap {
+                            if (remoteFactsEntity.config.apiUrl.nonEmpty && remoteFactsEntity.config.headers.nonEmpty) {
+                              BiscuitRemoteUtils.getRemoteFacts(remoteFactsEntity.config, ctx.json.asObject ++ Json.obj("phase" -> "access", "plugin" -> "biscuit_verifier")).flatMap {
                                 case Left(error) => handleError(s"Unable to get remote facts: ${error}")
-                                case Right(listFacts) => {
-                                  val rolesRemotes = listFacts._1
-                                  val remoteRevokedIt = listFacts._2
-                                  val remoteFacts = listFacts._3
-                                  val aclRemote = listFacts._4
-                                  val finalListFacts = verifierConfig.facts ++ rolesRemotes ++ rbacConf ++ remoteFacts ++ aclRemote
-                                  val finalListOfRevokedId = verifierConfig.revokedIds ++ remoteRevokedIt
+                                case Right(factsData) => {
+                                  val finalListFacts = verifierConfig.facts ++ factsData.roles ++ rbacConf ++ factsData.facts ++ factsData.acl
+                                  val finalListOfRevokedId = verifierConfig.revokedIds ++ factsData.revoked
 
                                   BiscuitUtils.extractToken(ctx.request, config.extractorType, config.extractorName) match {
                                     case Some(token) => {
@@ -182,7 +178,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
   }
 
   def extractApiKey(ctx: NgAccessContext, biscuitToken: Biscuit)(implicit env: Env, ec: ExecutionContext): Future[NgAccess] = {
-    val otoroshiClientID = biscuitToken.authorizer().query("api_key_client_id($id) <- otoroshi_client_id($id)")
+    val otoroshiClientID = biscuitToken.authorizer().query("api_key_client_id($id) <- client_id($id)")
 
     val client_id: Option[String]   = Try(otoroshiClientID).toOption
       .map(_.asScala)
@@ -191,7 +187,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
       .map(_.terms().asScala)
       .flatMap(_.headOption)
       .flatMap {
-        case str: Str => str.getValue().some
+        case str: Str => str.getValue.some
         case _        => None
       }
 

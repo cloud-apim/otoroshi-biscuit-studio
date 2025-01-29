@@ -3,6 +3,7 @@ package com.cloud.apim.otoroshi.extensions.biscuit.suites
 import akka.stream.Materializer
 import com.cloud.apim.otoroshi.extensions.biscuit.domains.{BiscuitAttenuatorsUtils, BiscuitKeyPairsUtils}
 import com.cloud.apim.otoroshi.extensions.biscuit.entities.{AttenuatorConfig, BiscuitAttenuator, BiscuitKeyPair}
+import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils
 import com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionSuite, OtoroshiClient}
 import org.biscuitsec.biscuit.crypto.PublicKey
 import org.biscuitsec.biscuit.token.Biscuit
@@ -14,14 +15,26 @@ import play.api.libs.json.Json
 import java.util.UUID
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
-import scala.util.Try
 
 class TestAttenuators extends BiscuitExtensionSuite {
   val port: Int = freePort
-  var otoroshi: Otoroshi = _
-  var client: OtoroshiClient = _
+  val entityTestId = s"biscuit-attenuator_${UUID.randomUUID().toString}"
+  val attenuatorTest = BiscuitAttenuator(
+    id = entityTestId,
+    name = "New Biscuit Attenuator entity",
+    description = "New biscuit Attenuator entity",
+    metadata = Map.empty,
+    tags = Seq.empty,
+    location = EntityLocation.default,
+    keypairRef = "",
+    config = AttenuatorConfig(
+      checks = List.empty,
+    ).some
+  )
   implicit var ec: ExecutionContext = _
   implicit var mat: Materializer = _
+  var otoroshi: Otoroshi = _
+  var client: OtoroshiClient = _
 
   def testAttenuatorWithoutRef(client: OtoroshiClient, awaitFor: FiniteDuration)(implicit ec: ExecutionContext, mat: Materializer): Unit = {
     val port = client.port
@@ -105,7 +118,6 @@ class TestAttenuators extends BiscuitExtensionSuite {
 
 
     val resp = client.call("GET", s"http://${routeDomain}:${port}", Map.empty, None).awaitf(awaitFor)
-    println(resp.body)
     assertEquals(resp.status, 500, s"verifier did not thrown an error 500")
     assert(resp.json.at("error").isDefined, s"error is not defined")
     assertEquals(resp.json.at("error").as[String], "attenuatorRef not found", s"bad error message for verifier route")
@@ -240,21 +252,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
     assertEquals(resp.status, 200, s"attenuator route did not respond with 200")
     assert(resp.json.at("headers.biscuit-attenuated-token").isDefined, s"response headers don't contains the biscuit attenuated token")
 
-    val attenuatedToken = resp.json.at("headers.biscuit-attenuated-token").get.asString
-        .replace("Bearer ", "")
-        .replace("Bearer: ", "")
-        .replace("Bearer:", "")
-        .replace("Biscuit ", "")
-        .replace("Biscuit-Token ", "")
-        .replace("Biscuit-Token", "")
-        .replace("BiscuitToken ", "")
-        .replace("BiscuitToken", "")
-        .replace("biscuit: ", "")
-        .replace("biscuit:", "")
-        .replace("sealed-biscuit: ", "")
-        .replace("sealed-biscuit:", "")
-        .trim
-
+    val attenuatedToken = BiscuitUtils.replaceHeader(resp.json.at("headers.biscuit-attenuated-token").get.asString)
     assert(attenuatedToken.nonEmpty, s"attenuated token is empty")
 
     val publicKeyFormatted = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, publicKey)
@@ -396,19 +394,19 @@ class TestAttenuators extends BiscuitExtensionSuite {
     assert(resp.json.at("cookies.biscuit-attenuated-token").isDefined, s"response cookies don't contains the biscuit attenuated token")
 
     val attenuatedToken = resp.json.at("cookies.biscuit-attenuated-token").get.asValue.at("value").get.asString
-        .replace("Bearer ", "")
-        .replace("Bearer: ", "")
-        .replace("Bearer:", "")
-        .replace("Biscuit ", "")
-        .replace("Biscuit-Token ", "")
-        .replace("Biscuit-Token", "")
-        .replace("BiscuitToken ", "")
-        .replace("BiscuitToken", "")
-        .replace("biscuit: ", "")
-        .replace("biscuit:", "")
-        .replace("sealed-biscuit: ", "")
-        .replace("sealed-biscuit:", "")
-        .trim
+      .replace("Bearer ", "")
+      .replace("Bearer: ", "")
+      .replace("Bearer:", "")
+      .replace("Biscuit ", "")
+      .replace("Biscuit-Token ", "")
+      .replace("Biscuit-Token", "")
+      .replace("BiscuitToken ", "")
+      .replace("BiscuitToken", "")
+      .replace("biscuit: ", "")
+      .replace("biscuit:", "")
+      .replace("sealed-biscuit: ", "")
+      .replace("sealed-biscuit:", "")
+      .trim
 
     assert(attenuatedToken.nonEmpty, s"attenuated token is empty")
 
@@ -552,19 +550,19 @@ class TestAttenuators extends BiscuitExtensionSuite {
     assert(resp.json.at("query.biscuit-attenuated-token").get.asString.nonEmpty, s"response headers don't contains the biscuit attenuated token")
 
     val attenuatedToken = resp.json.at("query.biscuit-attenuated-token").get.asString
-        .replace("Bearer ", "")
-        .replace("Bearer: ", "")
-        .replace("Bearer:", "")
-        .replace("Biscuit ", "")
-        .replace("Biscuit-Token ", "")
-        .replace("Biscuit-Token", "")
-        .replace("BiscuitToken ", "")
-        .replace("BiscuitToken", "")
-        .replace("biscuit: ", "")
-        .replace("biscuit:", "")
-        .replace("sealed-biscuit: ", "")
-        .replace("sealed-biscuit:", "")
-        .trim
+      .replace("Bearer ", "")
+      .replace("Bearer: ", "")
+      .replace("Bearer:", "")
+      .replace("Biscuit ", "")
+      .replace("Biscuit-Token ", "")
+      .replace("Biscuit-Token", "")
+      .replace("BiscuitToken ", "")
+      .replace("BiscuitToken", "")
+      .replace("biscuit: ", "")
+      .replace("biscuit:", "")
+      .replace("sealed-biscuit: ", "")
+      .replace("sealed-biscuit:", "")
+      .trim
 
     assert(attenuatedToken.nonEmpty, s"attenuated token is empty")
 
@@ -595,22 +593,6 @@ class TestAttenuators extends BiscuitExtensionSuite {
   override def afterAll(): Unit = {
     otoroshi.stop()
   }
-
-
-  val entityTestId = s"biscuit-attenuator_0155dcd8-bda6-4c7f-a300-0f26f46de0a6"
-
-  val attenuatorTest = BiscuitAttenuator(
-    id = entityTestId,
-    name = "New Biscuit Attenuator entity",
-    description = "New biscuit Attenuator entity",
-    metadata = Map.empty,
-    tags = Seq.empty,
-    location = EntityLocation.default,
-    keypairRef = "",
-    config = AttenuatorConfig(
-      checks = List.empty,
-    ).some
-  )
 
   test(s"create attenuator entity") {
     printHeader(attenuatorTest.name, "Create new attenuator entity")
