@@ -93,12 +93,12 @@ object BiscuitUtils {
 
     // Resources
     config.resources
-      .map(_.stripSuffix(";"))
+      .map(_.trim.stripSuffix(";"))
       .foreach(r => authority_builder.add_fact(s"""resource("${r}")"""))
 
     // Checks
     config.checks
-      .map(_.stripSuffix(";"))
+      .map(_.trim.stripSuffix(";"))
       .map(Parser.check)
       .filter(_.isRight)
       .map(_.get()._2)
@@ -106,7 +106,7 @@ object BiscuitUtils {
 
     // Facts
     config.facts
-      .map(_.stripSuffix(";"))
+      .map(_.trim.stripSuffix(";"))
       .map(Parser.fact)
       .filter(_.isRight)
       .map(_.get()._2)
@@ -114,7 +114,7 @@ object BiscuitUtils {
 
     // Rules
     config.rules
-      .map(_.stripSuffix(";"))
+      .map(_.trim.stripSuffix(";"))
       .map(Parser.rule)
       .filter(_.isRight)
       .map(_.get()._2)
@@ -127,7 +127,7 @@ object BiscuitUtils {
     var block = biscuitToken.create_block()
 
     checkConfig
-      .map(_.stripSuffix(";"))
+      .map(_.trim.stripSuffix(";"))
       .map(Parser.check)
       .filter(_.isRight)
       .map(_.get()._2)
@@ -170,12 +170,12 @@ object BiscuitUtils {
 
     // Add resources from the configuration
     config.resources
-      .map(_.stripSuffix(";"))
+      .map(_.trim.stripSuffix(";"))
       .foreach(r => verifier.add_fact(s"""resource("${r}")"""))
 
     // Checks
     config.checks
-      .map(_.stripSuffix(";"))
+      .map(_.trim.stripSuffix(";"))
       .map(Parser.check)
       .filter(_.isRight)
       .map(_.get()._2)
@@ -183,7 +183,7 @@ object BiscuitUtils {
 
     // Facts
     config.facts
-      .map(_.stripSuffix(";"))
+      .map(_.trim.stripSuffix(";"))
       .map(Parser.fact)
       .filter(_.isRight)
       .map(_.get()._2)
@@ -191,7 +191,7 @@ object BiscuitUtils {
 
     // Rules
     config.rules
-      .map(_.stripSuffix(";"))
+      .map(_.trim.stripSuffix(";"))
       .map(Parser.rule)
       .filter(_.isRight)
       .map(_.get()._2)
@@ -199,7 +199,7 @@ object BiscuitUtils {
 
     // Policies : allow or deny
     config.policies
-      .map(_.stripSuffix(";"))
+      .map(_.trim.stripSuffix(";"))
       .map(Parser.policy)
       .filter(_.isRight)
       .map(_.get()._2)
