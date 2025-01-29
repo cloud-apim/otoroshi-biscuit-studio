@@ -1282,7 +1282,7 @@ function _createMdxContent(props) {
       children: "Download the Biscuit Studio Extension"
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: (0,jsx_runtime.jsxs)(_components.a, {
-        href: "https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/v0.0.1/otoroshi-biscuit-studio-v0.0.1.jar",
+        href: "https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/v0.0.2/otoroshi-biscuit-studio-v0.0.2.jar",
         children: [(0,jsx_runtime.jsx)(_components.img, {
           src: "https://img.shields.io/github/release/cloud-apim/otoroshi-biscuit-studio.svg",
           alt: "Download Otoroshi Biscuit Studio extension"
@@ -1300,7 +1300,7 @@ function _createMdxContent(props) {
     }), "\n", (0,jsx_runtime.jsx)(_components.pre, {
       children: (0,jsx_runtime.jsx)(_components.code, {
         className: "language-sh",
-        children: "curl -L -o biscuit-studio-extension.jar 'https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/v0.0.1/otoroshi-biscuit-studio-v0.0.1.jar'\n"
+        children: "curl -L -o biscuit-studio-extension.jar 'https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/v0.0.2/otoroshi-biscuit-studio-v0.0.2.jar'\n"
       })
     }), "\n", (0,jsx_runtime.jsx)(_components.h2, {
       id: "run-otoroshi-with-the-biscuit-studio-extension",
