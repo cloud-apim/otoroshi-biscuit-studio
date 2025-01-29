@@ -347,7 +347,7 @@ function _createMdxContent(props) {
       }), " to integrate your attenuator entity to your route's plugins."]
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: (0,jsx_runtime.jsx)(_components.img, {
-        src: (__webpack_require__(6556)/* ["default"] */ .A) + "",
+        src: (__webpack_require__(7308)/* ["default"] */ .A) + "",
         width: "2824",
         height: "1558"
       })
@@ -482,7 +482,7 @@ function _createMdxContent(props) {
       })
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: (0,jsx_runtime.jsx)(_components.img, {
-        src: (__webpack_require__(1252)/* ["default"] */ .A) + "",
+        src: (__webpack_require__(3492)/* ["default"] */ .A) + "",
         width: "924",
         height: "531"
       })
@@ -508,7 +508,7 @@ function _createMdxContent(props) {
       children: "Then, click on \"Add item\" top right button to display the entity form."
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: (0,jsx_runtime.jsx)(_components.img, {
-        src: (__webpack_require__(8584)/* ["default"] */ .A) + "",
+        src: (__webpack_require__(2024)/* ["default"] */ .A) + "",
         width: "2830",
         height: "1626"
       })
@@ -518,7 +518,7 @@ function _createMdxContent(props) {
       children: "It will create a public and a private key."
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: (0,jsx_runtime.jsx)(_components.img, {
-        src: (__webpack_require__(9455)/* ["default"] */ .A) + "",
+        src: (__webpack_require__(9103)/* ["default"] */ .A) + "",
         width: "2830",
         height: "1626"
       })
@@ -768,7 +768,7 @@ function _createMdxContent(props) {
       })
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: (0,jsx_runtime.jsx)(_components.img, {
-        src: (__webpack_require__(4285)/* ["default"] */ .A) + "",
+        src: (__webpack_require__(2989)/* ["default"] */ .A) + "",
         width: "826",
         height: "541"
       })
@@ -780,13 +780,13 @@ function _createMdxContent(props) {
       children: "Using a verifier means you don’t need to modify or reissue tokens for every new constraint. Instead, constraints can be added at runtime when validating the token."
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: (0,jsx_runtime.jsx)(_components.img, {
-        src: (__webpack_require__(5617)/* ["default"] */ .A) + "",
+        src: (__webpack_require__(6161)/* ["default"] */ .A) + "",
         width: "2824",
         height: "1558"
       })
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: (0,jsx_runtime.jsx)(_components.img, {
-        src: (__webpack_require__(8588)/* ["default"] */ .A) + "",
+        src: (__webpack_require__(5324)/* ["default"] */ .A) + "",
         width: "2818",
         height: "1694"
       })
@@ -1255,7 +1255,7 @@ function _createMdxContent(props) {
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: (0,jsx_runtime.jsx)(_components.img, {
         alt: "App Installation",
-        src: (__webpack_require__(5613)/* ["default"] */ .A) + "",
+        src: (__webpack_require__(8333)/* ["default"] */ .A) + "",
         width: "738",
         height: "729"
       })
@@ -1332,7 +1332,7 @@ function _createMdxContent(props) {
       children: "Use it on Cloud APIM with Otoroshi Managed Instances"
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: (0,jsx_runtime.jsx)(_components.img, {
-        src: (__webpack_require__(1746)/* ["default"] */ .A) + "",
+        src: (__webpack_require__(9778)/* ["default"] */ .A) + "",
         width: "256",
         height: "256"
       })
@@ -1362,7 +1362,7 @@ function _createMdxContent(props) {
       children: "Setting Up on Clever Cloud"
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: (0,jsx_runtime.jsx)(_components.img, {
-        src: (__webpack_require__(1447)/* ["default"] */ .A) + "",
+        src: (__webpack_require__(2743)/* ["default"] */ .A) + "",
         width: "1536",
         height: "592"
       })
@@ -1476,7 +1476,7 @@ function _createMdxContent(props) {
       })
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: (0,jsx_runtime.jsx)(_components.img, {
-        src: (__webpack_require__(4336)/* ["default"] */ .A) + "",
+        src: (__webpack_require__(5424)/* ["default"] */ .A) + "",
         width: "863",
         height: "551"
       })
@@ -1603,6 +1603,7 @@ function _createMdxContent(props) {
   const _components = {
     a: "a",
     br: "br",
+    code: "code",
     h1: "h1",
     h3: "h3",
     header: "header",
@@ -1623,7 +1624,7 @@ function _createMdxContent(props) {
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: (0,jsx_runtime.jsx)(_components.img, {
         alt: "Otoroshi Biscuit Studio",
-        src: (__webpack_require__(2353)/* ["default"] */ .A) + "",
+        src: (__webpack_require__(4705)/* ["default"] */ .A) + "",
         width: "652",
         height: "613"
       })
@@ -1687,7 +1688,7 @@ function _createMdxContent(props) {
           children: [(0,jsx_runtime.jsx)(_components.strong, {
             children: (0,jsx_runtime.jsx)(_components.a, {
               href: "/docs/plugins/verifiers",
-              children: "Verifiers Plugins"
+              children: "Verifier plugin"
             })
           }), (0,jsx_runtime.jsx)(_components.br, {}), "\n", "Integrate verifiers plugins into your Otoroshi routes to check the validity of Biscuit tokens."]
         }), "\n", (0,jsx_runtime.jsx)(_components.p, {
@@ -1698,11 +1699,31 @@ function _createMdxContent(props) {
           children: [(0,jsx_runtime.jsx)(_components.strong, {
             children: (0,jsx_runtime.jsx)(_components.a, {
               href: "/docs/plugins/attenuators",
-              children: "Attenuators Plugins"
+              children: "Attenuator plugin"
             })
           }), (0,jsx_runtime.jsx)(_components.br, {}), "\n", "Add attenuator plugins to your Otoroshi routes that apply attenuation to Biscuit tokens, allowing you to reduce or modify the scope of access granted by a token."]
         }), "\n", (0,jsx_runtime.jsx)(_components.p, {
           children: "This can be used to tailor access permissions dynamically based on the specific needs of your routes or services."
+        }), "\n"]
+      }), "\n", (0,jsx_runtime.jsxs)(_components.li, {
+        children: ["\n", (0,jsx_runtime.jsx)(_components.p, {
+          children: (0,jsx_runtime.jsx)(_components.strong, {
+            children: (0,jsx_runtime.jsx)(_components.a, {
+              href: "/docs/plugins/clientcredentials",
+              children: "Client Credentials plugin"
+            })
+          })
+        }), "\n", (0,jsx_runtime.jsxs)(_components.p, {
+          children: ["The Client Credentials Plugin is a ", (0,jsx_runtime.jsx)(_components.code, {
+            children: "Backend"
+          }), " plugin that enables the OAuth2 ", (0,jsx_runtime.jsx)(_components.code, {
+            children: "client_credentials"
+          }), " flow, using a ", (0,jsx_runtime.jsx)(_components.a, {
+            href: "/docs/introduction",
+            children: "Biscuit Token"
+          }), " as the ", (0,jsx_runtime.jsx)(_components.code, {
+            children: "access_token"
+          }), "."]
         }), "\n"]
       }), "\n"]
     })]
@@ -1977,7 +1998,7 @@ __webpack_require__.d(__webpack_exports__, {
 });
 
 ;// ./.docusaurus/docusaurus-plugin-content-docs/default/site-docs-plugins-clientcredentials-mdx-c71.json
-const site_docs_plugins_clientcredentials_mdx_c71_namespaceObject = /*#__PURE__*/JSON.parse('{"id":"plugins/clientcredentials","title":"Client Credentials plugin","description":"this plugin can be used implement the OAuth2 clientcredentials flow with the accesstoken being a biscuit.","source":"@site/docs/plugins/clientcredentials.mdx","sourceDirName":"plugins","slug":"/plugins/clientcredentials","permalink":"/otoroshi-biscuit-studio/docs/plugins/clientcredentials","draft":false,"unlisted":false,"tags":[],"version":"current","sidebarPosition":3,"frontMatter":{"sidebar_position":3},"sidebar":"tutorialSidebar","previous":{"title":"Attenuator plugin","permalink":"/otoroshi-biscuit-studio/docs/plugins/attenuators"},"next":{"title":"API Documentation","permalink":"/otoroshi-biscuit-studio/docs/api"}}');
+const site_docs_plugins_clientcredentials_mdx_c71_namespaceObject = /*#__PURE__*/JSON.parse('{"id":"plugins/clientcredentials","title":"Client Credentials plugin","description":"Client Credentials plugin","source":"@site/docs/plugins/clientcredentials.mdx","sourceDirName":"plugins","slug":"/plugins/clientcredentials","permalink":"/otoroshi-biscuit-studio/docs/plugins/clientcredentials","draft":false,"unlisted":false,"tags":[],"version":"current","sidebarPosition":3,"frontMatter":{"sidebar_position":3},"sidebar":"tutorialSidebar","previous":{"title":"Attenuator plugin","permalink":"/otoroshi-biscuit-studio/docs/plugins/attenuators"},"next":{"title":"API Documentation","permalink":"/otoroshi-biscuit-studio/docs/api"}}');
 // EXTERNAL MODULE: ./node_modules/react/jsx-runtime.js
 var jsx_runtime = __webpack_require__(4848);
 // EXTERNAL MODULE: ./node_modules/@mdx-js/react/lib/index.js
@@ -2019,6 +2040,7 @@ function _createMdxContent(props) {
     h2: "h2",
     h3: "h3",
     header: "header",
+    img: "img",
     p: "p",
     pre: "pre",
     ...(0,lib/* useMDXComponents */.R)(),
@@ -2029,6 +2051,13 @@ function _createMdxContent(props) {
       children: (0,jsx_runtime.jsx)(_components.h1, {
         id: "client-credentials-plugin",
         children: "Client Credentials plugin"
+      })
+    }), "\n", (0,jsx_runtime.jsx)(_components.p, {
+      children: (0,jsx_runtime.jsx)(_components.img, {
+        alt: "Client Credentials plugin",
+        src: (__webpack_require__(9121)/* ["default"] */ .A) + "",
+        width: "574",
+        height: "411"
       })
     }), "\n", (0,jsx_runtime.jsxs)(_components.p, {
       children: ["this plugin can be used implement the OAuth2 ", (0,jsx_runtime.jsx)(_components.code, {
@@ -2290,7 +2319,7 @@ function _createMdxContent(props) {
       children: "Step 1 : Create the Otoroshi Route"
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: (0,jsx_runtime.jsx)(_components.img, {
-        src: (__webpack_require__(5877)/* ["default"] */ .A) + "",
+        src: (__webpack_require__(7029)/* ["default"] */ .A) + "",
         width: "2824",
         height: "1568"
       })
@@ -2299,7 +2328,7 @@ function _createMdxContent(props) {
       children: "Step 2 : Select the Biscuit verifier plugin"
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: (0,jsx_runtime.jsx)(_components.img, {
-        src: (__webpack_require__(7185)/* ["default"] */ .A) + "",
+        src: (__webpack_require__(4337)/* ["default"] */ .A) + "",
         width: "2824",
         height: "1568"
       })
@@ -2308,7 +2337,7 @@ function _createMdxContent(props) {
       children: "Step 3 : Add the plugin to your Route"
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: (0,jsx_runtime.jsx)(_components.img, {
-        src: (__webpack_require__(9549)/* ["default"] */ .A) + "",
+        src: (__webpack_require__(8666)/* ["default"] */ .A) + "",
         width: "2824",
         height: "1568"
       })
@@ -2317,7 +2346,7 @@ function _createMdxContent(props) {
       children: "Step 4 : Configure the Plugin"
     }), "\n", (0,jsx_runtime.jsx)(_components.p, {
       children: (0,jsx_runtime.jsx)(_components.img, {
-        src: (__webpack_require__(8918)/* ["default"] */ .A) + "",
+        src: (__webpack_require__(2550)/* ["default"] */ .A) + "",
         width: "2824",
         height: "1568"
       })
@@ -14118,7 +14147,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 /***/ }),
 
-/***/ 1447:
+/***/ 2743:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -14129,7 +14158,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 /***/ }),
 
-/***/ 1746:
+/***/ 9778:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -14140,7 +14169,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 /***/ }),
 
-/***/ 5613:
+/***/ 8333:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -14151,7 +14180,18 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 /***/ }),
 
-/***/ 2353:
+/***/ 9121:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NzQuMTcwNzkiIGhlaWdodD0iNDExLjA4NDU3IiB2aWV3Qm94PSIwIDAgNTc0LjE3MDc5IDQxMS4wODQ1NyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHJvbGU9ImltZyIgYXJ0aXN0PSJLYXRlcmluYSBMaW1waXRzb3VuaSIgc291cmNlPSJodHRwczovL3VuZHJhdy5jby8iPjxwYXRoIGQ9Ik04NzAuMTA5ODMsMzY0LjkyMjI4SDU1NS45MTYyM2ExNi42OTU0MSwxNi42OTU0MSwwLDAsMC0xNi42ODAyOSwxNi42ODAzdjUwLjkxODc5YTE2LjY5NTQxLDE2LjY5NTQxLDAsMCwwLDE2LjY4MDI5LDE2LjY4MDI5aDMxNC4xOTM2YTE2LjY5NTQxLDE2LjY5NTQxLDAsMCwwLDE2LjY4MDI5LTE2LjY4MDI5VjM4MS42MDI1OEExNi42OTU0MSwxNi42OTU0MSwwLDAsMCw4NzAuMTA5ODMsMzY0LjkyMjI4WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMxMi45MTQ2IC0yNDQuNDU3NzEpIiBmaWxsPSIjZjJmMmYyIi8+PHBhdGggZD0iTTQzOC45MTQ2LDY1NS41NDIyOWgtMTI1YTEsMSwwLDEsMSwwLTJoMTI1YTEsMSwwLDAsMSwwLDJaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMzEyLjkxNDYgLTI0NC40NTc3MSkiIGZpbGw9IiMzZjNkNTYiLz48cGF0aCBkPSJNNDIwLjU2MTExLDM0Mi40MzYxM2E5LjM3Nyw5LjM3NywwLDAsMC0xLjkyMjExLDE0LjI0OTQxbC05LjA4NzQ2LDE5LjQwNTU5LDEwLjQ0NTgxLDguMzk4NjUsMTIuNDQ4MzctMjcuNTg0NjlhOS40Mjc3OSw5LjQyNzc5LDAsMCwwLTExLjg4NDYxLTE0LjQ2OVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zMTIuOTE0NiAtMjQ0LjQ1NzcxKSIgZmlsbD0iI2ZmYjhiOCIvPjxwYXRoIGQ9Ik0zNjguMzM5MzgsMzUwLjMxMTA1bDAsMGExMy4wNTgxMiwxMy4wNTgxMiwwLDAsMSwxNy41ODI5NSwzLjk0MTU5bDE4LjU5NDc2LDI3Ljg0MjMxLDYuNDU1NDYtMTQuMjMxNDFhNCw0LDAsMCwxLDQuODM1NDEtMi4xNjU2OGw5Ljc0MzMyLDMuMDQzNTVhNCw0LDAsMCwxLDIuNTk2LDUuMTAxMWwtNi42Njk2MSwxOS42OTQzYTE3LjAxOTEzLDE3LjAxOTEzLDAsMCwxLTI1Ljc1ODQ1LDguNTY3NmwwLDBhMTcuMDE4ODQsMTcuMDE4ODQsMCwwLDEtMi43ODc0Mi0yLjM5NzIyTDM2NS41MjkzLDM3MC40Mjc3OUExMy4wNTgxMSwxMy4wNTgxMSwwLDAsMSwzNjguMzM5MzgsMzUwLjMxMTA1WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMxMi45MTQ2IC0yNDQuNDU3NzEpIiBmaWxsPSIjY2NjIi8+PHBhdGggZD0iTTQyOC40OTI0NywzMjEuNTQyODdhMS44ODI0NSwxLjg4MjQ1LDAsMCwxLDEuODM1MTQsMS45Mjg1OWwtLjE2MDUxLDYuNDYyNjYuMzI0MDYuMDI5NTItLjExNjM0LDQuMzg5NC0uMzE2NTItLjAzOTUtLjU3NTA3LDIzLjE1MjQzYTMuMjY0NTMsMy4yNjQ1MywwLDAsMS0yLjkyMTc0LDMuMTY1NTRsLTE0LjcyMTgzLDEuNTQ5ODVhMi40NzEsMi40NzEsMCwwLDEtMi43MjQxNC0yLjYyNDQ0bDIuMjMyOC0zMi45Njc0MWEzLjA1NzQsMy4wNTc0LDAsMCwxLDIuNTgxMDctMi44MTQ1OWwxNC4yMTE5NC0yLjIwNzg2aDBBMS44ODAzOSwxLjg4MDM5LDAsMCwxLDQyOC40OTI0NywzMjEuNTQyODdaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMzEyLjkxNDYgLTI0NC40NTc3MSkiIGZpbGw9IiMzZjNkNTYiLz48cGF0aCBkPSJNNDE3LjA5ODkzLDMyNC45NzQwOGw3LjQ3MTM1LTEuMTYwN2EuNjE4NzcuNjE4NzcsMCwwLDAsLjUyMDE2LS41NDQyMWgwYS43MDA4OS43MDA4OSwwLDAsMSwuNTg5MTQtLjYxNjQ0bDEuNTczNzktLjI0NDQ5YTEuNDg1MTYsMS40ODUxNiwwLDAsMSwxLjcxMjcsMS41MDMyNmwtLjgwODksMzMuNTY3MTFhMS42OTU1OSwxLjY5NTU5LDAsMCwxLTEuNTQ1LDEuNjQ4MWwtMTQuNzExLDEuMzA3OTFhMS4zMDkyNiwxLjMwOTI2LDAsMCwxLTEuNDIyNzgtMS4zODM1MWwxLjk4NDkzLTMyLjY2Mjc3YTIuMTEyOTMsMi4xMTI5MywwLDAsMSwxLjc4NDY5LTEuOTU5NzFsMS42NTktLjI1NzczQTEuMDU3NjksMS4wNTc2OSwwLDAsMCw0MTcuMDk4OTMsMzI0Ljk3NDA4WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMxMi45MTQ2IC0yNDQuNDU3NzEpIiBmaWxsPSIjZmZmIi8+PHBvbHlnb24gcG9pbnRzPSI2OS41MjIgMzk4Ljk0NiA4MC45NTQgMzk4Ljk0NSA4Ni4zOTEgMzU0Ljg0OSA2OS41MTggMzU0Ljg1MSA2OS41MjIgMzk4Ljk0NiIgZmlsbD0iI2ZmYjhiOCIvPjxwYXRoIGQ9Ik0zNzkuOTg2ODksNjQwLjEzNjM4aDM1LjkyOTc1YTAsMCwwLDAsMSwwLDB2MTMuODgxOTVhMCwwLDAsMCwxLDAsMEgzOTMuODY4ODJhMTMuODgxOTMsMTMuODgxOTMsMCwwLDEtMTMuODgxOTMtMTMuODgxOTN2MEEwLDAsMCwwLDEsMzc5Ljk4Njg5LDY0MC4xMzYzOFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ4My4wNDczIDEwNDkuNjYxMDkpIHJvdGF0ZSgxNzkuOTk0ODMpIiBmaWxsPSIjMmYyZTQxIi8+PHBvbHlnb24gcG9pbnRzPSIzNC4zODYgMzk4Ljk0NiA0NS44MTggMzk4Ljk0NSA1MS4yNTUgMzU0Ljg0OSAzNC4zODIgMzU0Ljg1MSAzNC4zODYgMzk4Ljk0NiIgZmlsbD0iI2ZmYjhiOCIvPjxwYXRoIGQ9Ik0zNDQuODUxMTksNjQwLjEzNjM4aDM1LjkyOTc1YTAsMCwwLDAsMSwwLDB2MTMuODgxOTVhMCwwLDAsMCwxLDAsMEgzNTguNzMzMTJhMTMuODgxOTMsMTMuODgxOTMsMCwwLDEtMTMuODgxOTMtMTMuODgxOTN2MEEwLDAsMCwwLDEsMzQ0Ljg1MTE5LDY0MC4xMzYzOFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQxMi43NzU5MSAxMDQ5LjY2NDI2KSByb3RhdGUoMTc5Ljk5NDgzKSIgZmlsbD0iIzJmMmU0MSIvPjxjaXJjbGUgY3g9IjY3Ljg2Njk2IiBjeT0iNjYuMzA1NzQiIHI9IjI0LjU2MTAzIiBmaWxsPSIjZmZiOGI4Ii8+PHBhdGggZD0iTTM5My40MjIxMSwzNzYuNDc2YTM3Ljg1OTA2LDM3Ljg1OTA2LDAsMCwwLTE4LjI3OTU4LTMxLjIxMjIzYy02LjM0NTMzLTMuNzM5MDgtMTMuMjkwODEtNS4xOTcyOC0xOC44MTY0OC4zMjgzOWEzOC4zNTQwOSwzOC4zNTQwOSwwLDAsMC03LjgzNiwxMS43NjExNCw1MC41MDUxLDUwLjUwNTEsMCwwLDAtLjkzNCwzNy40OTA0bDEzLjE1MTU0LDM2LjMzMzkxLDMwLjQzOTE5LDMuMjk3NThhNCw0LDAsMCwwLDQuNDI3NjItNC4xMzY0NFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zMTIuOTE0NiAtMjQ0LjQ1NzcxKSIgZmlsbD0iIzJmMmU0MSIvPjxwYXRoIGQ9Ik0zNjIuNjM3NTgsNDI2LjcwMzM5cy0yMi43NDEzNSw4LjQ4OTY5LTE2Ljc5NTY3LDQ0LjQzODUzYzUuMzM1MzIsMzIuMjU4MzgsMS4wOTU0MywxMzkuMzI5NzUuMTY4NjksMTYwLjk3MzM0YTMuOTk2MzMsMy45OTYzMywwLDAsMCwzLjY2NDMsNC4xNTM1MmwxMy4yNzUsMS4xMDYyNWE0LDQsMCwwLDAsNC4zMDg2OS0zLjU1MzI3bDYuODU1OTQtNjIuOTczNjlhMSwxLDAsMCwxLDEuOTkwNTkuMDI0MjJsNS4xMDg3MSw2MC41OTUyN2E0LDQsMCwwLDAsNC4xMTIzNiwzLjY2MmwxMS4xNTAxOC0uMzUyNzlhNCw0LDAsMCwwLDMuODcxMzUtNC4xMjk0NmwtNi41NjgyLTE5OS43NDVaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMzEyLjkxNDYgLTI0NC40NTc3MSkiIGZpbGw9IiMyZjJlNDEiLz48cGF0aCBkPSJNMzg1LjcxMDg0LDMwOS4xNDUyM2M4LjIxNDMyLDMuMzY4OTQsMTguNzA0MzktLjU2NjQ5LDIyLjY3NTg4LTguNTA3cy44Mjg0NC0xOC42OTQ2MS02Ljc5NDE4LTIzLjI0NjU5LTE4LjU4MS0yLjIxODc3LTIzLjY4ODEyLDUuMDQzNTdjLTQuMTU0NDMtNy40ODQ2LTE1LjAzNzktOS4zOTI3NC0yMi41MTAzMy01LjIxNjQ1cy0xMS41NDI2LDEyLjkyMzk0LTEyLjAyNTM0LDIxLjQ3MDYxLDIuMTE1NjQsMTYuOTY2Myw1LjI4NTM0LDI0LjkxODEzYzUuMTI3MTYsMTIuODYyNTcsMjEuNjMzLDE5Ljc4ODI4LDM0LjQwMzIyLDE0LjQzNTM1QzM3Ny4yMTExMSwzMjkuMzM1NTQsMzc4LjM2NTE4LDMxNi41OTMzNywzODUuNzEwODQsMzA5LjE0NTIzWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMxMi45MTQ2IC0yNDQuNDU3NzEpIiBmaWxsPSIjMmYyZTQxIi8+PHBhdGggaWQ9ImI3N2M2OTY1LWNkZmMtNDcxMy1iZDlhLTAzZmFmZDljN2M5OC0xMTQzIiBkYXRhLW5hbWU9IlBhdGggMzk1IiBkPSJNNDE4LjgxMjA1LDM0NS40MTRhMS4wMDc4MSwxLjAwNzgxLDAsMCwxLS42MDYyOS0uMjAxNDlsLS4wMTA4NC0uMDA4MTQtMi4yODM2LTEuNzQ2ODdhMS4wMTQ4MSwxLjAxNDgxLDAsMCwxLDEuMjM0ODctMS42MTA3NGwxLjQ3OTEzLDEuMTM0MjYsMy40OTUyNS00LjU2YTEuMDE0MzksMS4wMTQzOSwwLDAsMSwxLjQyMjIyLS4xODc4NWwuMDAwMjkuMDAwMjItLjAyMTY5LjAzMDEyLjAyMjI4LS4wMzAxMmExLjAxNTYsMS4wMTU2LDAsMCwxLC4xODc2MywxLjQyMjQ5bC00LjExMTE4LDUuMzYxMTFhMS4wMTUsMS4wMTUsMCwwLDEtLjgwNzE4LjM5NTc2WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMxMi45MTQ2IC0yNDQuNDU3NzEpIiBmaWxsPSIjNmM2M2ZmIi8+PHBhdGggZD0iTTg3MC40MDUxLDI0NC40NTc3MUg1NTYuMjExNTFhMTYuNjk1NDMsMTYuNjk1NDMsMCwwLDAtMTYuNjgwMywxNi42ODAzVjMxMi4wNTY4YTE2LjY5NTQyLDE2LjY5NTQyLDAsMCwwLDE2LjY4MDMsMTYuNjgwMjlIODcwLjQwNTFhMTYuNjk1NDIsMTYuNjk1NDIsMCwwLDAsMTYuNjgwMy0xNi42ODAyOVYyNjEuMTM4QTE2LjY5NTQzLDE2LjY5NTQzLDAsMCwwLDg3MC40MDUxLDI0NC40NTc3MVptMTQuOTI0NDgsNjcuNTk5MDlhMTQuOTQ1NjUsMTQuOTQ1NjUsMCwwLDEtMTQuOTI0NDgsMTQuOTI0NDdINTU2LjIxMTUxQTE0Ljk0NTY1LDE0Ljk0NTY1LDAsMCwxLDU0MS4yODcsMzEyLjA1NjhWMjYxLjEzOGExNC45NDU2NSwxNC45NDU2NSwwLDAsMSwxNC45MjQ0OC0xNC45MjQ0OEg4NzAuNDA1MUExNC45NDU2NSwxNC45NDU2NSwwLDAsMSw4ODUuMzI5NTgsMjYxLjEzOFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zMTIuOTE0NiAtMjQ0LjQ1NzcxKSIgZmlsbD0iIzNmM2Q1NiIvPjxwYXRoIGQ9Ik02MjAuMTUwNCwzMTUuNjI5NTlhMjkuMDMyMjMsMjkuMDMyMjMsMCwxLDEsMjkuMDMyLTI5LjAzMjIzQTI5LjA2NTE5LDI5LjA2NTE5LDAsMCwxLDYyMC4xNTA0LDMxNS42Mjk1OVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zMTIuOTE0NiAtMjQ0LjQ1NzcxKSIgZmlsbD0iIzZjNjNmZiIvPjxwYXRoIGQ9Ik04MjcuNTM2MTUsMzEwLjMwMUg2NzYuNjMzODVhNy4wMjMyOCw3LjAyMzI4LDAsMSwxLDAtMTQuMDQ2NTZoMTUwLjkwMjNhNy4wMjMyOCw3LjAyMzI4LDAsMCwxLDAsMTQuMDQ2NTZaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMzEyLjkxNDYgLTI0NC40NTc3MSkiIGZpbGw9IiNjY2MiLz48cGF0aCBkPSJNNzI2LjU3NjQ4LDI4MC40NTJINjc2LjYzMzg1YTcuMDIzMjgsNy4wMjMyOCwwLDEsMSwwLTE0LjA0NjU2aDQ5Ljk0MjYzYTcuMDIzMjgsNy4wMjMyOCwwLDAsMSwwLDE0LjA0NjU2WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMxMi45MTQ2IC0yNDQuNDU3NzEpIiBmaWxsPSIjY2NjIi8+PHBhdGggaWQ9ImI4MzdjNGUxLWUzMzYtNDM3MC1iYTljLWYwNmZiZDMzM2QzMy0xMTQ0IiBkYXRhLW5hbWU9IlBhdGggMzk1IiBkPSJNNjE4LjY2NzU2LDI5Ni44MDk0NmEzLjMyMDgyLDMuMzIwODIsMCwwLDEtMS45OTc4MS0uNjYzOTVsLS4wMzU3NC0uMDI2ODEtNy41MjQ3NS01Ljc1NjJhMy4zNDM5NSwzLjM0Mzk1LDAsMSwxLDQuMDY5MDUtNS4zMDc2MWw0Ljg3MzkzLDMuNzM3NTYsMTEuNTE3MzctMTUuMDI1NjhhMy4zNDI1MywzLjM0MjUzLDAsMCwxLDQuNjg2MzktLjYxOWwuMDAxLjAwMDcyLS4wNzE0OC4wOTkyNi4wNzM0Mi0uMDk5MjZhMy4zNDY1NywzLjM0NjU3LDAsMCwxLC42MTgyOCw0LjY4NzM0bC0xMy41NDY5NCwxNy42NjU2YTMuMzQ0NTgsMy4zNDQ1OCwwLDAsMS0yLjY1OTc2LDEuMzA0MDhaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMzEyLjkxNDYgLTI0NC40NTc3MSkiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNzM1LjQwNTEsMzgxLjQ1NzcxSDQyMS4yMTE1MWExNi42OTU0MywxNi42OTU0MywwLDAsMC0xNi42ODAzLDE2LjY4MDNWNDQ5LjA1NjhhMTYuNjk1NDIsMTYuNjk1NDIsMCwwLDAsMTYuNjgwMywxNi42ODAyOUg3MzUuNDA1MWExNi42OTU0MiwxNi42OTU0MiwwLDAsMCwxNi42ODAzLTE2LjY4MDI5VjM5OC4xMzhBMTYuNjk1NDMsMTYuNjk1NDMsMCwwLDAsNzM1LjQwNTEsMzgxLjQ1NzcxWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMxMi45MTQ2IC0yNDQuNDU3NzEpIiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTczNS40MDUxLDM4MS40NTc3MUg0MjEuMjExNTFhMTYuNjk1NDMsMTYuNjk1NDMsMCwwLDAtMTYuNjgwMywxNi42ODAzVjQ0OS4wNTY4YTE2LjY5NTQyLDE2LjY5NTQyLDAsMCwwLDE2LjY4MDMsMTYuNjgwMjlINzM1LjQwNTFhMTYuNjk1NDIsMTYuNjk1NDIsMCwwLDAsMTYuNjgwMy0xNi42ODAyOVYzOTguMTM4QTE2LjY5NTQzLDE2LjY5NTQzLDAsMCwwLDczNS40MDUxLDM4MS40NTc3MVptMTQuOTI0NDgsNjcuNTk5MDlhMTQuOTQ1NjUsMTQuOTQ1NjUsMCwwLDEtMTQuOTI0NDgsMTQuOTI0NDdINDIxLjIxMTUxQTE0Ljk0NTY1LDE0Ljk0NTY1LDAsMCwxLDQwNi4yODcsNDQ5LjA1NjhWMzk4LjEzOGExNC45NDU2NSwxNC45NDU2NSwwLDAsMSwxNC45MjQ0OC0xNC45MjQ0OEg3MzUuNDA1MUExNC45NDU2NSwxNC45NDU2NSwwLDAsMSw3NTAuMzI5NTgsMzk4LjEzOFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zMTIuOTE0NiAtMjQ0LjQ1NzcxKSIgZmlsbD0iIzNmM2Q1NiIvPjxwYXRoIGQ9Ik00ODUuMTUwNCw0NTIuNjI5NTlhMjkuMDMyMjMsMjkuMDMyMjMsMCwxLDEsMjkuMDMyLTI5LjAzMjIzQTI5LjA2NTE5LDI5LjA2NTE5LDAsMCwxLDQ4NS4xNTA0LDQ1Mi42Mjk1OVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zMTIuOTE0NiAtMjQ0LjQ1NzcxKSIgZmlsbD0iIzZjNjNmZiIvPjxwYXRoIGQ9Ik02OTIuNTM2MTUsNDQ3LjMwMUg1NDEuNjMzODVhNy4wMjMyOCw3LjAyMzI4LDAsMSwxLDAtMTQuMDQ2NTZoMTUwLjkwMjNhNy4wMjMyOCw3LjAyMzI4LDAsMCwxLDAsMTQuMDQ2NTZaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMzEyLjkxNDYgLTI0NC40NTc3MSkiIGZpbGw9IiNjY2MiLz48cGF0aCBkPSJNNTkxLjU3NjQ4LDQxNy40NTJINTQxLjYzMzg1YTcuMDIzMjgsNy4wMjMyOCwwLDEsMSwwLTE0LjA0NjU2aDQ5Ljk0MjYzYTcuMDIzMjgsNy4wMjMyOCwwLDAsMSwwLDE0LjA0NjU2WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMxMi45MTQ2IC0yNDQuNDU3NzEpIiBmaWxsPSIjY2NjIi8+PHBhdGggaWQ9ImFlMTAzZTFhLWExZDAtNDM2Ni1iZGJmLWFkYWFjNTU2NzYzMC0xMTQ1IiBkYXRhLW5hbWU9IlBhdGggMzk1IiBkPSJNNDgzLjY2NzU2LDQzMy44MDk0NmEzLjMyMDgyLDMuMzIwODIsMCwwLDEtMS45OTc4MS0uNjYzOTVsLS4wMzU3NC0uMDI2ODEtNy41MjQ3NS01Ljc1NjJhMy4zNDM5NSwzLjM0Mzk1LDAsMSwxLDQuMDY5MDUtNS4zMDc2MWw0Ljg3MzkzLDMuNzM3NTYsMTEuNTE3MzctMTUuMDI1NjhhMy4zNDI1MywzLjM0MjUzLDAsMCwxLDQuNjg2MzktLjYxOWwuMDAxLjAwMDcyLS4wNzE0OC4wOTkyNi4wNzM0Mi0uMDk5MjZhMy4zNDY1NywzLjM0NjU3LDAsMCwxLC42MTgyOCw0LjY4NzM0bC0xMy41NDY5NCwxNy42NjU2YTMuMzQ0NTgsMy4zNDQ1OCwwLDAsMS0yLjY1OTc2LDEuMzA0MDhaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMzEyLjkxNDYgLTI0NC40NTc3MSkiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNDExLjAyMzA4LDM5Mi45NDM4OGE5LjM3NjkyLDkuMzc2OTIsMCwwLDAtMTIuNzk2MjMsNi41NTcxOGwtMjEuMTIwMzMsMy42MTgxMS0uOTMxNjUsMTMuMzcxLDI5Ljc1NDIyLTUuNTI4MzhhOS40Mjc3OSw5LjQyNzc5LDAsMCwwLDUuMDk0LTE4LjAxNzkzWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMxMi45MTQ2IC0yNDQuNDU3NzEpIiBmaWxsPSIjZmZiOGI4Ii8+PHBhdGggZD0iTTM3NC43NDM0MiwzNTQuNTY1MzhsMCwwYTEzLjA1ODEyLDEzLjA1ODEyLDAsMCwxLDYuODAyMzQsMTYuNjg2MDVsLTEyLjI0MjY4LDMxLjE2MjEsMTUuMzY5NjMtMi44MjVhNCw0LDAsMCwxLDQuNTM4NjYsMi43MzM0OGwzLjA2Mzg2LDkuNzM2OTVhNCw0LDAsMCwxLTIuNzA2LDUuMDQzNjNsLTE5Ljk3Njk1LDUuNzY4YTE3LjAxOTEzLDE3LjAxOTEzLDAsMCwxLTIxLjc0LTE2LjI1NjQ4djBhMTcuMDE4OTEsMTcuMDE4OTEsMCwwLDEsLjM3Njc0LTMuNjU3MWw4LjM5NC0zOS4yMTM3NUExMy4wNTgxMSwxMy4wNTgxMSwwLDAsMSwzNzQuNzQzNDIsMzU0LjU2NTM4WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMxMi45MTQ2IC0yNDQuNDU3NzEpIiBmaWxsPSIjY2NjIi8+PC9zdmc+");
+
+/***/ }),
+
+/***/ 4705:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -14162,7 +14202,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 /***/ }),
 
-/***/ 1252:
+/***/ 3492:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -14173,7 +14213,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 /***/ }),
 
-/***/ 4336:
+/***/ 5424:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -14184,7 +14224,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 /***/ }),
 
-/***/ 4285:
+/***/ 2989:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -14195,7 +14235,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 /***/ }),
 
-/***/ 6556:
+/***/ 7308:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -14206,7 +14246,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 /***/ }),
 
-/***/ 9455:
+/***/ 9103:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -14217,7 +14257,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 /***/ }),
 
-/***/ 8584:
+/***/ 2024:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -14228,7 +14268,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 /***/ }),
 
-/***/ 5617:
+/***/ 6161:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -14239,7 +14279,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 /***/ }),
 
-/***/ 8588:
+/***/ 5324:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -14250,7 +14290,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 /***/ }),
 
-/***/ 7185:
+/***/ 4337:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -14261,7 +14301,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 /***/ }),
 
-/***/ 9549:
+/***/ 8666:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -14272,7 +14312,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 /***/ }),
 
-/***/ 5877:
+/***/ 7029:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -14283,7 +14323,7 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 /***/ }),
 
-/***/ 8918:
+/***/ 2550:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -18554,7 +18594,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"name":"docusaurus-plugin-content-doc
 /***/ ((module) => {
 
 "use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"version":{"pluginId":"default","version":"current","label":"Next","banner":null,"badge":false,"noIndex":false,"className":"docs-version-current","isLast":true,"docsSidebars":{"tutorialSidebar":[{"type":"link","label":"Overview","href":"/otoroshi-biscuit-studio/docs/overview","docId":"overview","unlisted":false},{"type":"link","label":"Introduction","href":"/otoroshi-biscuit-studio/docs/introduction","docId":"introduction","unlisted":false},{"type":"link","label":"Installation","href":"/otoroshi-biscuit-studio/docs/install","docId":"install","unlisted":false},{"type":"category","label":"Entities","collapsible":true,"collapsed":true,"items":[{"type":"link","label":"KeyPairs","href":"/otoroshi-biscuit-studio/docs/entities/keypairs","docId":"entities/keypairs","unlisted":false},{"type":"link","label":"Verifiers","href":"/otoroshi-biscuit-studio/docs/entities/verifiers","docId":"entities/verifiers","unlisted":false},{"type":"link","label":"Attenuators","href":"/otoroshi-biscuit-studio/docs/entities/attenuators","docId":"entities/attenuators","unlisted":false}],"href":"/otoroshi-biscuit-studio/docs/category/entities"},{"type":"category","label":"Plugins","collapsible":true,"collapsed":true,"items":[{"type":"link","label":"Verifier plugin","href":"/otoroshi-biscuit-studio/docs/plugins/verifiers","docId":"plugins/verifiers","unlisted":false},{"type":"link","label":"Attenuator plugin","href":"/otoroshi-biscuit-studio/docs/plugins/attenuators","docId":"plugins/attenuators","unlisted":false},{"type":"link","label":"Client Credentials plugin","href":"/otoroshi-biscuit-studio/docs/plugins/clientcredentials","docId":"plugins/clientcredentials","unlisted":false}],"href":"/otoroshi-biscuit-studio/docs/category/plugins"},{"type":"link","label":"API Documentation","href":"/otoroshi-biscuit-studio/docs/api","docId":"api","unlisted":false}]},"docs":{"api":{"id":"api","title":"API Documentation","description":"","sidebar":"tutorialSidebar"},"entities/attenuators":{"id":"entities/attenuators","title":"Attenuators","description":"What biscuit attenuators are ?","sidebar":"tutorialSidebar"},"entities/keypairs":{"id":"entities/keypairs","title":"KeyPairs","description":"Biscuit Auth tokens are flexible, decentralized, and cryptographically secure authorization tokens.","sidebar":"tutorialSidebar"},"entities/verifiers":{"id":"entities/verifiers","title":"Verifiers","description":"A Biscuit Verifier is a key component in the Biscuit token framework, used to validate and enforce additional constraints on a Biscuit token.","sidebar":"tutorialSidebar"},"install":{"id":"install","title":"Installation","description":"App Installation","sidebar":"tutorialSidebar"},"introduction":{"id":"introduction","title":"Introduction","description":"Biscuit tokens bring a new level of security and adaptability to token-based systems. By leveraging cryptographic primitives and a unique capability-based design, they enable:","sidebar":"tutorialSidebar"},"overview":{"id":"overview","title":"Overview","description":"Otoroshi Biscuit Studio","sidebar":"tutorialSidebar"},"plugins/attenuators":{"id":"plugins/attenuators","title":"Attenuator plugin","description":"When attenuating a Biscuit token from sources such as headers, cookies, or query parameters, the process begins by extracting and validating the original token.","sidebar":"tutorialSidebar"},"plugins/clientcredentials":{"id":"plugins/clientcredentials","title":"Client Credentials plugin","description":"this plugin can be used implement the OAuth2 clientcredentials flow with the accesstoken being a biscuit.","sidebar":"tutorialSidebar"},"plugins/verifiers":{"id":"plugins/verifiers","title":"Verifier plugin","description":"Example Request Before Using a Biscuit Verifier","sidebar":"tutorialSidebar"}}}}');
+module.exports = /*#__PURE__*/JSON.parse('{"version":{"pluginId":"default","version":"current","label":"Next","banner":null,"badge":false,"noIndex":false,"className":"docs-version-current","isLast":true,"docsSidebars":{"tutorialSidebar":[{"type":"link","label":"Overview","href":"/otoroshi-biscuit-studio/docs/overview","docId":"overview","unlisted":false},{"type":"link","label":"Introduction","href":"/otoroshi-biscuit-studio/docs/introduction","docId":"introduction","unlisted":false},{"type":"link","label":"Installation","href":"/otoroshi-biscuit-studio/docs/install","docId":"install","unlisted":false},{"type":"category","label":"Entities","collapsible":true,"collapsed":true,"items":[{"type":"link","label":"KeyPairs","href":"/otoroshi-biscuit-studio/docs/entities/keypairs","docId":"entities/keypairs","unlisted":false},{"type":"link","label":"Verifiers","href":"/otoroshi-biscuit-studio/docs/entities/verifiers","docId":"entities/verifiers","unlisted":false},{"type":"link","label":"Attenuators","href":"/otoroshi-biscuit-studio/docs/entities/attenuators","docId":"entities/attenuators","unlisted":false}],"href":"/otoroshi-biscuit-studio/docs/category/entities"},{"type":"category","label":"Plugins","collapsible":true,"collapsed":true,"items":[{"type":"link","label":"Verifier plugin","href":"/otoroshi-biscuit-studio/docs/plugins/verifiers","docId":"plugins/verifiers","unlisted":false},{"type":"link","label":"Attenuator plugin","href":"/otoroshi-biscuit-studio/docs/plugins/attenuators","docId":"plugins/attenuators","unlisted":false},{"type":"link","label":"Client Credentials plugin","href":"/otoroshi-biscuit-studio/docs/plugins/clientcredentials","docId":"plugins/clientcredentials","unlisted":false}],"href":"/otoroshi-biscuit-studio/docs/category/plugins"},{"type":"link","label":"API Documentation","href":"/otoroshi-biscuit-studio/docs/api","docId":"api","unlisted":false}]},"docs":{"api":{"id":"api","title":"API Documentation","description":"","sidebar":"tutorialSidebar"},"entities/attenuators":{"id":"entities/attenuators","title":"Attenuators","description":"What biscuit attenuators are ?","sidebar":"tutorialSidebar"},"entities/keypairs":{"id":"entities/keypairs","title":"KeyPairs","description":"Biscuit Auth tokens are flexible, decentralized, and cryptographically secure authorization tokens.","sidebar":"tutorialSidebar"},"entities/verifiers":{"id":"entities/verifiers","title":"Verifiers","description":"A Biscuit Verifier is a key component in the Biscuit token framework, used to validate and enforce additional constraints on a Biscuit token.","sidebar":"tutorialSidebar"},"install":{"id":"install","title":"Installation","description":"App Installation","sidebar":"tutorialSidebar"},"introduction":{"id":"introduction","title":"Introduction","description":"Biscuit tokens bring a new level of security and adaptability to token-based systems. By leveraging cryptographic primitives and a unique capability-based design, they enable:","sidebar":"tutorialSidebar"},"overview":{"id":"overview","title":"Overview","description":"Otoroshi Biscuit Studio","sidebar":"tutorialSidebar"},"plugins/attenuators":{"id":"plugins/attenuators","title":"Attenuator plugin","description":"When attenuating a Biscuit token from sources such as headers, cookies, or query parameters, the process begins by extracting and validating the original token.","sidebar":"tutorialSidebar"},"plugins/clientcredentials":{"id":"plugins/clientcredentials","title":"Client Credentials plugin","description":"Client Credentials plugin","sidebar":"tutorialSidebar"},"plugins/verifiers":{"id":"plugins/verifiers","title":"Verifier plugin","description":"Example Request Before Using a Biscuit Verifier","sidebar":"tutorialSidebar"}}}}');
 
 /***/ }),
 

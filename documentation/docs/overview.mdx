@@ -29,12 +29,16 @@ Their versatility and unique features make them an ideal choice for modern token
   
 ### Supported Plugins in Otoroshi Biscuit Studio
 
-* **[Verifiers Plugins](/docs/plugins/verifiers)**  
+* **[Verifier plugin](/docs/plugins/verifiers)**  
   Integrate verifiers plugins into your Otoroshi routes to check the validity of Biscuit tokens. 
   
   This ensures that only authorized requests are processed, providing additional layers of security and control over your API traffic.
 
-* **[Attenuators Plugins](/docs/plugins/attenuators)**  
+* **[Attenuator plugin](/docs/plugins/attenuators)**  
   Add attenuator plugins to your Otoroshi routes that apply attenuation to Biscuit tokens, allowing you to reduce or modify the scope of access granted by a token. 
   
   This can be used to tailor access permissions dynamically based on the specific needs of your routes or services.
+
+* **[Client Credentials plugin](/docs/plugins/clientcredentials)**
+
+  The Client Credentials Plugin is a `Backend` plugin that enables the OAuth2 `client_credentials` flow, using a [Biscuit Token](/docs/introduction) as the `access_token`.
