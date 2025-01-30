@@ -220,8 +220,6 @@ class BiscuitApiKeyBridge extends BiscuitStudioOneOtoroshiServerPerSuite {
     val goodToken = BiscuitUtils.replaceHeader(respGoodToken.json.at("token").get.asString)
     assert(goodToken.nonEmpty, s"token is empty")
 
-    println(s"goodToken = ${goodToken}")
-
     val publicKeyFormatted = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)
 
     val encodedGoodBiscuit =  org.biscuitsec.biscuit.token.Biscuit.from_b64url(goodToken, publicKeyFormatted)
@@ -247,8 +245,6 @@ class BiscuitApiKeyBridge extends BiscuitStudioOneOtoroshiServerPerSuite {
     val badToken = BiscuitUtils.replaceHeader(respBadToken.json.at("token").get.asString)
     assert(badToken.nonEmpty, s"token is empty")
 
-    println(s"badToken = ${badToken}")
-
     val encodedBadToken = Biscuit.from_b64url(badToken, publicKeyFormatted)
 
     assertEquals(encodedBadToken.authorizer().facts().size(), forge2.config.facts.length + validator2.config.get.facts.size, s"encodedBadToken doesn't contain all facts")
@@ -263,9 +259,6 @@ class BiscuitApiKeyBridge extends BiscuitStudioOneOtoroshiServerPerSuite {
     val res = client.call("GET", s"http://test.oto.tools:${port}/api", Map("Authorization" -> s"Biscuit: ${goodToken}"), None).awaitf(30.seconds)
     val resWrongToken = client.call("GET", s"http://test.oto.tools:${port}/api", Map("Authorization" -> s"Biscuit: ${badToken}"), None).awaitf(30.seconds)
 
-    println(s"res = ${res.body}")
-    println(s"resWrongToken = ${resWrongToken.body}")
-
     assertEquals(res.status, 200, "status should be 200")
     assertEquals(resWrongToken.status, 500, "status should be 500")
     assert(resWrongToken.json.at("error").isDefined, "status should be 500")
@@ -277,10 +270,6 @@ class BiscuitApiKeyBridge extends BiscuitStudioOneOtoroshiServerPerSuite {
       "Otoroshi-Client-Id" -> "admin-api-apikey-id",
       "Otoroshi-Client-Secret" -> "admin-api-apikey-secret"
     ), None).awaitf(30.seconds)
-
-
-    println(s"quotasRes = ${quotasRes.json}")
-    println(s"currentCallsPerDay = ${quotasRes.json.at("currentCallsPerDay").asInt}")
 
     // CHECK QUOTAS
     assert(quotasRes.json.at("currentCallsPerDay").isDefined, "status should be defined")
