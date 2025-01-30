@@ -1,9 +1,9 @@
 const fs = require('fs');
 
 const oldBiscuitStudioVersion = '0.0.3';
-const newBiscuitStudioVersion = '0.0.4';
+const newBiscuitStudioVersion = '0.0.3';
 const oldOtoroshiVersion = '16.22.0';
-const newOtoroshiVersion = '16.23.0';
+const newOtoroshiVersion = '16.22.0';
 
 const files = [
   '../documentation/docs/install.mdx',
