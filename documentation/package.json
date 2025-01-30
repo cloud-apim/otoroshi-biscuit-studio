@@ -1,6 +1,6 @@
 {
-  "name": "documentation",
-  "version": "0.0.0",
+  "name": "otoroshi-biscuit-studio-documentation",
+  "version": "0.0.3",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
