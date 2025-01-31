@@ -43,3 +43,13 @@ jobs:
         run: |
           cd scripts/
           sh scripts/change-release-version.sh --version ${{ inputs.version }}
+      - name: Commit files
+        run: |
+          git config --local user.email "biscuit-studio-actions@users.noreply.github.com"
+          git config --local user.name "biscuit-studio-actions"
+          git add --all
+          git commit -am "change-biscuit-studio-release-version"
+      - name: Push
+        uses: ad-m/github-push-action@main
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
