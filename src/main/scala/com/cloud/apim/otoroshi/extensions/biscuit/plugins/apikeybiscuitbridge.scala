@@ -132,7 +132,7 @@ class BiscuitApiKeyBridgePlugin extends NgPreRouting {
 
             Done.right.vfuture
           }
-          case _ => unauthorized(Json.obj("error" -> "unauthorized", "error_description" -> "bad_apikey"))
+          case _ => unauthorized(Json.obj("error" -> "unauthorized", "error_description" -> "Api Key (based on biscuit fact 'client_id') doesn't exist"))
         }
       }
     }

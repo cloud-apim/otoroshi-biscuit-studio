@@ -1,17 +1,17 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiServerPerSuite
-import com.cloud.apim.otoroshi.extensions.biscuit.entities.{BiscuitKeyPair, BiscuitTokenForge, BiscuitVerifier, VerifierConfig}
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.{BiscuitKeyPair, BiscuitTokenForge}
 import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitForgeConfig, BiscuitUtils}
 import org.biscuitsec.biscuit.crypto.{KeyPair, PublicKey}
 import otoroshi.models.{ApiKey, EntityLocation, RouteIdentifier}
 import otoroshi.next.models._
 import otoroshi.security.IdGenerator
 import otoroshi.utils.syntax.implicits._
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenValidator
 import play.api.libs.json.Json
 import reactor.core.publisher.Mono
 import org.biscuitsec.biscuit.token.Biscuit
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitApiKeyBridgePlugin
 
 import java.util.UUID
 import scala.concurrent.duration.DurationInt
@@ -86,46 +86,6 @@ class BiscuitApiKeyBridge extends BiscuitStudioOneOtoroshiServerPerSuite {
       remoteFactsLoaderRef = None
     )
 
-    val validator1 = BiscuitVerifier(
-      id = IdGenerator.namedId("biscuit-verifier", otoroshi.env),
-      name = "New biscuit verifier",
-      description = "New biscuit verifier",
-      metadata = Map.empty,
-      tags = Seq.empty,
-      location = EntityLocation.default,
-      keypairRef = keypair.id,
-      config = VerifierConfig(
-        checks = Seq.empty,
-        facts = Seq.empty,
-        resources = Seq.empty,
-        rules = Seq.empty,
-        policies = Seq(
-          s"""allow if true""",
-        ),
-        revokedIds = Seq.empty,
-      ).some
-    )
-
-    val validator2 = BiscuitVerifier(
-      id = IdGenerator.namedId("biscuit-verifier", otoroshi.env),
-      name = "New biscuit verifier",
-      description = "New biscuit verifier",
-      metadata = Map.empty,
-      tags = Seq.empty,
-      location = EntityLocation.default,
-      keypairRef = keypair.id,
-      config = VerifierConfig(
-        checks = Seq.empty,
-        facts = Seq.empty,
-        resources = Seq.empty,
-        rules = Seq.empty,
-        policies = Seq(
-          s"""allow if true"""
-        ),
-        revokedIds = Seq.empty,
-      ).some
-    )
-
     val routeApi = NgRoute(
       location = EntityLocation.default,
       id = UUID.randomUUID().toString,
@@ -141,9 +101,11 @@ class BiscuitApiKeyBridge extends BiscuitStudioOneOtoroshiServerPerSuite {
       backend = NgBackend.empty.copy(targets = Seq(NgTarget.parse(s"http://localhost:${tport}"))),
       plugins = NgPlugins(Seq(
         NgPluginInstance(
-          plugin = s"cp:${classOf[BiscuitTokenValidator].getName}",
+          plugin = s"cp:${classOf[BiscuitApiKeyBridgePlugin].getName}",
           config = NgPluginInstanceConfig(Json.obj(
-            "verifier_ref" -> validator1.id
+            "keypair_ref" -> keypair.id,
+            "extractor_type" -> "header",
+            "extractor_name" -> "Authorization"
           ))
         ),
         NgPluginInstance(
@@ -196,8 +158,6 @@ class BiscuitApiKeyBridge extends BiscuitStudioOneOtoroshiServerPerSuite {
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-forges").upsertEntity(forge1)
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-forges").upsertEntity(forge2)
 
-    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-verifiers").upsertEntity(validator1)
-    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-verifiers").upsertEntity(validator2)
     client.forEntity("apim.otoroshi.io", "v1", "apikeys").upsertEntity(apikey)
     client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertEntity(routeApi)
 
@@ -224,8 +184,8 @@ class BiscuitApiKeyBridge extends BiscuitStudioOneOtoroshiServerPerSuite {
 
     val encodedGoodBiscuit =  org.biscuitsec.biscuit.token.Biscuit.from_b64url(goodToken, publicKeyFormatted)
 
-    assertEquals(encodedGoodBiscuit.authorizer().facts().size(), forge1.config.facts.length + validator1.config.get.facts.size, s"encodedGoodBiscuit doesn't contain all facts")
-    assertEquals(encodedGoodBiscuit.authorizer().checks().size(), forge1.config.checks.length + validator1.config.get.checks.size, s"encodedGoodBiscuit doesn't contain all checks")
+    assertEquals(encodedGoodBiscuit.authorizer().facts().size(), forge1.config.facts.length, s"encodedGoodBiscuit doesn't contain all facts")
+    assertEquals(encodedGoodBiscuit.authorizer().checks().size(), forge1.config.checks.length, s"encodedGoodBiscuit doesn't contain all checks")
 
     await(3.seconds)
 
@@ -247,8 +207,8 @@ class BiscuitApiKeyBridge extends BiscuitStudioOneOtoroshiServerPerSuite {
 
     val encodedBadToken = Biscuit.from_b64url(badToken, publicKeyFormatted)
 
-    assertEquals(encodedBadToken.authorizer().facts().size(), forge2.config.facts.length + validator2.config.get.facts.size, s"encodedBadToken doesn't contain all facts")
-    assertEquals(encodedBadToken.authorizer().checks().size(), forge2.config.checks.length + validator2.config.get.checks.size, s"encodedBadToken doesn't contain all checks")
+    assertEquals(encodedBadToken.authorizer().facts().size(), forge2.config.facts.length, s"encodedBadToken doesn't contain all facts")
+    assertEquals(encodedBadToken.authorizer().checks().size(), forge2.config.checks.length, s"encodedBadToken doesn't contain all checks")
 
     await(3.seconds)
 
@@ -260,9 +220,11 @@ class BiscuitApiKeyBridge extends BiscuitStudioOneOtoroshiServerPerSuite {
     val resWrongToken = client.call("GET", s"http://test.oto.tools:${port}/api", Map("Authorization" -> s"Biscuit: ${badToken}"), None).awaitf(30.seconds)
 
     assertEquals(res.status, 200, "status should be 200")
-    assertEquals(resWrongToken.status, 500, "status should be 500")
-    assert(resWrongToken.json.at("error").isDefined, "status should be 500")
-    assertEquals(resWrongToken.json.at("error").asString, "Api Key (based on biscuit fact 'client_id') doesn't exist", "status should be 500")
+    assertEquals(resWrongToken.status, 401, "status should be 500")
+    assert(resWrongToken.json.at("error").isDefined, "body error should be defined")
+    assertEquals(resWrongToken.json.at("error").asString, "unauthorized", "error should be 'unauthorized'")
+    assert(resWrongToken.json.at("error_description").isDefined, "error_description should be defined")
+    assertEquals(resWrongToken.json.at("error_description").asString, "Api Key (based on biscuit fact 'client_id') doesn't exist", "error_description should be 'Api Key (based on biscuit fact 'client_id') doesn't exist'")
 
 
     val quotasRes = client.call("GET", s"http://otoroshi-api.oto.tools:${port}/api/apikeys/${apikey.clientId}/quotas", Map(
@@ -279,8 +241,6 @@ class BiscuitApiKeyBridge extends BiscuitStudioOneOtoroshiServerPerSuite {
     /////////                                  teardown                                                      ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").deleteEntity(keypair)
-    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-verifiers").deleteEntity(validator1)
-    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-verifiers").deleteEntity(validator2)
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-forges").deleteEntity(forge1)
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-forges").deleteEntity(forge2)
     client.forEntity("apim.otoroshi.io", "v1", "apikeys").deleteEntity(apikey)
