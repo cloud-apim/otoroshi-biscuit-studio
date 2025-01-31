@@ -4,7 +4,6 @@ import com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitVerifierConfig
 import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitRemoteUtils, BiscuitUtils}
 import org.biscuitsec.biscuit.crypto.PublicKey
 import org.biscuitsec.biscuit.token.Biscuit
-import org.biscuitsec.biscuit.token.builder.Term.Str
 import otoroshi.env.Env
 import otoroshi.gateway.Errors
 import otoroshi.next.plugins.AccessValidatorContext
@@ -16,7 +15,6 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Results
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.jdk.CollectionConverters.{asScalaBufferConverter, asScalaSetConverter}
 import scala.util.Try
 
 class BiscuitTokenValidator extends NgAccessValidator {
@@ -99,9 +97,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
 
                                               BiscuitUtils.verify(biscuitToken, verifierConfig.copy(facts = finalListFacts, revokedIds = finalListOfRevokedId), AccessValidatorContext(ctx).some) match {
                                                 case Left(err) => forbidden(ctx)
-                                                case Right(_) => {
-                                                  extractApiKey(ctx, biscuitToken, config)
-                                                }
+                                                case Right(_) => NgAccess.NgAllowed.vfuture
                                               }
                                             }
                                           }
@@ -129,9 +125,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
                                   case Right(biscuitToken) => {
                                     BiscuitUtils.verify(biscuitToken, verifierConfig.copy(facts = verifierConfig.facts ++ rbacConf), AccessValidatorContext(ctx).some) match {
                                       case Left(err) => forbidden(ctx)
-                                      case Right(_) => {
-                                        extractApiKey(ctx, biscuitToken, config)
-                                      }
+                                      case Right(_) => NgAccess.NgAllowed.vfuture
                                     }
                                   }
                                 }
@@ -156,9 +150,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
                             case Right(biscuitToken) => {
                               BiscuitUtils.verify(biscuitToken, verifierConfig, AccessValidatorContext(ctx).some) match {
                                 case Left(err) => forbidden(ctx)
-                                case Right(_) => {
-                                  extractApiKey(ctx, biscuitToken, config)
-                                }
+                                case Right(_) => NgAccess.NgAllowed.vfuture
                               }
                             }
                           }
@@ -172,37 +164,6 @@ class BiscuitTokenValidator extends NgAccessValidator {
               case None => handleError(s"Bad biscuit verifier configuration")
             }
           }
-        }
-      }
-    }
-  }
-
-  def extractApiKey(ctx: NgAccessContext, biscuitToken: Biscuit, config: BiscuitVerifierConfig)(implicit env: Env, ec: ExecutionContext): Future[NgAccess] = {
-    val otoroshiClientID = biscuitToken.authorizer().query("api_key_client_id($id) <- client_id($id)")
-
-    val client_id: Option[String]   = Try(otoroshiClientID).toOption
-      .map(_.asScala)
-      .flatMap(_.headOption)
-      .filter(_.name() == "api_key_client_id")
-      .map(_.terms().asScala)
-      .flatMap(_.headOption)
-      .flatMap {
-        case str: Str => str.getValue.some
-        case _        => None
-      }
-
-    client_id match {
-      case None => NgAccess.NgAllowed.vfuture
-      case Some(clientId) => {
-        env.datastores.apiKeyDataStore.findById(clientId).flatMap {
-          case Some(apikey) if apikey.isInactive() && config.enforce => handleError(s"bad apikey")
-          case Some(apikey) if apikey.isInactive() => NgAccess.NgAllowed.vfuture
-          case Some(apikey) => {
-            ctx.attrs.put(otoroshi.plugins.Keys.ApiKeyKey -> apikey)
-
-            NgAccess.NgAllowed.vfuture
-          }
-          case _ => handleError(s"Api Key (based on biscuit fact 'client_id') doesn't exist")
         }
       }
     }
