@@ -31,6 +31,22 @@
 	],
 	"paths": {
 		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-attenuators": {
+			"get": {
+				"tags": ["biscuit-attenuators"],
+				"summary": "Get the list of all Biscuit Attenuators",
+				"description": "Get the list of all Biscuit attenuators entities.",
+				"operationId": "getAllBiscuitAttenuatorsEntities",
+				"responses": {
+					"200": {
+						"description": "Got all biscuit attenuators entities."
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			},
 			"post": {
 				"tags": ["biscuit-attenuators"],
 				"summary": "Create a Biscuit Attenuator",
@@ -122,6 +138,31 @@
 			}
 		},
 		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-attenuators/{id}": {
+      "get": {
+				"tags": ["biscuit-attenuators"],
+				"summary": "Get a Biscuit Attenuator",
+				"description": "Get a Biscuit Attenuator by its ID.",
+				"operationId": "getBiscuitAttenuator",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "string" },
+						"description": "ID of the Biscuit Attenuator to get."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Got a Biscuit Attenuator deleted successfully."
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			},
 			"delete": {
 				"tags": ["biscuit-attenuators"],
 				"summary": "Delete a Biscuit Attenuator",
@@ -149,7 +190,7 @@
 			}
 		},
 		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs": {
-      "get": {
+			"get": {
 				"tags": ["biscuit-keypairs"],
 				"summary": "Get all KeyPairs",
 				"description": "Get the list of registered KeyPairs",
@@ -239,7 +280,7 @@
 			}
 		},
 		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs/{id}": {
-      "get": {
+			"get": {
 				"tags": ["biscuit-keypairs"],
 				"summary": "Get a Biscuit KeyPair by ID",
 				"description": "Get a Biscuit KeyPair by its ID.",
@@ -254,7 +295,7 @@
 					}
 				],
 				"responses": {
-					"204": {
+					"200": {
 						"description": "Got a Biscuit KeyPair successfully."
 					}
 				},
@@ -338,6 +379,22 @@
 			}
 		},
 		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers": {
+			"get": {
+				"tags": ["biscuit-verifiers"],
+				"summary": "Get the list of all Biscuit Verifiers",
+				"description": "Get the list of all Biscuit Verifiers entities.",
+				"operationId": "getAllBiscuitVerifiers",
+				"responses": {
+					"200": {
+						"description": "Got all verifiers."
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			},
 			"post": {
 				"tags": ["biscuit-verifiers"],
 				"summary": "Create a Biscuit Verifier",
@@ -409,6 +466,31 @@
 			}
 		},
 		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers/{id}": {
+			"get": {
+				"tags": ["biscuit-verifiers"],
+				"summary": "Get a Biscuit Verifier",
+				"description": "Get a Biscuit Verifier by its ID.",
+				"operationId": "getBiscuitVerifierById",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "string" },
+						"description": "ID of the Biscuit Verifier to delete."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Got a Biscuit Verifier successfully."
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			},
 			"delete": {
 				"tags": ["biscuit-verifiers"],
 				"summary": "Delete a Biscuit Verifier",
@@ -610,6 +692,22 @@
 			}
 		},
 		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-remote-facts": {
+			"get": {
+				"tags": ["biscuit-remote-facts"],
+				"summary": "Get the list of all Biscuit Remote facts",
+				"description": "Get the list of all Biscuit Remote facts entities.",
+				"operationId": "getAllBiscuitRemoteFactsEntities",
+				"responses": {
+					"200": {
+						"description": "Got all biscuit remote facts entities."
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			},
 			"post": {
 				"tags": ["biscuit-remote-facts"],
 				"summary": "Create a Biscuit Remote Facts Loader",
@@ -729,7 +827,32 @@
 				]
 			}
 		},
-  	"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-remote-facts/{id}": {
+		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-remote-facts/{id}": {
+			"get": {
+				"tags": ["biscuit-remote-facts"],
+				"summary": "Get a Biscuit Remote Facts Loader entity",
+				"description": "Get a Biscuit Remote Facts Loader entity by its ID.",
+				"operationId": "getBiscuitRemoteFactsEntity",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "string" },
+						"description": "ID of the entity to get."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Got a Biscuit Remote Facts Loader entity successfully."
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			},
 			"delete": {
 				"tags": ["biscuit-remote-facts"],
 				"summary": "Delete a Biscuit Remote Facts Loader entity",
@@ -755,7 +878,7 @@
 					}
 				]
 			}
-		},
+		}
 	},
 	"components": {
 		"securitySchemes": {
