@@ -11,7 +11,7 @@ lazy val root = (project in file("."))
   .settings(
     name := "otoroshi-biscuit-studio",
     libraryDependencies ++= Seq(
-      "fr.maif" %% "otoroshi" % "16.23.0" % "provided",
+      "fr.maif" %% "otoroshi" % "16.23.1" % "provided",
       "org.biscuitsec" % "biscuit" % "4.0.0",
       munit % Test
     ),
