@@ -49,7 +49,8 @@ jobs:
           git config --local user.name "biscuit-studio-actions"
           git add --all
           git commit -am "change-biscuit-studio-release-version"
-      - name: Push
-        uses: ad-m/github-push-action@main
+      - name: Push changes
+        uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
