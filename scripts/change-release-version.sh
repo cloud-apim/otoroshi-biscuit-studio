@@ -5,7 +5,6 @@ if [ $# -eq 0 ] || [ "$1" != "--version" ]; then
     exit 1
 fi
 
-cd scripts/
 npm install
 node change-release-version.js "$@"
 cd ../documentation
