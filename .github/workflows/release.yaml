@@ -39,3 +39,6 @@ jobs:
           files: |
             ./target/scala-2.12/otoroshi-biscuit-studio-${{ inputs.version }}.jar
             ./target/scala-2.12/otoroshi-biscuit-studio-${{ inputs.version }}.jar.sha256
+       - name: update release version for README and DOCUMENTATION
+        run: |
+          sh scripts/change-release-version.sh --version ${{ inputs.version }}
