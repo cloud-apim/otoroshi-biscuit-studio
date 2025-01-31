@@ -62,4 +62,23 @@ async function replaceVersionInFiles(filePaths) {
     });
 }
 
+async function updateSbtOto() {
+
+  const sbtFilePath = path.join(__dirname, '../build.sbt');
+
+  const latestOtoVersion = await fetchLatestOtoroshiRelease()
+
+    try {
+        let data = await fs.readFile(sbtFilePath, 'utf8');
+        const regex = /("fr\.maif" %% "otoroshi" % ")([^"]+)(" % "provided")/;
+        const updatedData = data.replace(regex, `$1${latestOtoVersion.replace("v", "")}$3`);
+        
+        await fs.writeFile(filePath, updatedData, 'utf8');
+        console.log('build.sbt updated successfully!');
+    } catch (err) {
+        console.error('Error:', err);
+    }
+}
+
 replaceVersionInFiles(files);
+updateSbtOto()
