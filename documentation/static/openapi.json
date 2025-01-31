@@ -149,6 +149,22 @@
 			}
 		},
 		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs": {
+      "get": {
+				"tags": ["biscuit-keypairs"],
+				"summary": "Get all KeyPairs",
+				"description": "Get the list of registered KeyPairs",
+				"operationId": "getAllBiscuitKeypairs",
+				"responses": {
+					"200": {
+						"description": "Got a list of all Biscuit KeyPairs successfully."
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			},
 			"post": {
 				"tags": ["biscuit-keypairs"],
 				"summary": "Create a Biscuit KeyPair",
@@ -223,6 +239,31 @@
 			}
 		},
 		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs/{id}": {
+      "get": {
+				"tags": ["biscuit-keypairs"],
+				"summary": "Get a Biscuit KeyPair by ID",
+				"description": "Get a Biscuit KeyPair by its ID.",
+				"operationId": "getBiscuitKeypairById",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "string" },
+						"description": "ID of the Biscuit KeyPair."
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "Got a Biscuit KeyPair successfully."
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			},
 			"delete": {
 				"tags": ["biscuit-keypairs"],
 				"summary": "Delete a Biscuit KeyPair",
