@@ -42,7 +42,7 @@ jobs:
       - name: update release version for README and DOCUMENTATION
         run: |
           cd scripts/
-          sh scripts/change-release-version.sh --version ${{ inputs.version }}
+          sh ./change-release-version.sh --version ${{ inputs.version }}
       - name: Commit files
         run: |
           git config --local user.email "biscuit-studio-actions@users.noreply.github.com"
