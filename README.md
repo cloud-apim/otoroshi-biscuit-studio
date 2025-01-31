@@ -15,10 +15,10 @@ The Otoroshi Biscuit Studio documentation is available here : https://cloud-apim
 Follow this guide in order to get Otoroshi with the Biscuit Studio Extension.
 ### Download Otoroshi
 
-[ ![Download Otoroshi](https://img.shields.io/github/release/MAIF/otoroshi.svg) ](https://github.com/MAIF/otoroshi/releases/download/v16.22.0/otoroshi.jar)
+[ ![Download Otoroshi](https://img.shields.io/github/release/MAIF/otoroshi.svg) ](https://github.com/MAIF/otoroshi/releases/download/v16.23.0/otoroshi.jar)
 
 ```sh
-curl -L -o otoroshi.jar 'https://github.com/MAIF/otoroshi/releases/download/v16.22.0/otoroshi.jar'
+curl -L -o otoroshi.jar 'https://github.com/MAIF/otoroshi/releases/download/v16.23.0/otoroshi.jar'
 ```
 
 ### Download the Biscuit Studio extension
