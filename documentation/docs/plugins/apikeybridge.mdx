@@ -4,4 +4,43 @@ sidebar_position: 4
 
 import Terminal from '@site/src/components/Terminal';
 
-# API Key Bridge
+# API Key Bridge Plugin
+
+# Biscuit API Key Bridge Plugin Documentation
+
+## Overview
+The **Biscuit API Key Bridge Plugin** is a pre-routing plugin designed for **Cloud APIM**. It validates **Biscuit tokens** and extracts API keys from them, ensuring secure access control.
+
+## Configuration
+The plugin requires the following configuration parameters:
+
+| Parameter       | Type    | Description |
+|----------------|---------|-------------|
+| `keypairRef`   | String  | Reference to the Biscuit Keypair used for token verification. |
+| `enforce`      | Boolean | If `true`, the plugin enforces API key validation. Defaults to `true`. |
+| `extractorType`| String  | Specifies how the token is extracted. Possible values: `header`, `cookies`, `query`. |
+| `extractorName`| String  | The name of the field where the token is stored. Defaults to `Authorization`. |
+
+### Default Configuration
+```json
+{
+  "keypair_ref": "",
+  "enforce": true,
+  "extractor_type": "header",
+  "extractor_name": "Authorization"
+}
+```
+
+## Plugin Behavior
+
+### Pre-Routing Logic
+1. Retrieves the **Biscuit token** from the specified source (`extractorType` and `extractorName`).
+2. Validates the token using the referenced **Biscuit Keypair**.
+3. Extracts the `client_id` from the token.
+4. Checks if the corresponding **API Key** exists and is active.
+5. If the API Key is inactive and `enforce` is `true`, the request is rejected.
+
+### Error Handling
+- If the **Biscuit token** is missing and `enforce` is `true`, an `unauthorized` error is returned.
+- If the **Biscuit token** is invalid or cannot be verified, an `internal server error` is returned.
+- If the extracted **API Key** does not exist, an `unauthorized` error is returned.
