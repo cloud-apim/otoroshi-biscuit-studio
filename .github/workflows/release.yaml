@@ -45,6 +45,7 @@ jobs:
           sh ./change-release-version.sh --version ${{ inputs.version }}
       - name: Commit files
         run: |
+          echo 'ThisBuild / version := "dev"' > version.sbt
           git config --local user.email "biscuit-studio-actions@users.noreply.github.com"
           git config --local user.name "biscuit-studio-actions"
           git add --all

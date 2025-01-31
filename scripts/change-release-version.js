@@ -46,7 +46,6 @@ async function replaceVersionInFiles(filePaths) {
             let updatedContent = 
             content.replace(biscuitStudioVersion, `https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/${NEW_STUDIO_VERSION}/otoroshi-biscuit-studio-${NEW_STUDIO_VERSION}.jar`);
 
-
             updatedContent = updatedContent.replace(
               otoroshiVersionRegex,
               `https://github.com/MAIF/otoroshi/releases/download/${latestOtoVersion}/otoroshi.jar`
@@ -63,17 +62,14 @@ async function replaceVersionInFiles(filePaths) {
 }
 
 async function updateSbtOto() {
-
-  const sbtFilePath = path.join(__dirname, '../build.sbt');
-
   const latestOtoVersion = await fetchLatestOtoroshiRelease()
 
     try {
-        let data = await fs.readFile(sbtFilePath, 'utf8');
+        let content = fs.readFileSync('../build.sbt', 'utf8');
         const regex = /("fr\.maif" %% "otoroshi" % ")([^"]+)(" % "provided")/;
-        const updatedData = data.replace(regex, `$1${latestOtoVersion.replace("v", "")}$3`);
+        const updatedContent = content.replace(regex, `$1${latestOtoVersion.replace("v", "")}$3`);
         
-        await fs.writeFile(filePath, updatedData, 'utf8');
+        fs.writeFileSync('../build.sbt', updatedContent, 'utf8');
         console.log('build.sbt updated successfully!');
     } catch (err) {
         console.error('Error:', err);
