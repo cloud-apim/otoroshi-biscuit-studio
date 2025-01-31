@@ -21,8 +21,8 @@ case class BiscuitAttenuatorConfig(
                                     attenuatorRef: String = "",
                                     extractorType: String = "header",
                                     extractorName: String = "Authorization",
-                                    tokenReplaceLoc: String = "",
-                                    tokenReplaceName: String = "",
+                                    tokenReplaceLoc: String = "header",
+                                    tokenReplaceName: String = "Authorization",
                                     enableRemoteFacts: Boolean = false,
                                     remoteFactsRef: String = ""
                                   ) extends NgPluginConfig {
@@ -45,10 +45,10 @@ object BiscuitAttenuatorConfig {
     override def reads(json: JsValue): JsResult[BiscuitAttenuatorConfig] = Try {
       BiscuitAttenuatorConfig(
         attenuatorRef = json.select("attenuator_ref").asOpt[String].getOrElse(""),
-        extractorType = json.select("extractor_type").asOpt[String].getOrElse(""),
-        extractorName = json.select("extractor_name").asOpt[String].getOrElse(""),
-        tokenReplaceLoc = json.select("token_replace_loc").asOpt[String].getOrElse(""),
-        tokenReplaceName = json.select("token_replace_name").asOpt[String].getOrElse(""),
+        extractorType = json.select("extractor_type").asOpt[String].getOrElse("header"),
+        extractorName = json.select("extractor_name").asOpt[String].getOrElse("Authorization"),
+        tokenReplaceLoc = json.select("token_replace_loc").asOpt[String].getOrElse("header"),
+        tokenReplaceName = json.select("token_replace_name").asOpt[String].getOrElse("Authorization"),
         enableRemoteFacts = json.select("enable_remote_facts").asOpt[Boolean].getOrElse(false),
         remoteFactsRef = json.select("remote_facts_ref").asOpt[String].getOrElse(""),
       )

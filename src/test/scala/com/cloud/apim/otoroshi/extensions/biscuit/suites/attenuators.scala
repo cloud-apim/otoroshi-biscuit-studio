@@ -100,7 +100,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
          |      "include": [],
          |      "exclude": [],
          |      "config": {
-         |        "ref": "",
+         |        "attenuator_ref": "",
          |        "extractor_type": "header",
          |        "extractor_name": "Authorization",
          |        "token_replace_loc": "query",
@@ -120,7 +120,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
     val resp = client.call("GET", s"http://${routeDomain}:${port}", Map.empty, None).awaitf(awaitFor)
     assertEquals(resp.status, 500, s"verifier did not thrown an error 500")
     assert(resp.json.at("error").isDefined, s"error is not defined")
-    assertEquals(resp.json.at("error").as[String], "attenuatorRef not found", s"bad error message for verifier route")
+    assertEquals(resp.json.at("error").as[String], "attenuator_ref not found in your plugin configuration", s"bad error message for verifier route")
     client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeVerifierId)
     await(2500.millis)
   }
@@ -227,7 +227,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
          |      "include": [],
          |      "exclude": [],
          |      "config": {
-         |        "ref": "${attenuatorId}",
+         |        "attenuator_ref": "${attenuatorId}",
          |        "extractor_type": "header",
          |        "extractor_name": "biscuit-token-test",
          |        "token_replace_loc": "header",
@@ -368,7 +368,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
          |      "include": [],
          |      "exclude": [],
          |      "config": {
-         |        "ref": "${attenuatorId}",
+         |        "attenuator_ref": "${attenuatorId}",
          |        "extractor_type": "header",
          |        "extractor_name": "biscuit-token-test",
          |        "token_replace_loc": "cookies",
@@ -523,7 +523,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
          |      "include": [],
          |      "exclude": [],
          |      "config": {
-         |        "ref": "${attenuatorId}",
+         |        "attenuator_ref": "${attenuatorId}",
          |        "extractor_type": "header",
          |        "extractor_name": "biscuit-token-test",
          |        "token_replace_loc": "query",
