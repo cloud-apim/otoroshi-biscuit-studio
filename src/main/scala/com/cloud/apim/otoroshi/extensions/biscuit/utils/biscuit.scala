@@ -20,11 +20,11 @@ import scala.jdk.CollectionConverters.{iterableAsScalaIterableConverter, seqAsJa
 import scala.util.{Failure, Success, Try}
 
 case class BiscuitForgeConfig(
-                               checks: Seq[String] = Seq.empty,
-                               facts: Seq[String] = Seq.empty,
-                               resources: Seq[String] = Seq.empty,
-                               rules: Seq[String] = Seq.empty,
-                             ) {
+    checks: Seq[String] = Seq.empty,
+    facts: Seq[String] = Seq.empty,
+    resources: Seq[String] = Seq.empty,
+    rules: Seq[String] = Seq.empty,
+) {
   def json: JsValue = BiscuitForgeConfig.format.writes(this)
 }
 
@@ -344,6 +344,7 @@ object BiscuitRemoteUtils {
     }
   }
 
+
   def getRemoteFacts(
     config: BiscuitRemoteFactsConfig,
     ctx: JsValue,
@@ -367,6 +368,8 @@ object BiscuitRemoteUtils {
             val factsResult = (resp.json \ "facts").validate[List[Map[String, String]]].getOrElse(List.empty)
             val aclResult = (resp.json \ "acl").validate[List[Map[String, String]]].getOrElse(List.empty)
             val userRolesResult = (resp.json \ "user_roles").validate[List[Map[String, JsValue]]].getOrElse(List.empty)
+            val checksResult = (resp.json \ "checks").validate[List[String]].getOrElse(List.empty)
+
 
             val roles = rolesResult.flatMap(_.toList.map { case (name, permissions) =>
               Role(name, permissions)
@@ -405,6 +408,7 @@ object BiscuitRemoteUtils {
               s"""user_roles(${userRole.id}, "${userRole.name}", [${userRole.roles.map(r => s""""$r"""").mkString(", ")}]);"""
             }
 
+
             val revokedIdsRemote = revokedIds.map(_.id)
             val factsStrings = facts.map(fact => s"""${fact.name}("${fact.value}")""")
             val aclStrings = aclEntries.map(acl => s"""right("${acl.user}", "${acl.resource}", "${acl.action}");""")
@@ -414,7 +418,8 @@ object BiscuitRemoteUtils {
               acl = aclStrings,
               roles = roleFacts ++ userRoleFacts,
               facts = factsStrings,
-              revoked = revokedIdsRemote
+              revoked = revokedIdsRemote,
+              checks = checksResult
             )
 
             Right(rfd)
@@ -432,10 +437,7 @@ object BiscuitRemoteUtils {
   case class Role(name: String, permissions: List[String])
 
   case class BiscuitrevokedId(id: String)
-
   case class Fact(name: String, value: String)
-
   case class ACL(user: String, resource: String, action: String)
-
   case class UserRole(id: Int, name: String, roles: List[String])
 }

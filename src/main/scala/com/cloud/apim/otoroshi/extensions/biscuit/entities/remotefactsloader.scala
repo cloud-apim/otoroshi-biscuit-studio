@@ -20,8 +20,9 @@ case class RemoteFactsData(
     acl: List[String] = List.empty,
     roles: List[String] = List.empty,
     facts: List[String] = List.empty,
-    revoked: List[String] = List.empty
-    ) {
+    revoked: List[String] = List.empty,
+    checks: List[String] = List.empty
+) {
   def json: JsValue = RemoteFactsData.format.writes(this)
 }
 
@@ -32,7 +33,8 @@ object RemoteFactsData {
         "acl" -> o.acl,
         "roles" -> o.roles,
         "facts" -> o.facts,
-        "revoked" -> o.revoked
+        "revoked" -> o.revoked,
+        "checks" -> o.checks
       )
     }
 
@@ -43,6 +45,7 @@ object RemoteFactsData {
            revoked = (json \ "revoked").asOpt[List[String]].getOrElse(List.empty),
            facts = (json \ "facts").asOpt[List[String]].getOrElse(List.empty),
            acl = (json \ "acl").asOpt[List[String]].getOrElse(List.empty),
+           checks = (json \ "checks").asOpt[List[String]].getOrElse(List.empty),
         )
       } match {
         case Failure(e) => JsError(e.getMessage)
@@ -52,12 +55,12 @@ object RemoteFactsData {
 }
 
 case class BiscuitRemoteFactsConfig(
-                                     apiUrl: String = "",
-                                     method: String = "POST",
-                                     headers: Map[String, String] = Map.empty,
-                                     tlsConfig: NgTlsConfig = NgTlsConfig(),
-                                     timeout: FiniteDuration = 10.seconds
-                                   ) {
+    apiUrl: String = "",
+    method: String = "POST",
+    headers: Map[String, String] = Map.empty,
+    tlsConfig: NgTlsConfig = NgTlsConfig(),
+    timeout: FiniteDuration = 10.seconds
+) {
   def json: JsValue = BiscuitRemoteFactsConfig.format.writes(this)
 }
 
@@ -90,15 +93,15 @@ object BiscuitRemoteFactsConfig {
 }
 
 case class RemoteFactsLoader(
-                              id: String,
-                              name: String,
-                              description: String,
-                              enabled: Boolean = true,
-                              tags: Seq[String] = Seq.empty,
-                              metadata: Map[String, String] = Map.empty,
-                              location: EntityLocation,
-                              config: BiscuitRemoteFactsConfig
-                            ) extends EntityLocationSupport {
+    id: String,
+    name: String,
+    description: String,
+    enabled: Boolean = true,
+    tags: Seq[String] = Seq.empty,
+    metadata: Map[String, String] = Map.empty,
+    location: EntityLocation,
+    config: BiscuitRemoteFactsConfig
+) extends EntityLocationSupport {
   def json: JsValue = RemoteFactsLoader.format.writes(this)
 
   def internalId: String = id
