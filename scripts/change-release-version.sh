@@ -1,11 +1,11 @@
-#!/bin/bash
+#!/bin/sh
 
-# Check if --version is provided
-if [[ $# -eq 0 || "$1" != "--version" ]]; then
+if [ $# -eq 0 ] || [ "$1" != "--version" ]; then
     echo "❌ Error: --version argument is required."
     exit 1
 fi
 
+cd scripts/
 npm install
 node change-release-version.js "$@"
 cd ../documentation
