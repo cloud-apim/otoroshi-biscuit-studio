@@ -56,3 +56,74 @@ Here is a demo configuration :
     "extractor_name": "Authorization"
   }
 ```
+# Biscuit Token: Default Facts in Authorization
+
+### Default Facts Table
+
+# Biscuit Verifier Default Facts
+
+In the context of a Biscuit Verifier, the following data points are typically used to verify requests, ensuring proper authorization and access control. The facts are provided by the authorizer and give insight into the request, the user, and the environment to assess the legitimacy of the request.
+
+## Common Default Facts
+
+### 1. Resource Information
+- **Purpose**: Identifies the resource being accessed, such as a service, domain, or a specific API endpoint. This helps the verifier determine whether the request is targeting an authorized resource.
+
+### 2. Request Metadata
+- **Purpose**: Contains details like the HTTP method, requested path, and the domain name from which the request originated. This is crucial for ensuring the right HTTP request is processed according to rules.
+
+### 3. User Context
+- **Purpose**: Identifies the user or entity making the request, including details like their assigned permissions. It helps verify if the requester has the proper authorization to access the requested resource.
+
+### 4. Temporal Information
+- **Purpose**: Captures timestamps related to the request. This is helpful for enforcing time-based access control policies, ensuring that requests are within a valid timeframe.
+
+### 5. Route Identifiers
+- **Purpose**: Associates requests with unique route descriptors for more granular access control. This enables detailed access control based on the specific path or service the request is targeting.
+
+## Default Facts Table
+
+| Fact Name   | Definition | Example |
+|-------------|------------|---------|
+| `hostname`  | The hostname of the server processing the request. | `hostname("server-123.example.com")` |
+| `req_path`  | The path being requested. | `req_path("/documents")` |
+| `req_domain` | The domain name of the requested service. | `req_domain("api.example.com")` |
+| `req_method` | The HTTP method used in the request. | `req_method("post")` |
+| `route_id`  | The unique identifier of the route descriptor. | `route_id("route_518e34e7a-e2cb-4687-952c-37a3d98b8001")` |
+| `ip_address` | The IP address of the requester. | `ip_address("192.168.1.1")` |
+| `username` (if present) | The authenticated username of the requester. | `username("alice")` |
+| `email` (if present) | The authenticated email of the requester. | `email("alice@example.com")` |
+| `req_headers` | The HTTP headers sent with the request, including various key details like authorization tokens, user-agent, etc. | `req_headers("custom-header", "<value>")`<br />`req_headers("remote-address", "192.168.1.1:12345")`<br />`req_headers("authorization", "Bearer <token>")`<br />`req_headers("request-start-time", "<timestamp>")`<br />`req_headers("accept-encoding", "gzip, deflate")` |
+
+## Explanation of Key Facts for Biscuit Verifier
+
+### `hostname`
+- **Explanation**: This represents the specific server handling the request. By using the hostname, the verifier can ensure the request is being processed by the correct server within the authorized infrastructure.
+
+### `req_path`
+- **Explanation**: This is the path the request is targeting. It is essential to verify that the request is trying to access a valid and permitted path, based on the verifier's rules.
+
+### `req_domain`
+- **Explanation**: The domain helps verify if the request is targeting the right service. The verifier checks the domain to ensure the request is aligned with the expected API or service domain.
+
+### `req_method`
+- **Explanation**: The HTTP method (GET, POST, PUT, DELETE, etc.) tells the verifier what kind of operation is being requested. Some methods may be restricted based on the user's permissions or resource settings.
+
+### `route_id`
+- **Explanation**: A unique identifier for the route that can be associated with specific access control rules. By using `route_id`, the verifier can enforce policies that are specific to a particular route or service.
+
+### `ip_address`
+- **Explanation**: The IP address allows the verifier to track where the request is coming from. In some cases, geographical or network restrictions might be applied based on the IP.
+
+### `username` (if present)
+- **Explanation**: This is the authenticated username of the requester. It is used by the verifier to determine whether the user is authorized to perform the requested action based on their permissions.
+
+### `email` (if present)
+- **Explanation**: If the user’s email is present, it can help identify the user uniquely and enable further context about their authentication and permissions.
+
+### `req_headers`
+- **Explanation**: This contains various HTTP headers that can hold important context about the request. Key headers used in Biscuit Verifiers include:
+    - **Authorization**: Used for passing authorization tokens (like Biscuit tokens) to verify the user’s credentials and permissions.
+    - **Remote-address**: Denotes the IP address and port of the requester.
+    - **Request Start Time**: Can be used for validating time-based conditions in access control.
+    - **Accept-Encoding**: Specifies what encoding methods the client supports, which might impact how the server processes the request.
