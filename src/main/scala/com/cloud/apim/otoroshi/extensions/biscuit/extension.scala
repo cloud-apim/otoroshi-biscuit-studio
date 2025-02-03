@@ -14,11 +14,11 @@ import otoroshi.next.utils.JsonHelpers
 import otoroshi.utils.cache.types.UnboundedTrieMap
 import otoroshi.utils.syntax.implicits._
 import play.api.Logger
-import play.api.libs.json.{JsError, JsNull, JsObject, JsSuccess, JsValue, Json}
+import play.api.libs.json._
 import play.api.mvc.{RequestHeader, Result, Results}
 
-import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.duration.DurationInt
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
 
 class BiscuitExtensionDatastores(env: Env, extensionId: AdminExtensionId) {
@@ -169,131 +169,6 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
     generateTokenFromBody(body, false)
   }
 
-  def generateTokenFromBody(body: Option[Source[ByteString, _]], isAdminApiRoute: Boolean): Future[Result] = {
-    implicit val ev = env
-    implicit val ec = env.otoroshiExecutionContext
-    implicit val mat = env.otoroshiMaterializer
-
-    (body match {
-      case None => handleError("no body", isAdminApiRoute)
-      case Some(bodySource) => bodySource.runFold(ByteString.empty)(_ ++ _).flatMap { bodyRaw =>
-        val bodyJson = bodyRaw.utf8String.parseJson
-
-        val keypairPubKey = bodyJson.select("pubKey").asOpt[String]
-        val keypairPrivKey = bodyJson.select("privKey").asOpt[String]
-
-        if (keypairPubKey.isDefined && keypairPrivKey.isDefined) {
-          createTokenWithConfig(bodyJson, keypairPubKey.get, keypairPrivKey.get, isAdminApiRoute)
-        } else {
-          bodyJson.select("keypair_ref").asOpt[String] match {
-            case None => handleError("no keypair or keypair_ref provided", isAdminApiRoute)
-            case Some(keyPairRef) => {
-              env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(keyPairRef)) match {
-                case None => handleError("no keypair found", isAdminApiRoute)
-                case Some(keypairDb) => {
-                  createTokenWithConfig(bodyJson, keypairDb.pubKey, keypairDb.privKey, isAdminApiRoute)
-                }
-              }
-            }
-          }
-        }
-      }
-    }).recover {
-      case e: Throwable => {
-        if (isAdminApiRoute) {
-          Results.InternalServerError(Json.obj("error" -> e.getMessage))
-        } else {
-          Results.Ok(Json.obj("done" -> false, "error" -> e.getMessage))
-        }
-      }
-    }
-  }
-
-  private def createTokenWithConfig(bodyJson: JsValue, pubKey: String, privKey: String, adminApiRoute: Boolean)(implicit env: Env, ec: ExecutionContext): Future[Result] = {
-    bodyJson.select("config").asOpt[JsValue] match {
-      case None => handleError("no config provided", adminApiRoute)
-      case Some(newTokenConfig) => {
-
-        val biscuitForgeConf = BiscuitForgeConfig.format.reads(newTokenConfig).asOpt
-
-        biscuitForgeConf match {
-          case None => handleError("unable to parse biscuit forge configuration", adminApiRoute)
-          case Some(biscuitForgeConfig) => {
-
-            val generatedToken = BiscuitUtils.createToken(privKey, biscuitForgeConfig).serialize_b64url()
-
-            val remoteFactsRef = bodyJson.select("remoteFactsLoaderRef").asOpt[String]
-
-            remoteFactsRef match {
-              case None => {
-                if (adminApiRoute) {
-                  Results.Ok(
-                    Json.obj(
-                      "pubKey" -> pubKey,
-                      "token" -> generatedToken
-                    )
-                  ).vfuture
-                } else {
-                  Results.Ok(
-                    Json.obj(
-                      "done" -> true,
-                      "pubKey" -> pubKey,
-                      "token" -> generatedToken
-                    )
-                  ).vfuture
-                }
-              }
-              case Some(remoteFactsRef) => {
-                env.adminExtensions.extension[BiscuitExtension].get.states.biscuitRemoteFactsLoader(remoteFactsRef) match {
-                  case None => handleError("remote facts reference not found", adminApiRoute)
-                  case Some(remoteFacts) => {
-                    val ctx = bodyJson.select("remote_ctx").asOpt[JsObject].getOrElse(Json.obj()) ++ Json.obj("phase" -> "backoffice_generate_token")
-                    remoteFacts.loadFacts(ctx).flatMap {
-                      case Left(error) => handleError(error, adminApiRoute)
-                      case Right(remoteFacts) => {
-
-                        val c = biscuitForgeConfig.copy(
-                          facts = remoteFacts.facts ++ remoteFacts.acl ++ remoteFacts.roles
-                        )
-
-                        val generatedToken = BiscuitUtils.createToken(privKey, c).serialize_b64url()
-
-                        if (adminApiRoute) {
-                          Results.Ok(
-                            Json.obj(
-                              "pubKey" -> pubKey,
-                              "token" -> generatedToken
-                            )
-                          ).vfuture
-                        } else {
-                          Results.Ok(
-                            Json.obj(
-                              "done" -> true,
-                              "pubKey" -> pubKey,
-                              "token" -> generatedToken
-                            )
-                          ).vfuture
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  def handleError(errorMessage: String, isAdminApiRoute: Boolean): Future[Result] = {
-    if (isAdminApiRoute) {
-      Results.BadRequest(Json.obj("error" -> errorMessage)).vfuture
-    } else {
-      Results.Ok(Json.obj("done" -> false, "error" -> errorMessage)).vfuture
-    }
-  }
-
   def handleVerifierTester(ctx: AdminExtensionRouterContext[AdminExtensionBackofficeAuthRoute], req: RequestHeader, user: Option[BackOfficeUser], body: Option[Source[ByteString, _]]): Future[Result] = {
     implicit val ec = env.otoroshiExecutionContext
     implicit val mat = env.otoroshiMaterializer
@@ -364,17 +239,12 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
           case Left(err: org.biscuitsec.biscuit.error.Error) => Results.Ok(Json.obj("done" -> false, "error" -> BiscuitUtils.handleBiscuitErrors(err))).vfuture
           case Left(err) => Results.Ok(Json.obj("done" -> false, "error" -> s"Unable to deserialize Biscuit token : ${err.getMessage}")).vfuture
 
-          case Right(biscuitUnverified) =>
-            Try(biscuitUnverified.verify(publicKey)).toEither match {
-              case Left(err: org.biscuitsec.biscuit.error.Error) => Results.Ok(Json.obj("done" -> false, "error" -> BiscuitUtils.handleBiscuitErrors(err))).vfuture
-              case Left(err) => Results.Ok(Json.obj("done" -> false, "error" -> s"Unable to deserialize Biscuit token : ${err.getMessage}")).vfuture
-              case Right(biscuitToken) => {
-                BiscuitUtils.verify(biscuitToken, verifierConfig, None) match {
-                  case Left(err) => Results.Ok(Json.obj("done" -> false, "error" -> err)).vfuture
-                  case Right(_) => Results.Ok(Json.obj("done" -> true, "message" -> "Checked successfully")).vfuture
-                }
-              }
+          case Right(biscuitToken) => {
+            BiscuitUtils.verify(biscuitToken, verifierConfig, None) match {
+              case Left(err) => Results.Ok(Json.obj("done" -> false, "error" -> err)).vfuture
+              case Right(_) => Results.Ok(Json.obj("done" -> true, "message" -> "Checked successfully")).vfuture
             }
+          }
         }
       }
     }
@@ -395,17 +265,12 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
         Try(Biscuit.from_b64url(generatedToken, publicKey)).toEither match {
           case Left(err: org.biscuitsec.biscuit.error.Error) => Results.Ok(Json.obj("done" -> false, "error" -> BiscuitUtils.handleBiscuitErrors(err))).vfuture
           case Left(err) => Results.Ok(Json.obj("done" -> false, "error" -> s"Unable to deserialize Biscuit token : ${err.getMessage}")).vfuture
-          case Right(biscuitUnverified) =>
-            Try(biscuitUnverified.verify(publicKey)).toEither match {
-              case Left(err: org.biscuitsec.biscuit.error.Error) => Results.Ok(Json.obj("done" -> false, "error" -> BiscuitUtils.handleBiscuitErrors(err))).vfuture
-              case Left(err) => Results.Ok(Json.obj("done" -> false, "error" -> s"Biscuit token is not valid : ${err.getMessage}")).vfuture
-              case Right(biscuitToken) => {
-                BiscuitUtils.verify(biscuitToken, verifierConfig, None) match {
-                  case Left(err) => Results.Ok(Json.obj("done" -> false, "error" -> err)).vfuture
-                  case Right(_) => Results.Ok(Json.obj("done" -> true, "message" -> "Checked successfully")).vfuture
-                }
-              }
+          case Right(biscuitToken) => {
+            BiscuitUtils.verify(biscuitToken, verifierConfig, None) match {
+              case Left(err) => Results.Ok(Json.obj("done" -> false, "error" -> err)).vfuture
+              case Right(_) => Results.Ok(Json.obj("done" -> true, "message" -> "Checked successfully")).vfuture
             }
+          }
         }
       }
     }
@@ -874,17 +739,17 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
               case None => Results.NotFound(Json.obj("error" -> "Forge not found")).vfuture
               case Some(forge) => {
                 val remoteCtx = Json.obj(
-                  "snowflake"     -> JsNull,
-                  "backend"       -> JsNull,
-                  "apikey"        -> apk.lightJson,
-                  "user"          -> JsNull,
-                  "raw_request"   -> JsonHelpers.requestToJson(request),
-                  "config"        -> Json.obj(),
+                  "snowflake" -> JsNull,
+                  "backend" -> JsNull,
+                  "apikey" -> apk.lightJson,
+                  "user" -> JsNull,
+                  "raw_request" -> JsonHelpers.requestToJson(request),
+                  "config" -> Json.obj(),
                   "global_config" -> Json.obj(),
-                  "attrs"         -> Json.obj(),
+                  "attrs" -> Json.obj(),
                   "phase" -> "admin_api_token_forge"
                 )
-                forge.forgeToken(remoteCtx).flatMap  {
+                forge.forgeToken(remoteCtx).flatMap {
                   case Left(err) => handleError(err, isAdminApiRoute = true)
                   case Right(token) => {
                     Results.Ok(
@@ -901,4 +766,129 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       }
     )
   )
+
+  def generateTokenFromBody(body: Option[Source[ByteString, _]], isAdminApiRoute: Boolean): Future[Result] = {
+    implicit val ev = env
+    implicit val ec = env.otoroshiExecutionContext
+    implicit val mat = env.otoroshiMaterializer
+
+    (body match {
+      case None => handleError("no body", isAdminApiRoute)
+      case Some(bodySource) => bodySource.runFold(ByteString.empty)(_ ++ _).flatMap { bodyRaw =>
+        val bodyJson = bodyRaw.utf8String.parseJson
+
+        val keypairPubKey = bodyJson.select("pubKey").asOpt[String]
+        val keypairPrivKey = bodyJson.select("privKey").asOpt[String]
+
+        if (keypairPubKey.isDefined && keypairPrivKey.isDefined) {
+          createTokenWithConfig(bodyJson, keypairPubKey.get, keypairPrivKey.get, isAdminApiRoute)
+        } else {
+          bodyJson.select("keypair_ref").asOpt[String] match {
+            case None => handleError("no keypair or keypair_ref provided", isAdminApiRoute)
+            case Some(keyPairRef) => {
+              env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(keyPairRef)) match {
+                case None => handleError("no keypair found", isAdminApiRoute)
+                case Some(keypairDb) => {
+                  createTokenWithConfig(bodyJson, keypairDb.pubKey, keypairDb.privKey, isAdminApiRoute)
+                }
+              }
+            }
+          }
+        }
+      }
+    }).recover {
+      case e: Throwable => {
+        if (isAdminApiRoute) {
+          Results.InternalServerError(Json.obj("error" -> e.getMessage))
+        } else {
+          Results.Ok(Json.obj("done" -> false, "error" -> e.getMessage))
+        }
+      }
+    }
+  }
+
+  private def createTokenWithConfig(bodyJson: JsValue, pubKey: String, privKey: String, adminApiRoute: Boolean)(implicit env: Env, ec: ExecutionContext): Future[Result] = {
+    bodyJson.select("config").asOpt[JsValue] match {
+      case None => handleError("no config provided", adminApiRoute)
+      case Some(newTokenConfig) => {
+
+        val biscuitForgeConf = BiscuitForgeConfig.format.reads(newTokenConfig).asOpt
+
+        biscuitForgeConf match {
+          case None => handleError("unable to parse biscuit forge configuration", adminApiRoute)
+          case Some(biscuitForgeConfig) => {
+
+            val generatedToken = BiscuitUtils.createToken(privKey, biscuitForgeConfig).serialize_b64url()
+
+            val remoteFactsRef = bodyJson.select("remoteFactsLoaderRef").asOpt[String]
+
+            remoteFactsRef match {
+              case None => {
+                if (adminApiRoute) {
+                  Results.Ok(
+                    Json.obj(
+                      "pubKey" -> pubKey,
+                      "token" -> generatedToken
+                    )
+                  ).vfuture
+                } else {
+                  Results.Ok(
+                    Json.obj(
+                      "done" -> true,
+                      "pubKey" -> pubKey,
+                      "token" -> generatedToken
+                    )
+                  ).vfuture
+                }
+              }
+              case Some(remoteFactsRef) => {
+                env.adminExtensions.extension[BiscuitExtension].get.states.biscuitRemoteFactsLoader(remoteFactsRef) match {
+                  case None => handleError("remote facts reference not found", adminApiRoute)
+                  case Some(remoteFacts) => {
+                    val ctx = bodyJson.select("remote_ctx").asOpt[JsObject].getOrElse(Json.obj()) ++ Json.obj("phase" -> "backoffice_generate_token")
+                    remoteFacts.loadFacts(ctx).flatMap {
+                      case Left(error) => handleError(error, adminApiRoute)
+                      case Right(remoteFacts) => {
+
+                        val c = biscuitForgeConfig.copy(
+                          facts = remoteFacts.facts ++ remoteFacts.acl ++ remoteFacts.roles
+                        )
+
+                        val generatedToken = BiscuitUtils.createToken(privKey, c).serialize_b64url()
+
+                        if (adminApiRoute) {
+                          Results.Ok(
+                            Json.obj(
+                              "pubKey" -> pubKey,
+                              "token" -> generatedToken
+                            )
+                          ).vfuture
+                        } else {
+                          Results.Ok(
+                            Json.obj(
+                              "done" -> true,
+                              "pubKey" -> pubKey,
+                              "token" -> generatedToken
+                            )
+                          ).vfuture
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  def handleError(errorMessage: String, isAdminApiRoute: Boolean): Future[Result] = {
+    if (isAdminApiRoute) {
+      Results.BadRequest(Json.obj("error" -> errorMessage)).vfuture
+    } else {
+      Results.Ok(Json.obj("done" -> false, "error" -> errorMessage)).vfuture
+    }
+  }
 }

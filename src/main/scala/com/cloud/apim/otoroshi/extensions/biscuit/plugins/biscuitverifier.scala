@@ -186,23 +186,17 @@ class BiscuitTokenValidator extends NgAccessValidator {
                                     case Some(token) => {
                                       Try(Biscuit.from_b64url(token, publicKey)).toEither match {
                                         case Left(err) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Unable to deserialize Biscuit token : ${err}"))).vfuture
-                                        case Right(biscuitUnverified) =>
+                                        case Right(biscuitToken) =>
 
-                                          Try(biscuitUnverified.verify(publicKey)).toEither match {
-                                            case Left(err) => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> s"Biscuit token is not valid : ${err}"))).vfuture
-                                            case Right(biscuitToken) => {
+                                          val verifierWithRemoteFacts = verifierConfig.copy(
+                                            facts = finalListFacts,
+                                            revokedIds = finalListOfRevokedId,
+                                            checks = finalListOfChecks
+                                          )
 
-                                              val verifierWithRemoteFacts = verifierConfig.copy(
-                                                facts = finalListFacts,
-                                                revokedIds = finalListOfRevokedId,
-                                                checks = finalListOfChecks
-                                              )
-
-                                              BiscuitUtils.verify(biscuitToken, verifierWithRemoteFacts, AccessValidatorContext(ctx).some) match {
-                                                case Left(err) => forbidden(ctx)
-                                                case Right(_) => NgAccess.NgAllowed.vfuture
-                                              }
-                                            }
+                                          BiscuitUtils.verify(biscuitToken, verifierWithRemoteFacts, AccessValidatorContext(ctx).some) match {
+                                            case Left(err) => forbidden(ctx)
+                                            case Right(_) => NgAccess.NgAllowed.vfuture
                                           }
                                       }
                                     }

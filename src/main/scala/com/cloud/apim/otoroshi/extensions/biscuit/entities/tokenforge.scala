@@ -53,7 +53,7 @@ case class BiscuitTokenForge(
                   case Right(remoteFacts) => {
 
                     val c = config.copy(
-                      facts = remoteFacts.facts ++ remoteFacts.acl ++ remoteFacts.roles
+                      facts = remoteFacts.facts ++ remoteFacts.acl ++ remoteFacts.roles,
                     )
 
                     Right(BiscuitUtils.createToken(kp.privKey, c)).vfuture
@@ -126,12 +126,7 @@ object BiscuitTokenForge {
             tags = Seq.empty,
             location = EntityLocation.default,
             remoteFactsLoaderRef = None,
-            config = BiscuitForgeConfig(
-              checks = Seq.empty,
-              facts = Seq.empty,
-              resources = Seq.empty,
-              rules = Seq.empty
-            )
+            config = BiscuitForgeConfig()
           ).json
         },
         canRead = true,

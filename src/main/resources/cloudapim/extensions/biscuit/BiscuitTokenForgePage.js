@@ -37,6 +37,11 @@ class BiscuitTokenForge extends Component {
 				transformer: (item) => ({ label: item.name, value: item.id }),
 			},
 		},
+    'config.enableTtl': {
+      type: 'bool',
+      props: { label: 'Enable TTL' },
+    },
+	  'config.ttl': { type: 'number', props: { label: 'TTL', suffix: 'millis.' } },
 		"config.facts": {
 			type: "array",
 			props: { label: "Facts" },
@@ -56,7 +61,7 @@ class BiscuitTokenForge extends Component {
 		remoteFactsLoaderRef: {
 			type: "select",
 			props: {
-        isClearable: true,
+				isClearable: true,
 				label: "Remote Facts Loader Reference",
 				valuesFrom:
 					"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-remote-facts",
@@ -96,6 +101,9 @@ class BiscuitTokenForge extends Component {
 		"metadata",
 		"<<<KeyPair",
 		"keypair_ref",
+    "<<<TTL (time to live)",
+		"config.enableTtl",
+		"config.ttl",
 		">>>Facts",
 		"config.facts",
 		">>>Checks",
@@ -160,12 +168,17 @@ class TokenGenerator extends Component {
 		token: null,
 		errorMessage: null,
 		isReqLoading: false,
-    pubKey: undefined
+		pubKey: undefined,
 	};
 
 	generateNewToken = () => {
 		if (this.props?.rawValue?.keypair_ref && this.props?.rawValue?.config) {
-			this.setState({ errorMessage: null, isReqLoading: true, pubKey: undefined, token: null });
+			this.setState({
+				errorMessage: null,
+				isReqLoading: true,
+				pubKey: undefined,
+				token: null,
+			});
 			fetch("/extensions/cloud-apim/extensions/biscuit/tokens/_generate", {
 				method: "POST",
 				credentials: "include",
@@ -188,7 +201,7 @@ class TokenGenerator extends Component {
 						});
 					} else {
 						this.setState({
-              pubKey: data.pubKey,
+							pubKey: data.pubKey,
 							token: data.token,
 							errorMessage: null,
 							isReqLoading: false,
@@ -345,7 +358,7 @@ class TokenGenerator extends Component {
 				)
 			),
 
-      token &&
+			token &&
 				React.createElement(
 					"div",
 					{
@@ -359,15 +372,12 @@ class TokenGenerator extends Component {
 							{ className: "col-xs-12 col-sm-2 col-form-label" },
 							"Biscuit Playground test"
 						),
-						React.createElement(
-							"bc-token-printer",
-							{
-                readonly: true,
-                rootPublicKey: pubKey,
-                biscuit: token,
-								showauthorizer: "true",
-							}
-						)
+						React.createElement("bc-token-printer", {
+							readonly: true,
+							rootPublicKey: pubKey,
+							biscuit: token,
+							showauthorizer: "true",
+						})
 					)
 				),
 		];

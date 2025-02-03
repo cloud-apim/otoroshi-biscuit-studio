@@ -8,14 +8,17 @@ import org.biscuitsec.biscuit.token.builder.Utils.{fact, string}
 import org.biscuitsec.biscuit.token.builder.parser.Parser
 import org.biscuitsec.biscuit.token.Biscuit
 import org.biscuitsec.biscuit.token.builder.Block
+import org.joda.time.DateTime
 import otoroshi.env.Env
 import otoroshi.plugins.biscuit.VerificationContext
+import otoroshi.utils.http.RequestImplicits.EnhancedRequestHeader
 import otoroshi.utils.syntax.implicits.BetterSyntax
 import play.api.libs.json.{Format, JsError, JsResult, JsSuccess, JsValue, Json, Reads}
 import play.api.mvc.RequestHeader
 
 import scala.concurrent.{ExecutionContext, Future}
 import java.security.SecureRandom
+import scala.concurrent.duration.{DurationLong, FiniteDuration}
 import scala.jdk.CollectionConverters.{iterableAsScalaIterableConverter, seqAsJavaListConverter}
 import scala.util.{Failure, Success, Try}
 
@@ -24,6 +27,8 @@ case class BiscuitForgeConfig(
     facts: Seq[String] = Seq.empty,
     resources: Seq[String] = Seq.empty,
     rules: Seq[String] = Seq.empty,
+    enableTtl: Boolean = false,
+    ttl: FiniteDuration = 1.hour
 ) {
   def json: JsValue = BiscuitForgeConfig.format.writes(this)
 }
@@ -35,7 +40,9 @@ object BiscuitForgeConfig {
         "checks" -> o.checks,
         "facts" -> o.facts,
         "resources" -> o.resources,
-        "rules" -> o.rules
+        "rules" -> o.rules,
+        "enableTtl" -> o.enableTtl,
+        "ttl" -> o.ttl.toMillis,
       )
     }
 
@@ -46,6 +53,8 @@ object BiscuitForgeConfig {
           facts = (json \ "facts").asOpt[Seq[String]].getOrElse(Seq.empty),
           resources = (json \ "resources").asOpt[Seq[String]].getOrElse(Seq.empty),
           rules = (json \ "rules").asOpt[Seq[String]].getOrElse(Seq.empty),
+          enableTtl = (json \ "enableTtl").asOpt[Boolean].getOrElse(false),
+          ttl = (json \ "ttl").asOpt[Long].map(_.millis).getOrElse(1.hour),
         )
       } match {
         case Failure(e) => JsError(e.getMessage)
@@ -85,11 +94,18 @@ object BiscuitUtils {
       .trim
   }
 
-  def createToken(privKeyValue: String, config: BiscuitForgeConfig): Biscuit = {
+  def createToken(privKeyValue: String, forgeConfig: BiscuitForgeConfig): Biscuit = {
 
     val keypair = new KeyPair(privKeyValue)
     val rng = new SecureRandom()
     val authority_builder = new Block()
+
+    val config = if (forgeConfig.enableTtl)
+      forgeConfig.copy(
+        checks = forgeConfig.checks :+
+          s"check if time($$time), $$time <= ${DateTime.now().plusMillis(forgeConfig.ttl.toMillis.toInt)}"
+      )
+    else forgeConfig
 
     // Resources
     config.resources
@@ -145,7 +161,6 @@ object BiscuitUtils {
     val verifier = biscuitToken.authorizer()
     verifier.set_time()
 
-
     if (ctxOpt.nonEmpty) {
       val ctx = ctxOpt.get
 
@@ -161,11 +176,31 @@ object BiscuitUtils {
           ).asJava
         )
       )
+      verifier.add_fact(fact("hostname", Seq(string(ctx.request.theHost)).asJava))
       verifier.add_fact(fact("resource", Seq(string(ctx.request.domain)).asJava))
       verifier.add_fact(fact("req_path", Seq(string(ctx.request.path)).asJava))
       verifier.add_fact(fact("req_domain", Seq(string(ctx.request.domain)).asJava))
       verifier.add_fact(fact("req_method", Seq(string(ctx.request.method.toLowerCase)).asJava))
-      verifier.add_fact(fact("descriptor_id", Seq(string(ctx.descriptor.id)).asJava))
+      verifier.add_fact(fact("route_id", Seq(string(ctx.descriptor.id)).asJava))
+      verifier.add_fact(fact("ip_address", Seq(string(ctx.request.theIpAddress)).asJava))
+      verifier.add_fact(fact("user_agent", Seq(string(ctx.request.theUserAgent)).asJava))
+      verifier.add_fact(fact("req_protocol", Seq(string(ctx.request.theProtocol)).asJava))
+
+      if(ctx.user.isDefined){
+        verifier.add_fact(fact("user", Seq(string(ctx.user.get.name)).asJava))
+        verifier.add_fact(fact("email", Seq(string(ctx.user.get.email)).asJava))
+      }
+
+      if(ctx.apikey.isDefined){
+        verifier.add_fact(fact("auth_method", Seq(string("apikey")).asJava))
+      }
+
+      ctx.request.headers.headers.map { case (headerName, headerValue) =>
+        verifier.add_fact(fact(
+          "req_headers",
+          Seq(string(headerName.toLowerCase), string(headerValue)).asJava
+        ))
+      }
     }
 
     // Add resources from the configuration
@@ -215,14 +250,27 @@ object BiscuitUtils {
     val maxIterations = 100
     val maxTime = java.time.Duration.ofMillis(100)
 
+    env.logger.info(s"got verifier world = ${verifier.print_world()}")
+
     // Perform authorization
-    Try(verifier.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
-      case Left(err: org.biscuitsec.biscuit.error.Error) =>
-        Left(handleBiscuitErrors(err))
-      case Left(err) =>
-        Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError()))
-      case Right(_) =>
-        Right(())
+    if(verifier.policies().isEmpty){
+      Try(verifier.allow().authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
+        case Left(err: org.biscuitsec.biscuit.error.Error) =>
+          Left(handleBiscuitErrors(err))
+        case Left(err) =>
+          Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError()))
+        case Right(_) =>
+          Right(())
+      }
+    }else{
+      Try(verifier.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
+        case Left(err: org.biscuitsec.biscuit.error.Error) =>
+          Left(handleBiscuitErrors(err))
+        case Left(err) =>
+          Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError()))
+        case Right(_) =>
+          Right(())
+      }
     }
   }
 
