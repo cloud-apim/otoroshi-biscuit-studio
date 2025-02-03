@@ -43,7 +43,12 @@ case class BiscuitTokenForge(
       case None => Left("keypair not found").vfuture
       case Some(kp) => {
         remoteFactsLoaderRef match {
-          case None => Right(BiscuitUtils.createToken(kp.privKey, config)).future
+          case None => {
+            BiscuitUtils.createToken(kp.privKey, config) match {
+              case Left(err) => Left("unable to forge token").vfuture
+              case Right(token) => Right(token).vfuture
+            }
+          }
           case Some(remoteFactsRef) => {
             env.adminExtensions.extension[BiscuitExtension].get.states.biscuitRemoteFactsLoader(remoteFactsRef) match {
               case None => Left("remote facts reference not found").vfuture
@@ -52,11 +57,14 @@ case class BiscuitTokenForge(
                   case Left(error) => Left(error).vfuture
                   case Right(remoteFacts) => {
 
-                    val c = config.copy(
+                    val finalConfig = config.copy(
                       facts = remoteFacts.facts ++ remoteFacts.acl ++ remoteFacts.roles,
                     )
 
-                    Right(BiscuitUtils.createToken(kp.privKey, c)).vfuture
+                    BiscuitUtils.createToken(kp.privKey, finalConfig) match {
+                      case Left(err) => Left("unable to forge token").vfuture
+                      case Right(token) => Right(token).vfuture
+                    }
                   }
                 }
               }

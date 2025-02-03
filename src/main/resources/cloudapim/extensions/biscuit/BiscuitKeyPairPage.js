@@ -69,6 +69,7 @@ class BiscuitKeyPairPage extends Component {
 		"id",
 		"name",
 		"description",
+    ">>>Metadata and tags",
 		"tags",
 		"metadata",
 		"<<<KeyPair parameters",

@@ -200,7 +200,7 @@ class BiscuitVerifierTester extends Component {
 		// Clear previous errors and warnings
 		this.setState({ error: "", warning: "", successMessage: "" });
 
-		fetch("/extensions/cloud-apim/extensions/biscuit/tokens/verifier/_test", {
+		fetch("/extensions/cloud-apim/extensions/biscuit/tokens/verifiers/_test", {
 			method: "POST",
 			credentials: "include",
 			headers: {

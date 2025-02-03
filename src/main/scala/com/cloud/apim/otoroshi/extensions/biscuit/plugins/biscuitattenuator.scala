@@ -143,6 +143,7 @@ class BiscuitTokenAttenuator extends NgRequestTransformer {
   override def configSchema: Option[JsObject] = BiscuitAttenuatorConfig.configSchema("biscuit-attenuators")
 
   override def name: String = "Cloud APIM - Biscuit Tokens Attenuator"
+
   override def start(env: Env): Future[Unit] = {
     env.adminExtensions.extension[BiscuitExtension].foreach { ext =>
       ext.logger.info("the 'Biscuit Attenuator' plugin is available !")
@@ -174,7 +175,7 @@ class BiscuitTokenAttenuator extends NgRequestTransformer {
                         doAttenuation(ctx, config, attenuator, attenuatorConfigWithRemoteFacts)
                       }
                     }
-                  }else{
+                  } else {
                     Left(Results.InternalServerError(Json.obj("error" -> "bad remoteFacts entity configuration"))).vfuture
                   }
                 }
@@ -202,37 +203,42 @@ class BiscuitTokenAttenuator extends NgRequestTransformer {
                 Try(biscuitUnverified.verify(publicKey)).toEither match {
                   case Left(error) => Left(Results.InternalServerError(Json.obj("error" -> s"Unable to verify biscuit token - token is not valid : ${error}"))).vfuture
                   case Right(biscuitToken) => {
-                    val attenuatedToken = BiscuitUtils.attenuateToken(biscuitToken, attenuatorConfig.checks)
 
-                    var finalRequest = ctx.otoroshiRequest
+                    BiscuitUtils.attenuateToken(biscuitToken, attenuatorConfig.checks) match {
+                      case Left(err) => Left(Results.InternalServerError(Json.obj("error" -> s"Unable to generate attenuated biscuit token - : ${err}"))).vfuture
+                      case Right(attenuatedToken) => {
 
-                    config.extractorType match {
-                      case "header" => finalRequest = finalRequest.copy(headers = finalRequest.headers.filterNot(_._1.toLowerCase() == config.extractorName.toLowerCase()))
-                      case "query" => {
-                        val uri = finalRequest.uri
-                        val newQuery = uri.rawQueryString.map(_ => uri.query().filterNot(_._1.toLowerCase() == config.extractorName.toLowerCase()).toString())
-                        val newUrl = uri.copy(rawQueryString = newQuery).toString()
-                        finalRequest = finalRequest.copy(url = newUrl)
-                      }
-                      case "cookies" => {
-                        finalRequest = finalRequest.copy(cookies = ctx.otoroshiRequest.cookies.filterNot(_.name.toLowerCase() == config.extractorName.toLowerCase()))
-                      }
-                    }
+                        var finalRequest = ctx.otoroshiRequest
 
-                    config.tokenReplaceLoc match {
-                      case "header" => finalRequest.copy(headers = finalRequest.headers ++ Map(config.tokenReplaceName -> s"biscuit:${attenuatedToken.serialize_b64url()}")).right.vfuture
-                      case "query" => {
-                        val uri = finalRequest.uri
-                        val newQuery = uri.rawQueryString.map(_ => uri.query().filterNot(_._1.toLowerCase() == config.extractorName.toLowerCase()).toString()).getOrElse("") ++ s"${config.tokenReplaceName}=biscuit:${attenuatedToken.serialize_b64url()}"
-                        val newUrl = uri.copy(rawQueryString = newQuery.some).toString()
-                        finalRequest.copy(url = newUrl).right.vfuture
-                      }
-                      case "cookies" => {
-                        val cookie = DefaultWSCookie(name = config.tokenReplaceName, value = s"biscuit:${attenuatedToken.serialize_b64url()}", maxAge = Some(360000), path = "/".some, domain = ctx.request.domain.some, httpOnly = false)
+                        config.extractorType match {
+                          case "header" => finalRequest = finalRequest.copy(headers = finalRequest.headers.filterNot(_._1.toLowerCase() == config.extractorName.toLowerCase()))
+                          case "query" => {
+                            val uri = finalRequest.uri
+                            val newQuery = uri.rawQueryString.map(_ => uri.query().filterNot(_._1.toLowerCase() == config.extractorName.toLowerCase()).toString())
+                            val newUrl = uri.copy(rawQueryString = newQuery).toString()
+                            finalRequest = finalRequest.copy(url = newUrl)
+                          }
+                          case "cookies" => {
+                            finalRequest = finalRequest.copy(cookies = ctx.otoroshiRequest.cookies.filterNot(_.name.toLowerCase() == config.extractorName.toLowerCase()))
+                          }
+                        }
 
-                        finalRequest.copy(cookies = finalRequest.cookies ++ Seq(cookie)).right.vfuture
+                        config.tokenReplaceLoc match {
+                          case "header" => finalRequest.copy(headers = finalRequest.headers ++ Map(config.tokenReplaceName -> s"biscuit:${attenuatedToken.serialize_b64url()}")).right.vfuture
+                          case "query" => {
+                            val uri = finalRequest.uri
+                            val newQuery = uri.rawQueryString.map(_ => uri.query().filterNot(_._1.toLowerCase() == config.extractorName.toLowerCase()).toString()).getOrElse("") ++ s"${config.tokenReplaceName}=biscuit:${attenuatedToken.serialize_b64url()}"
+                            val newUrl = uri.copy(rawQueryString = newQuery.some).toString()
+                            finalRequest.copy(url = newUrl).right.vfuture
+                          }
+                          case "cookies" => {
+                            val cookie = DefaultWSCookie(name = config.tokenReplaceName, value = s"biscuit:${attenuatedToken.serialize_b64url()}", maxAge = Some(360000), path = "/".some, domain = ctx.request.domain.some, httpOnly = false)
+
+                            finalRequest.copy(cookies = finalRequest.cookies ++ Seq(cookie)).right.vfuture
+                          }
+                          case _ => finalRequest.right.vfuture
+                        }
                       }
-                      case _ => finalRequest.right.vfuture
                     }
                   }
                 }
