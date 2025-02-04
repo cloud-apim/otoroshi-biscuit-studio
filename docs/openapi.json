@@ -138,7 +138,7 @@
 			}
 		},
 		"/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-attenuators/{id}": {
-      "get": {
+			"get": {
 				"tags": ["biscuit-attenuators"],
 				"summary": "Get a Biscuit Attenuator",
 				"description": "Get a Biscuit Attenuator by its ID.",
@@ -870,6 +870,248 @@
 				"responses": {
 					"204": {
 						"description": "Biscuit Remote Facts Loader entity deleted successfully."
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			}
+		},
+		"/api/extensions/biscuit/tokens/_generate": {
+			"post": {
+				"tags": ["biscuit-admin-api"],
+				"summary": "Generate a biscuit token",
+				"description": "Generate a biscuit token from a body Public and Private keys or a keypair reference",
+				"operationId": "generateTokenFromBody",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"id": { "type": "string" },
+									"name": { "type": "string" },
+									"description": { "type": "string" },
+									"pubKey": { "type": "string" },
+									"privKey": { "type": "string" },
+									"tags": { "type": "array", "items": { "type": "string" } },
+									"kind": { "type": "string" }
+								},
+								"required": ["id", "name", "pubKey", "privKey", "kind"]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Biscuit KeyPair successfully created.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"token": { "type": "string" }
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			}
+		},
+		"/api/extensions/biscuit/biscuit-forges/:id/_generate": {
+			"post": {
+				"tags": ["biscuit-admin-api"],
+				"summary": "Generate a biscuit token from a forge",
+				"description": "Generate a biscuit token from a forge"
+			}
+		},
+    "/api/extensions/biscuit/biscuit-attenuators/:id/_attenuate": {
+			"post": {
+				"tags": ["biscuit-admin-api"],
+				"summary": "Attenuate a biscuit token from an attenuator entity",
+				"description": "Attenuate a biscuit token from an attenuator entity"
+			}
+		},
+    "/api/extensions/biscuit/tokens/_verify": {
+			"post": {
+				"tags": ["biscuit-admin-api"],
+				"summary": "Attenuate a biscuit token from an attenuator entity",
+				"description": "Attenuate a biscuit token from an attenuator entity"
+			}
+		},
+		"/api/extensions/biscuit/tokens/_attenuate": {
+      "post": {
+				"tags": ["biscuit-admin-api"],
+				"summary": "Generate a Biscuit Token",
+				"description": "Generate a Biscuit token from provided public and private keys or a keypair reference.",
+				"operationId": "generateTokenFromBody",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"oneOf": [
+									{
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "string",
+												"description": "Unique identifier for the keypair."
+											},
+											"name": {
+												"type": "string",
+												"description": "Name for the Biscuit token."
+											},
+											"description": {
+												"type": "string",
+												"description": "Optional description for the token."
+											},
+											"pubKey": {
+												"type": "string",
+												"description": "The public key in hexadecimal format."
+											},
+											"privKey": {
+												"type": "string",
+												"description": "The private key in hexadecimal format."
+											},
+											"tags": {
+												"type": "array",
+												"description": "An array of tags to categorize the token.",
+												"items": {
+													"type": "string"
+												}
+											},
+											"kind": {
+												"type": "string",
+												"description": "Type of key (for example, RSA, Ed25519, etc.)."
+											}
+										},
+										"required": ["id", "name", "pubKey", "privKey", "kind"]
+									},
+									{
+										"type": "object",
+										"properties": {
+											"keypair_ref": {
+												"type": "string",
+												"description": "Reference identifier for an existing Biscuit keypair."
+											}
+										},
+										"required": ["keypair_ref"]
+									}
+								]
+							},
+							"examples": {
+								"FullKeyPair": {
+									"summary": "Using full public and private keys",
+									"value": {
+										"id": "unique-id-1234",
+										"name": "My Biscuit Token",
+										"description": "A sample Biscuit token for demo purposes",
+										"pubKey": "56584fe8fc9bf847f26a0e37680c921bba58f9b4458f75b44f78b0942b75e34c",
+										"privKey": "5b1fdd8961c0f3a7ff6aa25ed3a329616643782fdd94ae25e507989e1ee68c99",
+										"tags": ["demo", "premium"],
+										"kind": "rsa"
+									}
+								},
+								"KeyPairReference": {
+									"summary": "Using a keypair reference",
+									"value": {
+										"keypair_ref": "biscuit-keypair_0b863987-65af-4ca4-8d38-73b742f7e8bd"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Biscuit token successfully generated.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"oneOf": [
+										{
+											"type": "object",
+											"properties": {
+												"pubKey": {
+													"type": "string",
+													"description": "The public key that was used."
+												},
+												"privKey": {
+													"type": "string",
+													"description": "The private key that was used."
+												},
+												"token": {
+													"type": "string",
+													"description": "The generated Biscuit token."
+												},
+												"checks": {
+													"type": "array",
+													"description": "An array of check results or validations performed.",
+													"items": {
+														"type": "string"
+													}
+												}
+											}
+										},
+										{
+											"type": "object",
+											"properties": {
+												"keypair_ref": {
+													"type": "string",
+													"description": "The keypair reference used."
+												},
+												"token": {
+													"type": "string",
+													"description": "The generated Biscuit token."
+												},
+												"checks": {
+													"type": "array",
+													"description": "An array of check results or validations performed.",
+													"items": {
+														"type": "string"
+													}
+												}
+											}
+										}
+									]
+								},
+								"examples": {
+									"ResponseWithFullKeys": {
+										"summary": "Response when full key details are provided",
+										"value": {
+											"pubKey": "56584fe8fc9bf847f26a0e37680c921bba58f9b4458f75b44f78b0942b75e34c",
+											"privKey": "5b1fdd8961c0f3a7ff6aa25ed3a329616643782fdd94ae25e507989e1ee68c99",
+											"token": "EpUBCisKBGRlbW8KBHBsYW4KBGZyZWUYAyIJCgcIChIDGIAIIgoKCAiBCBIDGIIIEiQIABIgmlHlSBvxY66pQnFVXIY-685yLB5Sig8p1U5ur6dmYIUaQMt-8IHulfZKB8Vr1yGZRE86EZio-lUTdHKyA49WDDJrMKkahOFFmgcmTJwp3CLUHTc-w81MMuF2MfEKQrZ0Pg4iIgogPjlkYu2JumZdy5qvP5fi7ec2xnmY7wY2PMAZVvucUmQ=",
+											"checks": [
+												"check if user(\"demo\")",
+												"check if plan(\"premium\")"
+											]
+										}
+									},
+									"ResponseWithKeyPairRef": {
+										"summary": "Response when a keypair reference is used",
+										"value": {
+											"keypair_ref": "biscuit-keypair_0b863987-65af-4ca4-8d38-73b742f7e8bd",
+											"token": "EpUBCisKBGRlbW8KBHBsYW4KBGZyZWUYAyIJCgcIChIDGIAIIgoKCAiBCBIDGIIIEiQIABIgmlHlSBvxY66pQnFVXIY-685yLB5Sig8p1U5ur6dmYIUaQMt-8IHulfZKB8Vr1yGZRE86EZio-lUTdHKyA49WDDJrMKkahOFFmgcmTJwp3CLUHTc-w81MMuF2MfEKQrZ0Pg4iIgogPjlkYu2JumZdy5qvP5fi7ec2xnmY7wY2PMAZVvucUmQ=",
+											"checks": [
+												"check if user(\"demo\")",
+												"check if plan(\"premium\")"
+											]
+										}
+									}
+								}
+							}
+						}
 					}
 				},
 				"security": [
