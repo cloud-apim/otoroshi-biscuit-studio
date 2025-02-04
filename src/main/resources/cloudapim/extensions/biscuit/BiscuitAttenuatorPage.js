@@ -11,13 +11,13 @@ class BiscuitAttenuatorPage extends Component {
 		},
 		name: {
 			type: "string",
-			props: { label: "Name", placeholder: "My Awesome Context" },
+			props: { label: "Name", placeholder: "My Awesome Biscuit Attenuator" },
 		},
 		description: {
 			type: "string",
 			props: {
 				label: "Description",
-				placeholder: "Description of the Context",
+				placeholder: "Description of the Biscuit Attenuator",
 			},
 		},
 		metadata: {
@@ -41,7 +41,22 @@ class BiscuitAttenuatorPage extends Component {
 			type: "array",
 			props: { label: "Checks" },
 		},
-    tester: {
+
+		// "config.checks": {
+		// 	type: (props) =>
+		// 		React.createElement(CodeInput, {
+		// 			label: "",
+		// 			mode: "prolog",
+		// 			value: props.itemValue,
+		// 			onChange: (e) => {
+		// 				const arr = props.value;
+		// 				arr[props.idx] = e;
+		// 				props.onChange(arr);
+		// 			},
+		// 		}),
+		// },
+
+		tester: {
 			type: BiscuitAttenuatorTester,
 		},
 	};
@@ -69,14 +84,14 @@ class BiscuitAttenuatorPage extends Component {
 		"id",
 		"name",
 		"description",
-    ">>>Metadata and tags",
+		">>>Metadata and tags",
 		"metadata",
 		"tags",
 		"<<<KeyPair",
 		"keypair_ref",
 		"<<<Checks",
 		"config.checks",
-    ">>>Tester",
+		">>>Tester",
 		"tester",
 	];
 
@@ -152,7 +167,8 @@ class BiscuitAttenuatorTester extends Component {
 			attenuatedToken: undefined,
 			tokenInput: undefined,
 			errorMesage: "",
-      pubKey: undefined
+			pubKey: undefined,
+			forgeRef: undefined,
 		};
 	}
 
@@ -161,10 +177,10 @@ class BiscuitAttenuatorTester extends Component {
 	};
 
 	send = () => {
-		const { tokenInput } = this.state;
+		const { forgeRef, tokenInput } = this.state;
 
 		// Validate that either a Biscuit token or a provider is provided
-		if (!tokenInput && tokenInput !== "") {
+		if (!forgeRef && !tokenInput && forgeRef !== "" && tokenInput !== "") {
 			this.setState({
 				error: "Please provide either a Biscuit token or select a provider.",
 			});
@@ -172,34 +188,42 @@ class BiscuitAttenuatorTester extends Component {
 		}
 
 		// Clear previous errors and warnings
-		this.setState({ error: "", attenuatedToken: "", errorMesage: "" });
+		this.setState({
+			error: "",
+			attenuatedToken: "",
+			errorMesage: "",
+		});
 
-		fetch("/extensions/cloud-apim/extensions/biscuit/tokens/attenuators/_test", {
-			method: "POST",
-			credentials: "include",
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				checks: [...this.props.rawValue?.config?.checks],
-				keypair_ref: this.props.rawValue?.keypair_ref,
-				token: tokenInput,
-			}),
-		})
+		fetch(
+			"/extensions/cloud-apim/extensions/biscuit/tokens/attenuators/_test",
+			{
+				method: "POST",
+				credentials: "include",
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					checks: [...this.props.rawValue?.config?.checks],
+					keypair_ref: this.props.rawValue?.keypair_ref,
+					forge_ref: forgeRef,
+					token: tokenInput,
+				}),
+			}
+		)
 			.then((r) => r.json())
 			.then((data) => {
 				if (!data?.token) {
 					this.setState({
-            errorMesage: `Something went wrong during attenuation ${data?.error}`,
-            attenuatedToken: null,
-            pubKey: null
+						errorMesage: `Something went wrong during attenuation ${data?.error}`,
+						attenuatedToken: null,
+						pubKey: null,
 					});
 				} else {
 					this.setState({
-            errorMesage: null,
-            pubKey: data.pubKey,
-						attenuatedToken: data.token
+						errorMesage: null,
+						pubKey: data.pubKey,
+						attenuatedToken: data.token,
 					});
 				}
 			})
@@ -211,9 +235,23 @@ class BiscuitAttenuatorTester extends Component {
 	};
 
 	render() {
-		const { attenuatedToken, tokenInput, errorMesage, pubKey } = this.state;
+		const { attenuatedToken, tokenInput, errorMesage, pubKey, forgeRef } =
+			this.state;
 
 		return React.createElement("div", { className: "row mb-3" }, [
+			React.createElement(
+				"div",
+				{ className: "form-group" },
+				React.createElement(SelectInput, {
+					label: "Use a token forge",
+          isClearable: true,
+					value: forgeRef,
+					onChange: (forgeRef) => this.setState({ forgeRef }),
+					valuesFrom:
+						"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-forges",
+					transformer: (item) => ({ label: item.name, value: item.id }),
+				})
+			),
 			React.createElement(
 				"div",
 				{
@@ -233,46 +271,46 @@ class BiscuitAttenuatorTester extends Component {
 					})
 				)
 			),
-      errorMesage &&
-      React.createElement(
-        "div",
-        {
-          style: { maxWidth: "80%", marginLeft: "15%", textAlign: "center" },
-        },
-        React.createElement(
-          "div",
-          {
-            className: "alert alert-danger rounded mx-auto",
-            style: { width: "100%", textAlign: "center" },
-          },
-          React.createElement("i", {
-            className: "fas fa-exclamation-circle",
-          }),
-          React.createElement("span", null, ` ${errorMesage}`)
-        )
-      ),
-      attenuatedToken &&
-      React.createElement(
-        "div",
-        {
-          style: { maxWidth: "80%", marginLeft: "15%", textAlign: "center" },
-        },
-        React.createElement(
-          "div",
-          { className: "row mb-3" },
-          React.createElement(
-            "label",
-            { className: "col-xs-12 col-sm-2 col-form-label" },
-            "Biscuit Playground test"
-          ),
-          React.createElement("bc-token-printer", {
-            readonly: true,
-            biscuit: attenuatedToken,
-            rootPublicKey: pubKey,
-            showauthorizer: "true",
-          })
-        )
-      ),
+			errorMesage &&
+				React.createElement(
+					"div",
+					{
+						style: { maxWidth: "80%", marginLeft: "15%", textAlign: "center" },
+					},
+					React.createElement(
+						"div",
+						{
+							className: "alert alert-danger rounded mx-auto",
+							style: { width: "100%", textAlign: "center" },
+						},
+						React.createElement("i", {
+							className: "fas fa-exclamation-circle",
+						}),
+						React.createElement("span", null, ` ${errorMesage}`)
+					)
+				),
+			attenuatedToken &&
+				React.createElement(
+					"div",
+					{
+						style: { maxWidth: "80%", marginLeft: "15%", textAlign: "center" },
+					},
+					React.createElement(
+						"div",
+						{ className: "row mb-3" },
+						React.createElement(
+							"label",
+							{ className: "col-xs-12 col-sm-2 col-form-label" },
+							"Biscuit Playground test"
+						),
+						React.createElement("bc-token-printer", {
+							readonly: true,
+							biscuit: attenuatedToken,
+							rootPublicKey: pubKey,
+							showauthorizer: "true",
+						})
+					)
+				),
 			React.createElement(
 				"div",
 				{ className: "text-center" },
