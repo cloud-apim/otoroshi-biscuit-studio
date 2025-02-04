@@ -38,24 +38,27 @@ class BiscuitAttenuatorPage extends Component {
 			},
 		},
 		"config.checks": {
-			type: "array",
-			props: { label: "Checks" },
+			type: 'array',
+      props: {
+        component: 
+        (props) =>
+				React.createElement(
+					React.Suspense,
+					{ fallback: "Loading..." },
+					React.createElement(LazyCodeInput, {
+						label: "",
+            height: "50px",
+						mode: "prolog",
+						value: props.itemValue,
+						onChange: (e) => {
+							const arr = props.value;
+							arr[props.idx] = e;
+							props.onChange(arr);
+						},
+					})
+				)
+      }
 		},
-
-		// "config.checks": {
-		// 	type: (props) =>
-		// 		React.createElement(CodeInput, {
-		// 			label: "",
-		// 			mode: "prolog",
-		// 			value: props.itemValue,
-		// 			onChange: (e) => {
-		// 				const arr = props.value;
-		// 				arr[props.idx] = e;
-		// 				props.onChange(arr);
-		// 			},
-		// 		}),
-		// },
-
 		tester: {
 			type: BiscuitAttenuatorTester,
 		},
@@ -244,7 +247,7 @@ class BiscuitAttenuatorTester extends Component {
 				{ className: "form-group" },
 				React.createElement(SelectInput, {
 					label: "Use a token forge",
-          isClearable: true,
+					isClearable: true,
 					value: forgeRef,
 					onChange: (forgeRef) => this.setState({ forgeRef }),
 					valuesFrom:

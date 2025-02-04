@@ -38,25 +38,115 @@ class BiscuitVerifiersPage extends Component {
 				transformer: (item) => ({ label: item.name, value: item.id }),
 			},
 		},
-		"config.facts": {
-			type: "array",
-			props: { label: "Facts" },
+    "config.facts": {
+			type: 'array',
+      props: {
+        component: 
+        (props) =>
+				React.createElement(
+					React.Suspense,
+					{ fallback: "Loading..." },
+					React.createElement(LazyCodeInput, {
+						label: "",
+            height: "50px",
+						mode: "prolog",
+						value: props.itemValue,
+						onChange: (e) => {
+							const arr = props.value;
+							arr[props.idx] = e;
+							props.onChange(arr);
+						},
+					})
+				)
+      }
 		},
-		"config.checks": {
-			type: "array",
-			props: { label: "Checks" },
+    "config.checks": {
+			type: 'array',
+      props: {
+        component: 
+        (props) =>
+				React.createElement(
+					React.Suspense,
+					{ fallback: "Loading..." },
+					React.createElement(LazyCodeInput, {
+						label: "",
+            height: "50px",
+						mode: "prolog",
+						value: props.itemValue,
+						onChange: (e) => {
+							const arr = props.value;
+							arr[props.idx] = e;
+							props.onChange(arr);
+						},
+					})
+				)
+      }
 		},
-		"config.resources": {
-			type: "array",
-			props: { label: "Resources" },
+    "config.resources": {
+			type: 'array',
+      props: {
+        component: 
+        (props) =>
+				React.createElement(
+					React.Suspense,
+					{ fallback: "Loading..." },
+					React.createElement(LazyCodeInput, {
+						label: "",
+            height: "50px",
+						mode: "prolog",
+						value: props.itemValue,
+						onChange: (e) => {
+							const arr = props.value;
+							arr[props.idx] = e;
+							props.onChange(arr);
+						},
+					})
+				)
+      }
 		},
-		"config.rules": {
-			type: "array",
-			props: { label: "Rules" },
+    "config.rules": {
+			type: 'array',
+      props: {
+        component: 
+        (props) =>
+				React.createElement(
+					React.Suspense,
+					{ fallback: "Loading..." },
+					React.createElement(LazyCodeInput, {
+						label: "",
+            height: "150px",
+						mode: "prolog",
+						value: props.itemValue,
+						onChange: (e) => {
+							const arr = props.value;
+							arr[props.idx] = e;
+							props.onChange(arr);
+						},
+					})
+				)
+      }
 		},
-		"config.policies": {
-			type: "array",
-			props: { label: "Policies" },
+    "config.policies": {
+			type: 'array',
+      props: {
+        component: 
+        (props) =>
+				React.createElement(
+					React.Suspense,
+					{ fallback: "Loading..." },
+					React.createElement(LazyCodeInput, {
+						label: "",
+            height: "50px",
+						mode: "prolog",
+						value: props.itemValue,
+						onChange: (e) => {
+							const arr = props.value;
+							arr[props.idx] = e;
+							props.onChange(arr);
+						},
+					})
+				)
+      }
 		},
 		"config.revokedIds": {
 			type: "array",
@@ -209,9 +299,9 @@ class BiscuitVerifierTester extends Component {
 			},
 			body: JSON.stringify({
 				config: { ...this.props.rawValue?.config },
-				keypairRef: this.props.rawValue?.keypair_ref,
-				biscuitForgeRef: forgeRef,
-				biscuitToken: tokenInput,
+				keypair_ref: this.props.rawValue?.keypair_ref,
+				forge_ref: forgeRef,
+				token: tokenInput,
 			}),
 		})
 			.then((r) => r.json())

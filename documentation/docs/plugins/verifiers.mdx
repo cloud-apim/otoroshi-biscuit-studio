@@ -91,8 +91,8 @@ In the context of a Biscuit Verifier, the following data points are typically us
 | `req_method` | The HTTP method used in the request. | `req_method("post")` |
 | `route_id`  | The unique identifier of the route descriptor. | `route_id("route_518e34e7a-e2cb-4687-952c-37a3d98b8001")` |
 | `ip_address` | The IP address of the requester. | `ip_address("192.168.1.1")` |
-| `username` (if present) | The authenticated username of the requester. | `username("alice")` |
-| `email` (if present) | The authenticated email of the requester. | `email("alice@example.com")` |
+| `user_name` (if present) | The authenticated username of the requester. | `username("alice")` |
+| `user_email` (if present) | The authenticated email of the requester. | `email("alice@example.com")` |
 | `req_headers` | The HTTP headers sent with the request, including various key details like authorization tokens, user-agent, etc. | `req_headers("custom-header", "<value>")`<br />`req_headers("remote-address", "192.168.1.1:12345")`<br />`req_headers("authorization", "Bearer <token>")`<br />`req_headers("request-start-time", "<timestamp>")`<br />`req_headers("accept-encoding", "gzip, deflate")` |
 
 ## Explanation of Key Facts for Biscuit Verifier
@@ -115,10 +115,10 @@ In the context of a Biscuit Verifier, the following data points are typically us
 ### `ip_address`
 - **Explanation**: The IP address allows the verifier to track where the request is coming from. In some cases, geographical or network restrictions might be applied based on the IP.
 
-### `username` (if present)
+### `user_name` (if present)
 - **Explanation**: This is the authenticated username of the requester. It is used by the verifier to determine whether the user is authorized to perform the requested action based on their permissions.
 
-### `email` (if present)
+### `user_email` (if present)
 - **Explanation**: If the user’s email is present, it can help identify the user uniquely and enable further context about their authentication and permissions.
 
 ### `req_headers`

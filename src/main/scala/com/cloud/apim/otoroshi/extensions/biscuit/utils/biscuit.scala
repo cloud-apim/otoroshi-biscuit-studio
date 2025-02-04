@@ -199,12 +199,31 @@ object BiscuitUtils {
       verifier.add_fact(fact("req_protocol", Seq(string(ctx.request.theProtocol)).asJava))
 
       if (ctx.user.isDefined) {
-        verifier.add_fact(fact("user", Seq(string(ctx.user.get.name)).asJava))
-        verifier.add_fact(fact("email", Seq(string(ctx.user.get.email)).asJava))
+        verifier.add_fact(fact("user_name", Seq(string(ctx.user.get.name)).asJava))
+        verifier.add_fact(fact("user_email", Seq(string(ctx.user.get.email)).asJava))
+        verifier.add_fact(fact("auth_method", Seq(string("user")).asJava))
+
+        ctx.user.get.tags.foreach{tag => {
+          verifier.add_fact(fact("user_tag", Seq(string(tag)).asJava))
+        }}
+
+        ctx.user.get.metadata.foreach{
+          case (key, value) => verifier.add_fact(fact("user_metadata", Seq(string(key), string(value)).asJava))
+        }
       }
 
       if (ctx.apikey.isDefined) {
         verifier.add_fact(fact("auth_method", Seq(string("apikey")).asJava))
+        verifier.add_fact(fact("apikey_client_id", Seq(string(ctx.apikey.get.clientId)).asJava))
+        verifier.add_fact(fact("apikey_client_name", Seq(string(ctx.apikey.get.clientName)).asJava))
+
+        ctx.apikey.get.tags.foreach{tag => {
+          verifier.add_fact(fact("apikey_tag", Seq(string(tag)).asJava))
+        }}
+
+        ctx.apikey.get.metadata.foreach{
+          case (key, value) => verifier.add_fact(fact("apikey_metadata", Seq(string(key), string(value)).asJava))
+        }
       }
 
       ctx.request.headers.headers.map { case (headerName, headerValue) =>
