@@ -781,6 +781,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
   }
 
   override def adminApiRoutes(): Seq[AdminExtensionAdminApiRoute] = Seq(
+    // Generate a token from a body
     AdminExtensionAdminApiRoute(
       "POST",
       "/api/extensions/biscuit/tokens/_generate",
@@ -789,6 +790,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
         generateTokenFromBody(body, isAdminApiRoute = true)
       }
     ),
+    // Generate a token from a forge entity
     AdminExtensionAdminApiRoute(
       "POST",
       "/api/extensions/biscuit/biscuit-forges/:id/_generate",
@@ -830,12 +832,64 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
         }
       }
     ),
+    // Attenuate a token from a body token and checks config
     AdminExtensionAdminApiRoute(
       "POST",
       "/api/extensions/biscuit/tokens/_attenuate",
       wantsBody = true,
       (ctx, request, apk, body) => {
         attenuateTokenFromBody(body, isAdminApiRoute = true)
+      }
+    ),
+    // Attenuate a token from an attenuator entity
+    AdminExtensionAdminApiRoute(
+      "POST",
+      "/api/extensions/biscuit/biscuit-attenuators/:id/_attenuate",
+      wantsBody = true,
+      (ctx, request, apk, body) => {
+        implicit val ev = env
+        implicit val ec = env.otoroshiExecutionContext
+        implicit val mat = env.otoroshiMaterializer
+
+        ctx.named("id") match {
+          case None => Results.NotFound(Json.obj("error" -> "Path parameter 'id' is not found")).vfuture
+          case Some(attenuatorId) => {
+            env.adminExtensions.extension[BiscuitExtension].get.states.biscuitAttenuator(attenuatorId) match {
+              case None => Results.NotFound(Json.obj("error" -> "The attenuator entity is not found")).vfuture
+              case Some(attenuator) => {
+
+                attenuator.config match {
+                  case None => Results.NotFound(Json.obj("error" -> "attenuator config is empty")).vfuture
+                  case Some(attenuatorConfig) => {
+
+                    (body match {
+                      case None => Results.NotFound(Json.obj("error" -> "body is empty")).vfuture
+                      case Some(bodySource) => bodySource.runFold(ByteString.empty)(_ ++ _).flatMap { bodyRaw =>
+                        val bodyJson = bodyRaw.utf8String.parseJson
+                        bodyJson.select("token").asOpt[String] match {
+                          case None => Results.NotFound(Json.obj("error" -> "Token not provided")).vfuture
+                          case Some(token) => {
+
+                            env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(attenuator.keypairRef)) match {
+                              case None => Results.NotFound(Json.obj("error" -> "No keypair found in attenuator entity")).vfuture
+                              case Some(keypairDb) => {
+
+                                processTokenAttenuation(token.some, None, attenuatorConfig.checks.toList.some, keypairDb.pubKey, true) match {
+                                  case Left(err) => Results.BadRequest(Json.obj("error" -> err)).vfuture
+                                  case Right(biscuitToken) => Results.Ok(Json.obj("token" -> biscuitToken.serialize_b64url())).vfuture
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    })
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     )
   )
@@ -966,14 +1020,6 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
     }
   }
 
-  def handleError(errorMessage: String, isAdminApiRoute: Boolean): Future[Result] = {
-    if (isAdminApiRoute) {
-      Results.BadRequest(Json.obj("error" -> errorMessage)).vfuture
-    } else {
-      Results.Ok(Json.obj("done" -> false, "error" -> errorMessage)).vfuture
-    }
-  }
-
   def attenuateTokenFromBody(body: Option[Source[ByteString, _]], isAdminApiRoute: Boolean): Future[Result] = {
     implicit val ev = env
     implicit val ec = env.otoroshiExecutionContext
@@ -1018,6 +1064,14 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
           Results.Ok(Json.obj("done" -> false, "error" -> e.getMessage))
         }
       }
+    }
+  }
+
+  def handleError(errorMessage: String, isAdminApiRoute: Boolean): Future[Result] = {
+    if (isAdminApiRoute) {
+      Results.BadRequest(Json.obj("error" -> errorMessage)).vfuture
+    } else {
+      Results.Ok(Json.obj("done" -> false, "error" -> errorMessage)).vfuture
     }
   }
 
