@@ -83,17 +83,23 @@ In the context of a Biscuit Verifier, the following data points are typically us
 
 ## Default Facts Table
 
-| Fact Name   | Definition | Example |
-|-------------|------------|---------|
-| `hostname`  | The hostname of the server processing the request. | `hostname("server-123.example.com")` |
-| `req_path`  | The path being requested. | `req_path("/documents")` |
-| `req_domain` | The domain name of the requested service. | `req_domain("api.example.com")` |
-| `req_method` | The HTTP method used in the request. | `req_method("post")` |
-| `route_id`  | The unique identifier of the route descriptor. | `route_id("route_518e34e7a-e2cb-4687-952c-37a3d98b8001")` |
-| `ip_address` | The IP address of the requester. | `ip_address("192.168.1.1")` |
-| `user_name` (if present) | The authenticated username of the requester. | `username("alice")` |
-| `user_email` (if present) | The authenticated email of the requester. | `email("alice@example.com")` |
-| `req_headers` | The HTTP headers sent with the request, including various key details like authorization tokens, user-agent, etc. | `req_headers("custom-header", "<value>")`<br />`req_headers("remote-address", "192.168.1.1:12345")`<br />`req_headers("authorization", "Bearer <token>")`<br />`req_headers("request-start-time", "<timestamp>")`<br />`req_headers("accept-encoding", "gzip, deflate")` |
+| Fact Name        | Definition | Example |
+|------------------|------------|---------|
+| `hostname`       | The hostname of the server processing the request. | `hostname("server-123.example.com")` |
+| `req_path`       | The path being requested. | `req_path("/documents")` |
+| `req_domain`     | The domain name of the requested service. | `req_domain("api.example.com")` |
+| `req_method`     | The HTTP method used in the request. | `req_method("post")` |
+| `route_id`       | The unique identifier of the route descriptor. | `route_id("route_518e34e7a-e2cb-4687-952c-37a3d98b8001")` |
+| `ip_address`     | The IP address of the requester. | `ip_address("192.168.1.1")` |
+| `user_name` (if present) | The authenticated username of the requester. | `user_name("alice")` |
+| `user_email` (if present) | The authenticated email of the requester. | `user_email("alice@example.com")` |
+| `user_tag` (if present) | The user's associated tag for additional categorization. | `user_tag("premium_user")` |
+| `user_metadata` (if present) | Additional metadata associated with the user. | `user_metadata({"role": "admin", "department": "HR"})` |
+| `apikey_client_id` (if present) | The unique identifier of the API key's client. | `apikey_client_id("client_1234")` |
+| `apikey_client_name` (if present) | The name of the client associated with the API key. | `apikey_client_name("ClientOne")` |
+| `apikey_tag` (if present) | A tag associated with the API key for categorization. | `apikey_tag("v1_api_key")` |
+| `apikey_metadata` (if present) | Additional metadata associated with the API key. | `apikey_metadata({"scope": "read", "region": "US"})` |
+| `req_headers`    | The HTTP headers sent with the request, including various key details like authorization tokens, user-agent, etc. | `req_headers("custom-header", "<value>")`<br />`req_headers("remote-address", "192.168.1.1:56246")`<br />`req_headers("authorization", "Bearer <token>")`<br />`req_headers("request-start-time", "<timestamp>")`<br />`req_headers("accept-encoding", "gzip, deflate")` |
 
 ## Explanation of Key Facts for Biscuit Verifier
 
@@ -120,6 +126,24 @@ In the context of a Biscuit Verifier, the following data points are typically us
 
 ### `user_email` (if present)
 - **Explanation**: If the user’s email is present, it can help identify the user uniquely and enable further context about their authentication and permissions.
+
+### `user_tag` (if present)
+- **Explanation**: The user's associated tag provides additional categorization of the user, which may be used for access control or other policies.
+
+### `user_metadata` (if present)
+- **Explanation**: Additional metadata tied to the user, offering further context such as roles, groups, or other important attributes.
+
+### `apikey_client_id` (if present)
+- **Explanation**: The client ID associated with the API key. It is important for verifying the specific client making the request.
+
+### `apikey_client_name` (if present)
+- **Explanation**: The name of the client associated with the API key, often used for easier identification and access control.
+
+### `apikey_tag` (if present)
+- **Explanation**: A tag tied to the API key, which might be used to distinguish between different versions or categories of API keys.
+
+### `apikey_metadata` (if present)
+- **Explanation**: Metadata related to the API key, providing extra details such as the scope of access or permissions granted.
 
 ### `req_headers`
 - **Explanation**: This contains various HTTP headers that can hold important context about the request. Key headers used in Biscuit Verifiers include:
