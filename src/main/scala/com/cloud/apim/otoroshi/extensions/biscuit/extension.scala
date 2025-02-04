@@ -335,14 +335,15 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
         val tokenBody = bodyJson.select("token").asOpt[String]
         val attenuatorChecks = bodyJson.select("checks").asOpt[List[String]]
         val keypairRef = bodyJson.select("keypair_ref").asOpt[String]
+        val biscuitForgeRef = bodyJson.select("forge_ref").asOpt[String]
 
         if (keypairPubKey.isDefined && keypairPrivKey.isDefined) {
-          processTokenAttenuation(tokenBody, attenuatorChecks, keypairPubKey.get, isAdminApiRoute = false) match {
+          processTokenAttenuation(tokenBody, biscuitForgeRef, attenuatorChecks, keypairPubKey.get, isAdminApiRoute = false) match {
             case Left(err) => Results.Ok(Json.obj("done" -> false, "error" -> err)).vfuture
-            case Right(attenuatedToken) => Results.Ok( Json.obj(
+            case Right(attenuatedToken) => Results.Ok(Json.obj(
               "done" -> true,
               "token" -> attenuatedToken.serialize_b64url(),
-              "pubKey" ->  keypairPubKey.get
+              "pubKey" -> keypairPubKey.get
             )).vfuture
           }
         } else {
@@ -352,13 +353,13 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
               env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(keyPairRef)) match {
                 case None => handleError("no keypair found", isAdminApiRoute = false)
                 case Some(keypairDb) =>
-                  processTokenAttenuation(tokenBody, attenuatorChecks, keypairDb.pubKey, isAdminApiRoute = false) match {
+                  processTokenAttenuation(tokenBody, biscuitForgeRef, attenuatorChecks, keypairDb.pubKey, isAdminApiRoute = false) match {
                     case Left(err) => Results.Ok(Json.obj("done" -> false, "error" -> err)).vfuture
                     case Right(attenuatedToken) => Results.Ok(
                       Json.obj(
                         "done" -> true,
                         "token" -> attenuatedToken.serialize_b64url(),
-                        "pubKey" ->  keypairDb.pubKey
+                        "pubKey" -> keypairDb.pubKey
                       )
                     ).vfuture
                   }
@@ -368,7 +369,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       }
     }).recover {
       case e: Throwable => {
-          Results.Ok(Json.obj("done" -> false, "error" -> e.getMessage))
+        Results.Ok(Json.obj("done" -> false, "error" -> e.getMessage))
       }
     }
   }
@@ -428,6 +429,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |    const Table     = dependencies.Components.Inputs.Table;
              |    const Form      = dependencies.Components.Inputs.Form;
              |    const SelectInput = dependencies.Components.Inputs.SelectInput;
+             |    const CodeInput = dependencies.Components.Inputs.CodeInput;
              |    const BackOfficeServices = dependencies.BackOfficeServices;
              |
              |    ${biscuitKeyPairPage}
@@ -835,7 +837,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       (ctx, request, apk, body) => {
         attenuateTokenFromBody(body, isAdminApiRoute = true)
       }
-    ),
+    )
   )
 
   def generateTokenFromBody(body: Option[Source[ByteString, _]], isAdminApiRoute: Boolean): Future[Result] = {
@@ -972,41 +974,6 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
     }
   }
 
-  def processTokenAttenuation(tokenBody: Option[String], attenuatorChecks: Option[List[String]], pubKey: String, isAdminApiRoute: Boolean)(implicit env: Env): Either[String, Biscuit] = {
-    tokenBody match {
-      case None =>
-        Left("no token provided")
-
-      case Some(token) =>
-        val tokenParsed = BiscuitUtils.replaceHeader(token)
-        val publicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, pubKey)
-
-        Try(Biscuit.from_b64url(tokenParsed, publicKey)).toEither match {
-          case Left(err: org.biscuitsec.biscuit.error.Error) =>
-            Left(BiscuitUtils.handleBiscuitErrors(err))
-
-          case Left(err) =>
-            Left(s"Unable to deserialize Biscuit token : ${err.getMessage}")
-
-          case Right(biscuitToken) =>
-            attenuatorChecks match {
-              case None =>
-                Left("no checks config provided")
-
-              case Some(biscuitChecksConfig) =>
-                BiscuitUtils.attenuateToken(biscuitToken, biscuitChecksConfig) match {
-                  case Left(_) =>
-                    Left("no checks config provided")
-
-                  case Right(attenuatedToken) =>
-                    Right(attenuatedToken)
-                }
-            }
-        }
-    }
-  }
-
-
   def attenuateTokenFromBody(body: Option[Source[ByteString, _]], isAdminApiRoute: Boolean): Future[Result] = {
     implicit val ev = env
     implicit val ec = env.otoroshiExecutionContext
@@ -1024,7 +991,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
         val keypairRef = bodyJson.select("keypair_ref").asOpt[String]
 
         if (keypairPubKey.isDefined && keypairPrivKey.isDefined) {
-          processTokenAttenuation(tokenBody, attenuatorChecks, keypairPubKey.get, isAdminApiRoute) match {
+          processTokenAttenuation(tokenBody, None, attenuatorChecks, keypairPubKey.get, isAdminApiRoute) match {
             case Left(err) => Results.Ok(Json.obj("error" -> err)).vfuture
             case Right(attenuatedToken) => Results.Ok(Json.obj("token" -> attenuatedToken.serialize_b64url())).vfuture
           }
@@ -1035,7 +1002,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
               env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(keyPairRef)) match {
                 case None => handleError("no keypair found", isAdminApiRoute)
                 case Some(keypairDb) =>
-                  processTokenAttenuation(tokenBody, attenuatorChecks, keypairDb.pubKey, isAdminApiRoute) match {
+                  processTokenAttenuation(tokenBody, None, attenuatorChecks, keypairDb.pubKey, isAdminApiRoute) match {
                     case Left(err) => Results.Ok(Json.obj("error" -> err)).vfuture
                     case Right(attenuatedToken) => Results.Ok(Json.obj("token" -> attenuatedToken.serialize_b64url())).vfuture
                   }
@@ -1049,6 +1016,76 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
           Results.InternalServerError(Json.obj("error" -> e.getMessage))
         } else {
           Results.Ok(Json.obj("done" -> false, "error" -> e.getMessage))
+        }
+      }
+    }
+  }
+
+  def processTokenAttenuation(tokenBody: Option[String], forgeRef: Option[String], attenuatorChecks: Option[List[String]], pubKey: String, isAdminApiRoute: Boolean)(implicit env: Env): Either[String, Biscuit] = {
+    extractTokenFromBodyOrForge(tokenBody, forgeRef, pubKey.some) match {
+      case Left(extractionError) => Left(extractionError)
+      case Right(biscuitToken) =>
+        attenuatorChecks match {
+          case None =>
+            Left("no checks config provided")
+
+          case Some(biscuitChecksConfig) =>
+            BiscuitUtils.attenuateToken(biscuitToken, biscuitChecksConfig) match {
+              case Left(_) =>
+                Left("no checks config provided")
+
+              case Right(attenuatedToken) =>
+                Right(attenuatedToken)
+            }
+        }
+    }
+  }
+
+  def extractTokenFromBodyOrForge(tokenBody: Option[String], forgeRef: Option[String], pubKey: Option[String])(implicit env: Env): Either[String, Biscuit] = {
+    forgeRef match {
+      case Some(forgeId) => {
+        env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitTokenForge(forgeId)) match {
+          case None => Left("forge entity doesn't exist")
+          case Some(forge) => {
+
+            env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(forge.keypairRef)) match {
+              case None => Left("forge keypair is not provided")
+              case Some(keypair) => {
+
+                BiscuitUtils.createToken(keypair.privKey, forge.config) match {
+                  case Left(err) => Left(err)
+                  case Right(biscuitToken) => {
+                    env.logger.info(s"building new token from extractTokenFromBodyOrForge = ${biscuitToken}")
+                    Right(biscuitToken)
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      case None => {
+        tokenBody match {
+          case None =>
+            Left("no token provided")
+          case Some(token) =>
+            val tokenParsed = BiscuitUtils.replaceHeader(token)
+
+            pubKey match {
+              case None => Left("Public key not provided")
+              case Some(publicKeyString) => {
+                val publicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, publicKeyString)
+                Try(Biscuit.from_b64url(tokenParsed, publicKey)).toEither match {
+                  case Left(err: org.biscuitsec.biscuit.error.Error) =>
+                    Left(BiscuitUtils.handleBiscuitErrors(err))
+
+                  case Left(err) =>
+                    Left(s"Unable to deserialize Biscuit token : ${err.getMessage}")
+
+                  case Right(biscuitToken) => Right(biscuitToken)
+                }
+              }
+            }
         }
       }
     }
