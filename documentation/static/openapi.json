@@ -3,7 +3,7 @@
 	"info": {
 		"title": "Otoroshi Biscuit Studio API",
 		"description": "API for managing Biscuit Attenuators, KeyPairs, and Verifiers within the Otoroshi ecosystem.",
-		"version": "1.0.0"
+		"version": "0.0.5"
 	},
 	"servers": [
 		{
@@ -1098,6 +1098,138 @@
 											"type": "string",
 											"example": "error message"
 										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			}
+		},
+		"/api/extensions/biscuit/biscuit-attenuators/:id/_attenuate": {
+			"post": {
+				"tags": ["biscuit-admin-api"],
+				"summary": "Attenuate a biscuit token from an attenuator entity",
+				"description": "Attenuate a biscuit token from an attenuator entity",
+				"operationId": "attenuateTokenFromAttenuatorEntity",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "string" },
+						"description": "ID of the attenuator entity."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Attenuated token created.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"token": { "type": "string" }
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Unable to create the Token",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"error": { "type": "string" }
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			}
+		},
+		"/api/extensions/biscuit/tokens/_attenuate": {
+			"post": {
+				"tags": ["biscuit-admin-api"],
+				"summary": "Attenuate a Biscuit Token",
+				"description": "Attenuate a Biscuit token from provided public and private keys or a keypair reference.",
+				"operationId": "attenuateToken",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"oneOf": [
+									{
+										"type": "object",
+										"properties": {
+											"keypair_ref": {
+												"type": "string",
+												"description": "Unique identifier for the keypair."
+											},
+											"token": {
+												"type": "string",
+												"description": "Token to be attenuated"
+											},
+											"checks": {
+												"type": "array",
+												"items": {
+													"type": "string"
+												}
+											}
+										},
+										"required": ["keypair_ref", "token", "checks"]
+									},
+									{
+										"type": "object",
+										"properties": {
+											"keypair_ref": {
+												"type": "string",
+												"description": "Reference identifier for an existing Biscuit keypair."
+											}
+										},
+										"required": ["keypair_ref"]
+									}
+								]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Token successfully created.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"token": { "type": "string" }
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Unable to create the Token",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"error": { "type": "string" }
 									}
 								}
 							}
