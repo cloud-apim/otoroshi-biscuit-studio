@@ -11,7 +11,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"@babel/plugin-transform-async-to-generator": "^7.25.9",
-		"@biscuit-auth/web-components": "^0.5.0"
+		"@biscuit-auth/web-components": "0.6.1"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.26.0",
