@@ -5,6 +5,7 @@ import akka.util.ByteString
 import biscuit.format.schema.Schema.PublicKey.Algorithm
 import com.cloud.apim.otoroshi.extensions.biscuit.entities._
 import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitForgeConfig, BiscuitRemoteUtils, BiscuitUtils}
+
 import org.biscuitsec.biscuit.crypto.{KeyPair, PublicKey}
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.env.Env
@@ -97,10 +98,13 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
   lazy val biscuitTokenForgePage = getResourceCode("cloudapim/extensions/biscuit/BiscuitTokenForgePage.js")
   lazy val biscuitRbacPoliciesPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitRbacPoliciesPage.js")
   lazy val biscuitRemoteFactsLoaderPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitRemoteFactsLoaderPage.js")
+  lazy val biscuitGraphicalTokensInspector = getResourceCode("cloudapim/extensions/biscuit/GraphicalTokensInspector.js")
+  lazy val biscuitGraphicalTokensSnapshot = getResourceCode("cloudapim/extensions/biscuit/GraphicalTokensSnapshot.js")
+  lazy val biscuitGraphicalDatalogPlayground = getResourceCode("cloudapim/extensions/biscuit/GraphicalDatalogPlayground.js")
   lazy val biscuitWebComponents = getResourceCode("cloudapim/extensions/biscuit/webcomponents/index.js")
     .replace("/assets/tree-sitter.wasm", "/extensions/assets/cloud-apim/extensions/biscuit/assets/tree-sitter.wasm")
     .replace("/assets/tree-sitter-biscuit.wasm", "/extensions/assets/cloud-apim/extensions/biscuit/assets/tree-sitter-biscuit.wasm")
-    .replace("assets/biscuit_bg-f81a6772.wasm", "/extensions/assets/cloud-apim/extensions/biscuit/assets/biscuit.wasm")
+    .replace("assets/biscuit_bg-0db375d4.wasm", "/extensions/assets/cloud-apim/extensions/biscuit/assets/biscuit.wasm")
   lazy val treeSitterComponent = getResourceBytes("cloudapim/extensions/biscuit/webcomponents/assets/tree-sitter.wasm")
   lazy val treeSitterBiscuitComponent = getResourceBytes("cloudapim/extensions/biscuit/webcomponents/assets/tree-sitter-biscuit.wasm")
   lazy val biscuitWasmComponents = getResourceBytes("cloudapim/extensions/biscuit/webcomponents/assets/biscuit.wasm")
@@ -330,6 +334,9 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |    ${biscuitTokenForgePage}
              |    ${biscuitRbacPoliciesPage}
              |    ${biscuitRemoteFactsLoaderPage}
+             |    ${biscuitGraphicalTokensInspector}
+             |    ${biscuitGraphicalTokensSnapshot}
+             |    ${biscuitGraphicalDatalogPlayground}
              |
              |    const s = document.createElement("script")
              |    s.setAttribute("type", "module")
@@ -385,6 +392,27 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          display: () => true,
              |          icon: () => 'fa-tower-broadcast'
              |        },
+             |         {
+             |           title: 'Biscuit Tokens Inspector',
+             |          text: 'All your Biscuit Remote Facts Loader',
+             |          link: '/extensions/cloud-apim/biscuit/tokens/inspector',
+             |          display: () => true,
+             |          icon: () => 'tower-broadcast'
+             |        },
+             |         {
+             |           title: 'Biscuit Tokens Snapshot',
+             |          text: 'All your Biscuit Remote Facts Loader',
+             |          link: '/extensions/cloud-apim/biscuit/tokens/snapshot',
+             |          display: () => true,
+             |          icon: () => 'tower-broadcast'
+             |        },
+             |        {
+             |           title: 'Biscuit Datalog Playground',
+             |          text: 'All your Biscuit Remote Facts Loader',
+             |          link: '/extensions/cloud-apim/biscuit/tokens/datalog-playground',
+             |          display: () => true,
+             |          icon: () => 'tower-broadcast'
+             |        },
              |        ]
              |      }],
              |      features: [
@@ -430,6 +458,27 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          display: () => true,
              |          icon: () => 'fa-tower-broadcast'
              |        },
+             |           {
+             |           title: 'Biscuit Tokens Inspector',
+             |          description: 'All your Biscuit Remote Facts Loader',
+             |          link: '/extensions/cloud-apim/biscuit/tokens/inspector',
+             |          display: () => true,
+             |          icon: () => 'tower-broadcast'
+             |        },
+             |         {
+             |           title: 'Biscuit Tokens Snapshot',
+             |          description: 'All your Biscuit Remote Facts Loader',
+             |          link: '/extensions/cloud-apim/biscuit/tokens/snapshot',
+             |          display: () => true,
+             |          icon: () => 'tower-broadcast'
+             |        },
+             |        {
+             |           title: 'Biscuit Datalog Playground',
+             |          description: 'All your Biscuit Remote Facts Loader',
+             |          link: '/extensions/cloud-apim/biscuit/tokens/datalog-playground',
+             |            display: () => true,
+             |          icon: () => 'fa-tower-broadcast'
+             |        },
              |      ],
              |      sidebarItems: [
              |        {
@@ -466,6 +515,27 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          title: 'Biscuit Remote Facts Loader',
              |          text: 'All your Biscuit Remote Facts Loader',
              |          link: '/extensions/cloud-apim/biscuit/remote-facts',
+             |          display: () => true,
+             |          icon: () => 'tower-broadcast'
+             |        },
+             |        {
+             |          title: 'Biscuit Tokens Inspector',
+             |          text: 'All your Biscuit Remote Facts Loader',
+             |          link: '/extensions/cloud-apim/biscuit/tokens/inspector',
+             |          display: () => true,
+             |          icon: () => 'tower-broadcast'
+             |        },
+             |         {
+             |           title: 'Biscuit Tokens Snapshot',
+             |          text: 'All your Biscuit Remote Facts Loader',
+             |          link: '/extensions/cloud-apim/biscuit/tokens/snapshot',
+             |          display: () => true,
+             |          icon: () => 'tower-broadcast'
+             |        },
+             |         {
+             |           title: 'Biscuit Datalog Playground',
+             |          text: 'All your Biscuit Remote Facts Loader',
+             |          link: '/extensions/cloud-apim/biscuit/tokens/datalog-playground',
              |          display: () => true,
              |          icon: () => 'tower-broadcast'
              |        },
@@ -628,6 +698,24 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          component: (props) => {
              |            return React.createElement(BiscuitRemoteFactsLoaderPage, props, null)
              |          }
+             |        },
+             |        {
+             |          path: '/extensions/cloud-apim/biscuit/tokens/inspector',
+             |          component: (props) => {
+             |            return React.createElement(GraphicalTokensInspector, props, null)
+             |          }
+             |        },
+             |        {
+             |          path: '/extensions/cloud-apim/biscuit/tokens/snapshot',
+             |          component: (props) => {
+             |            return React.createElement(GraphicalTokensSnapshot, props, null)
+             |          }
+             |        },
+             |        {
+             |          path: '/extensions/cloud-apim/biscuit/tokens/datalog-playground',
+             |          component: (props) => {
+             |            return React.createElement(GraphicalDatalogPlayground, props, null)
+             |          }
              |        }
              |      ]
              |    }
@@ -671,7 +759,6 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       AdminExtensionEntity(RemoteFactsLoader.resource(env, datastores, states)),
     )
   }
-
   override def adminApiRoutes(): Seq[AdminExtensionAdminApiRoute] = Seq(
     // Generate a token from a body
     AdminExtensionAdminApiRoute(
