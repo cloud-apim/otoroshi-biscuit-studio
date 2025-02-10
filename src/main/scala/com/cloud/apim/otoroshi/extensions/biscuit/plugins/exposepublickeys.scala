@@ -23,14 +23,14 @@ object BiscuitExposePubKeysPluginConfig {
     override def writes(o: BiscuitExposePubKeysPluginConfig): JsValue = Json.obj("authorized_pk_list" -> o.authorizedPublicKeys)
 
     override def reads(json: JsValue): JsResult[BiscuitExposePubKeysPluginConfig] = Try {
-      BiscuitExposePubKeysPluginConfig(authorizedPublicKeys = json.select("authorized_pk_list").asOpt[List[String]].getOrElse(List.empty),)
+      BiscuitExposePubKeysPluginConfig(authorizedPublicKeys = json.select("authorized_pk_list").asOpt[List[String]].getOrElse(List.empty))
     } match {
       case Failure(exception) => JsError(exception.getMessage)
       case Success(value) => JsSuccess(value)
     }
   }
 
-  def configSchema(name: String): Option[JsObject] = Some(Json.obj("authorized_pk_list" -> Json.obj("type" -> "select", "label" -> s"Exposed Keys", "array" -> true, "props" -> Json.obj("isClearable" -> false, "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs", "optionsTransformer" -> Json.obj("label" -> "name", "value" -> "id",),),)))
+  def configSchema(name: String): Option[JsObject] = Some(Json.obj("authorized_pk_list" -> Json.obj("type" -> "select", "label" -> s"Exposed Keys", "array" -> true, "props" -> Json.obj("isClearable" -> false, "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs", "optionsTransformer" -> Json.obj("label" -> "name", "value" -> "id")))))
 }
 
 class ExposeBiscuitPublicKeysPlugin extends NgBackendCall {
