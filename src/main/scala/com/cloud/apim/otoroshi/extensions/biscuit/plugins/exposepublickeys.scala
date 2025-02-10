@@ -30,7 +30,7 @@ object BiscuitExposePubKeysPluginConfig {
     }
   }
 
-  def configSchema(name: String): Option[JsObject] = Some(Json.obj("authorized_pk_list" -> Json.obj("type" -> "select", "label" -> s"Exposed Keys", "array" -> true, "props" -> Json.obj("isClearable" -> true, "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs", "optionsTransformer" -> Json.obj("label" -> "name", "value" -> "id",),),)))
+  def configSchema(name: String): Option[JsObject] = Some(Json.obj("authorized_pk_list" -> Json.obj("type" -> "select", "label" -> s"Exposed Keys", "array" -> true, "props" -> Json.obj("isClearable" -> false, "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs", "optionsTransformer" -> Json.obj("label" -> "name", "value" -> "id",),),)))
 }
 
 class ExposeBiscuitPublicKeysPlugin extends NgBackendCall {

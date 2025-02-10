@@ -37,98 +37,97 @@ class BiscuitTokenForge extends Component {
 				transformer: (item) => ({ label: item.name, value: item.id }),
 			},
 		},
-    'config.enableTtl': {
-      type: 'bool',
-      props: { label: 'Enable TTL' },
-    },
-	  'config.ttl': { type: 'number', props: { label: 'TTL', suffix: 'millis.' } },
-    "config.facts": {
-			type: 'array',
-      props: {
-        component: 
-        (props) =>
-				React.createElement(
-					React.Suspense,
-					{ fallback: "Loading..." },
-					React.createElement(LazyCodeInput, {
-						label: "",
-            height: "50px",
-						mode: "prolog",
-						value: props.itemValue,
-						onChange: (e) => {
-							const arr = props.value;
-							arr[props.idx] = e;
-							props.onChange(arr);
-						},
-					})
-				)
-      }
+		"config.enableTtl": {
+			type: "bool",
+			props: { label: "Enable TTL" },
 		},
-    "config.checks": {
-			type: 'array',
-      props: {
-        component: 
-        (props) =>
-				React.createElement(
-					React.Suspense,
-					{ fallback: "Loading..." },
-					React.createElement(LazyCodeInput, {
-						label: "",
-            height: "50px",
-						mode: "prolog",
-						value: props.itemValue,
-						onChange: (e) => {
-							const arr = props.value;
-							arr[props.idx] = e;
-							props.onChange(arr);
-						},
-					})
-				)
-      }
+		"config.ttl": {
+			type: "number",
+			props: { label: "TTL", suffix: "millis." },
 		},
-    "config.resources": {
-			type: 'array',
-      props: {
-        component: 
-        (props) =>
-				React.createElement(
-					React.Suspense,
-					{ fallback: "Loading..." },
-					React.createElement(LazyCodeInput, {
-						label: "",
-            height: "50px",
-						mode: "prolog",
-						value: props.itemValue,
-						onChange: (e) => {
-							const arr = props.value;
-							arr[props.idx] = e;
-							props.onChange(arr);
-						},
-					})
-				)
-      }
+		"config.facts": {
+			type: "array",
+			props: {
+				component: (props) =>
+					React.createElement(
+						React.Suspense,
+						{ fallback: "Loading..." },
+						React.createElement(LazyCodeInput, {
+							label: "",
+							height: "50px",
+							mode: "prolog",
+							value: props.itemValue,
+							onChange: (e) => {
+								const arr = props.value;
+								arr[props.idx] = e;
+								props.onChange(arr);
+							},
+						})
+					),
+			},
 		},
-    "config.rules": {
-			type: 'array',
-      props: {
-        component: 
-        (props) =>
-				React.createElement(
-					React.Suspense,
-					{ fallback: "Loading..." },
-					React.createElement(LazyCodeInput, {
-						label: "",
-            height: "150px",
-						mode: "prolog",
-						value: props.itemValue,
-						onChange: (e) => {
-							const arr = props.value;
-							arr[props.idx] = e;
-							props.onChange(arr);
-						},
-					})
-				)
-      }
+		"config.checks": {
+			type: "array",
+			props: {
+				component: (props) =>
+					React.createElement(
+						React.Suspense,
+						{ fallback: "Loading..." },
+						React.createElement(LazyCodeInput, {
+							label: "",
+							height: "50px",
+							mode: "prolog",
+							value: props.itemValue,
+							onChange: (e) => {
+								const arr = props.value;
+								arr[props.idx] = e;
+								props.onChange(arr);
+							},
+						})
+					),
+			},
+		},
+		"config.resources": {
+			type: "array",
+			props: {
+				component: (props) =>
+					React.createElement(
+						React.Suspense,
+						{ fallback: "Loading..." },
+						React.createElement(LazyCodeInput, {
+							label: "",
+							height: "50px",
+							mode: "prolog",
+							value: props.itemValue,
+							onChange: (e) => {
+								const arr = props.value;
+								arr[props.idx] = e;
+								props.onChange(arr);
+							},
+						})
+					),
+			},
+		},
+		"config.rules": {
+			type: "array",
+			props: {
+				component: (props) =>
+					React.createElement(
+						React.Suspense,
+						{ fallback: "Loading..." },
+						React.createElement(LazyCodeInput, {
+							label: "",
+							height: "150px",
+							mode: "prolog",
+							value: props.itemValue,
+							onChange: (e) => {
+								const arr = props.value;
+								arr[props.idx] = e;
+								props.onChange(arr);
+							},
+						})
+					),
+			},
 		},
 		remoteFactsLoaderRef: {
 			type: "select",
@@ -173,7 +172,7 @@ class BiscuitTokenForge extends Component {
 		"metadata",
 		"<<<KeyPair",
 		"keypair_ref",
-    "<<<TTL (time to live)",
+		"<<<TTL (time to live)",
 		"config.enableTtl",
 		"config.ttl",
 		">>>Facts",
