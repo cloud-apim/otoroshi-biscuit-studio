@@ -28,6 +28,10 @@ class BiscuitKeyPairPage extends Component {
 			type: "array",
 			props: { label: "Tags" },
 		},
+    is_public: {
+			type: "bool",
+			props: { label: "Expose public key" },
+		},
 		keypair_generator: {
 			type: KeyPairGenerator,
 		},
@@ -72,6 +76,8 @@ class BiscuitKeyPairPage extends Component {
     ">>>Metadata and tags",
 		"tags",
 		"metadata",
+    "<<<Public Key exposition",
+    "is_public",
 		"<<<KeyPair parameters",
 		"keypair_generator",
 		// "<<< Biscuit playground",

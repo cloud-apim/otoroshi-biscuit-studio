@@ -5,8 +5,6 @@ import akka.util.ByteString
 import biscuit.format.schema.Schema.PublicKey.Algorithm
 import com.cloud.apim.otoroshi.extensions.biscuit.entities._
 import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitForgeConfig, BiscuitRemoteUtils, BiscuitUtils}
-import com.nimbusds.jose.jwk.Curve
-import com.nimbusds.jose.jwk.gen.OctetKeyPairGenerator
 import org.biscuitsec.biscuit.crypto.{KeyPair, PublicKey}
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.env.Env
@@ -44,6 +42,11 @@ class BiscuitExtensionState(env: Env) {
   def keypair(id: String): Option[BiscuitKeyPair] = _keypairs.get(id)
 
   def allKeypairs(): Seq[BiscuitKeyPair] = _keypairs.values.toSeq
+  def allPublicKeyPairs(authorizedKeys: Seq[String]): Seq[BiscuitKeyPair] = {
+    if(authorizedKeys.nonEmpty)
+    _keypairs.values.toSeq.filter(kp => authorizedKeys.contains(kp.id))
+    else _keypairs.values.toSeq.filter(kp => kp.isPublic)
+  }
 
   def updateKeyPairs(values: Seq[BiscuitKeyPair]): Unit = {
     _keypairs.addAll(values.map(v => (v.id, v))).remAll(_keypairs.keySet.toSeq.diff(values.map(_.id)))
@@ -267,18 +270,6 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       }
     }
   }
-
-  override def publicKeys(): Future[Seq[PublicKeyJwk]] = {
-    env.adminExtensions.extension[BiscuitExtension].get.states.allKeypairs().map{
-      keypair => {
-        val jwk = new OctetKeyPairGenerator(Curve.Ed25519).keyID(keypair.id).generate()
-        val publicJWK = jwk.toPublicJWK.toJSONString.parseJson
-
-        PublicKeyJwk(publicJWK)
-      }
-    }.vfuture
-  }
-
   override def assets(): Seq[AdminExtensionAssetRoute] = Seq(
     AdminExtensionAssetRoute(
       path = "/extensions/assets/cloud-apim/extensions/biscuit/keypairs/generate",
