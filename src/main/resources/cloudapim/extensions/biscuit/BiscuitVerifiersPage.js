@@ -38,115 +38,110 @@ class BiscuitVerifiersPage extends Component {
 				transformer: (item) => ({ label: item.name, value: item.id }),
 			},
 		},
-    "config.facts": {
-			type: 'array',
-      props: {
-        component: 
-        (props) =>
-				React.createElement(
-					React.Suspense,
-					{ fallback: "Loading..." },
-					React.createElement(LazyCodeInput, {
-						label: "",
-            height: "50px",
-						mode: "prolog",
-						value: props.itemValue,
-						onChange: (e) => {
-							const arr = props.value;
-							arr[props.idx] = e;
-							props.onChange(arr);
-						},
-					})
-				)
-      }
+		"config.facts": {
+			type: "array",
+			props: {
+				component: (props) =>
+					React.createElement(
+						React.Suspense,
+						{ fallback: "Loading..." },
+						React.createElement(LazyCodeInput, {
+							label: "",
+							height: "50px",
+							mode: "prolog",
+							value: props.itemValue,
+							onChange: (e) => {
+								const arr = props.value;
+								arr[props.idx] = e;
+								props.onChange(arr);
+							},
+						})
+					),
+			},
 		},
-    "config.checks": {
-			type: 'array',
-      props: {
-        component: 
-        (props) =>
-				React.createElement(
-					React.Suspense,
-					{ fallback: "Loading..." },
-					React.createElement(LazyCodeInput, {
-						label: "",
-            height: "50px",
-						mode: "prolog",
-						value: props.itemValue,
-						onChange: (e) => {
-							const arr = props.value;
-							arr[props.idx] = e;
-							props.onChange(arr);
-						},
-					})
-				)
-      }
+		"config.checks": {
+			type: "array",
+			props: {
+				component: (props) =>
+					React.createElement(
+						React.Suspense,
+						{ fallback: "Loading..." },
+						React.createElement(LazyCodeInput, {
+							label: "",
+							height: "50px",
+							mode: "prolog",
+							value: props.itemValue,
+							onChange: (e) => {
+								const arr = props.value;
+								arr[props.idx] = e;
+								props.onChange(arr);
+							},
+						})
+					),
+			},
 		},
-    "config.resources": {
-			type: 'array',
-      props: {
-        component: 
-        (props) =>
-				React.createElement(
-					React.Suspense,
-					{ fallback: "Loading..." },
-					React.createElement(LazyCodeInput, {
-						label: "",
-            height: "50px",
-						mode: "prolog",
-						value: props.itemValue,
-						onChange: (e) => {
-							const arr = props.value;
-							arr[props.idx] = e;
-							props.onChange(arr);
-						},
-					})
-				)
-      }
+		"config.resources": {
+			type: "array",
+			props: {
+				component: (props) =>
+					React.createElement(
+						React.Suspense,
+						{ fallback: "Loading..." },
+						React.createElement(LazyCodeInput, {
+							label: "",
+							height: "50px",
+							mode: "prolog",
+							value: props.itemValue,
+							onChange: (e) => {
+								const arr = props.value;
+								arr[props.idx] = e;
+								props.onChange(arr);
+							},
+						})
+					),
+			},
 		},
-    "config.rules": {
-			type: 'array',
-      props: {
-        component: 
-        (props) =>
-				React.createElement(
-					React.Suspense,
-					{ fallback: "Loading..." },
-					React.createElement(LazyCodeInput, {
-						label: "",
-            height: "150px",
-						mode: "prolog",
-						value: props.itemValue,
-						onChange: (e) => {
-							const arr = props.value;
-							arr[props.idx] = e;
-							props.onChange(arr);
-						},
-					})
-				)
-      }
+		"config.rules": {
+			type: "array",
+			props: {
+				component: (props) =>
+					React.createElement(
+						React.Suspense,
+						{ fallback: "Loading..." },
+						React.createElement(LazyCodeInput, {
+							label: "",
+							height: "150px",
+							mode: "prolog",
+							value: props.itemValue,
+							onChange: (e) => {
+								const arr = props.value;
+								arr[props.idx] = e;
+								props.onChange(arr);
+							},
+						})
+					),
+			},
 		},
-    "config.policies": {
-			type: 'array',
-      props: {
-        component: 
-        (props) =>
-				React.createElement(
-					React.Suspense,
-					{ fallback: "Loading..." },
-					React.createElement(LazyCodeInput, {
-						label: "",
-            height: "50px",
-						mode: "prolog",
-						value: props.itemValue,
-						onChange: (e) => {
-							const arr = props.value;
-							arr[props.idx] = e;
-							props.onChange(arr);
-						},
-					})
-				)
-      }
+		"config.policies": {
+			type: "array",
+			props: {
+				component: (props) =>
+					React.createElement(
+						React.Suspense,
+						{ fallback: "Loading..." },
+						React.createElement(LazyCodeInput, {
+							label: "",
+							height: "50px",
+							mode: "prolog",
+							value: props.itemValue,
+							onChange: (e) => {
+								const arr = props.value;
+								arr[props.idx] = e;
+								props.onChange(arr);
+							},
+						})
+					),
+			},
 		},
 		"config.revokedIds": {
 			type: "array",

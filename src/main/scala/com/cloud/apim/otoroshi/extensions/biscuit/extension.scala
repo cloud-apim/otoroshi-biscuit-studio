@@ -42,6 +42,11 @@ class BiscuitExtensionState(env: Env) {
   def keypair(id: String): Option[BiscuitKeyPair] = _keypairs.get(id)
 
   def allKeypairs(): Seq[BiscuitKeyPair] = _keypairs.values.toSeq
+  def allPublicKeyPairs(authorizedKeys: Seq[String]): Seq[BiscuitKeyPair] = {
+    if(authorizedKeys.nonEmpty)
+    _keypairs.values.toSeq.filter(kp => authorizedKeys.contains(kp.id))
+    else _keypairs.values.toSeq.filter(kp => kp.isPublic)
+  }
 
   def updateKeyPairs(values: Seq[BiscuitKeyPair]): Unit = {
     _keypairs.addAll(values.map(v => (v.id, v))).remAll(_keypairs.keySet.toSeq.diff(values.map(_.id)))
@@ -265,7 +270,6 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       }
     }
   }
-
   override def assets(): Seq[AdminExtensionAssetRoute] = Seq(
     AdminExtensionAssetRoute(
       path = "/extensions/assets/cloud-apim/extensions/biscuit/keypairs/generate",

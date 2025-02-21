@@ -38,26 +38,25 @@ class BiscuitAttenuatorPage extends Component {
 			},
 		},
 		"config.checks": {
-			type: 'array',
-      props: {
-        component: 
-        (props) =>
-				React.createElement(
-					React.Suspense,
-					{ fallback: "Loading..." },
-					React.createElement(LazyCodeInput, {
-						label: "",
-            height: "50px",
-						mode: "prolog",
-						value: props.itemValue,
-						onChange: (e) => {
-							const arr = props.value;
-							arr[props.idx] = e;
-							props.onChange(arr);
-						},
-					})
-				)
-      }
+			type: "array",
+			props: {
+				component: (props) =>
+					React.createElement(
+						React.Suspense,
+						{ fallback: "Loading..." },
+						React.createElement(LazyCodeInput, {
+							label: "",
+							height: "50px",
+							mode: "prolog",
+							value: props.itemValue,
+							onChange: (e) => {
+								const arr = props.value;
+								arr[props.idx] = e;
+								props.onChange(arr);
+							},
+						})
+					),
+			},
 		},
 		tester: {
 			type: BiscuitAttenuatorTester,

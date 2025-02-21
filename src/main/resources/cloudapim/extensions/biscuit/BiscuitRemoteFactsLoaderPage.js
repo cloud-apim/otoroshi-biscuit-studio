@@ -39,20 +39,17 @@ class BiscuitRemoteFactsLoaderPage extends Component {
 			type: "select",
 			props: {
 				label: "HTTP method",
-				possibleValues: [
-					'GET',
-					'POST',
-					'PUT',
-					'DELETE',
-					'PATCH',
-				].map(v => ({ label: v, value: v }))
+				possibleValues: ["GET", "POST", "PUT", "DELETE", "PATCH"].map((v) => ({
+					label: v,
+					value: v,
+				})),
 			},
 		},
 		"config.timeout": {
 			type: "number",
 			props: {
 				label: "HTTP timeout",
-				suffix: 'milliseconds',
+				suffix: "milliseconds",
 			},
 		},
 		"config.headers": {
