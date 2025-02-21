@@ -181,13 +181,17 @@ class TestBiscuitExpositionKpPlugin extends BiscuitStudioOneOtoroshiServerPerSui
     assertEquals(res0.json.select("items").asOpt[List[JsObject]].get.size, 2, "array should contains 2 values")
 
     // check the first key
-    assert(res0.json.at("items").asOpt[List[JsObject]].get.head.at("key_bytes").isDefined, "key_bytes should be defined")
-    assertEquals(res0.json.at("items").asOpt[List[JsObject]].get.head.at("key_bytes").get.asString, keypair3.pubKey, "public keypair key_bytes should be equals to pubkey")
+    val firstKey = res0.json.at("items").asOpt[List[JsObject]].get.find(kp => kp.at("key_id").isDefined && kp.at("key_id").asString.equals(keypair3.id))
+    val secondKey = res0.json.at("items").asOpt[List[JsObject]].get.find(kp => kp.at("key_id").isDefined && kp.at("key_id").asString.equals(keypair5.id))
+
+    assert(firstKey.isDefined, "first key should be defined")
+    assert(firstKey.get.at("key_bytes").isDefined, "first key - key_bytes should be defined")
+    assertEquals(firstKey.get.at("key_bytes").get.asString, keypair3.pubKey, "first key - public keypair key_bytes should be equals to pubkey")
 
     // check the second key
-    assert(res0.json.at("items").asOpt[List[JsObject]].get(1).some.nonEmpty, "key_bytes should be defined")
-    assert(res0.json.at("items").asOpt[List[JsObject]].get(1).at("key_bytes").isDefined, "key_bytes should be defined")
-    assertEquals(res0.json.at("items").asOpt[List[JsObject]].get(1).at("key_bytes").get.asString, keypair5.pubKey, "public keypair key_bytes should be equals to pubkey")
+    assert(secondKey.isDefined, "second key should be defined")
+    assert(secondKey.get.at("key_bytes").isDefined, "second key - key_bytes should be defined")
+    assertEquals(secondKey.get.at("key_bytes").get.asString, keypair5.pubKey, "second key - public keypair key_bytes should be equals to pubkey")
 
     await(5.seconds)
 
