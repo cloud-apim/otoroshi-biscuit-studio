@@ -1,0 +1,79 @@
+---
+sidebar_position: 4
+---
+
+import Terminal from '@site/src/components/Terminal';
+
+# Exposing Biscuit Public Keys
+
+
+Biscuit tokens rely on public key cryptography for secure, decentralized authorization. To enable verification, public keys need to be exposed to services that will validate Biscuit tokens.
+
+This guide explains how to configure public key exposition in an Otoroshi environment using the Biscuit extension.
+
+## Introduction
+
+To expose your Biscuit public keys, you need to create a dedicated endpoint in your API gateway. 
+
+You can use the recommended URL for this exposition :
+
+```
+/.well-known/biscuit-web-keys
+```
+
+This endpoint will serve the list of public keys that can be used to verify Biscuit tokens issued by your system.
+
+## Prerequisites
+
+1. **Create one Biscuit KeyPair**
+ - Go to the **Biscuit keypairs** section in the Otoroshi Admin UI.
+
+You can follow [this guide](/docs/entities/keypairs) to help you to create your first Biscuit Keypair.
+
+2. **Create a Route in Otoroshi**:
+   - Go to the **Routes** section in the Otoroshi Admin UI.
+   - Add a new route with the path `/.well-known/biscuit-web-keys`.
+
+3. **Enable Public Key Exposition**:
+   - Add the `Cloud APIM - Expose Biscuit public keys`plugin to your route.
+
+## Plugin configuration
+
+Public keys are selected for exposition based on the following rules:
+
+1. **Defining Authorized Public Keys** (Optional):  
+   - You can explicitly list authorized public keys in the configuration.
+   - Only the keys in this list will be exposed.
+
+2. **Leaving the Authorized List Blank**:  
+   - If you do not specify an authorized keys list, **all keys** can be exposed.
+   - However, each key **must** have the **"Expose this public key"** flag enabled to be included.
+
+## How Public Keys Are Exposed
+
+Once configured, Otoroshi will expose public keys in JSON format at the `/.well-known/biscuit-web-keys` endpoint. 
+
+Any client or service that needs to verify Biscuit tokens can retrieve the list of valid public keys from this endpoint.
+
+## Example Public Key Exposition Output
+
+When configured correctly, the system will expose public keys in the following JSON format:
+
+```json
+{
+  "items": [
+    {
+      "algorithm": "ed25519",
+      "key_bytes": "B8453EA97EAF3D6A24FCC63D1317225BE9AAB1ABF26FBEFE8A34FE5BF39BFA00",
+      "key_id": "biscuit-keypair_6a3a5de9-b2ef-4bae-9422-9d644ec3b419",
+      "issuer": "Otoroshi"
+    },
+    {
+      "algorithm": "ed25519",
+      "key_bytes": "294DC8ED8EF8C491DC9632EDDD827F81384325A6C6DEFBC643F6EBCF41D155BA",
+      "key_id": "biscuit-keypair_82167e67-e820-402f-a564-c4cd1b35832f",
+      "issuer": "Otoroshi"
+    }
+  ]
+}
+```
