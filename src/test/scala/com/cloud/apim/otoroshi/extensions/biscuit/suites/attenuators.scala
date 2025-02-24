@@ -11,6 +11,7 @@ import otoroshi.api.Otoroshi
 import otoroshi.models.EntityLocation
 import otoroshi.utils.syntax.implicits._
 import play.api.libs.json.Json
+import scala.jdk.CollectionConverters._
 
 import java.util.UUID
 import scala.concurrent.ExecutionContext
@@ -151,6 +152,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
     )
 
     BiscuitKeyPairsUtils.createKeypairEntity(client)(demoKeyPair)
+    val publicKeyFormatted = demoKeyPair.getPubKey
 
     val conf = AttenuatorConfig(
       checks = Seq("check if time($date), $date >= 2025-12-30T19:00:10Z;"),
@@ -255,10 +257,8 @@ class TestAttenuators extends BiscuitExtensionSuite {
     val attenuatedToken = BiscuitUtils.replaceHeader(resp.json.at("headers.biscuit-attenuated-token").get.asString)
     assert(attenuatedToken.nonEmpty, s"attenuated token is empty")
 
-    val publicKeyFormatted = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, publicKey)
-
     val encodedBiscuit = Biscuit.from_b64url(attenuatedToken, publicKeyFormatted)
-    assertEquals(encodedBiscuit.authorizer().checks().size(), conf.checks.size, s"attenuated token doesn't contain checks list")
+    assertEquals(encodedBiscuit.authorizer().checks().asScala.flatMap(_._2.asScala).size, conf.checks.size, s"attenuated token doesn't contain checks list")
 
     client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeId)
     client.forBiscuitEntity("biscuit-attenuators").deleteEntity(attenuator)

@@ -1,6 +1,6 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.entities
 
-import org.biscuitsec.biscuit.crypto.KeyPair
+import org.biscuitsec.biscuit.crypto.{KeyPair, PublicKey}
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionDatastores, BiscuitExtensionState}
 
 import scala.util.{Failure, Success, Try}
@@ -37,6 +37,7 @@ case class BiscuitKeyPair(
   def theTags: Seq[String] = tags
 
   def keyPair: KeyPair = new KeyPair(privKey)
+  def getPubKey: PublicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, pubKey)
 }
 
 object BiscuitKeyPair {

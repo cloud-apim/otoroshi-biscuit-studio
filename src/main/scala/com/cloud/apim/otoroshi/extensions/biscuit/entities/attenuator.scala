@@ -13,7 +13,7 @@ import play.api.libs.json._
 import scala.util.{Failure, Success, Try}
 
 case class AttenuatorConfig(
-                             checks: Seq[String]
+                             checks: Seq[String] = Seq.empty
                            ) {
   def json: JsValue = AttenuatorConfig.format.writes(this)
 }
@@ -120,9 +120,7 @@ object BiscuitAttenuator {
             tags = Seq.empty,
             location = EntityLocation.default,
             keypairRef = "",
-            config = AttenuatorConfig(
-              checks = Seq.empty
-            ).some
+            config = AttenuatorConfig().some
           ).json
         },
         canRead = true,
