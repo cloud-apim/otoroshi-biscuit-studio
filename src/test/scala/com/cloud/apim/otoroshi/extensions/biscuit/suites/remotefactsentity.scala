@@ -1,0 +1,377 @@
+package com.cloud.apim.otoroshi.extensions.biscuit.suites
+
+import com.cloud.apim.otoroshi.extensions.biscuit.domains.BiscuitAttenuatorsUtils
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.{AttenuatorConfig, BiscuitAttenuator, BiscuitKeyPair, BiscuitRemoteFactsConfig, BiscuitTokenForge, BiscuitVerifier, RemoteFactsLoader, VerifierConfig}
+import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitForgeConfig, BiscuitUtils}
+import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiServerPerSuite
+import org.biscuitsec.biscuit.crypto.KeyPair
+import org.biscuitsec.biscuit.token.Biscuit
+import org.joda.time.DateTime
+import otoroshi.models.EntityLocation
+import otoroshi.security.IdGenerator
+import otoroshi.utils.syntax.implicits._
+import play.api.libs.json.Json
+import reactor.core.publisher.Mono
+import scala.jdk.CollectionConverters._
+
+import java.util.UUID
+import scala.concurrent.duration.DurationInt
+
+class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
+
+  test("should be able to connect to remote facts API and verify fields") {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                                  create the API                                                ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val (tport1, _) = createTestServerWithRoutes("test-api", routes => routes.post("/api/facts", (req, response) => {
+      req.receive().retain().asString().flatMap { body =>
+        response
+          .status(200)
+          .addHeader("Content-Type", "application/json")
+          .sendString(Mono.just(
+            s"""{
+               |"acl": [
+               |{
+               |"user": "1234",
+               |"resource": "resource1",
+               |"action": "read"
+               |},
+               |{
+               |"user": "1234",
+               |"resource": "resource1",
+               |"action": "write"
+               |},
+               |{
+               |"user": "1234",
+               |"resource": "resource2",
+               |"action": "read"
+               |}
+               |],
+               |"facts": [
+               |{
+               |  "name": "role",
+               |  "value": "dev"
+               |},
+               |{
+               |  "name": "time",
+               |  "value": "${DateTime.now}"
+               |},
+               |{
+               |  "name": "server",
+               |  "value": "${UUID.randomUUID()}"
+               |},
+               |{
+               |  "name": "version",
+               |  "value": "dev"
+               |}
+               |]
+               |}""".stripMargin))
+      }
+    }))
+
+    await(2500.millis)
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                                  test API Roles route                                          ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val resp = client.call("POST", s"http://test-api.oto.tools:${tport1}/api/facts", Map("Content-Type" -> "application/json"), Some(Json.obj("foo" -> "bar"))).awaitf(30.seconds)
+    assertEquals(resp.status, 200, s"remote facts API did not respond with 200")
+    assert(resp.json.at("acl").isDefined, s"acl array is not defined")
+    assert(resp.json.at("facts").isDefined, s"facts array is not defined")
+
+    val aclArr = resp.json.at("acl").as[List[Map[String, String]]]
+    assertEquals(aclArr.length, 3, s"acl array length doesn't match")
+
+    val factsArr = resp.json.at("facts").as[List[Map[String, String]]]
+    assertEquals(factsArr.length, 4, s"facts array length doesn't match")
+
+    await(2500.millis)
+  }
+
+  test("should be able to forge and attenuate a token with remote facts from entity") {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                                  create the 'Remote Facts' API for attenuator                  ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val domainAPIPrefix = "test-api-attenuator"
+    val routeAPIPath = "/api/checks"
+
+    val (tport, _) = createTestServerWithRoutes(domainAPIPrefix, routes => routes.post(routeAPIPath, (req, response) => {
+      req.receive().retain().asString().flatMap { body =>
+        response
+          .status(200)
+          .addHeader("Content-Type", "application/json")
+          .sendString(Mono.just(
+            s"""{
+               |"checks": [
+               |  "check if resource(\\"file1\\")",
+               |  "check if role(\\"admin\\")",
+               |  "check if operation(\\"read\\")"
+               |]
+               |}""".stripMargin))
+      }
+    }))
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                                  create the 'Remote Facts' API for forge                       ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val domainAPIForgePrefix = "test-api-forge"
+    val routeAPIForgePath = "/api/facts"
+    val (forgeApiPort, _) = createTestServerWithRoutes(domainAPIForgePrefix, routes => routes.post(routeAPIForgePath, (req, response) => {
+      req.receive().retain().asString().flatMap { body =>
+        response
+          .status(200)
+          .addHeader("Content-Type", "application/json")
+          .sendString(Mono.just(
+            s"""{
+               |"facts": [
+               |{
+               |  "name": "role",
+               |  "value": "dev"
+               |},
+               |{
+               |  "name": "user",
+               |  "value": "biscuit-demo"
+               |},
+               |{
+               |  "name": "version",
+               |  "value": "dev"
+               |}
+               |]
+               |}""".stripMargin))
+      }
+    }))
+
+    val fullDomain = s"http://${domainAPIPrefix}.oto.tools:${tport}${routeAPIPath}"
+    val fullDomainForForge = s"http://${domainAPIForgePrefix}.oto.tools:${forgeApiPort}${routeAPIForgePath}"
+
+    val rfl = RemoteFactsLoader(
+      id = IdGenerator.namedId("biscuit-remote-facts", otoroshi.env),
+      name = "New biscuit remote facts loader",
+      description = "New biscuit remote facts loader",
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      config = BiscuitRemoteFactsConfig(
+        apiUrl = fullDomain,
+        headers = Map(
+          "Content-Type" -> "application/json"
+        )
+      )
+    )
+
+    val rflForForge = RemoteFactsLoader(
+      id = IdGenerator.namedId("biscuit-remote-facts", otoroshi.env),
+      name = "New biscuit remote facts loader for forge",
+      description = "New biscuit remote facts loader for forge",
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      config = BiscuitRemoteFactsConfig(
+        apiUrl = fullDomainForForge,
+        headers = Map(
+          "Content-Type" -> "application/json"
+        )
+      )
+    )
+
+    val biscuitKeyPair = new KeyPair()
+    val keypair = BiscuitKeyPair(
+      id = IdGenerator.namedId("biscuit-keypair", otoroshi.env),
+      name = "New Biscuit Key Pair",
+      description = "New biscuit KeyPair",
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      privKey = biscuitKeyPair.toHex,
+      pubKey = biscuitKeyPair.public_key().toHex
+    )
+
+    val publicKeyFormatted = keypair.getPubKey
+
+    val forge = BiscuitTokenForge(
+      id = IdGenerator.namedId("biscuit-forge", otoroshi.env),
+      name = "New biscuit token",
+      description = "New biscuit token",
+      keypairRef = keypair.id,
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      config = BiscuitForgeConfig(
+        checks = List.empty,
+        facts = List.empty,
+        resources = List.empty,
+        rules = List.empty
+      ),
+      remoteFactsLoaderRef = rflForForge.id.some
+    )
+
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair)
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-remote-facts").upsertEntity(rfl)
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-remote-facts").upsertEntity(rflForForge)
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-forges").upsertEntity(forge)
+    await(5.seconds)
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                                  test remote facts API for forge                               ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val respRemoteAPIForge = client.call("POST", fullDomainForForge, Map("Content-Type" -> "application/json"), Some(Json.obj("foo" -> "bar"))).awaitf(30.seconds)
+    assertEquals(respRemoteAPIForge.status, 200, s"FORGE remote facts API did not respond with 200")
+    assert(respRemoteAPIForge.json.at("facts").isDefined, s"forge facts array is not defined")
+
+    val forgeFactsArr = respRemoteAPIForge.json.at("facts").as[List[Map[String, String]]]
+    assertEquals(forgeFactsArr.length, 3, s"forge facts array length doesn't match")
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                                  test biscuit creation from forge                              ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val resp2 = client.call("POST", s"http://otoroshi.oto.tools:${port}/extensions/cloud-apim/extensions/biscuit/tokens/_generate", Map("Content-Type" -> s"application/json"), Some(Json.obj(
+      "config" -> forge.config.json,
+      "keypair_ref" -> keypair.id,
+      "remoteFactsLoaderRef" -> forge.remoteFactsLoaderRef.get,
+    ))).awaitf(5.seconds)
+    assertEquals(resp2.status, 200, s"verifier route did not respond with 200")
+    assert(resp2.json.at("done").isDefined, s"generation of the token failed")
+    assert(resp2.json.at("done").asBoolean, s"token has not been well generated")
+    assert(resp2.json.at("token").isDefined, s"token has not been generated")
+
+    val token = BiscuitUtils.replaceHeader(resp2.json.at("token").get.asString)
+    assert(token.nonEmpty, s"token is empty")
+
+    val encodedBiscuit = Biscuit.from_b64url(token, publicKeyFormatted)
+    assertEquals(encodedBiscuit.authorizer().facts().size(), forgeFactsArr.length, s"token doesn't contain all remote facts")
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                      create the attenuator entity and the route with attenuator                ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val attenuatorId = s"biscuit-attenuator_${UUID.randomUUID()}"
+
+    val attenuator = BiscuitAttenuator(
+      id = attenuatorId,
+      name = "New Biscuit Attenuator entity",
+      description = "New biscuit Attenuator entity",
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      keypairRef = keypair.id,
+      config = AttenuatorConfig().some
+    )
+
+    BiscuitAttenuatorsUtils.createAttenuatorEntity(client)(attenuator)
+
+    val routeId = s"route_${UUID.randomUUID().toString}"
+    val routeDomain = "attenuator-headers.oto.tools"
+
+    val routeWithAttenuator = client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertRaw(routeId, Json.parse(
+      s"""{
+         |  "id": "${routeId}",
+         |  "name": "biscuit-attenuator",
+         |  "frontend": {
+         |    "domains": [
+         |      "${routeDomain}"
+         |    ]
+         |  },
+         |  "backend": {
+         |    "targets": [
+         |      {
+         |        "id": "target_1",
+         |        "hostname": "request.otoroshi.io",
+         |        "port": 443,
+         |        "tls": true
+         |      }
+         |    ],
+         |    "root": "/",
+         |    "rewrite": false,
+         |    "load_balancing": {
+         |      "type": "RoundRobin"
+         |    }
+         |  },
+         |   "backend_ref": null,
+         |"plugins": [
+         |    {
+         |      "enabled": true,
+         |      "debug": false,
+         |      "plugin": "cp:otoroshi.next.plugins.OverrideHost",
+         |      "include": [],
+         |      "exclude": [],
+         |      "config": {},
+         |      "bound_listeners": [],
+         |      "plugin_index": {
+         |        "transform_request": 0
+         |      }
+         |    },
+         |     {
+         |      "plugin_index": {},
+         |      "nodeId": "cp:otoroshi.next.plugins.EchoBackend-0",
+         |      "plugin": "cp:otoroshi.next.plugins.EchoBackend",
+         |      "enabled": true,
+         |      "debug": false,
+         |      "include": [],
+         |      "exclude": [],
+         |      "bound_listeners": [],
+         |      "config": {
+         |        "limit": 524288
+         |      }
+         |    },
+         |    {
+         |      "enabled": true,
+         |      "debug": false,
+         |      "plugin": "cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenAttenuator",
+         |      "include": [],
+         |      "exclude": [],
+         |      "config": {
+         |        "attenuator_ref": "${attenuatorId}",
+         |        "extractor_type": "header",
+         |        "extractor_name": "biscuit-token-test",
+         |        "token_replace_loc": "header",
+         |        "token_replace_name": "biscuit-attenuated-token",
+         |        "remote_facts_ref": "${rfl.id}",
+         |        "enable_remote_facts": true
+         |      },
+         |      "bound_listeners": [],
+         |      "plugin_index": {
+         |        "validate_access": 0
+         |      }
+         |    }
+         |  ]
+         |}""".stripMargin)).awaitf(30.seconds)
+    assert(routeWithAttenuator.created, s"attenuator route has not been created")
+    await(1500.millis)
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                                  test remote facts API for attenuator                               ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val respAttenuatorAPI = client.call("POST", fullDomain, Map("Content-Type" -> "application/json"), Some(Json.obj("foo" -> "bar"))).awaitf(30.seconds)
+
+    assertEquals(respAttenuatorAPI.status, 200, s"attenuator remote facts API did not respond with 200")
+    assert(respAttenuatorAPI.json.at("checks").isDefined, s"attenuator facts array is not defined")
+
+    val attenuatorAPIChecks = respAttenuatorAPI.json.at("checks").as[List[String]]
+
+    assertEquals(attenuatorAPIChecks.length, 3, s"attenuator checks from API array length doesn't match")
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                                  call the attenuator route with the forged token               ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val headers = Map(
+      "biscuit-token-test" -> token
+    )
+
+    val resp3 = client.call("GET", s"http://${routeDomain}:${port}", headers, None).awaitf(30.seconds)
+    assertEquals(resp3.status, 200, s"attenuator route did not respond with 200")
+    assert(resp3.json.at("headers.biscuit-attenuated-token").isDefined, s"response headers don't contains the biscuit attenuated token")
+
+    val attenuatedTokenStr = BiscuitUtils.replaceHeader(resp3.json.at("headers.biscuit-attenuated-token").get.asString)
+    assert(attenuatedTokenStr.nonEmpty, s"attenuated token is empty")
+    assert(attenuator.config.isDefined, s"attenuator config is not defined")
+
+    val attenuatedToken = Biscuit.from_b64url(attenuatedTokenStr, publicKeyFormatted)
+    assertEquals(attenuatedToken.authorizer().checks().asScala.flatMap(_._2.asScala).size, attenuator.config.get.checks.size + attenuatorAPIChecks.length, s"attenuated token doesn't contain checks list")
+
+    client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeId)
+    client.forBiscuitEntity("biscuit-attenuators").deleteEntity(attenuator)
+    client.forBiscuitEntity("biscuit-keypairs").deleteEntity(keypair)
+    await(2500.millis)
+  }
+
+}
