@@ -193,8 +193,6 @@ case class VerifierConfig(
       // Check for token revocation
       val ids = biscuitToken.revocation_identifiers().asScala.map(_.toHex).toList ++ remoteFacts.revoked
       if (revokedIds.nonEmpty && ids.exists(revokedIds.contains)) {
-        println(s"config: ${revokedIds}")
-        println(s"token: ${ids}")
         Left(handleBiscuitErrors(new Error.FormatError.DeserializationError("Revoked token")))
       } else {
         val maxFacts = 1000 // TODO: from config
