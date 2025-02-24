@@ -4,7 +4,7 @@ import akka.stream.scaladsl.{Source, StreamConverters}
 import akka.util.ByteString
 import biscuit.format.schema.Schema.PublicKey.Algorithm
 import com.cloud.apim.otoroshi.extensions.biscuit.entities._
-import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitForgeConfig, BiscuitRemoteUtils, BiscuitUtils}
+import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitRemoteUtils, BiscuitUtils}
 import org.biscuitsec.biscuit.crypto.{KeyPair, PublicKey}
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.env.Env

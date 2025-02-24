@@ -1,5 +1,8 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.entities
 
+import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils.handleBiscuitErrors
+import org.biscuitsec.biscuit.token.Biscuit
+import org.biscuitsec.biscuit.token.builder.parser.Parser
 import otoroshi.api.{GenericResourceAccessApiWithState, Resource, ResourceVersion}
 import otoroshi.env.Env
 import otoroshi.models.{EntityLocation, EntityLocationSupport}
@@ -47,7 +50,7 @@ case class BiscuitAttenuator(
                               metadata: Map[String, String] = Map.empty,
                               location: EntityLocation,
                               keypairRef: String,
-                              config: Option[AttenuatorConfig]
+                              config: AttenuatorConfig
                             ) extends EntityLocationSupport {
   def json: JsValue = BiscuitAttenuator.format.writes(this)
 
@@ -60,6 +63,25 @@ case class BiscuitAttenuator(
   def theName: String = name
 
   def theTags: Seq[String] = tags
+
+  def attenuate(biscuitToken: Biscuit)(implicit env: Env): Either[String, Biscuit] = {
+    val block = biscuitToken.create_block()
+
+    config.checks
+      .map(_.trim.stripSuffix(";"))
+      .map(Parser.check)
+      .filter(_.isRight)
+      .map(_.get()._2)
+      .foreach(r => block.add_check(r))
+
+    Try(biscuitToken.attenuate(block)).toEither match {
+      case Left(err: org.biscuitsec.biscuit.error.Error) =>
+        Left(handleBiscuitErrors(err))
+      case Left(err) =>
+        Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError()))
+      case Right(biscuitToken) => Right(biscuitToken)
+    }
+  }
 }
 
 

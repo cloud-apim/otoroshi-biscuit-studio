@@ -2,8 +2,8 @@ package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
 import akka.Done
 import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils
-import org.biscuitsec.biscuit.datalog.{Fact, FactSet}
-import org.biscuitsec.biscuit.token.Biscuit
+import org.biscuitsec.biscuit.datalog.{Fact, FactSet, SymbolTable}
+import org.biscuitsec.biscuit.token.{Biscuit, UnverifiedBiscuit}
 import org.biscuitsec.biscuit.token.builder.Term.Str
 import org.joda.time.DateTime
 import otoroshi.env.Env
@@ -17,7 +17,7 @@ import play.api.libs.json.{Format, JsError, JsObject, JsResult, JsSuccess, JsVal
 import play.api.mvc.Results
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.jdk.CollectionConverters.{asScalaBufferConverter, asScalaSetConverter, mapAsScalaMapConverter}
+import scala.jdk.CollectionConverters.{asScalaBufferConverter, asScalaSetConverter, collectionAsScalaIterableConverter, mapAsScalaMapConverter}
 import scala.util.{Failure, Success, Try}
 
 case class BiscuitUserExtractorConfig(
@@ -141,6 +141,22 @@ class BiscuitUserExtractor extends NgPreRouting {
           case _        => None
         }
     }
+
+//    val clazz = classOf[UnverifiedBiscuit]
+//    Try(clazz.getField("symbols"))
+//      .orElse(Try(clazz.getDeclaredField("symbols")))
+//      .toOption
+//      .map { f =>
+//        f.setAccessible(true)
+//        f
+//      }.flatMap(v => Option(v.get(b))).map(_.asInstanceOf[SymbolTable]).foreach { symbols =>
+//        biscuitToken.authorizer().facts().facts().values().asScala.flatMap(_.asScala).foreach { fact =>
+//          val nameLng = fact.predicate().name().toInt
+//          val name = symbols.get_s(nameLng)
+//          val value: String = fact.predicate().terms().asScala.map(t => symbols.print_term(t)).mkString(", ")
+//          println(s"name: ${name} - ${value}")
+//        }
+//      }
 
     (biscuitUserId, biscuitUsername) match {
       case (Some(userId), Some(userName)) => {
