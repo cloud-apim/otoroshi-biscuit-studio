@@ -2,8 +2,7 @@ package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import akka.stream.Materializer
 import com.cloud.apim.otoroshi.extensions.biscuit.domains.{BiscuitKeyPairsUtils, BiscuitTokensForgeUtils, BiscuitVerifiersUtils}
-import com.cloud.apim.otoroshi.extensions.biscuit.entities.{BiscuitKeyPair, BiscuitRemoteFactsConfig, BiscuitTokenForge, BiscuitVerifier, RemoteFactsLoader, VerifierConfig}
-import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitForgeConfig, BiscuitUtils}
+import com.cloud.apim.otoroshi.extensions.biscuit.entities._
 import com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionSuite, OtoroshiClient}
 import org.biscuitsec.biscuit.crypto.{KeyPair, PublicKey}
 import org.biscuitsec.biscuit.token.Biscuit
@@ -104,7 +103,8 @@ class TestsTokensForge extends BiscuitExtensionSuite {
           "allow if role(\"1234\");"
         ),
         revokedIds = List.empty
-      ).some
+      ),
+      extractor = BiscuitExtractorConfig()
     )
 
     BiscuitVerifiersUtils.createVerifierEntity(client)(verifier)
@@ -154,7 +154,7 @@ class TestsTokensForge extends BiscuitExtensionSuite {
          |      "include": [],
          |      "exclude": [],
          |      "config": {
-         |        "verifier_ref": "${verifierId}",
+         |        "verifier_refs": ["${verifierId}"],
          |        "rbac_ref": "",
          |        "enable_remote_facts": false,
          |        "remote_facts_ref": "",
@@ -316,7 +316,7 @@ class TestsTokensForge extends BiscuitExtensionSuite {
     assert(resp2.json.at("done").asBoolean, s"acl array is not defined")
     assert(resp2.json.at("token").isDefined, s"acl array is not defined")
 
-    val token = BiscuitUtils.replaceHeader(resp2.json.at("token").get.asString)
+    val token = BiscuitExtractorConfig.replaceHeader(resp2.json.at("token").get.asString)
     assert(token.nonEmpty, s"token is empty")
 
     val publicKeyFormatted = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)
@@ -385,7 +385,7 @@ class TestsTokensForge extends BiscuitExtensionSuite {
     assertEquals(resp.status, 200, s"verifier route did not respond with 200")
     assert(resp.json.at("token").isDefined, s"token not generated")
 
-    val token = BiscuitUtils.replaceHeader(resp.json.at("token").get.asString)
+    val token = BiscuitExtractorConfig.replaceHeader(resp.json.at("token").get.asString)
     assert(token.nonEmpty, s"token is empty")
 
     val publicKeyFormatted = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)

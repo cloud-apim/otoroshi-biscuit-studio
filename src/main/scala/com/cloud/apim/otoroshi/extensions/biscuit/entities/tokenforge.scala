@@ -31,6 +31,57 @@ case class BiscuitForgeConfig(
                                ttl: FiniteDuration = 1.hour
                              ) {
   def json: JsValue = BiscuitForgeConfig.format.writes(this)
+
+  def createToken(privKeyValue: String)(implicit env: Env): Either[String, Biscuit] = {
+
+    val keypair = new KeyPair(privKeyValue)
+    val rng = new SecureRandom()
+    val authority_builder = new Block()
+
+    val config = if (enableTtl)
+      copy(
+        checks = checks :+
+          s"check if time($$time), $$time <= ${DateTime.now().plusMillis(ttl.toMillis.toInt)}"
+      )
+    else this
+
+    // Resources
+    config.resources
+      .map(_.trim.stripSuffix(";"))
+      .foreach(r => authority_builder.add_fact(s"""resource("${r}")"""))
+
+    // Checks
+    config.checks
+      .map(_.trim.stripSuffix(";"))
+      .map(Parser.check)
+      .filter(_.isRight)
+      .map(_.get()._2)
+      .foreach(r => authority_builder.add_check(r))
+
+    // Facts
+    config.facts
+      .map(_.trim.stripSuffix(";"))
+      .map(Parser.fact)
+      .filter(_.isRight)
+      .map(_.get()._2)
+      .foreach(r => authority_builder.add_fact(r))
+
+    // Rules
+    config.rules
+      .map(_.trim.stripSuffix(";"))
+      .map(Parser.rule)
+      .filter(_.isRight)
+      .map(_.get()._2)
+      .foreach(r => authority_builder.add_rule(r))
+
+    Try(Biscuit.make(rng, keypair, authority_builder.build())).toEither match {
+      case Left(err: org.biscuitsec.biscuit.error.Error) =>
+        Left(handleBiscuitErrors(err))
+      case Left(err) =>
+        Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError()))
+      case Right(biscuitToken) => Right(biscuitToken)
+    }
+  }
 }
 
 object BiscuitForgeConfig {
@@ -86,55 +137,8 @@ case class BiscuitTokenForge(
 
   def theTags: Seq[String] = tags
 
-  def createToken(privKeyValue: String, forgeConfig: BiscuitForgeConfig)(implicit env: Env): Either[String, Biscuit] = {
-
-    val keypair = new KeyPair(privKeyValue)
-    val rng = new SecureRandom()
-    val authority_builder = new Block()
-
-    val config = if (forgeConfig.enableTtl)
-      forgeConfig.copy(
-        checks = forgeConfig.checks :+
-          s"check if time($$time), $$time <= ${DateTime.now().plusMillis(forgeConfig.ttl.toMillis.toInt)}"
-      )
-    else forgeConfig
-
-    // Resources
-    config.resources
-      .map(_.trim.stripSuffix(";"))
-      .foreach(r => authority_builder.add_fact(s"""resource("${r}")"""))
-
-    // Checks
-    config.checks
-      .map(_.trim.stripSuffix(";"))
-      .map(Parser.check)
-      .filter(_.isRight)
-      .map(_.get()._2)
-      .foreach(r => authority_builder.add_check(r))
-
-    // Facts
-    config.facts
-      .map(_.trim.stripSuffix(";"))
-      .map(Parser.fact)
-      .filter(_.isRight)
-      .map(_.get()._2)
-      .foreach(r => authority_builder.add_fact(r))
-
-    // Rules
-    config.rules
-      .map(_.trim.stripSuffix(";"))
-      .map(Parser.rule)
-      .filter(_.isRight)
-      .map(_.get()._2)
-      .foreach(r => authority_builder.add_rule(r))
-
-    Try(Biscuit.make(rng, keypair, authority_builder.build())).toEither match {
-      case Left(err: org.biscuitsec.biscuit.error.Error) =>
-        Left(handleBiscuitErrors(err))
-      case Left(err) =>
-        Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError()))
-      case Right(biscuitToken) => Right(biscuitToken)
-    }
+  def createToken(privKeyValue: String)(implicit env: Env): Either[String, Biscuit] = {
+    config.createToken(privKeyValue)
   }
 
   def forgeToken(ctx: JsValue)(implicit env: Env, ec: ExecutionContext): Future[Either[String, Biscuit]] = {
@@ -143,7 +147,7 @@ case class BiscuitTokenForge(
       case Some(kp) => {
         remoteFactsLoaderRef match {
           case None => {
-            createToken(kp.privKey, config) match {
+            createToken(kp.privKey) match {
               case Left(err) => Left("unable to forge token").vfuture
               case Right(token) => Right(token).vfuture
             }
@@ -160,7 +164,7 @@ case class BiscuitTokenForge(
                       facts = remoteFacts.facts ++ remoteFacts.acl ++ remoteFacts.roles,
                     )
 
-                    createToken(kp.privKey, finalConfig) match {
+                    finalConfig.createToken(kp.privKey) match {
                       case Left(err) => Left("unable to forge token").vfuture
                       case Right(token) => Right(token).vfuture
                     }

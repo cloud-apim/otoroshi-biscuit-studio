@@ -1,20 +1,16 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiServerPerSuite
-import com.cloud.apim.otoroshi.extensions.biscuit.entities.{BiscuitKeyPair, BiscuitTokenForge, BiscuitVerifier, VerifierConfig}
-import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitForgeConfig
+import com.cloud.apim.otoroshi.extensions.biscuit.entities._
 import org.biscuitsec.biscuit.crypto.KeyPair
 import otoroshi.models.{ApiKey, EntityLocation, RouteIdentifier}
 import otoroshi.next.models._
-import otoroshi.next.plugins.OverrideHost
 import otoroshi.security.IdGenerator
 import otoroshi.utils.syntax.implicits._
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.{BiscuitTokenValidator, ClientCredentialBiscuitTokenEndpoint}
 import play.api.libs.json.Json
 import reactor.core.publisher.Mono
 
-import java.io.File
-import java.nio.file.Files
 import java.util.UUID
 import scala.concurrent.duration.DurationInt
 
@@ -82,7 +78,8 @@ class ClientcredentialsSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
           s"""allow if true""",
         ),
         revokedIds = Seq.empty,
-      ).some
+      ),
+      extractor = BiscuitExtractorConfig()
     )
     val routeCCEndpoint = NgRoute(
       location = EntityLocation.default,

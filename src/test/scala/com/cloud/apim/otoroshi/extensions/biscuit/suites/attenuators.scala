@@ -2,7 +2,7 @@ package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import akka.stream.Materializer
 import com.cloud.apim.otoroshi.extensions.biscuit.domains.{BiscuitAttenuatorsUtils, BiscuitKeyPairsUtils}
-import com.cloud.apim.otoroshi.extensions.biscuit.entities.{AttenuatorConfig, BiscuitAttenuator, BiscuitKeyPair}
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.{AttenuatorConfig, BiscuitAttenuator, BiscuitExtractorConfig, BiscuitKeyPair}
 import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils
 import com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionSuite, OtoroshiClient}
 import org.biscuitsec.biscuit.crypto.PublicKey
@@ -11,11 +11,11 @@ import otoroshi.api.Otoroshi
 import otoroshi.models.EntityLocation
 import otoroshi.utils.syntax.implicits._
 import play.api.libs.json.Json
-import scala.jdk.CollectionConverters._
 
 import java.util.UUID
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
+import scala.jdk.CollectionConverters._
 
 class TestAttenuators extends BiscuitExtensionSuite {
   val port: Int = freePort
@@ -30,7 +30,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
     keypairRef = "",
     config = AttenuatorConfig(
       checks = List.empty,
-    ).some
+    )
   )
   implicit var ec: ExecutionContext = _
   implicit var mat: Materializer = _
@@ -166,7 +166,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
       tags = Seq.empty,
       location = EntityLocation.default,
       keypairRef = keypairId,
-      config = conf.some
+      config = conf
     )
 
     BiscuitAttenuatorsUtils.createAttenuatorEntity(client)(attenuator)
@@ -254,7 +254,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
     assertEquals(resp.status, 200, s"attenuator route did not respond with 200")
     assert(resp.json.at("headers.biscuit-attenuated-token").isDefined, s"response headers don't contains the biscuit attenuated token")
 
-    val attenuatedToken = BiscuitUtils.replaceHeader(resp.json.at("headers.biscuit-attenuated-token").get.asString)
+    val attenuatedToken = BiscuitExtractorConfig.replaceHeader(resp.json.at("headers.biscuit-attenuated-token").get.asString)
     assert(attenuatedToken.nonEmpty, s"attenuated token is empty")
 
     val encodedBiscuit = Biscuit.from_b64url(attenuatedToken, publicKeyFormatted)
@@ -305,7 +305,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
       tags = Seq.empty,
       location = EntityLocation.default,
       keypairRef = keypairId,
-      config = conf.some
+      config = conf
     )
 
     BiscuitAttenuatorsUtils.createAttenuatorEntity(client)(attenuator)
@@ -460,7 +460,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
       tags = Seq.empty,
       location = EntityLocation.default,
       keypairRef = keypairId,
-      config = conf.some
+      config = conf
     )
 
     BiscuitAttenuatorsUtils.createAttenuatorEntity(client)(attenuator)

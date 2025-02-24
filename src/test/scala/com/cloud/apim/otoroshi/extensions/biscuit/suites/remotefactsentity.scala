@@ -1,9 +1,9 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
-import com.cloud.apim.otoroshi.extensions.biscuit.domains.BiscuitAttenuatorsUtils
-import com.cloud.apim.otoroshi.extensions.biscuit.entities.{AttenuatorConfig, BiscuitAttenuator, BiscuitKeyPair, BiscuitRemoteFactsConfig, BiscuitTokenForge, BiscuitVerifier, RemoteFactsLoader, VerifierConfig}
-import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitForgeConfig, BiscuitUtils}
 import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiServerPerSuite
+import com.cloud.apim.otoroshi.extensions.biscuit.domains.BiscuitAttenuatorsUtils
+import com.cloud.apim.otoroshi.extensions.biscuit.entities._
+import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils
 import org.biscuitsec.biscuit.crypto.KeyPair
 import org.biscuitsec.biscuit.token.Biscuit
 import org.joda.time.DateTime
@@ -12,10 +12,10 @@ import otoroshi.security.IdGenerator
 import otoroshi.utils.syntax.implicits._
 import play.api.libs.json.Json
 import reactor.core.publisher.Mono
-import scala.jdk.CollectionConverters._
 
 import java.util.UUID
 import scala.concurrent.duration.DurationInt
+import scala.jdk.CollectionConverters._
 
 class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
 
@@ -234,7 +234,7 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
     assert(resp2.json.at("done").asBoolean, s"token has not been well generated")
     assert(resp2.json.at("token").isDefined, s"token has not been generated")
 
-    val token = BiscuitUtils.replaceHeader(resp2.json.at("token").get.asString)
+    val token = BiscuitExtractorConfig.replaceHeader(resp2.json.at("token").get.asString)
     assert(token.nonEmpty, s"token is empty")
 
     val encodedBiscuit = Biscuit.from_b64url(token, publicKeyFormatted)
@@ -253,7 +253,7 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
       tags = Seq.empty,
       location = EntityLocation.default,
       keypairRef = keypair.id,
-      config = AttenuatorConfig().some
+      config = AttenuatorConfig()
     )
 
     BiscuitAttenuatorsUtils.createAttenuatorEntity(client)(attenuator)
@@ -361,12 +361,11 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
     assertEquals(resp3.status, 200, s"attenuator route did not respond with 200")
     assert(resp3.json.at("headers.biscuit-attenuated-token").isDefined, s"response headers don't contains the biscuit attenuated token")
 
-    val attenuatedTokenStr = BiscuitUtils.replaceHeader(resp3.json.at("headers.biscuit-attenuated-token").get.asString)
+    val attenuatedTokenStr = BiscuitExtractorConfig.replaceHeader(resp3.json.at("headers.biscuit-attenuated-token").get.asString)
     assert(attenuatedTokenStr.nonEmpty, s"attenuated token is empty")
-    assert(attenuator.config.isDefined, s"attenuator config is not defined")
 
     val attenuatedToken = Biscuit.from_b64url(attenuatedTokenStr, publicKeyFormatted)
-    assertEquals(attenuatedToken.authorizer().checks().asScala.flatMap(_._2.asScala).size, attenuator.config.get.checks.size + attenuatorAPIChecks.length, s"attenuated token doesn't contain checks list")
+    assertEquals(attenuatedToken.authorizer().checks().asScala.flatMap(_._2.asScala).size, attenuator.config.checks.size + attenuatorAPIChecks.length, s"attenuated token doesn't contain checks list")
 
     client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeId)
     client.forBiscuitEntity("biscuit-attenuators").deleteEntity(attenuator)

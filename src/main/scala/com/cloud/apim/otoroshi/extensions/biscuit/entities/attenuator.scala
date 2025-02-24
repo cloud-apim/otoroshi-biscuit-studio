@@ -16,9 +16,28 @@ import play.api.libs.json._
 import scala.util.{Failure, Success, Try}
 
 case class AttenuatorConfig(
-                             checks: Seq[String] = Seq.empty
-                           ) {
+  checks: Seq[String] = Seq.empty
+) {
+
   def json: JsValue = AttenuatorConfig.format.writes(this)
+
+  def attenuate(biscuitToken: Biscuit)(implicit env: Env): Either[String, Biscuit] = {
+    val block = biscuitToken.create_block()
+    checks
+      .map(_.trim.stripSuffix(";"))
+      .map(Parser.check)
+      .filter(_.isRight)
+      .map(_.get()._2)
+      .foreach(r => block.add_check(r))
+
+    Try(biscuitToken.attenuate(block)).toEither match {
+      case Left(err: org.biscuitsec.biscuit.error.Error) =>
+        Left(handleBiscuitErrors(err))
+      case Left(err) =>
+        Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError()))
+      case Right(biscuitToken) => Right(biscuitToken)
+    }
+  }
 }
 
 object AttenuatorConfig {
@@ -65,22 +84,7 @@ case class BiscuitAttenuator(
   def theTags: Seq[String] = tags
 
   def attenuate(biscuitToken: Biscuit)(implicit env: Env): Either[String, Biscuit] = {
-    val block = biscuitToken.create_block()
-
-    config.checks
-      .map(_.trim.stripSuffix(";"))
-      .map(Parser.check)
-      .filter(_.isRight)
-      .map(_.get()._2)
-      .foreach(r => block.add_check(r))
-
-    Try(biscuitToken.attenuate(block)).toEither match {
-      case Left(err: org.biscuitsec.biscuit.error.Error) =>
-        Left(handleBiscuitErrors(err))
-      case Left(err) =>
-        Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError()))
-      case Right(biscuitToken) => Right(biscuitToken)
-    }
+    config.attenuate(biscuitToken)
   }
 }
 
@@ -96,7 +100,7 @@ object BiscuitAttenuator {
         "description" -> o.description,
         "metadata" -> o.metadata,
         "tags" -> JsArray(o.tags.map(JsString.apply)),
-        "config" -> o.config.map(_.json).getOrElse(JsNull).asValue
+        "config" -> o.config.json
       )
     }
 
@@ -111,7 +115,7 @@ object BiscuitAttenuator {
           enabled = (json \ "enabled").asOpt[Boolean].getOrElse(true),
           metadata = (json \ "metadata").asOpt[Map[String, String]].getOrElse(Map.empty),
           tags = (json \ "tags").asOpt[Seq[String]].getOrElse(Seq.empty[String]),
-          config = AttenuatorConfig.format.reads(json.select("config").getOrElse(JsNull)).asOpt
+          config = AttenuatorConfig.format.reads(json.select("config").asObject).get,
         )
       } match {
         case Failure(e) => JsError(e.getMessage)
@@ -142,7 +146,7 @@ object BiscuitAttenuator {
             tags = Seq.empty,
             location = EntityLocation.default,
             keypairRef = "",
-            config = AttenuatorConfig().some
+            config = AttenuatorConfig()
           ).json
         },
         canRead = true,

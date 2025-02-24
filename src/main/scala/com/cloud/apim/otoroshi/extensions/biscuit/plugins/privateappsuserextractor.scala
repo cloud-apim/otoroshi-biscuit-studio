@@ -1,9 +1,8 @@
 package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
 import akka.Done
-import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils
-import org.biscuitsec.biscuit.datalog.{Fact, FactSet, SymbolTable}
-import org.biscuitsec.biscuit.token.{Biscuit, UnverifiedBiscuit}
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.BiscuitExtractorConfig
+import org.biscuitsec.biscuit.token.Biscuit
 import org.biscuitsec.biscuit.token.builder.Term.Str
 import org.joda.time.DateTime
 import otoroshi.env.Env
@@ -13,11 +12,11 @@ import otoroshi.security.IdGenerator
 import otoroshi.utils.syntax.implicits.{BetterJsValue, BetterSyntax}
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.BiscuitExtension
 import play.api.Logger
-import play.api.libs.json.{Format, JsError, JsObject, JsResult, JsSuccess, JsValue, Json}
+import play.api.libs.json._
 import play.api.mvc.Results
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.jdk.CollectionConverters.{asScalaBufferConverter, asScalaSetConverter, collectionAsScalaIterableConverter, mapAsScalaMapConverter}
+import scala.jdk.CollectionConverters.{asScalaBufferConverter, asScalaSetConverter}
 import scala.util.{Failure, Success, Try}
 
 case class BiscuitUserExtractorConfig(
@@ -199,7 +198,7 @@ class BiscuitUserExtractor extends NgPreRouting {
     env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(config.keypairRef)) match {
       case None => handleError("keypair_ref not found")
       case Some(keypair) => {
-        BiscuitUtils.extractToken(ctx.request, config.extractorType, config.extractorName) match {
+        BiscuitExtractorConfig(config.extractorType, config.extractorName).extractToken(ctx.request) match {
           case Some(token) => {
             Try(Biscuit.from_b64url(token, keypair.getPubKey)).toEither match {
               case Left(err) => handleError(s"Unable to deserialize Biscuit token : ${err}")
