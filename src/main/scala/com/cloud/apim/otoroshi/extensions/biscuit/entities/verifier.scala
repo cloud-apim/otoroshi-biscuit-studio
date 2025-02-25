@@ -1,5 +1,6 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.entities
 
+import akka.stream.scaladsl.Source
 import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils.{handleBiscuitErrors, readOrWrite}
 import org.biscuitsec.biscuit.datalog.RunLimits
 import org.biscuitsec.biscuit.error.Error
@@ -41,7 +42,7 @@ case class VerifierConfig(
   policies: Seq[String] = Seq.empty,
   revokedIds: Seq[String] = Seq.empty,
   rbacPolicyRefs: Seq[String] = Seq.empty,
-  remoteFactsRef: Option[String] = None, // TODO: Seq[String] ???
+  remoteFactsRefs: Seq[String] = Seq.empty,
 ) {
 
   def json: JsValue = VerifierConfig.format.writes(this)
@@ -164,23 +165,27 @@ case class VerifierConfig(
       }
     }
 
-    val remoteFactsF: Future[RemoteFactsData] = if (remoteFactsRef.isEmpty) {
+    val remoteFactsF: Future[RemoteFactsData] = if (remoteFactsRefs.isEmpty) {
       RemoteFactsData().vfuture
     } else {
-      env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitRemoteFactsLoader(remoteFactsRef.get)) match {
-        case None => RemoteFactsData().vfuture // TODO: log error though
-        case Some(remoteFactsEntity) => {
-          if (remoteFactsEntity.config.apiUrl.nonEmpty && remoteFactsEntity.config.headers.nonEmpty) {
-            val jsonCtx = ctxOpt.map(_.json.asObject).getOrElse(Json.obj()) ++ Json.obj("phase" -> "access", "plugin" -> "biscuit_verifier")
-            remoteFactsEntity.config.getRemoteFacts(jsonCtx).map {
-              case Left(error) => RemoteFactsData() // TODO: log error though
-              case Right(factsData) => factsData
+      Source(remoteFactsRefs.toList)
+        .mapAsync(1) { remoteFactsRef =>
+          env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitRemoteFactsLoader(remoteFactsRef)) match {
+            case None => RemoteFactsData().vfuture // TODO: log error though
+            case Some(remoteFactsEntity) => {
+              if (remoteFactsEntity.config.apiUrl.nonEmpty && remoteFactsEntity.config.headers.nonEmpty) {
+                val jsonCtx = ctxOpt.map(_.json.asObject).getOrElse(Json.obj()) ++ Json.obj("phase" -> "access", "plugin" -> "biscuit_verifier")
+                remoteFactsEntity.config.getRemoteFacts(jsonCtx).map {
+                  case Left(error) => RemoteFactsData() // TODO: log error though
+                  case Right(factsData) => factsData
+                }
+              } else {
+                RemoteFactsData().vfuture
+              }
             }
-          } else {
-            RemoteFactsData().vfuture
           }
         }
-      }
+        .runFold(RemoteFactsData())(_.merge(_))(env.otoroshiMaterializer)
     }
 
     remoteFactsF.map { remoteFacts =>
@@ -235,7 +240,7 @@ object VerifierConfig {
         "policies" -> o.policies,
         "rbac_refs" -> o.rbacPolicyRefs,
         "revoked_ids" -> o.revokedIds,
-        "remote_facts_ref" -> o.remoteFactsRef,
+        "remote_facts_refs" -> o.remoteFactsRefs,
       )
     }
 
@@ -249,7 +254,7 @@ object VerifierConfig {
           policies = (json \ "policies").asOpt[Seq[String]].getOrElse(Seq.empty),
           rbacPolicyRefs = (json \ "rbac_refs").asOpt[Seq[String]].getOrElse(Seq.empty),
           revokedIds = (json \ "revoked_ids").asOpt[Seq[String]].getOrElse(Seq.empty),
-          remoteFactsRef = (json \ "remote_facts_ref").asOpt[String]
+          remoteFactsRefs = (json \ "remote_facts_ref").asOpt[Seq[String]].getOrElse(Seq.empty)
         )
       } match {
         case Failure(e) => JsError(e.getMessage)
