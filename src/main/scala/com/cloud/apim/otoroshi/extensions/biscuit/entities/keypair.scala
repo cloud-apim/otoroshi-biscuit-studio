@@ -14,16 +14,16 @@ import play.api.libs.json._
 import otoroshi.security.IdGenerator
 
 case class BiscuitKeyPair(
-                           id: String,
-                           name: String,
-                           description: String,
-                           isPublic: Boolean = false,
-                           privKey: String,
-                           pubKey: String,
-                           tags: Seq[String],
-                           metadata: Map[String, String],
-                           location: EntityLocation
-                         ) extends EntityLocationSupport {
+  id: String,
+  name: String = "",
+  description: String = "",
+  isPublic: Boolean = false,
+  privKey: String = "",
+  pubKey: String = "",
+  tags: Seq[String] = Seq.empty,
+  metadata: Map[String, String] = Map.empty,
+  location: EntityLocation
+) extends EntityLocationSupport {
   def json: JsValue = BiscuitKeyPair.format.writes(this)
 
   def internalId: String = id
@@ -37,6 +37,7 @@ case class BiscuitKeyPair(
   def theTags: Seq[String] = tags
 
   def keyPair: KeyPair = new KeyPair(privKey)
+
   def getPubKey: PublicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, pubKey)
 }
 
@@ -94,8 +95,6 @@ object BiscuitKeyPair {
             id = IdGenerator.namedId("biscuit-keypair", env),
             name = "New Biscuit Key Pair",
             description = "New biscuit KeyPair",
-            metadata = Map.empty,
-            tags = Seq.empty,
             location = EntityLocation.default,
             privKey = biscuitKeyPair.toHex,
             pubKey = biscuitKeyPair.public_key().toHex
