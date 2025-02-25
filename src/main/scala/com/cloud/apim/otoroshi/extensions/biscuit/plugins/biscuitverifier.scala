@@ -14,14 +14,15 @@ import play.api.mvc.Results
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 case class BiscuitVerifierPluginConfig(
-    verifierRefs: Seq[String] = Seq.empty
+    verifierRefs: Seq[String] = Seq.empty,
+    enforce: Boolean = true,
 ) extends NgPluginConfig {
   def json: JsValue = BiscuitVerifierPluginConfig.format.writes(this)
 }
 
 object BiscuitVerifierPluginConfig {
 
-  val configFlow: Seq[String] = Seq("verifier_refs")
+  val configFlow: Seq[String] = Seq("verifier_refs", "enforce")
 
   def configSchema(name: String): Option[JsObject] = Some(Json.obj(
     "verifier_refs" -> Json.obj(
@@ -89,11 +90,13 @@ object BiscuitVerifierPluginConfig {
 
   val format = new Format[BiscuitVerifierPluginConfig] {
     override def writes(o: BiscuitVerifierPluginConfig): JsValue = Json.obj(
-      "verifier_refs" -> o.verifierRefs
+      "verifier_refs" -> o.verifierRefs,
+      "enforce" -> o.enforce,
     )
     override def reads(json: JsValue): JsResult[BiscuitVerifierPluginConfig] = Try {
       BiscuitVerifierPluginConfig(
-        verifierRefs = json.select("verifier_refs").asOpt[Seq[String]].getOrElse(Seq.empty) ++ json.select("verifier_ref").asOpt[String]
+        verifierRefs = json.select("verifier_refs").asOpt[Seq[String]].getOrElse(Seq.empty) ++ json.select("verifier_ref").asOpt[String],
+        enforce = json.select("enforce").asOpt[Boolean].getOrElse(true)
       )
     } match {
       case Failure(exception) => JsError(exception.getMessage)
@@ -140,13 +143,18 @@ class BiscuitTokenValidator extends NgAccessValidator {
       case None => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> "extension not found"))).vfuture
       case Some(ext) => {
         val verifiers = config.verifierRefs.flatMap(id => ext.states.biscuitVerifier(id))
+        var hasFailed = false
 
         def next(items: Seq[BiscuitVerifier]): Future[NgAccess] = {
           items.headOption match {
-            case None => forbidden(ctx)
+            case None if hasFailed => forbidden(ctx)
+            case None if !hasFailed && config.enforce => forbidden(ctx)
+            case None if !hasFailed && !config.enforce => NgAllowed.vfuture
             case Some(head) => {
               head.verify(ctx.request, Some(VerificationContext(ctx.route, ctx.request, ctx.user, ctx.apikey))) flatMap {
+                case Left(err) if err == "no token" => next(items.tail) // TODO: log error
                 case Left(err) =>
+                  hasFailed = true
                   next(items.tail) // TODO: log error
                 case Right(_) => NgAllowed.vfuture
               }
