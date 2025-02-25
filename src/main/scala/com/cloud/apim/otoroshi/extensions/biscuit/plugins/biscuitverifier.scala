@@ -97,6 +97,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
   override def access(ctx: NgAccessContext)(implicit env: Env, ec: ExecutionContext): Future[NgAccess] = {
     val config = ctx.cachedConfig(internalName)(BiscuitVerifierPluginConfig.format).getOrElse(BiscuitVerifierPluginConfig())
 
+
     env.adminExtensions.extension[BiscuitExtension] match {
       case None => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> "extension not found"))).vfuture
       case Some(ext) => {
@@ -110,7 +111,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
             case None if !hasFailed && !config.enforce => NgAllowed.vfuture
             case Some(head) => {
               head.verify(ctx.request, Some(VerificationContext(ctx.route, ctx.request, ctx.user, ctx.apikey))) flatMap {
-                case Left(err) if err == "no token" => next(items.tail)
+                case Left(err) if err == "no token" => forbidden(ctx, "No token provided or bad token extraction configuration")
                 case Left(err) =>
                   hasFailed = true
                   next(items.tail) // TODO: log error
@@ -129,10 +130,10 @@ class BiscuitTokenValidator extends NgAccessValidator {
     }
   }
 
-  def forbidden(ctx: NgAccessContext)(implicit env: Env, ec: ExecutionContext): Future[NgAccess] = {
+  def forbidden(ctx: NgAccessContext, msg: String = "forbidden")(implicit env: Env, ec: ExecutionContext): Future[NgAccess] = {
     Errors
       .craftResponseResult(
-        "forbidden",
+        msg,
         Results.Forbidden,
         ctx.request,
         None,

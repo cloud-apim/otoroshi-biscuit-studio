@@ -157,7 +157,7 @@ case class BiscuitTokenForge(
                   case Right(remoteFacts) => {
 
                     val finalConfig = config.copy(
-                      facts = remoteFacts.facts ++ remoteFacts.acl ++ remoteFacts.roles,
+                      facts = config.facts ++ remoteFacts.facts ++ remoteFacts.acl ++ remoteFacts.roles,
                     )
 
                     finalConfig.createToken(kp.privKey) match {

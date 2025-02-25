@@ -61,16 +61,16 @@ object AttenuatorConfig {
 }
 
 case class BiscuitAttenuator(
-                              id: String,
-                              name: String,
-                              description: String,
-                              enabled: Boolean = true,
-                              tags: Seq[String] = Seq.empty,
-                              metadata: Map[String, String] = Map.empty,
-                              location: EntityLocation,
-                              keypairRef: String,
-                              config: AttenuatorConfig
-                            ) extends EntityLocationSupport {
+  id: String,
+  name: String,
+  description: String,
+  enabled: Boolean = true,
+  tags: Seq[String] = Seq.empty,
+  metadata: Map[String, String] = Map.empty,
+  location: EntityLocation,
+  keypairRef: String,
+  config: AttenuatorConfig
+) extends EntityLocationSupport {
   def json: JsValue = BiscuitAttenuator.format.writes(this)
 
   def internalId: String = id
@@ -142,8 +142,6 @@ object BiscuitAttenuator {
             id = IdGenerator.namedId("biscuit-attenuator", env),
             name = "New biscuit Attenuator",
             description = "New biscuit Attenuator",
-            metadata = Map.empty,
-            tags = Seq.empty,
             location = EntityLocation.default,
             keypairRef = "",
             config = AttenuatorConfig()

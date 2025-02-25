@@ -17,14 +17,14 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
 case class BiscuitAttenuatorConfig(
-                                    attenuatorRef: String = "",
-                                    extractorType: String = "header",
-                                    extractorName: String = "Authorization",
-                                    tokenReplaceLoc: String = "header",
-                                    tokenReplaceName: String = "Authorization",
-                                    enableRemoteFacts: Boolean = false,
-                                    remoteFactsRef: String = ""
-                                  ) extends NgPluginConfig {
+  attenuatorRef: String = "",
+  extractorType: String = "header",
+  extractorName: String = "Authorization",
+  tokenReplaceLoc: String = "header",
+  tokenReplaceName: String = "Authorization",
+  enableRemoteFacts: Boolean = false,
+  remoteFactsRef: String = ""
+) extends NgPluginConfig {
   def json: JsValue = BiscuitAttenuatorConfig.format.writes(this)
 }
 
@@ -76,7 +76,7 @@ object BiscuitAttenuatorConfig {
       "props" -> Json.obj(
         "options" -> Seq(
           Json.obj("label" -> "Header", "value" -> "header"),
-          Json.obj("label" -> "Cookies", "value" -> "cookies"),
+          Json.obj("label" -> "Cookies", "value" -> "cookie"),
           Json.obj("label" -> "Query params", "value" -> "query")
         )
       ),
@@ -91,7 +91,7 @@ object BiscuitAttenuatorConfig {
       "props" -> Json.obj(
         "options" -> Seq(
           Json.obj("label" -> "Header", "value" -> "header"),
-          Json.obj("label" -> "Cookies", "value" -> "cookies"),
+          Json.obj("label" -> "Cookies", "value" -> "cookie"),
           Json.obj("label" -> "Query params", "value" -> "query")
         )
       ),
@@ -156,28 +156,28 @@ class BiscuitTokenAttenuator extends NgRequestTransformer {
     env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitAttenuator(config.attenuatorRef)) match {
       case None => Left(Results.InternalServerError(Json.obj("error" -> "attenuator_ref not found in your plugin configuration"))).vfuture
       case Some(attenuator) => {
-          // Verify if the remoteFacts is enabled and the entity reference is provided
-          if (config.enableRemoteFacts && config.remoteFactsRef.nonEmpty) {
-            env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitRemoteFactsLoader(config.remoteFactsRef)) match {
-              case None => Left(Results.InternalServerError(Json.obj("error" -> "remote_facts_ref not found in your plugin configuration"))).vfuture
-              case Some(remoteFactsEntity) => {
-                if (remoteFactsEntity.config.apiUrl.nonEmpty && remoteFactsEntity.config.headers.nonEmpty) {
-                  remoteFactsEntity.config.getRemoteFacts(ctx.json.asObject ++ Json.obj("phase" -> "access", "plugin" -> "biscuit_attenuator")).flatMap {
-                    case Left(error) => Left(Results.InternalServerError(Json.obj("error" -> s"Unable to get remote facts: ${error}"))).vfuture
-                    case Right(factsData) => {
-                      val attenuatorConfigWithRemoteFacts = attenuator.config.copy(checks = attenuator.config.checks ++ factsData.checks)
+        // Verify if the remoteFacts is enabled and the entity reference is provided
+        if (config.enableRemoteFacts && config.remoteFactsRef.nonEmpty) {
+          env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitRemoteFactsLoader(config.remoteFactsRef)) match {
+            case None => Left(Results.InternalServerError(Json.obj("error" -> "remote_facts_ref not found in your plugin configuration"))).vfuture
+            case Some(remoteFactsEntity) => {
+              if (remoteFactsEntity.config.apiUrl.nonEmpty && remoteFactsEntity.config.headers.nonEmpty) {
+                remoteFactsEntity.config.getRemoteFacts(ctx.json.asObject ++ Json.obj("phase" -> "access", "plugin" -> "biscuit_attenuator")).flatMap {
+                  case Left(error) => Left(Results.InternalServerError(Json.obj("error" -> s"Unable to get remote facts: ${error}"))).vfuture
+                  case Right(factsData) => {
+                    val attenuatorConfigWithRemoteFacts = attenuator.config.copy(checks = attenuator.config.checks ++ factsData.checks)
 
-                      doAttenuation(ctx, config, attenuator, attenuatorConfigWithRemoteFacts)
-                    }
+                    doAttenuation(ctx, config, attenuator, attenuatorConfigWithRemoteFacts)
                   }
-                } else {
-                  Left(Results.InternalServerError(Json.obj("error" -> "bad remoteFacts entity configuration"))).vfuture
                 }
+              } else {
+                Left(Results.InternalServerError(Json.obj("error" -> "bad remoteFacts entity configuration"))).vfuture
               }
             }
-          } else {
-            doAttenuation(ctx, config, attenuator, attenuator.config)
           }
+        } else {
+          doAttenuation(ctx, config, attenuator, attenuator.config)
+        }
       }
     }
   }
@@ -210,7 +210,7 @@ class BiscuitTokenAttenuator extends NgRequestTransformer {
                             val newUrl = uri.copy(rawQueryString = newQuery).toString()
                             finalRequest = finalRequest.copy(url = newUrl)
                           }
-                          case "cookies" => {
+                          case "cookie" => {
                             finalRequest = finalRequest.copy(cookies = ctx.otoroshiRequest.cookies.filterNot(_.name.toLowerCase() == config.extractorName.toLowerCase()))
                           }
                         }
@@ -223,7 +223,7 @@ class BiscuitTokenAttenuator extends NgRequestTransformer {
                             val newUrl = uri.copy(rawQueryString = newQuery.some).toString()
                             finalRequest.copy(url = newUrl).right.vfuture
                           }
-                          case "cookies" => {
+                          case "cookie" => {
                             val cookie = DefaultWSCookie(name = config.tokenReplaceName, value = s"biscuit:${attenuatedToken.serialize_b64url()}", maxAge = Some(360000), path = "/".some, domain = ctx.request.domain.some, httpOnly = false)
 
                             finalRequest.copy(cookies = finalRequest.cookies ++ Seq(cookie)).right.vfuture

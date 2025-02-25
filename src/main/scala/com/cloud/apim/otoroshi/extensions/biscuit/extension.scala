@@ -1009,7 +1009,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                       case Right(remoteFacts) => {
 
                         val c = biscuitForgeConfig.copy(
-                          facts = remoteFacts.facts ++ remoteFacts.acl ++ remoteFacts.roles
+                          facts = biscuitForgeConfig.facts ++ remoteFacts.facts ++ remoteFacts.acl ++ remoteFacts.roles
                         )
 
                         c.createToken(privKey) match {

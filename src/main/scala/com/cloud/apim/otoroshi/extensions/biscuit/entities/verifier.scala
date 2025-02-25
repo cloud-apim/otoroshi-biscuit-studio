@@ -345,7 +345,7 @@ case class BiscuitVerifier(
 
   def verify(req: RequestHeader, ctxOpt: Option[VerificationContext])(implicit env: Env, ec: ExecutionContext): Future[Either[String, Unit]] = {
     env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(keypairRef)) match {
-      case None => Left("keypairRef not found").vfuture
+      case None => Left("keypair_ref not found").vfuture
       case Some(keypair) => {
         extractor.extractToken(req) match {
           case Some(token) => {
