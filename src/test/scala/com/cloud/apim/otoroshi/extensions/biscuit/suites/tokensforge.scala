@@ -157,12 +157,7 @@ class TestsTokensForge extends BiscuitExtensionSuite {
          |      "exclude": [],
          |      "config": {
          |        "verifier_refs": ["${verifierId}"],
-         |        "rbac_ref": "",
-         |        "enable_remote_facts": false,
-         |        "remote_facts_ref": "",
-         |        "enforce": true,
-         |        "extractor_type": "header",
-         |        "extractor_name": "biscuit-header"
+         |        "enforce": true
          |      },
          |      "bound_listeners": [],
          |      "plugin_index": {
