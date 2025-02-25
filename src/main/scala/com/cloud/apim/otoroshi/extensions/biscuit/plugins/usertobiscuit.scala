@@ -1,11 +1,12 @@
 package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
 import akka.stream.Materializer
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.BiscuitTokenForge
+import otoroshi.el.GlobalExpressionLanguage
 import otoroshi.env.Env
-import otoroshi.next.plugins.api.{NgPluginCategory, NgPluginConfig, NgPluginHttpRequest, NgPluginVisibility, NgRequestTransformer, NgStep, NgTransformerRequestContext}
-import otoroshi.utils.syntax.implicits.{BetterJsValue, BetterSyntax}
+import otoroshi.next.plugins.api._
+import otoroshi.utils.syntax.implicits._
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.BiscuitExtension
-import play.api.Logger
 import play.api.libs.json._
 import play.api.mvc.{Result, Results}
 
@@ -13,22 +14,25 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Left, Success, Try}
 
 case class UserToBiscuitExtractorConfig(
-  forgeRef: String =  "",
+  automaticFacts: Boolean = true,
+  forgeRef: String = "",
   extractorHeaderName: String = "biscuit-auth-user"
 ) extends NgPluginConfig {
   def json: JsValue = UserToBiscuitExtractorConfig.format.writes(this)
 }
 
 object UserToBiscuitExtractorConfig {
-  val configFlow: Seq[String] = Seq("forge_ref", "extractor_header_name")
+  val configFlow: Seq[String] = Seq("forge_ref", "extractor_header_name", "auto_facts")
   val format = new Format[UserToBiscuitExtractorConfig] {
     override def writes(o: UserToBiscuitExtractorConfig): JsValue = Json.obj(
+      "auto_facts" -> o.automaticFacts,
       "forge_ref" -> o.forgeRef,
       "extractor_header_name"-> o.extractorHeaderName
     )
 
     override def reads(json: JsValue): JsResult[UserToBiscuitExtractorConfig] = Try {
       UserToBiscuitExtractorConfig(
+        automaticFacts = json.select("auto_facts").asOpt[Boolean].getOrElse(true),
         forgeRef = json.select("forge_ref").asOpt[String].getOrElse(""),
         extractorHeaderName = json.select("extractor_header_name").asOpt[String].getOrElse(""),
       )
@@ -38,7 +42,7 @@ object UserToBiscuitExtractorConfig {
     }
   }
 
-  def configSchema(name: String): Option[JsObject] = Some(Json.obj(
+  def configSchema: Option[JsObject] = Some(Json.obj(
     "forge_ref" -> Json.obj(
       "type" -> "select",
       "label" -> s"Biscuit Forge Reference",
@@ -55,12 +59,15 @@ object UserToBiscuitExtractorConfig {
       "type" -> "text",
       "label" -> "Extractor Header name"
     ),
+    "auto_facts" -> Json.obj(
+      "type" -> "bool",
+      "label" -> "Automatic user facts",
+      "help" -> "insert user facts automatically even if not defined in the biscuit forge"
+    ),
   ))
 }
 
 class UserToBiscuitExtractor extends NgRequestTransformer {
-
-  private val logger = Logger("user-to-biscuit-extractor-plugin")
 
   override def name: String = "Cloud APIM - User to Biscuit Extractor"
 
@@ -74,7 +81,7 @@ class UserToBiscuitExtractor extends NgRequestTransformer {
 
   override def configFlow: Seq[String] = UserToBiscuitExtractorConfig.configFlow
 
-  override def configSchema: Option[JsObject] = UserToBiscuitExtractorConfig.configSchema("user-to-biscuit")
+  override def configSchema: Option[JsObject] = UserToBiscuitExtractorConfig.configSchema
 
   override def visibility: NgPluginVisibility = NgPluginVisibility.NgUserLand
 
@@ -91,21 +98,52 @@ class UserToBiscuitExtractor extends NgRequestTransformer {
 
   override def transformRequest(ctx: NgTransformerRequestContext)(implicit env: Env, ec: ExecutionContext, mat: Materializer): Future[Either[Result, NgPluginHttpRequest]] = {
     val config = ctx.cachedConfig(internalName)(UserToBiscuitExtractorConfig.format).getOrElse(UserToBiscuitExtractorConfig())
-    env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitTokenForge(config.forgeRef)) match {
-      case None => Left(Results.InternalServerError(Json.obj("error" -> "forge_ref not found"))).vfuture
-      case Some(forge) => {
-        if(ctx.user.isDefined){
-          forge.forgeToken(Json.obj(), ctx.user).flatMap {
+    if (ctx.user.isDefined) {
+      env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitTokenForge(config.forgeRef)) match {
+        case None => Left(Results.InternalServerError(Json.obj("error" -> "forge_ref not found"))).vfuture
+        case Some(forge) => {
+          val strForge = forge.json.stringify
+          val finalForge = if (strForge.contains("${")) {
+            val jsonStr = GlobalExpressionLanguage.apply(
+              value = strForge,
+              req = ctx.request.some,
+              service = None,
+              route = ctx.route.some,
+              apiKey = ctx.apikey,
+              user = ctx.user,
+              context = ctx.attrs.get(otoroshi.plugins.Keys.ElCtxKey).getOrElse(Map.empty),
+              attrs = ctx.attrs,
+              env = env,
+            )
+            BiscuitTokenForge.format.reads(jsonStr.parseJson).get
+          } else {
+            forge
+          }
+          finalForge.forgeToken(Json.obj(), if (config.automaticFacts) ctx.user else None).flatMap {
             case Left(err) => ctx.otoroshiRequest.right.vfuture
             case Right(token) => {
-              var finalRequest = ctx.otoroshiRequest
-              finalRequest.copy(headers = finalRequest.headers ++ Map(config.extractorHeaderName -> s"${token.serialize_b64url()}")).right.vfuture
+              val finalRequest = ctx.otoroshiRequest
+              val lowerName = config.extractorHeaderName.toLowerCase().trim
+              val (headerName, prefix) = lowerName match {
+                case "authorizationbearer" => ("Authorization", "Bearer ")
+                case "authorization-bearer" => ("Authorization", "Bearer ")
+                case "authorization:bearer" => ("Authorization", "Bearer ")
+                case "authorization: bearer" => ("Authorization", "Bearer ")
+                case "authorizationbiscuit" => ("Authorization", "Biscuit ")
+                case "authorization-biscuit" => ("Authorization", "Biscuit ")
+                case "authorization:biscuit" => ("Authorization", "Biscuit ")
+                case "authorization: biscuit" => ("Authorization", "Biscuit ")
+                case _ => (config.extractorHeaderName.trim, "")
+              }
+              finalRequest.copy(
+                headers = finalRequest.headers ++ Map(headerName -> s"${prefix}${token.serialize_b64url()}")
+              ).right.vfuture
             }
           }
-        }else{
-          ctx.otoroshiRequest.right.vfuture
         }
       }
+    } else {
+      ctx.otoroshiRequest.right.vfuture
     }
   }
 }

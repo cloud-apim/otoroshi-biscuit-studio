@@ -159,7 +159,7 @@ case class BiscuitTokenForge(
 
   def theTags: Seq[String] = tags
 
-  def forgeToken(remoteFactsCtx: JsValue, userOpt: Option[PrivateAppsUser] =  None)(implicit env: Env, ec: ExecutionContext): Future[Either[String, Biscuit]] = {
+  def forgeToken(remoteFactsCtx: JsValue, userOpt: Option[PrivateAppsUser] = None)(implicit env: Env, ec: ExecutionContext): Future[Either[String, Biscuit]] = {
     env.adminExtensions.extension[BiscuitExtension].get.states.keypair(keypairRef) match {
       case None => Left("keypair not found").vfuture
       case Some(kp) => {
