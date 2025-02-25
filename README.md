@@ -63,13 +63,10 @@ curl -X POST -H 'Content-Type: application/json' 'http://otoroshi-api.oto.tools:
 Here is a demo configuration :
 
 ```js
-  {
-    "verifier_ref": "YOUR_BISCUIT_VERIFIER_ENTITY_REF",
-    "rbac_ref": "RBAC_POLICY_ENTITY_REF" // optional
-    "enforce": false, // true or false
-    "extractor_type": "header", // header, query or cookie
-    "extractor_name": "Authorization"
-  }
+{
+  "verifier_refs": ["biscuit-verifier_ef2d067d-b9a7-4635-8bd0-0b5d1953dca3", "biscuit-verifier_c1215c55-8c6b-4dd9-934e-ae05967b8c20"], // type : 'array' - it takes a list of verifiers
+  "enforce": true, // type: 'boolean'
+}
 ```
 
 ### Attenuator Plugin configuration
@@ -77,13 +74,13 @@ Here is a demo configuration :
 Here is a demo configuration :
 
 ```js
-  {
-    "ref": "YOUR_BISCUIT_ATTENUATOR_REF",
-    "extractor_type": "header", // header, query or cookie
-    "extractor_name": "Authorization"
-    "token_replace_loc": "header", // header, query or cookie
-    "token_replace_name": "biscuit_token"
-  }
+{
+  "ref": "YOUR_BISCUIT_ATTENUATOR_REF",
+  "extractor_type": "header", // header, query or cookie
+  "extractor_name": "Authorization"
+  "token_replace_loc": "header", // header, query or cookie
+  "token_replace_name": "biscuit_token"
+}
 ```
 
 ### Biscuit Studio API Reference

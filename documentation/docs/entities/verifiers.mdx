@@ -138,8 +138,15 @@ curl -X POST -H 'Content-Type: application/json' \
       "facts": [],
       "resources": [],
       "rules": [],
-      "revocation_ids": []
+      "policies": [],
+      "rbac_refs": [],
+      "revoked_ids": [],
+      "remote_facts_refs": []
     },
+    "extractor": {
+      "extractor_type": "header",
+      "extractor_name": "Authorization"
+    }
     "kind": "biscuit.extensions.cloud-apim.com/BiscuitVerifier"
   }'
 ```
@@ -317,7 +324,9 @@ curl -X POST -H 'Content-Type: application/json' \
       "policies": [
          "allow if is_allowed($user, $resource, $op);"
       ],
-      "revokedIds": []
+      "rbac_refs": [],
+      "revoked_ids": [],
+      "remote_facts_refs": []
     },
     "kind": "biscuit.extensions.cloud-apim.com/BiscuitVerifier"
   }'
