@@ -119,7 +119,7 @@ class BiscuitUserExtractor extends NgPreRouting {
 
   override def start(env: Env): Future[Unit] = {
     env.adminExtensions.extension[BiscuitExtension].foreach { ext =>
-      ext.logger.info("the 'Biscuit - token/apikey bridge' plugin is available !")
+      ext.logger.info("the 'Cloud APIM - Biscuit User Extractor' plugin is available !")
     }
     ().vfuture
   }
@@ -219,6 +219,7 @@ class BiscuitUserExtractor extends NgPreRouting {
           location = ctx.route.serviceDescriptor.location
         )
         ctx.attrs.put(otoroshi.plugins.Keys.UserKey -> user)
+
         Done.right.vfuture
       }
       case _ => unauthorized(Json.obj("error" -> "unauthorized", "error_description" -> "Bad user extraction, user id or username not valid"))
