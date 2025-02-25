@@ -13,9 +13,10 @@ import play.api.mvc.Results
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
+
 case class BiscuitVerifierPluginConfig(
-    verifierRefs: Seq[String] = Seq.empty,
-    enforce: Boolean = true,
+  verifierRefs: Seq[String] = Seq.empty,
+  enforce: Boolean = true,
 ) extends NgPluginConfig {
   def json: JsValue = BiscuitVerifierPluginConfig.format.writes(this)
 }
@@ -23,6 +24,22 @@ case class BiscuitVerifierPluginConfig(
 object BiscuitVerifierPluginConfig {
 
   val configFlow: Seq[String] = Seq("verifier_refs", "enforce")
+  val format = new Format[BiscuitVerifierPluginConfig] {
+    override def writes(o: BiscuitVerifierPluginConfig): JsValue = Json.obj(
+      "verifier_refs" -> o.verifierRefs,
+      "enforce" -> o.enforce,
+    )
+
+    override def reads(json: JsValue): JsResult[BiscuitVerifierPluginConfig] = Try {
+      BiscuitVerifierPluginConfig(
+        verifierRefs = json.select("verifier_refs").asOpt[Seq[String]].getOrElse(Seq.empty) ++ json.select("verifier_ref").asOpt[String],
+        enforce = json.select("enforce").asOpt[Boolean].getOrElse(true)
+      )
+    } match {
+      case Failure(exception) => JsError(exception.getMessage)
+      case Success(value) => JsSuccess(value)
+    }
+  }
 
   def configSchema(name: String): Option[JsObject] = Some(Json.obj(
     "verifier_refs" -> Json.obj(
@@ -87,23 +104,8 @@ object BiscuitVerifierPluginConfig {
       "label" -> "Biscuit field name"
     )
   ))
-
-  val format = new Format[BiscuitVerifierPluginConfig] {
-    override def writes(o: BiscuitVerifierPluginConfig): JsValue = Json.obj(
-      "verifier_refs" -> o.verifierRefs,
-      "enforce" -> o.enforce,
-    )
-    override def reads(json: JsValue): JsResult[BiscuitVerifierPluginConfig] = Try {
-      BiscuitVerifierPluginConfig(
-        verifierRefs = json.select("verifier_refs").asOpt[Seq[String]].getOrElse(Seq.empty) ++ json.select("verifier_ref").asOpt[String],
-        enforce = json.select("enforce").asOpt[Boolean].getOrElse(true)
-      )
-    } match {
-      case Failure(exception) => JsError(exception.getMessage)
-      case Success(value) => JsSuccess(value)
-    }
-  }
 }
+
 class BiscuitTokenValidator extends NgAccessValidator {
 
   private val logger = Logger("biscuit-token-validator-plugin")

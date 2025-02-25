@@ -27,10 +27,10 @@ import scala.util.{Failure, Success, Try}
 
 case class VerificationContext(route: NgRoute, request: RequestHeader, user: Option[PrivateAppsUser], apikey: Option[ApiKey]) {
   def json: JsObject = Json.obj(
-      "apikey"  -> apikey.map(_.lightJson).getOrElse(JsNull).as[JsValue],
-      "user"    -> user.map(_.lightJson).getOrElse(JsNull).as[JsValue],
-      "request" -> JsonHelpers.requestToJson(request),
-      "route"   -> route.json,
+    "apikey" -> apikey.map(_.lightJson).getOrElse(JsNull).as[JsValue],
+    "user" -> user.map(_.lightJson).getOrElse(JsNull).as[JsValue],
+    "request" -> JsonHelpers.requestToJson(request),
+    "route" -> route.json,
   )
 }
 
@@ -82,11 +82,12 @@ case class VerifierConfig(
         verifier.add_fact(fact("user_email", Seq(string(ctx.user.get.email)).asJava))
         verifier.add_fact(fact("auth_method", Seq(string("user")).asJava))
 
-        ctx.user.get.tags.foreach{tag => {
+        ctx.user.get.tags.foreach { tag => {
           verifier.add_fact(fact("user_tag", Seq(string(tag)).asJava))
-        }}
+        }
+        }
 
-        ctx.user.get.metadata.foreach{
+        ctx.user.get.metadata.foreach {
           case (key, value) => verifier.add_fact(fact("user_metadata", Seq(string(key), string(value)).asJava))
         }
       }
@@ -96,11 +97,12 @@ case class VerifierConfig(
         verifier.add_fact(fact("apikey_client_id", Seq(string(ctx.apikey.get.clientId)).asJava))
         verifier.add_fact(fact("apikey_client_name", Seq(string(ctx.apikey.get.clientName)).asJava))
 
-        ctx.apikey.get.tags.foreach{tag => {
+        ctx.apikey.get.tags.foreach { tag => {
           verifier.add_fact(fact("apikey_tag", Seq(string(tag)).asJava))
-        }}
+        }
+        }
 
-        ctx.apikey.get.metadata.foreach{
+        ctx.apikey.get.metadata.foreach {
           case (key, value) => verifier.add_fact(fact("apikey_metadata", Seq(string(key), string(value)).asJava))
         }
       }
@@ -263,7 +265,7 @@ object VerifierConfig {
   }
 }
 
-case class BiscuitExtractorConfig(extractorType: String = "header",  extractorName: String = "Authorization") {
+case class BiscuitExtractorConfig(extractorType: String = "header", extractorName: String = "Authorization") {
 
   def json: JsValue = BiscuitExtractorConfig.format.writes(this)
 
@@ -296,6 +298,7 @@ object BiscuitExtractorConfig {
       "extractor_name" -> o.extractorName,
     )
   }
+
   def replaceHeader(token: String): String = {
     token
       .replace("Bearer ", "")
@@ -316,18 +319,18 @@ object BiscuitExtractorConfig {
 }
 
 case class BiscuitVerifier(
-                            id: String,
-                            name: String,
-                            description: String,
-                            strict: Boolean = true,
-                            enabled: Boolean = true,
-                            tags: Seq[String] = Seq.empty,
-                            metadata: Map[String, String] = Map.empty,
-                            location: EntityLocation,
-                            keypairRef: String = "",
-                            config: VerifierConfig,
-                            extractor: BiscuitExtractorConfig,
-                          ) extends EntityLocationSupport {
+  id: String,
+  name: String,
+  description: String,
+  strict: Boolean = true,
+  enabled: Boolean = true,
+  tags: Seq[String] = Seq.empty,
+  metadata: Map[String, String] = Map.empty,
+  location: EntityLocation,
+  keypairRef: String = "",
+  config: VerifierConfig,
+  extractor: BiscuitExtractorConfig,
+) extends EntityLocationSupport {
   def json: JsValue = BiscuitVerifier.format.writes(this)
 
   def internalId: String = id

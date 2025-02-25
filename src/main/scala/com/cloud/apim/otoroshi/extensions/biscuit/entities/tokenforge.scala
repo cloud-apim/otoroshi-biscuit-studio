@@ -23,13 +23,13 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
 case class BiscuitForgeConfig(
-                               checks: Seq[String] = Seq.empty,
-                               facts: Seq[String] = Seq.empty,
-                               resources: Seq[String] = Seq.empty,
-                               rules: Seq[String] = Seq.empty,
-                               enableTtl: Boolean = false,
-                               ttl: FiniteDuration = 1.hour
-                             ) {
+  checks: Seq[String] = Seq.empty,
+  facts: Seq[String] = Seq.empty,
+  resources: Seq[String] = Seq.empty,
+  rules: Seq[String] = Seq.empty,
+  enableTtl: Boolean = false,
+  ttl: FiniteDuration = 1.hour
+) {
   def json: JsValue = BiscuitForgeConfig.format.writes(this)
 
   def createToken(privKeyValue: String)(implicit env: Env): Either[String, Biscuit] = {
@@ -115,16 +115,16 @@ object BiscuitForgeConfig {
 }
 
 case class BiscuitTokenForge(
-                              id: String,
-                              name: String,
-                              description: String = "",
-                              keypairRef: String = "",
-                              config: BiscuitForgeConfig,
-                              tags: Seq[String] = Seq.empty,
-                              metadata: Map[String, String] = Map.empty,
-                              location: EntityLocation,
-                              remoteFactsLoaderRef: Option[String] = None
-                            ) extends EntityLocationSupport {
+  id: String,
+  name: String,
+  description: String = "",
+  keypairRef: String = "",
+  config: BiscuitForgeConfig,
+  tags: Seq[String] = Seq.empty,
+  metadata: Map[String, String] = Map.empty,
+  location: EntityLocation,
+  remoteFactsLoaderRef: Option[String] = None
+) extends EntityLocationSupport {
   def json: JsValue = BiscuitTokenForge.format.writes(this)
 
   def internalId: String = id
@@ -136,10 +136,6 @@ case class BiscuitTokenForge(
   def theName: String = name
 
   def theTags: Seq[String] = tags
-
-  def createToken(privKeyValue: String)(implicit env: Env): Either[String, Biscuit] = {
-    config.createToken(privKeyValue)
-  }
 
   def forgeToken(ctx: JsValue)(implicit env: Env, ec: ExecutionContext): Future[Either[String, Biscuit]] = {
     env.adminExtensions.extension[BiscuitExtension].get.states.keypair(keypairRef) match {
@@ -176,6 +172,10 @@ case class BiscuitTokenForge(
         }
       }
     }
+  }
+
+  def createToken(privKeyValue: String)(implicit env: Env): Either[String, Biscuit] = {
+    config.createToken(privKeyValue)
   }
 }
 
