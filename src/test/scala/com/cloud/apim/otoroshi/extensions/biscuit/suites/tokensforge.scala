@@ -104,7 +104,9 @@ class TestsTokensForge extends BiscuitExtensionSuite {
         ),
         revokedIds = List.empty
       ),
-      extractor = BiscuitExtractorConfig()
+      extractor = BiscuitExtractorConfig(
+        "header", "biscuit-header"
+      )
     )
 
     BiscuitVerifiersUtils.createVerifierEntity(client)(verifier)
@@ -202,7 +204,6 @@ class TestsTokensForge extends BiscuitExtensionSuite {
     printHeader("", "create a token with forge from API")
     testWithForgeFromApi(client, 30.seconds)
   }
-
 
   def testForgeWithRemoteFactsEntity(client: OtoroshiClient, awaitFor: FiniteDuration)(implicit ec: ExecutionContext, mat: Materializer): Unit = {
 
@@ -326,7 +327,6 @@ class TestsTokensForge extends BiscuitExtensionSuite {
 
     await(2500.millis)
   }
-
 
   def testWithForgeFromApi(client: OtoroshiClient, awaitFor: FiniteDuration)(implicit ec: ExecutionContext, mat: Materializer): Unit = {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
