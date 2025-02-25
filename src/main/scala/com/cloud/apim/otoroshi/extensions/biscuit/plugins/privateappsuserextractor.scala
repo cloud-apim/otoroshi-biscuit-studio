@@ -2,7 +2,8 @@ package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
 import akka.Done
 import com.cloud.apim.otoroshi.extensions.biscuit.entities.BiscuitExtractorConfig
-import org.biscuitsec.biscuit.token.Biscuit
+import org.biscuitsec.biscuit.datalog.SymbolTable
+import org.biscuitsec.biscuit.token.{Biscuit, UnverifiedBiscuit}
 import org.biscuitsec.biscuit.token.builder.Term.Str
 import org.joda.time.DateTime
 import otoroshi.env.Env
@@ -16,7 +17,7 @@ import play.api.libs.json._
 import play.api.mvc.Results
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.jdk.CollectionConverters.{asScalaBufferConverter, asScalaSetConverter}
+import scala.jdk.CollectionConverters.{asScalaBufferConverter, asScalaSetConverter, collectionAsScalaIterableConverter}
 import scala.util.{Failure, Success, Try}
 
 case class BiscuitUserExtractorConfig(
@@ -153,6 +154,30 @@ class BiscuitUserExtractor extends NgPreRouting {
     }
   }
 
+  def extractBiscuitTokenInfo(biscuitToken: Biscuit): JsObject = {
+    var finalProfile = Json.obj()
+
+    val clazz = classOf[UnverifiedBiscuit]
+    Try(clazz.getField("symbols"))
+      .orElse(Try(clazz.getDeclaredField("symbols")))
+      .toOption
+      .map { f =>
+        f.setAccessible(true)
+        f
+      }.flatMap(v => Option(v.get(biscuitToken))).map(_.asInstanceOf[SymbolTable]).foreach { symbols =>
+        biscuitToken.authorizer().facts().facts().values().asScala.flatMap(_.asScala).foreach { fact =>
+          val nameLng = fact.predicate().name().toInt
+          val name = symbols.get_s(nameLng)
+          val value: String = fact.predicate().terms().asScala.map(t => symbols.print_term(t)).mkString(", ")
+          if (name.isDefined) {
+            val cleanValue = value.replaceAll("^\"|\"$", "").replace("\\\"", "\"")
+            finalProfile = finalProfile + (name.get() -> JsString(cleanValue))
+          }
+        }
+      }
+    finalProfile
+  }
+
   def extractIdAndName(ctx: NgPreRoutingContext, biscuitToken: Biscuit, config: BiscuitUserExtractorConfig)(implicit env: Env, ec: ExecutionContext): Future[Either[NgPreRoutingError, Done]] = {
     val otoroshiUserId = biscuitToken.authorizer().query("biscuit_user_id($id) <- user_id($id)")
     val otoroshiUsername = biscuitToken.authorizer().query(s"biscuit_username($$id) <- ${config.usernameKey}($$id)")
@@ -183,22 +208,8 @@ class BiscuitUserExtractor extends NgPreRouting {
         }
     }
 
-    //    val clazz = classOf[UnverifiedBiscuit]
-    //    Try(clazz.getField("symbols"))
-    //      .orElse(Try(clazz.getDeclaredField("symbols")))
-    //      .toOption
-    //      .map { f =>
-    //        f.setAccessible(true)
-    //        f
-    //      }.flatMap(v => Option(v.get(b))).map(_.asInstanceOf[SymbolTable]).foreach { symbols =>
-    //        biscuitToken.authorizer().facts().facts().values().asScala.flatMap(_.asScala).foreach { fact =>
-    //          val nameLng = fact.predicate().name().toInt
-    //          val name = symbols.get_s(nameLng)
-    //          val value: String = fact.predicate().terms().asScala.map(t => symbols.print_term(t)).mkString(", ")
-    //          println(s"name: ${name} - ${value}")
-    //        }
-    //      }
 
+    val finalProfile = extractBiscuitTokenInfo(biscuitToken)
     (biscuitUserId, biscuitUsername) match {
       case (Some(userId), Some(userName)) => {
 
@@ -207,7 +218,7 @@ class BiscuitUserExtractor extends NgPreRouting {
           name = userId,
           email = userName,
           otoroshiData = None,
-          profile = Json.obj(),
+          profile = finalProfile,
           token = Json.obj("biscuit" -> biscuitToken.serialize_b64url()),
           realm = s"BiscuitUserExtractor@${ctx.route.serviceDescriptor.id}",
           authConfigId = s"BiscuitUserExtractor@${ctx.route.serviceDescriptor.id}",
