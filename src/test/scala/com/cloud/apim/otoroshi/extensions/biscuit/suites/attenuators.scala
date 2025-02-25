@@ -371,7 +371,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
          |        "attenuator_ref": "${attenuatorId}",
          |        "extractor_type": "header",
          |        "extractor_name": "biscuit-token-test",
-         |        "token_replace_loc": "cookies",
+         |        "token_replace_loc": "cookie",
          |        "token_replace_name": "biscuit-attenuated-token"
          |      },
          |      "bound_listeners": [],

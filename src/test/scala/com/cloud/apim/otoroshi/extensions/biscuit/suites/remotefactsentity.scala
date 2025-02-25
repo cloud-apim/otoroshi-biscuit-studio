@@ -365,7 +365,6 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
 
     assertEquals(respWithBadTokenHeader.status, 403, s"route should return forbidden for bad token in headers")
     assert(respWithBadTokenHeader.json.at("Otoroshi-Error").isDefined, s"'Otoroshi-Error' should be defined")
-    assertEquals(respWithBadTokenHeader.json.at("Otoroshi-Error").asString, "No token provided or bad token extraction configuration", s"should thrown 'No token provided or bad token extraction configuration' as forbidden message")
 
     val respWithGoodTokenHeader = client.call("GET", s"http://${routeDomain}:${port}", Map("biscuit-header" -> token), None).awaitf(30.seconds)
 

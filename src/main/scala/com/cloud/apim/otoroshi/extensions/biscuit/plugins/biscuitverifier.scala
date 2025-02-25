@@ -111,7 +111,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
             case None if !hasFailed && !config.enforce => NgAllowed.vfuture
             case Some(head) => {
               head.verify(ctx.request, Some(VerificationContext(ctx.route, ctx.request, ctx.user, ctx.apikey))) flatMap {
-                case Left(err) if err == "no token" => forbidden(ctx, "No token provided or bad token extraction configuration")
+                case Left(err) if err == "no token" => next(items.tail)
                 case Left(err) =>
                   hasFailed = true
                   next(items.tail) // TODO: log error
