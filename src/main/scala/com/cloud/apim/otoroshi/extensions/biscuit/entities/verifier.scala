@@ -256,7 +256,7 @@ object VerifierConfig {
           policies = (json \ "policies").asOpt[Seq[String]].getOrElse(Seq.empty),
           rbacPolicyRefs = (json \ "rbac_refs").asOpt[Seq[String]].getOrElse(Seq.empty),
           revokedIds = (json \ "revoked_ids").asOpt[Seq[String]].getOrElse(Seq.empty),
-          remoteFactsRefs = (json \ "remote_facts_ref").asOpt[Seq[String]].getOrElse(Seq.empty)
+          remoteFactsRefs = (json \ "remote_facts_refs").asOpt[Seq[String]].getOrElse(Seq.empty)
         )
       } match {
         case Failure(e) => JsError(e.getMessage)

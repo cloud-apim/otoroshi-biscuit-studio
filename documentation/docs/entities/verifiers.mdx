@@ -37,10 +37,11 @@ The following JSON configuration defines a Biscuit Verifier with a time constrai
 ```json
 {
   "enabled": true,
-  "id": "biscuit_verifier_6f5f20a5-2c65-4860-8ad1-7b6495ee03bf",
+  "id": "biscuit-verifier_8c6cc80d-8305-4d5a-b82d-c81fe2f5e7c6",
   "keypair_ref": "biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9",
-  "name": "Biscuit Verifier",
-  "description": "Biscuit Verifier",
+  "name": "New biscuit verifier",
+  "description": "New biscuit verifier",
+  "metadata": {},
   "strict": true,
   "tags": [],
   "config": {
@@ -50,9 +51,15 @@ The following JSON configuration defines a Biscuit Verifier with a time constrai
     "facts": [],
     "resources": [],
     "rules": [],
-    "revocation_ids": []
+    "policies": [],
+    "rbac_refs": [],
+    "revoked_ids": [],
+    "remote_facts_refs": []
   },
-  "kind": "biscuit.extensions.cloud-apim.com/BiscuitVerifier"
+  "extractor": {
+    "extractor_type": "header",
+    "extractor_name": "Authorization"
+  }
 }
 ```
 
@@ -72,6 +79,41 @@ The following JSON configuration defines a Biscuit Verifier with a time constrai
   - **`rules`**: Defines custom rules for validation.
   - **`revocation_ids`**: List of IDs marking revoked tokens.
 - **`kind`**: Specifies the resource type for integration with APIs.
+
+
+## Get a Biscuit Verifier template with Otoroshi's API
+```bash 
+curl -X GET -H 'Content-Type: application/json' 'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers/_template' -u admin-api-apikey-id:admin-api-apikey-secret
+```
+
+Result : 
+
+```json
+{
+  "enabled": true,
+  "id": "biscuit-verifier_b11857d7-b000-4815-8704-290077966914",
+  "keypair_ref": "",
+  "name": "New biscuit verifier",
+  "description": "New biscuit verifier",
+  "metadata": {},
+  "strict": true,
+  "tags": [],
+  "config": {
+    "checks": [],
+    "facts": [],
+    "resources": [],
+    "rules": [],
+    "policies": [],
+    "rbac_refs": [],
+    "revoked_ids": [],
+    "remote_facts_refs": []
+  },
+  "extractor": {
+    "extractor_type": "header",
+    "extractor_name": "Authorization"
+  }
+}
+```
 
 ## Creating a Biscuit Verifier from Command Line
 

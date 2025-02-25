@@ -55,53 +55,9 @@ object BiscuitVerifierPluginConfig {
         ),
       ),
     ),
-    // rest is useless but will be used in verifier form
-    "rbac_ref" -> Json.obj(
-      "type" -> "select",
-      "label" -> s"RBAC Policy Reference",
-      "props" -> Json.obj(
-        "isClearable" -> true,
-        "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-rbac",
-        "optionsTransformer" -> Json.obj(
-          "label" -> "name",
-          "value" -> "id",
-        ),
-      ),
-    ),
-    "enable_remote_facts" -> Json.obj(
-      "type" -> "bool",
-      "label" -> "Enable Remote Facts Loader"
-    ),
-    "remote_facts_ref" -> Json.obj(
-      "type" -> "select",
-      "label" -> s"Load Remote Facts",
-      "props" -> Json.obj(
-        "isClearable" -> true,
-        "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-remote-facts",
-        "optionsTransformer" -> Json.obj(
-          "label" -> "name",
-          "value" -> "id",
-        ),
-      ),
-    ),
     "enforce" -> Json.obj(
       "type" -> "bool",
       "label" -> "Enforce"
-    ),
-    "extractor_type" -> Json.obj(
-      "type" -> "select",
-      "label" -> s"Extractor type",
-      "props" -> Json.obj(
-        "options" -> Seq(
-          Json.obj("label" -> "Header", "value" -> "header"),
-          Json.obj("label" -> "Cookies", "value" -> "cookies"),
-          Json.obj("label" -> "Query params", "value" -> "query")
-        )
-      ),
-    ),
-    "extractor_name" -> Json.obj(
-      "type" -> "text",
-      "label" -> "Biscuit field name"
     )
   ))
 }
