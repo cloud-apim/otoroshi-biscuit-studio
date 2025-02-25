@@ -48,8 +48,12 @@ case class BiscuitForgeConfig(
 
     if (userOpt.isDefined) {
       val user = userOpt.get
+
       authority_builder.add_fact(fact("user_name", Seq(string(user.name)).asJava))
       authority_builder.add_fact(fact("user_email", Seq(string(user.email)).asJava))
+      authority_builder.add_fact(fact("user_created_at", Seq(string(user.createdAt.toString)).asJava))
+      authority_builder.add_fact(fact("user_id", Seq(string(user.email)).asJava))
+
       authority_builder.add_fact(fact("auth_method", Seq(string("user")).asJava))
 
       user.tags.foreach { tag => {
