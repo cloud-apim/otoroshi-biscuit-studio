@@ -1,10 +1,10 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.entities
 
-import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils
 import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils.handleBiscuitErrors
 import org.biscuitsec.biscuit.crypto.KeyPair
 import org.biscuitsec.biscuit.token.Biscuit
 import org.biscuitsec.biscuit.token.builder.Block
+import org.biscuitsec.biscuit.token.builder.Utils.{fact, string}
 import org.biscuitsec.biscuit.token.builder.parser.Parser
 import org.joda.time.DateTime
 import otoroshi.api.{GenericResourceAccessApiWithState, Resource, ResourceVersion}
@@ -21,6 +21,7 @@ import java.security.SecureRandom
 import scala.concurrent.duration.{DurationLong, FiniteDuration}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
+import scala.jdk.CollectionConverters._
 
 case class BiscuitForgeConfig(
   checks: Seq[String] = Seq.empty,
@@ -32,7 +33,7 @@ case class BiscuitForgeConfig(
 ) {
   def json: JsValue = BiscuitForgeConfig.format.writes(this)
 
-  def createToken(privKeyValue: String)(implicit env: Env): Either[String, Biscuit] = {
+  def createToken(privKeyValue: String, userOpt: Option[PrivateAppsUser] = None)(implicit env: Env): Either[String, Biscuit] = {
 
     val keypair = new KeyPair(privKeyValue)
     val rng = new SecureRandom()
@@ -44,6 +45,23 @@ case class BiscuitForgeConfig(
           s"check if time($$time), $$time <= ${DateTime.now().plusMillis(ttl.toMillis.toInt)}"
       )
     else this
+
+    if (userOpt.isDefined) {
+      val user = userOpt.get
+      authority_builder.add_fact(fact("user_name", Seq(string(user.name)).asJava))
+      authority_builder.add_fact(fact("user_email", Seq(string(user.email)).asJava))
+      authority_builder.add_fact(fact("auth_method", Seq(string("user")).asJava))
+
+      user.tags.foreach { tag => {
+        authority_builder.add_fact(fact("user_tag", Seq(string(tag)).asJava))
+      }
+      }
+
+      user.metadata.foreach {
+        case (key, value) => authority_builder.add_fact(fact("user_metadata", Seq(string(key), string(value)).asJava))
+      }
+    }
+
 
     // Resources
     config.resources
@@ -137,13 +155,13 @@ case class BiscuitTokenForge(
 
   def theTags: Seq[String] = tags
 
-  def forgeToken(ctx: JsValue)(implicit env: Env, ec: ExecutionContext): Future[Either[String, Biscuit]] = {
+  def forgeToken(remoteFactsCtx: JsValue, userOpt: Option[PrivateAppsUser] =  None)(implicit env: Env, ec: ExecutionContext): Future[Either[String, Biscuit]] = {
     env.adminExtensions.extension[BiscuitExtension].get.states.keypair(keypairRef) match {
       case None => Left("keypair not found").vfuture
       case Some(kp) => {
         remoteFactsLoaderRef match {
           case None => {
-            createToken(kp.privKey) match {
+            createToken(kp.privKey, userOpt) match {
               case Left(err) => Left("unable to forge token").vfuture
               case Right(token) => Right(token).vfuture
             }
@@ -152,7 +170,7 @@ case class BiscuitTokenForge(
             env.adminExtensions.extension[BiscuitExtension].get.states.biscuitRemoteFactsLoader(remoteFactsRef) match {
               case None => Left("remote facts reference not found").vfuture
               case Some(remoteFacts) => {
-                remoteFacts.loadFacts(ctx).flatMap {
+                remoteFacts.loadFacts(remoteFactsCtx).flatMap {
                   case Left(error) => Left(error).vfuture
                   case Right(remoteFacts) => {
 
@@ -160,7 +178,7 @@ case class BiscuitTokenForge(
                       facts = config.facts ++ remoteFacts.facts ++ remoteFacts.acl ++ remoteFacts.roles,
                     )
 
-                    finalConfig.createToken(kp.privKey) match {
+                    finalConfig.createToken(kp.privKey, userOpt) match {
                       case Left(err) => Left("unable to forge token").vfuture
                       case Right(token) => Right(token).vfuture
                     }
@@ -174,8 +192,8 @@ case class BiscuitTokenForge(
     }
   }
 
-  def createToken(privKeyValue: String)(implicit env: Env): Either[String, Biscuit] = {
-    config.createToken(privKeyValue)
+  def createToken(privKeyValue: String, userOpt: Option[PrivateAppsUser] = None)(implicit env: Env): Either[String, Biscuit] = {
+    config.createToken(privKeyValue, userOpt)
   }
 }
 
