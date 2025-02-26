@@ -63,7 +63,7 @@ object BiscuitAttenuatorConfig {
       "label" -> s"Biscuit Attenuator",
       "props" -> Json.obj(
         "isClearable" -> true,
-        "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/${name}",
+        "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-attenuators",
         "optionsTransformer" -> Json.obj(
           "label" -> "name",
           "value" -> "id",
