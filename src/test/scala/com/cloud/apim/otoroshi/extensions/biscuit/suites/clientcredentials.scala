@@ -118,10 +118,11 @@ class ClientcredentialsSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
       plugins = NgPlugins(Seq(NgPluginInstance(
         plugin = s"cp:${classOf[BiscuitTokenValidator].getName}",
         config = NgPluginInstanceConfig(Json.obj(
-          "verifier_ref" -> validator.id
+          "verifier_refs" -> Seq(validator.id)
         )))
       ))
     )
+
     val apikey = ApiKey(
       clientId = clientId,
       clientSecret = IdGenerator.token(16),
