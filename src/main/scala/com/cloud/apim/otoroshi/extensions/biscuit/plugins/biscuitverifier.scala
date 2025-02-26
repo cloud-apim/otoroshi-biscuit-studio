@@ -48,7 +48,7 @@ object BiscuitVerifierPluginConfig {
       "array" -> true,
       "props" -> Json.obj(
         "isClearable" -> true,
-        "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/${name}",
+        "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers",
         "optionsTransformer" -> Json.obj(
           "label" -> "name",
           "value" -> "id",
