@@ -52,8 +52,8 @@ object BiscuitApiKeyBridgeConfig {
       "label" -> s"Extractor type",
       "props" -> Json.obj(
         "options" -> Seq(
-          Json.obj("label" -> "Header", "value" -> "header"),
-          Json.obj("label" -> "Cookies", "value" -> "cookies"),
+          Json.obj("label" -> "Headers", "value" -> "header"),
+          Json.obj("label" -> "Cookies", "value" -> "cookie"),
           Json.obj("label" -> "Query params", "value" -> "query")
         )
       ),
