@@ -57,7 +57,7 @@ object BiscuitAttenuatorConfig {
     }
   }
 
-  def configSchema(name: String): Option[JsObject] = Some(Json.obj(
+  def configSchema: Option[JsObject] = Some(Json.obj(
     "attenuator_ref" -> Json.obj(
       "type" -> "select",
       "label" -> s"Biscuit Attenuator",
@@ -139,7 +139,7 @@ class BiscuitTokenAttenuator extends NgRequestTransformer {
 
   override def configFlow: Seq[String] = BiscuitAttenuatorConfig.configFlow
 
-  override def configSchema: Option[JsObject] = BiscuitAttenuatorConfig.configSchema("biscuit-attenuators")
+  override def configSchema: Option[JsObject] = BiscuitAttenuatorConfig.configSchema
 
   override def name: String = "Cloud APIM - Biscuit Tokens Attenuator"
 

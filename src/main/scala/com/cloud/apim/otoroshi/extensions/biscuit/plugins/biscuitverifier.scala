@@ -41,7 +41,7 @@ object BiscuitVerifierPluginConfig {
     }
   }
 
-  def configSchema(name: String): Option[JsObject] = Some(Json.obj(
+  def configSchema: Option[JsObject] = Some(Json.obj(
     "verifier_refs" -> Json.obj(
       "type" -> "select",
       "label" -> s"Biscuit Verifiers",
@@ -78,7 +78,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
 
   override def configFlow: Seq[String] = BiscuitVerifierPluginConfig.configFlow
 
-  override def configSchema: Option[JsObject] = BiscuitVerifierPluginConfig.configSchema("biscuit-verifiers")
+  override def configSchema: Option[JsObject] = BiscuitVerifierPluginConfig.configSchema
 
   override def visibility: NgPluginVisibility = NgPluginVisibility.NgUserLand
 
