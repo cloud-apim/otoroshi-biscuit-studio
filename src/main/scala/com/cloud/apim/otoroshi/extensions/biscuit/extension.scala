@@ -5,6 +5,8 @@ import akka.util.ByteString
 import biscuit.format.schema.Schema.PublicKey.Algorithm
 import com.cloud.apim.otoroshi.extensions.biscuit.entities._
 import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils
+import com.nimbusds.jose.jwk.Curve
+import com.nimbusds.jose.jwk.gen.OctetKeyPairGenerator
 import org.biscuitsec.biscuit.crypto.{KeyPair, PublicKey}
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.env.Env
@@ -132,6 +134,16 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       path = "/extensions/assets/cloud-apim/extensions/biscuit/extension.js"
     )
   )
+
+  override def publicKeys(): Future[Seq[PublicKeyJwk]] = {
+    env.adminExtensions.extension[BiscuitExtension].get.states.allKeypairs().map{
+      keypair => {
+        val jwk = new OctetKeyPairGenerator(Curve.Ed25519).keyID(keypair.id).generate()
+        val publicJWK = jwk.toPublicJWK.toJSONString.parseJson
+        PublicKeyJwk(publicJWK)
+      }
+    }.vfuture
+  }
 
   def getResourceCode(path: String): String = {
     implicit val ec = env.otoroshiExecutionContext
