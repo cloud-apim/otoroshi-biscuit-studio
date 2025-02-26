@@ -1,6 +1,7 @@
 package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
 import akka.Done
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.BiscuitExtractorConfig
 import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils
 import org.biscuitsec.biscuit.crypto.PublicKey
 import org.biscuitsec.biscuit.token.Biscuit
@@ -153,15 +154,13 @@ class BiscuitApiKeyBridgePlugin extends NgPreRouting {
     env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(config.keypairRef)) match {
       case None => handleError("keypair_ref not found")
       case Some(keypair) => {
-        val publicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)
-
-        BiscuitUtils.extractToken(ctx.request, config.extractorType, config.extractorName) match {
+        BiscuitExtractorConfig(config.extractorType, config.extractorName).extractToken(ctx.request) match {
           case Some(token) => {
-            Try(Biscuit.from_b64url(token, publicKey)).toEither match {
+            Try(Biscuit.from_b64url(token, keypair.getPubKey)).toEither match {
               case Left(err) => handleError(s"Unable to deserialize Biscuit token : ${err}")
               case Right(biscuitUnverified) =>
 
-                Try(biscuitUnverified.verify(publicKey)).toEither match {
+                Try(biscuitUnverified.verify(keypair.getPubKey)).toEither match {
                   case Left(err) => handleError(s"Biscuit token is not valid : ${err}")
                   case Right(biscuitToken) => {
                     extractApiKey(ctx, biscuitToken, config)
