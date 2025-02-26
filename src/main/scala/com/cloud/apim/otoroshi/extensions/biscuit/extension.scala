@@ -817,7 +817,6 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
           val biscuitToken = bodyJson.select("token").asOpt[String]
           val biscuitKeyPairRef = bodyJson.select("keypair_ref").asOpt[String]
           val verifierConfigBody = bodyJson.select("config").asOpt[JsValue]
-
           if (verifierConfigBody.isDefined) {
             val verifierConfig = VerifierConfig.format.reads(verifierConfigBody.get).asOpt
 

@@ -204,18 +204,17 @@ case class BiscuitRemoteFactsConfig(
               }
 
               val roleFacts = roles.map { role =>
-                s"""role("${role.name}", [${role.permissions.map(p => s""""$p"""").mkString(", ")}]);"""
+                s"""role("${role.name}", [${role.permissions.map(p => s""""$p"""").mkString(", ")}])"""
               }
 
               val userRoleFacts = userRoles.map { userRole =>
-                s"""user_roles(${userRole.id}, "${userRole.name}", [${userRole.roles.map(r => s""""$r"""").mkString(", ")}]);"""
+                s"""user_roles(${userRole.id}, "${userRole.name}", [${userRole.roles.map(r => s""""$r"""").mkString(", ")}])"""
               }
 
 
               val revokedIdsRemote = revokedIds.map(_.id)
               val factsStrings = facts.map(fact => s"""${fact.name}("${fact.value}")""")
-              val aclStrings = aclEntries.map(acl => s"""right("${acl.user}", "${acl.resource}", "${acl.action}");""")
-
+              val aclStrings = aclEntries.map(acl => s"""right("${acl.user}", "${acl.resource}", "${acl.action}")""")
 
               val rfd = RemoteFactsData(
                 acl = aclStrings,
