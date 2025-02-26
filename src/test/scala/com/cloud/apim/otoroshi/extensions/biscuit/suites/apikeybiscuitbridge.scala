@@ -1,8 +1,7 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiServerPerSuite
-import com.cloud.apim.otoroshi.extensions.biscuit.entities.{BiscuitKeyPair, BiscuitTokenForge}
-import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitForgeConfig, BiscuitUtils}
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.{BiscuitExtractorConfig, BiscuitForgeConfig, BiscuitKeyPair, BiscuitTokenForge}
 import org.biscuitsec.biscuit.crypto.{KeyPair, PublicKey}
 import otoroshi.models.{ApiKey, EntityLocation, RouteIdentifier}
 import otoroshi.next.models._
@@ -16,13 +15,13 @@ import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.Biscu
 import java.util.UUID
 import scala.concurrent.duration.DurationInt
 
-class BiscuitApiKeyBridge extends BiscuitStudioOneOtoroshiServerPerSuite {
+class BiscuitApiKeyBridgeSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
 
-  test("create a bridge between apikey and biscuit token") {
+  test("should bridge an apikey from a biscuit token") {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  setup                                                         ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    val (tport, _) = createTestServerWithRoutes("test", routes => routes.get("/api", (req, response) => {
+    val (tport, _) = createTestServerWithRoutes("test-apikey-biscuit-bridge", routes => routes.get("/api", (req, response) => {
       response
         .status(200)
         .addHeader("Content-Type", "application/json")
@@ -177,7 +176,7 @@ class BiscuitApiKeyBridge extends BiscuitStudioOneOtoroshiServerPerSuite {
     assertEquals(respGoodToken.status, 200, s"verifier route did not respond with 200")
     assert(respGoodToken.json.at("token").isDefined, s"token not generated")
 
-    val goodToken = BiscuitUtils.replaceHeader(respGoodToken.json.at("token").get.asString)
+    val goodToken = BiscuitExtractorConfig.replaceHeader(respGoodToken.json.at("token").get.asString)
     assert(goodToken.nonEmpty, s"token is empty")
 
     val publicKeyFormatted = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)
@@ -202,7 +201,7 @@ class BiscuitApiKeyBridge extends BiscuitStudioOneOtoroshiServerPerSuite {
     assertEquals(respBadToken.status, 200, s"verifier route did not respond with 200")
     assert(respBadToken.json.at("token").isDefined, s"token not generated")
 
-    val badToken = BiscuitUtils.replaceHeader(respBadToken.json.at("token").get.asString)
+    val badToken = BiscuitExtractorConfig.replaceHeader(respBadToken.json.at("token").get.asString)
     assert(badToken.nonEmpty, s"token is empty")
 
     val encodedBadToken = Biscuit.from_b64url(badToken, publicKeyFormatted)
@@ -220,12 +219,11 @@ class BiscuitApiKeyBridge extends BiscuitStudioOneOtoroshiServerPerSuite {
     val resWrongToken = client.call("GET", s"http://test.oto.tools:${port}/api", Map("Authorization" -> s"Biscuit: ${badToken}"), None).awaitf(30.seconds)
 
     assertEquals(res.status, 200, "status should be 200")
-    assertEquals(resWrongToken.status, 401, "status should be 500")
+    assertEquals(resWrongToken.status, 401, "status should be unauthorized 401")
     assert(resWrongToken.json.at("error").isDefined, "body error should be defined")
     assertEquals(resWrongToken.json.at("error").asString, "unauthorized", "error should be 'unauthorized'")
     assert(resWrongToken.json.at("error_description").isDefined, "error_description should be defined")
     assertEquals(resWrongToken.json.at("error_description").asString, "Api Key (based on biscuit fact 'client_id') doesn't exist", "error_description should be 'Api Key (based on biscuit fact 'client_id') doesn't exist'")
-
 
     val quotasRes = client.call("GET", s"http://otoroshi-api.oto.tools:${port}/api/apikeys/${apikey.clientId}/quotas", Map(
       "Content-Type" -> s"application/json",
