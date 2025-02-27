@@ -40,48 +40,20 @@ java -cp "./biscuit-studio-extension.jar:./otoroshi.jar" -Dotoroshi.adminLogin=a
 Open http://otoroshi.oto.tools:8080/ in your browser
 
 Default Otoroshi UI credentials : admin / password
+## Entities
+  - [KeyPairs](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/entities/keypairs)
+  - [Verifiers](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/entities/verifiers)
+  - [Attenuators](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/entities/attenuators)
+  - [RBAC Policies](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/entities/rbac)
+  - [Remote Facts Loader](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/entities/remotefacts)
 
-## Create your first entity : KeyPair
-
-## creates the keypair entity
-```js
-curl -X POST -H 'Content-Type: application/json' 'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs' -u admin-api-apikey-id:admin-api-apikey-secret -d '{
-  "id": "biscuit-keypair_e42033bc-f181-485f-857d-576e4728f6f9",
-  "name": "KeyPair from Otoroshi API",
-  "description": "A Biscuit KeyPair created from Otoroshi API",
-  "pubKey": "cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb",
-  "privKey": "0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619",
-  "tags": [],
-  "kind": "biscuit.extensions.cloud-apim.com/BiscuitKeyPair"
-}'
-```
-
-## Plugin configurations
-
-### Verifier Plugin configuration
-
-Here is a demo configuration :
-
-```js
-{
-  "verifier_refs": ["biscuit-verifier_ef2d067d-b9a7-4635-8bd0-0b5d1953dca3", "biscuit-verifier_c1215c55-8c6b-4dd9-934e-ae05967b8c20"], // type : 'array' - it takes a list of verifiers
-  "enforce": true, // type: 'boolean'
-}
-```
-
-### Attenuator Plugin configuration
-
-Here is a demo configuration :
-
-```js
-{
-  "ref": "YOUR_BISCUIT_ATTENUATOR_REF",
-  "extractor_type": "header", // header, query or cookie
-  "extractor_name": "Authorization"
-  "token_replace_loc": "header", // header, query or cookie
-  "token_replace_name": "biscuit_token"
-}
-```
+## Plugins
+ - [Verifier plugin](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/plugins/verifiers)
+ - [Attenuator plugin](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/plugins/attenuators)
+ - [Client Credentials plugin](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/plugins/clientcredentials)
+ - [Biscuit to User plugin](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/plugins/biscuit-user-extractor)
+ - [User to Biscuit plugin](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/plugins/user-to-biscuit)
+ - [Biscuit to ApiKey Bridge Plugin](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/plugins/apikeybridge)
 
 ### Biscuit Studio API Reference
 
