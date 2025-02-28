@@ -919,7 +919,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                     if (isAdminApiRoute){
                       Results.Ok(Json.obj("status" -> "success", "message" -> "Checked successfully")).vfuture
                     }else{
-                      Results.Ok(Json.obj("status"-> "success"," done" -> true, "message" -> "Checked successfully")).vfuture
+                      Results.Ok(Json.obj("status"-> "success", "done" -> true, "message" -> "Checked successfully")).vfuture
                     }
                   }
                 }
