@@ -103,19 +103,28 @@ class BiscuitTokenValidator extends NgAccessValidator {
       case Some(ext) => {
         val verifiers = config.verifierRefs.flatMap(id => ext.states.biscuitVerifier(id))
         var hasFailed = false
+        var errors = Seq.empty[String]
 
         def next(items: Seq[BiscuitVerifier]): Future[NgAccess] = {
           items.headOption match {
-            case None if hasFailed => forbidden(ctx)
-            case None if !hasFailed && config.enforce => forbidden(ctx)
+            case None if hasFailed => forbidden(ctx, errors)
+            case None if !hasFailed && config.enforce => forbidden(ctx, errors)
             case None if !hasFailed && !config.enforce => NgAllowed.vfuture
             case Some(head) => {
               head.verify(ctx.request, Some(VerificationContext(ctx.route, ctx.request, ctx.user, ctx.apikey))) flatMap {
-                case Left(err) if err == "no token" => next(items.tail)
-                case Left(err) =>
+                case Left(err) if err == "no token" => {
+                  errors = errors:+ err
+                  next(items.tail)
+                }
+                case Left(err) =>{
                   hasFailed = true
-                  next(items.tail) // TODO: log error
-                case Right(_) => NgAllowed.vfuture
+                  errors = errors:+ err
+                  next(items.tail)
+                }
+                case Right(_) => {
+                  hasFailed = false
+                  NgAllowed.vfuture
+                }
               }
             }
           }
@@ -130,10 +139,10 @@ class BiscuitTokenValidator extends NgAccessValidator {
     }
   }
 
-  def forbidden(ctx: NgAccessContext, msg: String = "forbidden")(implicit env: Env, ec: ExecutionContext): Future[NgAccess] = {
+  def forbidden(ctx: NgAccessContext, msg: Seq[String] = Seq.empty)(implicit env: Env, ec: ExecutionContext): Future[NgAccess] = {
     Errors
       .craftResponseResult(
-        msg,
+        msg.mkString(", "),
         Results.Forbidden,
         ctx.request,
         None,
