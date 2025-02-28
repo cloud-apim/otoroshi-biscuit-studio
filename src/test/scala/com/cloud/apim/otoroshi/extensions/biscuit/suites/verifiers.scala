@@ -419,7 +419,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
     println("status = ", resp.status)
     assertEquals(resp.status, 403, s"verifier should thrown a forbidden")
     assert(resp.json.at("Otoroshi-Error").isDefined, s"body error is not defined")
-    assertEquals(resp.json.at("Otoroshi-Error").asString, "forbidden", s"body error wrong message")
+    assertEquals(resp.json.at("Otoroshi-Error").asString, "FailedLogic - NoMatchingPolicy{}", s"body error wrong message")
     client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeVerifierId)
     client.forBiscuitEntity("biscuit-verifiers").deleteEntity(verifier)
     client.forBiscuitEntity("biscuit-keypairs").deleteEntity(demoKeyPair)
