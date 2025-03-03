@@ -23,12 +23,20 @@ Here is a demo configuration :
 ```js
   {
     "ref": "YOUR_BISCUIT_ATTENUATOR_REF",
-    "extractor_type": "header", // header, query or cookies
+    "extractor_type": "header",
     "extractor_name": "Authorization",
-    "token_replace_loc": "query", // header, query or cookies
+    "token_replace_loc": "query",
     "token_replace_name": "auth"
   }
 ```
+
+### Explanation of Fields
+
+- **`ref`**: Identifier of the attenuator entity. It may looks like `biscuit-attenuator_1d6e9abd-0c39-41ad-97ef-5f6e666736cc` 
+- **`extractor_type`**: Type of the Token extractor (could be `header`, `query` or `cookie`). Default type is set to `header`.
+- **`extractor_name`**: The name of the field  where the token will be extracted from.
+- **`token_replace_loc`**: The location where the token will be inserted (could be `header`, `query` or `cookie`)
+- **`token_replace_name`**: The name of the field  where the token will be inserted to.
 
 ## Example 
 
@@ -75,3 +83,117 @@ Cookie: auth=biscuit:NEW_ATTENUATED_BISCUIT_TOKEN...attenuatedTokenData
 - **Token Content**: The attenuated token now includes additional constraints, such as time-bound access or endpoint-specific restrictions. 
 
 This flexibility allows secure propagation of tokens while adapting to different application needs.
+
+
+## Demo
+
+
+```sh
+curl -X POST \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Basic xxxx' \
+  "http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs" \
+  -d '{
+  "id" : "biscuit-keypair_dev_d25612c6-b4d0-43ed-a711-16b6c09a5155",
+  "name" : "New Biscuit Key Pair",
+  "description" : "New biscuit KeyPair",
+  "metadata" : { },
+  "pubKey" : "771F9E7FE62784502FE34CE862220586D3DB637D6A5ABAD254F7330369D3B357",
+  "privKey" : "4379BE5B9AFA1A84F59D2417C20020EF1E47E0805945535B45616209D8867E50",
+  "tags" : [ ]
+}'
+```
+
+then let's create a forge
+
+```sh
+curl -X POST \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Basic xxxx' \
+  "http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-forges" \
+  -d '{
+  "id" : "biscuit-forge_dev_7580094c-47e0-495e-80fc-b9c9e8fb8129",
+  "name" : "New biscuit token",
+  "description" : "New biscuit token",
+  "metadata" : { },
+  "keypair_ref" : "biscuit-keypair_dev_d25612c6-b4d0-43ed-a711-16b6c09a5155",
+  "config" : {
+    "checks" : [ ],
+    "facts" : [ ],
+    "resources" : [ ],
+    "rules" : [ ]
+  },
+  "tags" : [ ],
+  "remoteFactsLoaderRef" : null
+}'
+```
+
+and finally let's create a route that uses the `client_credentials` plugin
+
+```sh
+curl -X POST \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Basic xxxx' \
+  "http://otoroshi-api.oto.tools:8080/apis/proxy.otoroshi.io/v1/routes" \
+  -d '{
+  "_loc" : {
+    "tenant" : "default",
+    "teams" : [ "default" ]
+  },
+  "id" : "4874704c-56a2-4460-9a21-ff8055a19c75",
+  "name" : "test route",
+  "description" : "test route",
+  "tags" : [ ],
+  "metadata" : { },
+  "enabled" : true,
+  "groups" : [ "default" ],
+  "bound_listeners" : [ ],
+  "frontend" : {
+    "domains" : [ "test.oto.tools/token" ],
+    "strip_path" : true,
+    "exact" : false,
+    "headers" : { },
+    "query" : { },
+    "methods" : [ ]
+  },
+  "backend" : {
+    "targets" : [ {
+      "id" : "www.otoroshi.io",
+      "hostname" : "www.otoroshi.io",
+      "port" : 443,
+      "tls" : true,
+      "weight" : 1,
+      "predicate" : {
+        "type" : "AlwaysMatch"
+      },
+      "protocol" : "HTTP/1.1",
+      "ip_address" : null,
+      "tls_config" : {
+        "certs" : [ ],
+        "trusted_certs" : [ ],
+        "enabled" : false,
+        "loose" : false,
+        "trust_all" : false
+      }
+    } ],
+    "root" : "/",
+    "rewrite" : false,
+    "load_balancing" : {
+      "type" : "RoundRobin"
+    }
+  },
+  "backend_ref" : null,
+  "plugins" : [ {
+    "enabled" : true,
+    "debug" : false,
+    "plugin" : "cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.ClientCredentialBiscuitTokenEndpoint",
+    "include" : [ ],
+    "exclude" : [ ],
+    "config" : {
+      "expiration" : 21600000,
+      "forge_ref" : "biscuit-forge_dev_7580094c-47e0-495e-80fc-b9c9e8fb8129"
+    },
+    "bound_listeners" : [ ]
+  } ]
+}'
+```

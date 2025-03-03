@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 import Terminal from '@site/src/components/Terminal';
@@ -20,34 +20,137 @@ See [this article](/docs/plugins/attenuators) to integrate your attenuator entit
 ```js
 {
   "enabled": true,
-  "id": "biscuit_attenuator_0a8d24de-426a-4baf-9b53-e9e70f38d935",
-  "keypair_ref": "biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9",
-  "name": "Biscuit Attenuator",
-  "description": "A Biscuit Attenuator created from Otoroshi API",
+  "id": "biscuit_attenuator_0a8d24de-426a-4baf-9b53-e9e70f38d933",
+  "keypair_ref": "biscuit-keypair_dev_d25612c6-b4d0-43ed-a711-16b6c09a5155",
+  "name": "New Biscuit Attenuator",
+  "description": "New Biscuit Attenuator",
   "tags": [],
+  "metadata": {},
   "config": {
     "checks": [
-      "check if time($date), $date <= 2024-12-30T19:00:10Z;"
+      "check if role(\"dev\")"
     ]
-  },
-  "kind": "biscuit.extensions.cloud-apim.com/BiscuitAttenuator"
+  }
 }
 ```
 
 ## Create a Biscuit Attenuator from command line
 ```bash 
-curl -X POST -H 'Content-Type: application/json' 'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-attenuators' -u admin-api-apikey-id:admin-api-apikey-secret -d '{
+curl -X POST \
+-H 'Content-Type: application/json' \
+-H 'Otoroshi-Client-Id: admin-api-apikey-id' \
+-H 'Otoroshi-Client-Secret: admin-api-apikey-secret' \
+'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-attenuators' \
+-d '{
   "enabled": true,
-  "id": "biscuit_attenuator_0a8d24de-426a-4baf-9b53-e9e70f38d935",
-  "keypair_ref": "biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9",
-  "name": "Biscuit Attenuator CURL",
-  "description": "A Biscuit Attenuator created from Otoroshi API",
+  "id": "biscuit_attenuator_0a8d24de-426a-4baf-9b53-e9e70f38d933",
+  "keypair_ref": "biscuit-keypair_dev_d25612c6-b4d0-43ed-a711-16b6c09a5155",
+  "name": "New Biscuit Attenuator",
+  "description": "New Biscuit Attenuator",
   "tags": [],
+  "metadata": {},
   "config": {
     "checks": [
-      "check if time($date), $date <= 2024-12-30T19:00:10Z;"
+      "check if role(\"dev\")"
     ]
-  },
-  "kind": "biscuit.extensions.cloud-apim.com/BiscuitAttenuator"
+  }
 }'
 ```
+
+## Demo - attenuating a token
+
+```sh
+curl -X POST \
+-H 'Content-Type: application/json' \
+-H 'Otoroshi-Client-Id: admin-api-apikey-id' \
+-H 'Otoroshi-Client-Secret: admin-api-apikey-secret' \
+"http://otoroshi-api.oto.tools:8080/apis/proxy.otoroshi.io/v1/routes" \
+-d '{
+  "_loc" : {
+    "tenant" : "default",
+    "teams" : [ "default" ]
+  },
+  "id" : "e9336a7b-4780-4343-866b-e9005faf3115",
+  "name" : "test attenuator route",
+  "description" : "test attenuator route",
+  "tags" : [ ],
+  "metadata" : { },
+  "enabled" : true,
+  "groups" : [ "default" ],
+  "bound_listeners" : [ ],
+  "frontend" : {
+    "domains" : [ "biscuit-attenuator.oto.tools" ],
+    "strip_path" : true,
+    "exact" : false,
+    "headers" : { },
+    "query" : { },
+    "methods" : [ ]
+  },
+  "backend" : {
+    "targets" : [ {
+      "id" : "www.otoroshi.io",
+      "hostname" : "www.otoroshi.io",
+      "port" : 443,
+      "tls" : true,
+      "weight" : 1,
+      "predicate" : {
+        "type" : "AlwaysMatch"
+      },
+      "protocol" : "HTTP/1.1",
+      "ip_address" : null,
+      "tls_config" : {
+        "certs" : [ ],
+        "trusted_certs" : [ ],
+        "enabled" : false,
+        "loose" : false,
+        "trust_all" : false
+      }
+    } ],
+    "root" : "/",
+    "rewrite" : false,
+    "load_balancing" : {
+      "type" : "RoundRobin"
+    }
+  },
+  "backend_ref" : null,
+  "plugins" : [ 
+      {
+      "enabled" : true,
+      "debug" : false,
+      "plugin" : "cp:otoroshi.next.plugins.EchoBackend",
+      "include" : [ ],
+      "exclude" : [ ],
+      "config" : {
+        "limit": 524288
+      },
+      "bound_listeners" : [ ]
+    },
+    {
+      "enabled" : true,
+      "debug" : false,
+      "plugin" : "cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenAttenuator",
+      "include" : [ ],
+      "exclude" : [ ],
+      "config" : {
+        "attenuator_ref": "biscuit_attenuator_0a8d24de-426a-4baf-9b53-e9e70f38d933",
+        "extractor_type": "header",
+        "extractor_name": "Authorization",
+        "token_replace_loc": "header",
+        "token_replace_name": "attenuated-token"
+      },
+      "bound_listeners" : [ ]
+    } 
+  ]
+}'
+```
+
+Now we can call the route with our token in `Authorization` header.
+
+```sh
+curl -X POST \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Biscuit: Eo0BCiMKBDEyMzQYAyIJCgcIChIDGIAIMg4KDAoCCBsSBggDEgIYABIkCAASIPCKFpXk1RhZiJoXZ0BHvsic65rH5MDSWZJt-8Rn1_XBGkDGK2CcUBcIdt7p3XmDCAEvYrFpB8w6nVPYz9vYFLUQ8M1wTSNaoP7M1UdD5S6AkA0ZJAaVkWsUHdcOgwNpiPwMIiIKIMHFnoE_nPPkAxIDCZ102kwX3z3SoXHp2xQCKik_38Fd' \
+  "http://biscuit-attenuator.oto.tools:8080"
+```
+
+You should obtain a new attenuated token in your response's headers `attenuated-token`.

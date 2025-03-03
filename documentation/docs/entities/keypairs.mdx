@@ -18,7 +18,7 @@ This cryptographic mechanism guarantees that tokens cannot be tampered with or f
 
 A Biscuit KeyPair is a couple of a Public Key and a Private Key using ED25519 algorithm.
 
-## Create your first Biscuit KeyPair
+## Create your first KeyPair Entity
 
 To create your first Biscuit KeyPair open your Otoroshi UI interface and go to Categories > Biscuit Studio > Biscuit KeyPairs
 
@@ -32,67 +32,78 @@ It will create a public and a private key.
 
 ![](/screenshots/biscuit-keypair-creation-generate-new.png)
 
-## Example Keypair :
+## ED25519 Keypair example 
 
 ### Private Key:
 ```txt
-0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619
+4379BE5B9AFA1A84F59D2417C20020EF1E47E0805945535B45616209D8867E50
 ```
 
 ### Public Key:
 The public key is derived from the private key.
 
 ```txt
-cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb
+771F9E7FE62784502FE34CE862220586D3DB637D6A5ABAD254F7330369D3B357
 ```
 
-## Example
+## Keypair Entity configuration example
 
 ```javascript
 {
-  "id": "biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9",
+  "id": "biscuit-keypair_dev_d25612c6-b4d0-43ed-a711-16b6c09a5155",
   "name": "My Biscuit KeyPair",
   "description": "A simple ED25519 Biscuit KeyPair",
-  "pubKey": "cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb",
-  "privKey": "0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619",
-  "tags": [],
-  "kind": "BiscuitKeyPair"
+  "is_public": false,
+  "pubKey": "771F9E7FE62784502FE34CE862220586D3DB637D6A5ABAD254F7330369D3B357",
+  "privKey": "4379BE5B9AFA1A84F59D2417C20020EF1E47E0805945535B45616209D8867E50",
+  "tags": []
 }
 ```
 
 ## Create a keypair with Otoroshi's API
-```bash 
-curl -X POST -H 'Content-Type: application/json' 'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs' -u admin-api-apikey-id:admin-api-apikey-secret -d '{
-  "id": "biscuit-keypair_e42033bc-f181-485f-857d-576e4728f6f9",
-  "name": "KeyPair from Otoroshi API",
-  "description": "A Biscuit KeyPair created from Otoroshi API",
-  "pubKey": "cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb",
-  "privKey": "0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619",
-  "tags": [],
-  "kind": "biscuit.extensions.cloud-apim.com/BiscuitKeyPair"
+```sh 
+curl -X POST \
+  -H 'Content-Type: application/json' \
+  -H 'Otoroshi-Client-Id: admin-api-apikey-id' \
+  -H 'Otoroshi-Client-Secret: admin-api-apikey-secret' \
+  "http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs" \
+  -d '{
+  "id" : "biscuit-keypair_dev_d25612c6-b4d0-43ed-a711-16b6c09a5155",
+  "name" : "New Biscuit Key Pair",
+  "description" : "New biscuit KeyPair",
+  "metadata" : { },
+  "is_public": false,
+  "pubKey" : "771F9E7FE62784502FE34CE862220586D3DB637D6A5ABAD254F7330369D3B357",
+  "privKey" : "4379BE5B9AFA1A84F59D2417C20020EF1E47E0805945535B45616209D8867E50",
+  "tags" : [ ]
 }'
 ```
 
 ## Get a KeyPair template with Otoroshi's API
-```bash 
-curl -X GET -H 'Content-Type: application/json' 'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs/_template' -u admin-api-apikey-id:admin-api-apikey-secret
+```sh 
+curl -X GET \
+  -H 'Content-Type: application/json' \
+  -H 'Otoroshi-Client-Id: admin-api-apikey-id' \
+  -H 'Otoroshi-Client-Secret: admin-api-apikey-secret' \
+  "http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs/_template" 
 ```
 
 Result : 
-```js
+```javascript
 {
-  "id": "biscuit-keypair_b6f88449-9c1a-4e46-a3af-b42e00f14e60",
+  "id": "biscuit-keypair_2255b994-c57a-4a38-b8a6-a9ac6e6e5d0f",
   "name": "New Biscuit Key Pair",
   "description": "New biscuit KeyPair",
   "metadata": {},
-  "pubKey": "",
-  "privKey": "",
+  "is_public": false,
+  "pubKey": "0535C32DA5CEC46318A33ACDB8932940A261BB69D18714D3D57BB13C43159EEA",
+  "privKey": "19C7FC9802DFDD00CC4185C3F4594AFEE5A990405C59868C2EB489074FD00ED0",
   "tags": []
 }
 ```
 
 ## Create bulk KeyPairs with Otoroshi's API
-```bash 
+```sh 
 curl -X POST -H 'Content-Type: application/x-ndjson' 'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs/_bulk' -u admin-api-apikey-id:admin-api-apikey-secret -d '{"id":"bulk_keypair1","name":"KeyPair from Otoroshi API Bulk 1","description":"A Biscuit KeyPair created from Otoroshi API","pubKey":"cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb","privKey":"0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619","tags":[],"kind":"biscuit.extensions.cloud-apim.com/BiscuitKeyPair"}
 {"id":"bulk_keypair2","name":"KeyPair from Otoroshi API Bulk 2","description":"A Biscuit KeyPair created from Otoroshi API","pubKey":"cc9f2638b2aa05ffe72a85f91875ac451ddc8995c8ddc39290fdaeb473314dcb","privKey":"0e8a4d1cf07b6ee07b12f7658b6e784b590da13b97ab5c0140764a84373c8619","tags":[],"kind":"biscuit.extensions.cloud-apim.com/BiscuitKeyPair"}
 '
@@ -100,7 +111,7 @@ curl -X POST -H 'Content-Type: application/x-ndjson' 'http://otoroshi-api.oto.to
 
 Result
 
-```js
+```javascript
 {"status":201,"created":true,"id":"bulk_keypair1","id_field":"id"}
 {"status":201,"created":true,"id":"bulk_keypair2","id_field":"id"}
 ```
