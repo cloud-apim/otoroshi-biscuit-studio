@@ -327,7 +327,7 @@ object Utils {
     }.toOption.getOrElse(Random.nextInt(1000) + 7000)
   }
 
-  def startOtoroshi(port: Int = freePort): Otoroshi = {
+  def startOtoroshi(port: Int = freePort, extandableConfig: Option[String]): Otoroshi = {
     implicit val ec = actorSystem.dispatcher
     val cfg =
       s"""
@@ -348,7 +348,7 @@ object Utils {
          |otoroshi.env = "dev"
          |otoroshi.domain = "oto.tools"
          |otoroshi.rootScheme = "http"
-         |""".stripMargin
+         |""".stripMargin ++ extandableConfig.getOrElse("").stripMargin
     val otoroshi = Otoroshi(
       ServerConfig(
         address = "0.0.0.0",
@@ -358,7 +358,7 @@ object Utils {
       Configuration(ConfigFactory.parseString(cfg).resolve()).underlying
     )
     otoroshi.startAndStopOnShutdown()
-    otoroshi.env.logger.debug("Starting !!!")
+    otoroshi.env.logger.debug(s"Starting new Otoroshi test Server on port ${port}")
     Source
       .tick(1.second, 1.second, ())
       .mapAsync(1) { _ =>
@@ -384,24 +384,6 @@ object Utils {
   def clientFor(port: Int): OtoroshiClient = {
     OtoroshiClient(port, wsClientInstance, actorSystem.dispatcher, materializer)
   }
-
-}
-
-case class OtoroshiClientStreamedResponse(resp: WSResponse, chunks: Seq[JsValue]) {
-  lazy val message: String = chunks.map { chunk =>
-    val choices = chunk.select("choices").asOpt[Seq[JsObject]].getOrElse(Seq.empty)
-    choices.map(_.select("delta").select("content").asOpt[String].getOrElse("")).mkString("")
-  }.mkString("")
-
-  def created: Boolean = resp.status == 201
-
-  def success: Boolean = resp.status > 199 && resp.status < 300
-
-  def state: String = s"${status} - ${headers}"
-
-  def status: Int = resp.status
-
-  def headers: Map[String, String] = resp.headers.mapValues(_.last)
 }
 
 case class OtoroshiClient(port: Int, client: WSClient, ec: ExecutionContext, mat: Materializer) {
@@ -492,7 +474,7 @@ class BiscuitExtensionSuite extends munit.FunSuite {
 
   def await(duration: FiniteDuration): Unit = Utils.await(duration)
   def freePort: Int = Utils.freePort
-  def startOtoroshiServer(port: Int = freePort): Otoroshi = Utils.startOtoroshi(port)
+  def startOtoroshiServer(port: Int = freePort, expandedCfg: Option[String] = None): Otoroshi = Utils.startOtoroshi(port, expandedCfg)
   def clientFor(port: Int): OtoroshiClient = Utils.clientFor(port)
 
   def createTestServerWithRoutes(name: String, f: HttpServerRoutes => HttpServerRoutes): (Int, DisposableServer) = {
@@ -540,6 +522,65 @@ class BiscuitStudioOneOtoroshiServerPerSuite extends BiscuitExtensionSuite {
 
   override def afterAll(): Unit = {
     otoroshi.stop()
+    testServers.foreach {
+      case (name, _, server) => {
+        println(s"stopping test server '${name}'")
+        server.disposeNow()
+      }
+    }
+  }
+}
+
+class BiscuitStudioOneOtoroshiClusterPerSuite extends BiscuitExtensionSuite {
+
+  val leaderPort: Int = freePort
+  val workerPort: Int = freePort
+  val workerPort2: Int = freePort
+  var otoroshiLeader: Otoroshi = _
+  var otoroshiWorker: Otoroshi = _
+  var otoroshiWorker2: Otoroshi = _
+  var leaderClient: OtoroshiClient = _
+  var workerClient: OtoroshiClient = _
+  var workerClient2: OtoroshiClient = _
+  implicit var ec: ExecutionContext = _
+  implicit var mat: Materializer = _
+  implicit var env: Env = _
+  implicit var envWorker: Env = _
+  implicit var envWorker2: Env = _
+
+  val cfgLeader =
+  s"""
+     |otoroshi.cluster.mode = "leader"
+     |otoroshi.cluster.worker.state.pollEvery = 15000
+     |otoroshi.loggers.otoroshi-cluster=DEBUG
+     |""".stripMargin
+
+  val cfgWorker =
+    s"""
+       |otoroshi.cluster.mode = "worker"
+       |otoroshi.cluster.worker.state.pollEvery = 15000
+       |otoroshi.cluster.leader.urls = ["http://127.0.0.1:${leaderPort}"]
+       |otoroshi.loggers.otoroshi-cluster=DEBUG
+       |""".stripMargin
+
+  override def beforeAll(): Unit = {
+    otoroshiLeader = startOtoroshiServer(leaderPort, cfgLeader.some)
+    otoroshiWorker = startOtoroshiServer(workerPort, cfgWorker.some)
+    otoroshiWorker2 = startOtoroshiServer(workerPort2, cfgWorker.some)
+    leaderClient = clientFor(leaderPort)
+    workerClient = clientFor(workerPort)
+    workerClient2 = clientFor(workerPort2)
+    ec = otoroshiLeader.executionContext
+    mat = otoroshiLeader.materializer
+    env = otoroshiLeader.env
+    envWorker = otoroshiWorker.env
+    envWorker2 = otoroshiWorker2.env
+  }
+
+  override def afterAll(): Unit = {
+    otoroshiWorker.stop()
+    otoroshiWorker2.stop()
+    otoroshiLeader.stop()
     testServers.foreach {
       case (name, _, server) => {
         println(s"stopping test server '${name}'")

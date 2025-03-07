@@ -196,34 +196,43 @@ case class VerifierConfig(
       remoteFacts.checks.foreach(f => verifier.add_check(f))
       remoteFacts.roles.foreach(f => verifier.add_fact(f))
       remoteFacts.acl.foreach(f => verifier.add_fact(f))
+      
+      val listOfTokenRevocationIds = biscuitToken.revocation_identifiers().asScala.map(_.toHex).toList
+      val isTokenRevoked = env.adminExtensions.extension[BiscuitExtension].get.states.allRevokedTokens()
+        .exists(rvk => listOfTokenRevocationIds.contains(rvk.revocationId))
 
-      // Check for token revocation
-      val ids = biscuitToken.revocation_identifiers().asScala.map(_.toHex).toList ++ remoteFacts.revoked
-      if (revokedIds.nonEmpty && ids.exists(revokedIds.contains)) {
-        Left(handleBiscuitErrors(new Error.FormatError.DeserializationError("Revoked token")))
+      if (isTokenRevoked) {
+        Left(handleBiscuitErrors(new Error.FormatError.DeserializationError("Token is revoked")))
       } else {
-        val maxFacts = 1000 // TODO: from config
-        val maxIterations = 100 // TODO: from config
-        val maxTime = java.time.Duration.ofMillis(100) // TODO: from config
-        // Perform authorization
-        if (verifier.policies().isEmpty) {
-          Try(verifier.allow().authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
-            case Left(err: org.biscuitsec.biscuit.error.Error) =>
-              Left(handleBiscuitErrors(err))
-            case Left(err) =>
-              Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError()))
-            case Right(_) =>
-              Right(())
-          }
+        // Check for token revocation from verifier configuration and remote facts
+        val revocationList = revokedIds ++ remoteFacts.revoked
+        val tokenRevocationList = biscuitToken.revocation_identifiers().asScala.map(_.toHex).toList
+        if (revocationList.exists(rvk => tokenRevocationList.contains(rvk))) {
+          Left(handleBiscuitErrors(new Error.FormatError.DeserializationError("Token is revoked")))
         } else {
-          Try(verifier.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
-            case Left(err: org.biscuitsec.biscuit.error.Error) =>
-              Left(handleBiscuitErrors(err))
-            case Left(err) =>
-              // TODO: log
-              Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError()))
-            case Right(_) =>
-              Right(())
+          val maxFacts = 1000 // TODO: from config
+          val maxIterations = 100 // TODO: from config
+          val maxTime = java.time.Duration.ofMillis(100) // TODO: from config
+          // Perform authorization
+          if (verifier.policies().isEmpty) {
+            Try(verifier.allow().authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
+              case Left(err: org.biscuitsec.biscuit.error.Error) =>
+                Left(handleBiscuitErrors(err))
+              case Left(err) =>
+                Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError()))
+              case Right(_) =>
+                Right(())
+            }
+          } else {
+            Try(verifier.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
+              case Left(err: org.biscuitsec.biscuit.error.Error) =>
+                Left(handleBiscuitErrors(err))
+              case Left(err) =>
+                // TODO: log
+                Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError()))
+              case Right(_) =>
+                Right(())
+            }
           }
         }
       }

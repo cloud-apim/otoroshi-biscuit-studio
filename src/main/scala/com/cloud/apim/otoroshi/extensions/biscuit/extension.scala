@@ -14,10 +14,10 @@ import otoroshi.models._
 import otoroshi.next.extensions._
 import otoroshi.next.utils.JsonHelpers
 import otoroshi.utils.cache.types.UnboundedTrieMap
-import otoroshi.utils.syntax.implicits._
 import play.api.Logger
-import play.api.libs.json._
 import play.api.mvc.{RequestHeader, Result, Results}
+import otoroshi.utils.syntax.implicits._
+import play.api.libs.json._
 
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{ExecutionContext, Future}
@@ -30,6 +30,7 @@ class BiscuitExtensionDatastores(env: Env, extensionId: AdminExtensionId) {
   val biscuitTokenForgeDataStore: BiscuitTokenForgeDataStore = new KvBiscuitTokenForgeDataStore(extensionId, env.datastores.redis, env)
   val biscuitRbacPolicyDataStore: BiscuitRbacPolicyDataStore = new KvBiscuitRbacPolicyDataStore(extensionId, env.datastores.redis, env)
   val biscuitRemoteFactsLoaderDataStore: BiscuitRemoteFactsLoaderDataStore = new KvBiscuitRemoteFactsLoaderDataStore(extensionId, env.datastores.redis, env)
+  val biscuitRevocationDataStore: RevocationDatastore = new RevocationDatastore()(env)
 }
 
 class BiscuitExtensionState(env: Env) {
@@ -93,6 +94,15 @@ class BiscuitExtensionState(env: Env) {
   def updatebiscuitRemoteFactsLoader(values: Seq[RemoteFactsLoader]): Unit = {
     _rfl.addAll(values.map(v => (v.id, v))).remAll(_rfl.keySet.toSeq.diff(values.map(_.id)))
   }
+
+  private val _revokedTokens = new UnboundedTrieMap[String, RevokedToken]()
+  def biscuitRevokedTokens(id: String): Option[RevokedToken] = _revokedTokens.get(id)
+
+  def allRevokedTokens(): Seq[RevokedToken] = _revokedTokens.values.toSeq
+
+  def updateRevokedTokens(values: Seq[RevokedToken]): Unit = {
+    _revokedTokens.addAll(values.map(v => (v.revocationId, v))).remAll(_revokedTokens.keySet.toSeq.diff(values.map(_.revocationId)))
+  }
 }
 
 class BiscuitExtension(val env: Env) extends AdminExtension {
@@ -104,6 +114,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
   lazy val biscuitTokenForgePage = getResourceCode("cloudapim/extensions/biscuit/BiscuitTokenForgePage.js")
   lazy val biscuitRbacPoliciesPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitRbacPoliciesPage.js")
   lazy val biscuitRemoteFactsLoaderPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitRemoteFactsLoaderPage.js")
+  lazy val biscuitRevocation = getResourceCode("cloudapim/extensions/biscuit/BiscuitRevocation.js")
   lazy val biscuitWebComponents = getResourceCode("cloudapim/extensions/biscuit/webcomponents/index.js")
     .replace("/assets/tree-sitter.wasm", "/extensions/assets/cloud-apim/extensions/biscuit/assets/tree-sitter.wasm")
     .replace("/assets/tree-sitter-biscuit.wasm", "/extensions/assets/cloud-apim/extensions/biscuit/assets/tree-sitter-biscuit.wasm")
@@ -186,7 +197,66 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       wantsBody = true,
       handle = handleAttenuatorTester
     ),
+
+    // Routes for tokens revocation
+    AdminExtensionBackofficeAuthRoute(
+      method = "GET",
+      path = "/extensions/cloud-apim/extensions/biscuit/tokens/revocation/_all",
+      wantsBody = true,
+      handle = handleGetAllRevokedTokens
+    ),
+    AdminExtensionBackofficeAuthRoute(
+      method = "POST",
+      path = "/extensions/cloud-apim/extensions/biscuit/tokens/revocation/_revoke",
+      wantsBody = true,
+      handle = handleRevokeToken
+    )
   )
+
+  def handleGetAllRevokedTokens(ctx: AdminExtensionRouterContext[AdminExtensionBackofficeAuthRoute], req: RequestHeader, user: Option[BackOfficeUser], body: Option[Source[ByteString, _]]): Future[Result] = {
+    implicit val ec = env.otoroshiExecutionContext
+    implicit val mat = env.otoroshiMaterializer
+    implicit val ev = env
+    val allRevoked = env.adminExtensions.extension[BiscuitExtension].get.states.allRevokedTokens()
+
+    Results.Ok(
+      Json.obj(
+        "tokens" -> allRevoked.map(_.json)
+      )
+    ).vfuture
+  }
+
+  def handleRevokeToken(ctx: AdminExtensionRouterContext[AdminExtensionBackofficeAuthRoute], req: RequestHeader, user: Option[BackOfficeUser], body: Option[Source[ByteString, _]]): Future[Result] = {
+
+    implicit val ec = env.otoroshiExecutionContext
+    implicit val mat = env.otoroshiMaterializer
+    implicit val ev = env
+
+    (body match {
+      case None => Results.Ok(Json.obj("done" -> false, "error" -> "no body")).vfuture
+      case Some(bodySource) => bodySource.runFold(ByteString.empty)(_ ++ _).flatMap { bodyRaw =>
+        val bodyJson = bodyRaw.utf8String.parseJson
+
+        RevokedToken.format.reads(bodyJson) match {
+          case JsSuccess(token, _) => {
+            if (token.revocationId.nonEmpty) {
+              datastores.biscuitRevocationDataStore.add(
+                token.revocationId,
+                token.reason.some
+              )
+            }
+          }
+        }
+
+        Results.Ok(
+          Json.obj(
+            "done" -> true,
+          )
+        ).vfuture
+
+      }
+    })
+  }
 
   def handleGenerateToken(ctx: AdminExtensionRouterContext[AdminExtensionBackofficeAuthRoute], req: RequestHeader, user: Option[BackOfficeUser], body: Option[Source[ByteString, _]]): Future[Result] = {
     generateTokenFromBody(body, false)
@@ -346,6 +416,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |    ${biscuitTokenForgePage}
              |    ${biscuitRbacPoliciesPage}
              |    ${biscuitRemoteFactsLoaderPage}
+             |    ${biscuitRevocation}
              |
              |    const s = document.createElement("script")
              |    s.setAttribute("type", "module")
@@ -401,6 +472,13 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          display: () => true,
              |          icon: () => 'fa-tower-broadcast'
              |        },
+             |        {
+             |          title: 'Biscuit Revoked Tokens',
+             |          description: 'All your Biscuit Revoked tokens',
+             |          link: '/extensions/cloud-apim/biscuit/revoked-tokens',
+             |          display: () => true,
+             |          icon: () => 'fa-ban'
+             |        },
              |        ]
              |      }],
              |      features: [
@@ -446,6 +524,13 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          display: () => true,
              |          icon: () => 'fa-tower-broadcast'
              |        },
+             |        {
+             |          title: 'Biscuit Revoked Tokens',
+             |          description: 'All your Biscuit Revoked tokens',
+             |          link: '/extensions/cloud-apim/biscuit/revoked-tokens',
+             |          display: () => true,
+             |          icon: () => 'fa-ban'
+             |        },
              |      ],
              |      sidebarItems: [
              |        {
@@ -481,9 +566,14 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |         {
              |          title: 'Biscuit Remote Facts Loader',
              |          text: 'All your Biscuit Remote Facts Loader',
-             |          link: '/extensions/cloud-apim/biscuit/remote-facts',
-             |          display: () => true,
-             |          icon: () => 'tower-broadcast'
+             |          path: '/extensions/cloud-apim/biscuit/remote-facts',
+             |          icon: 'tower-broadcast'
+             |        },
+             |         {
+             |          title: 'Biscuit Revoked Tokens',
+             |          text: 'All your Biscuit Revoked tokens',
+             |          path: '/extensions/cloud-apim/biscuit/revoked-tokens',
+             |          icon: 'fa-ban'
              |        },
              |      ],
              |      searchItems: [
@@ -534,6 +624,14 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          env: React.createElement('span', { className: "fas fa-tower-broadcast" }, null),
              |          label: 'Biscuit Remote Facts Loader',
              |          value: 'biscuit-facts-loader',
+             |        },
+             |        {
+             |          action: () => {
+             |            window.location.href = `/bo/dashboard/extensions/cloud-apim/biscuit/revoked-tokens`
+             |          },
+             |          env: React.createElement('span', { className: "fas fa-ban" }, null),
+             |          label: 'Biscuit Revoked Token',
+             |          value: 'biscuit-revoked-tokens',
              |        },
              |      ],
              |      routes: [
@@ -644,7 +742,13 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          component: (props) => {
              |            return React.createElement(BiscuitRemoteFactsLoaderPage, props, null)
              |          }
-             |        }
+             |        },
+             |         {
+             |          path: '/extensions/cloud-apim/biscuit/revoked-tokens',
+             |          component: (props) => {
+             |            return React.createElement(BiscuitRevocation, props, null)
+             |          }
+             |        },
              |      ]
              |    }
              |  });
@@ -666,6 +770,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       tokenForge <- datastores.biscuitTokenForgeDataStore.findAllAndFillSecrets()
       rbacPolicies <- datastores.biscuitRbacPolicyDataStore.findAllAndFillSecrets()
       remoteFactsLoader <- datastores.biscuitRemoteFactsLoaderDataStore.findAllAndFillSecrets()
+      revokedTokens <- datastores.biscuitRevocationDataStore.list()
     } yield {
       states.updateKeyPairs(keypairs)
       states.updateBiscuitVerifiers(verifiers)
@@ -673,6 +778,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       states.updateBiscuitTokenForge(tokenForge)
       states.updateBiscuitRbacPolicy(rbacPolicies)
       states.updatebiscuitRemoteFactsLoader(remoteFactsLoader)
+      states.updateRevokedTokens(revokedTokens)
       ()
     }
   }
@@ -689,6 +795,67 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
   }
 
   override def adminApiRoutes(): Seq[AdminExtensionAdminApiRoute] = Seq(
+    // Routes for tokens revocation
+    AdminExtensionAdminApiRoute(
+      "POST",
+      "/api/extensions/biscuit/tokens/revocation/_revoke",
+      wantsBody = true,
+      (ctx, request, apk, body) => {
+        implicit val ev = env
+        implicit val ec = env.otoroshiExecutionContext
+        implicit val mat = env.otoroshiMaterializer
+
+        (body match {
+          case None => handleError("no body provided", true)
+          case Some(bodySource) =>
+            bodySource.runFold(ByteString.empty)(_ ++ _).flatMap { bodyRaw =>
+              val bodyJson = bodyRaw.utf8String.parseJson
+
+              val tokensToRevoke = bodyJson.asOpt[Seq[JsValue]].getOrElse(Seq.empty)
+              var tokensRevoked = Seq.empty[String]
+
+              tokensToRevoke.map{ tok => {
+                RevokedToken.format.reads(tok) match {
+                  case JsSuccess(token, _) => {
+                    if(token.revocationId.nonEmpty){
+                      tokensRevoked = tokensRevoked :+ token.revocationId
+                      datastores.biscuitRevocationDataStore.add(
+                        token.revocationId,
+                        token.reason.some
+                      )
+                    }
+                  }
+                }
+              }}
+
+
+              Results.Ok(
+                Json.obj(
+                  "total_revoked" -> tokensRevoked.size,
+                  "revoked" -> tokensRevoked,
+                  "message" -> s"${tokensRevoked.size} token(s) revoked"
+                )
+              ).vfuture
+            }
+        })
+      }
+    ),
+    AdminExtensionAdminApiRoute(
+      "GET",
+      "/api/extensions/biscuit/tokens/revocation/_all",
+      wantsBody = true,
+      (ctx, request, apk, body) => {
+        implicit val ev = env
+        implicit val ec = env.otoroshiExecutionContext
+        val allRevoked = env.adminExtensions.extension[BiscuitExtension].get.states.allRevokedTokens()
+
+        Results.Ok(
+            Json.obj(
+              "tokens" -> allRevoked.map(_.json)
+            )
+        ).vfuture
+      }
+    ),
     // Generate a token from a body
     AdminExtensionAdminApiRoute(
       "POST",
