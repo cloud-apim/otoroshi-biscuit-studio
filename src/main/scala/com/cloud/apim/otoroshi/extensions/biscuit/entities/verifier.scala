@@ -196,7 +196,7 @@ case class VerifierConfig(
       remoteFacts.checks.foreach(f => verifier.add_check(f))
       remoteFacts.roles.foreach(f => verifier.add_fact(f))
       remoteFacts.acl.foreach(f => verifier.add_fact(f))
-      
+
       val listOfTokenRevocationIds = biscuitToken.revocation_identifiers().asScala.map(_.toHex).toList
       val isTokenRevoked = env.adminExtensions.extension[BiscuitExtension].get.states.allRevokedTokens()
         .exists(rvk => listOfTokenRevocationIds.contains(rvk.revocationId))
