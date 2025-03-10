@@ -3,10 +3,10 @@ package otoroshi.jobs.revokedbicsuit
 import com.cloud.apim.otoroshi.extensions.biscuit.entities.BiscuitRemoteFactsConfig
 import otoroshi.env.Env
 import otoroshi.next.plugins.api.NgPluginCategory
-import otoroshi.script.{Job, JobContext, JobId, JobInstantiation, JobKind, JobStarting, JobVisibility}
-import play.api.Logger
+import otoroshi.script._
 import otoroshi.utils.syntax.implicits._
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.BiscuitExtension
+import play.api.Logger
 import play.api.libs.json.Json
 
 import scala.concurrent.duration._
@@ -27,9 +27,11 @@ class RevokedTokensJob extends Job {
 
   override def kind: JobKind = JobKind.ScheduledEvery
 
-  override def initialDelay(ctx: JobContext, env: Env): Option[FiniteDuration] = 20.seconds.some
+  override def initialDelay(ctx: JobContext, env: Env): Option[FiniteDuration] =
+    env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[Int]("revocation_job.revocation_initial_delay_time").map(_.seconds.some).getOrElse(10.seconds.some)
 
-  override def interval(ctx: JobContext, env: Env): Option[FiniteDuration] = 1.minutes.some
+  override def interval(ctx: JobContext, env: Env): Option[FiniteDuration] =
+    env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[Int]("revocation_job.revocation_interval").map(_.seconds.some).getOrElse(60.seconds.some)
 
   override def starting: JobStarting = JobStarting.Automatically
 
@@ -39,30 +41,36 @@ class RevokedTokensJob extends Job {
   override def predicate(ctx: JobContext, env: Env): Option[Boolean] = None
 
   override def jobRun(ctx: JobContext)(implicit env: Env, ec: ExecutionContext): Future[Unit] = {
-    logger.info("loading new revoked tokens from remote facts ...")
+    val isJobActive = env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[Boolean]("revocation_job.enabled").getOrElse(false)
 
-    //TODO: load from remote system new revoked tokens
+    val apiUrl = env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[String]("revocation_job.api_url")
+    val apiMethod = env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[String]("revocation_job.api_method")
 
-    //TODO: from config
-    val rfconfig = BiscuitRemoteFactsConfig(
-      apiUrl = "http://localhost:3333/api/revoked",
-      method = "GET"
-    )
+    if (isJobActive && apiUrl.isDefined && apiUrl.isDefined) {
+      logger.info("loading new revoked tokens from remote facts ...")
 
-    rfconfig.getRemoteFacts(Json.obj()).flatMap{
-      case Left(_) => ().vfuture
-      case Right(rfdata) => {
-        if(rfdata.revoked.nonEmpty){
-          rfdata.revoked.map{
-            token =>
-              env.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.add(
-                id = token,
-                reason = "Job".some
-              )
+      val rfconfig = BiscuitRemoteFactsConfig(
+        apiUrl = apiUrl.get,
+        method = apiMethod.get
+      )
+
+      rfconfig.getRemoteFacts(Json.obj()).flatMap {
+        case Left(_) => ().vfuture
+        case Right(rfdata) => {
+          if (rfdata.revoked.nonEmpty) {
+            rfdata.revoked.map {
+              token =>
+                env.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.add(
+                  id = token,
+                  reason = "Job".some
+                )
+            }
           }
+          ().vfuture
         }
-        ().vfuture
       }
+    } else {
+      ().vfuture
     }
   }
 }
