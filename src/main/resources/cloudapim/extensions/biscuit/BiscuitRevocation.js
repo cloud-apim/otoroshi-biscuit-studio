@@ -69,9 +69,9 @@ class BiscuitRevocation extends Component {
       token.id.toLowerCase().includes(searchTokenId.toLowerCase())
     );
 
-    return React.createElement("div", { className: "container mt-4 p-4 bg-light rounded shadow" }, [
-      React.createElement("h2", { className: "mb-3 text-primary" }, `${revokedTokens.length} Total Revoked Tokens`),
-      React.createElement("p", { className: "text-muted" }, "Below is the list of revoked tokens. Once revoked, a token cannot be removed."),
+    return React.createElement("div", { className: "p-4" }, [
+      React.createElement("h2", { className: "mb-3 text-white" }, `${revokedTokens.length} Total Revoked Tokens`),
+      React.createElement("p", { className: "text-white" }, "Below is the list of revoked tokens. Once revoked, a token cannot be removed from the revocation list."),
       React.createElement("div", { className: "mb-3" },
         React.createElement("input", {
           type: "text",
