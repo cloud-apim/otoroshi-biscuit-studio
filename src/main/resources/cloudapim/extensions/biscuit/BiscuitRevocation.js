@@ -29,7 +29,7 @@ class BiscuitRevocation extends Component {
   };
 
   confirmAddToken = () => {
-    if(this.state.newTokenId){
+    if (this.state.newTokenId) {
       this.setState({ showModal: true });
     }
   };
@@ -142,8 +142,8 @@ class BiscuitRevocation extends Component {
             ),
             React.createElement("div", { className: "modal-body text-center" },
               React.createElement("p", { className: "fw-bold" }, "Warning: Once revoked, a token cannot be restored."),
-              React.createElement("p", null, `Token ID: ${newTokenId}`),
-              React.createElement("p", null, `Reason: ${newReason.length > 50 ? newReason.substring(0, 50) + "..." : newReason}`)
+              React.createElement("p", { style: { 'word-break': 'break-word' } }, `Token ID: ${newTokenId}`),
+              React.createElement("p", null, newReason?.length === 0 ? 'Reason: Unknown' : `Reason: ${newReason.length > 50 ? newReason.substring(0, 50) + "..." : newReason}`)
             ),
             React.createElement("div", { className: "modal-footer d-flex justify-content-between" }, [
               React.createElement("button", { type: "button", className: "btn btn-secondary", onClick: this.closeModal }, "Cancel"),
