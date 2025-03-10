@@ -41,7 +41,6 @@ class BiscuitExtensionState(env: Env) {
   private val _tokenforge = new UnboundedTrieMap[String, BiscuitTokenForge]()
   private val _rbacpolicies = new UnboundedTrieMap[String, BiscuitRbacPolicy]()
   private val _rfl = new UnboundedTrieMap[String, RemoteFactsLoader]()
-  private val _revokedTokens = new UnboundedTrieMap[String, RevokedToken]()
 
   def keypair(id: String): Option[BiscuitKeyPair] = _keypairs.get(id)
 
@@ -95,14 +94,6 @@ class BiscuitExtensionState(env: Env) {
 
   def updatebiscuitRemoteFactsLoader(values: Seq[RemoteFactsLoader]): Unit = {
     _rfl.addAll(values.map(v => (v.id, v))).remAll(_rfl.keySet.toSeq.diff(values.map(_.id)))
-  }
-
-  def biscuitRevokedTokens(id: String): Option[RevokedToken] = _revokedTokens.get(id)
-
-  def allRevokedTokens(): Seq[RevokedToken] = _revokedTokens.values.toSeq
-
-  def updateRevokedTokens(values: Seq[RevokedToken]): Unit = {
-    _revokedTokens.addAll(values.map(v => (v.revocationId, v))).remAll(_revokedTokens.keySet.toSeq.diff(values.map(_.revocationId)))
   }
 }
 
@@ -773,7 +764,6 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       tokenForge <- datastores.biscuitTokenForgeDataStore.findAllAndFillSecrets()
       rbacPolicies <- datastores.biscuitRbacPolicyDataStore.findAllAndFillSecrets()
       remoteFactsLoader <- datastores.biscuitRemoteFactsLoaderDataStore.findAllAndFillSecrets()
-      revokedTokens <- datastores.biscuitRevocationDataStore.list()
     } yield {
       states.updateKeyPairs(keypairs)
       states.updateBiscuitVerifiers(verifiers)
@@ -781,7 +771,6 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       states.updateBiscuitTokenForge(tokenForge)
       states.updateBiscuitRbacPolicy(rbacPolicies)
       states.updatebiscuitRemoteFactsLoader(remoteFactsLoader)
-      states.updateRevokedTokens(revokedTokens)
       ()
     }
   }
@@ -1191,7 +1180,11 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                 if (isAdminApiRoute) {
                   Results.Ok(Json.obj("status" -> "success", "message" -> "Checked successfully")).vfuture
                 } else {
-                  Results.Ok(Json.obj("status" -> "success", " done" -> true, "message" -> "Checked successfully")).vfuture
+                  Results.Ok(Json.obj(
+                    "status" -> "success",
+                    "done" -> true,
+                    "message" -> "Checked successfully"
+                  )).vfuture
                 }
               }
             }

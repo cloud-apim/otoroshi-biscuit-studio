@@ -26,7 +26,7 @@ class RevocationSuite extends BiscuitStudioOneOtoroshiClusterPerSuite {
       ))
     )
 
-    // Call worker 2 api to revoke a token
+    // Call leader to revoke a token
     val resRevocation = leaderClient.call("POST", s"http://otoroshi-api.oto.tools:${leaderPort}/api/extensions/biscuit/tokens/revocation/_revoke",
       Map(
         "Content-Type" -> s"application/json",
@@ -39,16 +39,13 @@ class RevocationSuite extends BiscuitStudioOneOtoroshiClusterPerSuite {
     assert(resRevocation.json.at("total_revoked").isDefined, "total_revoked should be defined")
     assertEquals(resRevocation.json.at("total_revoked").as[Int], 1, "total_revoked nb should be 1")
 
-    await(20.seconds)
+    await(10.seconds)
 
-    val revTokenWrk2 = envWorker2.adminExtensions.extension[BiscuitExtension].get.states.biscuitRevokedTokens(revocationId)
-    val revTokenLeader = envWorker2.adminExtensions.extension[BiscuitExtension].get.states.biscuitRevokedTokens(revocationId)
+    val revTokenWrk1 = envWorker.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.exists(revocationId).awaitf(2.seconds)
+    val revTokenWrk2 = envWorker2.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.exists(revocationId).awaitf(2.seconds)
 
-    assert(revTokenWrk2.isDefined, "token should be defined")
-    assertEquals(revTokenWrk2.get.revocationId, revocationId, "token id should not be wrong")
-
-    assert(revTokenLeader.isDefined, "token should be defined")
-    assertEquals(revTokenLeader.get.revocationId, revocationId, "token id should not be wrong")
+    assert(revTokenWrk1, "worker 1 should get the revoked token")
+    assert(revTokenWrk2, "worker 2 should get the revoked token")
 
     // Call a verifier plugin with the revoked token
     val keypair = BiscuitKeyPair(
@@ -174,6 +171,6 @@ class RevocationSuite extends BiscuitStudioOneOtoroshiClusterPerSuite {
 
     assertEquals(respCallVerifier.status, 403, s"verifier route should be forbidden")
     assert(respCallVerifier.json.at("Otoroshi-Error").isDefined, s"error message should be defined")
-    assertEquals(respCallVerifier.json.at("Otoroshi-Error").as[String], "DeserializationError - Token is revoked", s"error message should be Token is revoked")
+    assertEquals(respCallVerifier.json.at("Otoroshi-Error").as[String], "Token is revoked", s"error message should be Token is revoked")
   }
 }

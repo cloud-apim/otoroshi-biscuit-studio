@@ -193,7 +193,7 @@ case class VerifierConfig(
         .runFold(RemoteFactsData())(_.merge(_))(env.otoroshiMaterializer)
     }
 
-    remoteFactsF.map { remoteFacts =>
+    remoteFactsF.flatMap { remoteFacts =>
 
       remoteFacts.facts.foreach(f => verifier.add_fact(f))
       remoteFacts.checks.foreach(f => verifier.add_check(f))
@@ -201,46 +201,46 @@ case class VerifierConfig(
       remoteFacts.acl.foreach(f => verifier.add_fact(f))
 
       val listOfTokenRevocationIds = biscuitToken.revocation_identifiers().asScala.map(_.toHex).toList
-      val isTokenRevoked = env.adminExtensions.extension[BiscuitExtension].get.states.allRevokedTokens()
-        .exists(rvk => listOfTokenRevocationIds.contains(rvk.revocationId))
-
-      if (isTokenRevoked) {
-        Left("Token is revoked")
-      } else {
-        // Check for token revocation from verifier configuration and remote facts
-        val revocationList = revokedIds ++ remoteFacts.revoked
-        val tokenRevocationList = biscuitToken.revocation_identifiers().asScala.map(_.toHex).toList
-        if (revocationList.exists(rvk => tokenRevocationList.contains(rvk))) {
-          Left("Token is revoked")
-        } else {
-          val maxFacts = env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[Int]("verifier_run_limit.max_facts").getOrElse(1000)
-          val maxIterations = env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[Int]("verifier_run_limit.max_iterations").getOrElse(100)
-          val maxTime = java.time.Duration.ofMillis(env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[Long]("verifier_run_limit.max_time").getOrElse(1000))
-          // Perform authorization
-          if (verifier.policies().isEmpty) {
-            Try(verifier.allow().authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
-              case Left(err: org.biscuitsec.biscuit.error.Error) =>
-                logger.debug(s"got verify error - ${err}")
-                Left(handleBiscuitErrors(err))
-              case Left(err) =>
-                logger.debug(s"got verify error - ${err}")
-                Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError()))
-              case Right(_) =>
-                Right(())
-            }
-          } else {
-            Try(verifier.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
-              case Left(err: org.biscuitsec.biscuit.error.Error) =>
-                logger.debug(s"got verify error - ${err}")
-                Left(handleBiscuitErrors(err))
-              case Left(err) =>
-                logger.debug(s"got verify error - ${err}")
-                Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError()))
-              case Right(_) =>
-                Right(())
+      env.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.list().flatMap {
+        tokens =>
+          if(tokens.exists(rvk => listOfTokenRevocationIds.contains(rvk.revocationId))){
+            Left("Token is revoked").vfuture
+          }else{
+            // Check for token revocation from verifier configuration and remote facts
+            val revocationList = revokedIds ++ remoteFacts.revoked
+            val tokenRevocationList = biscuitToken.revocation_identifiers().asScala.map(_.toHex).toList
+            if (revocationList.exists(rvk => tokenRevocationList.contains(rvk))) {
+              Left("Token is revoked").vfuture
+            } else {
+              val maxFacts = env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[Int]("verifier_run_limit.max_facts").getOrElse(1000)
+              val maxIterations = env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[Int]("verifier_run_limit.max_iterations").getOrElse(100)
+              val maxTime = java.time.Duration.ofMillis(env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[Long]("verifier_run_limit.max_time").getOrElse(1000))
+              // Perform authorization
+              if (verifier.policies().isEmpty) {
+                Try(verifier.allow().authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
+                  case Left(err: org.biscuitsec.biscuit.error.Error) =>
+                    logger.debug(s"got verify error - ${err}")
+                    Left(handleBiscuitErrors(err)).vfuture
+                  case Left(err) =>
+                    logger.debug(s"got verify error - ${err}")
+                    Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError())).vfuture
+                  case Right(_) =>
+                    Right(()).vfuture
+                }
+              } else {
+                Try(verifier.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
+                  case Left(err: org.biscuitsec.biscuit.error.Error) =>
+                    logger.debug(s"got verify error - ${err}")
+                    Left(handleBiscuitErrors(err)).vfuture
+                  case Left(err) =>
+                    logger.debug(s"got verify error - ${err}")
+                    Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError())).vfuture
+                  case Right(_) =>
+                    Right(()).vfuture
+                }
+              }
             }
           }
-        }
       }
     }
   }

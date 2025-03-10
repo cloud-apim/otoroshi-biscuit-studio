@@ -551,14 +551,14 @@ class BiscuitStudioOneOtoroshiClusterPerSuite extends BiscuitExtensionSuite {
   val cfgLeader =
   s"""
      |otoroshi.cluster.mode = "leader"
-     |otoroshi.cluster.worker.state.pollEvery = 15000
+     |otoroshi.cluster.worker.state.pollEvery = 3000
      |otoroshi.loggers.otoroshi-cluster=DEBUG
      |""".stripMargin
 
   val cfgWorker =
     s"""
        |otoroshi.cluster.mode = "worker"
-       |otoroshi.cluster.worker.state.pollEvery = 15000
+       |otoroshi.cluster.worker.state.pollEvery = 3000
        |otoroshi.cluster.leader.urls = ["http://127.0.0.1:${leaderPort}"]
        |otoroshi.loggers.otoroshi-cluster=DEBUG
        |""".stripMargin
