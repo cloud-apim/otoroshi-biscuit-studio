@@ -71,40 +71,46 @@ class BiscuitRevocation extends Component {
 
     return React.createElement("div", { className: "p-4" }, [
       React.createElement("h2", { className: "mb-3 text-white" }, `${revokedTokens.length} Total Revoked Tokens`),
-      React.createElement("p", { className: "text-white" }, "Below is the list of revoked tokens. Once revoked, a token cannot be removed from the revocation list."),
-      React.createElement("div", { className: "mb-3" },
-        React.createElement("input", {
-          type: "text",
-          name: "searchTokenId",
-          value: searchTokenId,
-          onChange: this.handleInputChange,
-          placeholder: "Search Token ID",
-          className: "form-control"
-        })
-      ),
-      React.createElement(
-        "table",
-        { className: "table table-hover table-bordered bg-white" },
-        React.createElement("thead", { className: "table-primary" },
-          React.createElement("tr", null, [
-            React.createElement("th", { key: "id" }, "Token ID"),
-            React.createElement("th", { key: "reason" }, "Reason"),
-            React.createElement("th", { key: "revocation_date" }, "Revocation Date")
-          ])
+      React.createElement("p", { className: "text-white" }, "Below is the list of revocation IDs. Once revoked, a token cannot be removed from the revocation list."),
+      React.createElement("div", { className: "mt-4 row g-3 p-3 bg-white rounded shadow" }, [
+        React.createElement("div", { className: "mb-3" },
+          React.createElement("input", {
+            type: "text",
+            name: "searchTokenId",
+            value: searchTokenId,
+            onChange: this.handleInputChange,
+            placeholder: "Search for Revocation ID",
+            className: "form-control"
+          })
         ),
-        React.createElement("tbody", null,
-          filteredTokens.map((token) =>
-            React.createElement("tr", { key: token.id }, [
-              React.createElement("td", null, token.id),
-              React.createElement("td", null, token.reason.length > 30 ? token.reason.substring(0, 30) + "..." : token.reason),
-              React.createElement("td", null, new Date(token.revocation_date).toLocaleString())
-            ])
+        filteredTokens.length > 0 ?
+          React.createElement(
+            "table",
+            { className: "table table-hover table-bordered bg-white" },
+            React.createElement("thead", { className: "table-primary" },
+              React.createElement("tr", null, [
+                React.createElement("th", { key: "id" }, "Revocation ID"),
+                React.createElement("th", { key: "reason" }, "Reason"),
+                React.createElement("th", { key: "revocation_date" }, "Revocation Date")
+              ])
+            ),
+
+            React.createElement("tbody", null,
+              filteredTokens.map((token) =>
+                React.createElement("tr", { key: token.id }, [
+                  React.createElement("td", null, token.id),
+                  React.createElement("td", null, token.reason.length > 30 ? token.reason.substring(0, 30) + "..." : token.reason),
+                  React.createElement("td", null, new Date(token.revocation_date).toLocaleString())
+                ])
+              )
+            )
           )
-        )
-      ),
+          :
+          React.createElement("p", { className: "ml-2, text-primary" }, "No revocation ID matching")
+      ]),
       React.createElement("div", { className: "mt-4 row g-3 p-3 bg-white rounded shadow" }, [
         React.createElement("h4", { className: "mb-3" }, "Revoke a New Token"),
-        React.createElement("p", { className: "text-muted" }, "Enter the token ID and reason for revocation. Note: This action is irreversible."),
+        React.createElement("p", { className: "text-muted" }, "Enter the revocation ID and reason for revocation. Note: This action is irreversible."),
         React.createElement("div", { className: "col" },
           React.createElement("input", {
             type: "text",
@@ -142,7 +148,7 @@ class BiscuitRevocation extends Component {
             ),
             React.createElement("div", { className: "modal-body text-center" },
               React.createElement("p", { className: "fw-bold" }, "Warning: Once revoked, a token cannot be restored."),
-              React.createElement("p", { style: { 'word-break': 'break-word' } }, `Token ID: ${newTokenId}`),
+              React.createElement("p", { style: { 'word-break': 'break-word' } }, `Revocation ID: ${newTokenId}`),
               React.createElement("p", null, newReason?.length === 0 ? 'Reason: Unknown' : `Reason: ${newReason.length > 50 ? newReason.substring(0, 50) + "..." : newReason}`)
             ),
             React.createElement("div", { className: "modal-footer d-flex justify-content-between" }, [
