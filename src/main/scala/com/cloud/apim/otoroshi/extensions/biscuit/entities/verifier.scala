@@ -210,9 +210,9 @@ case class VerifierConfig(
         if (revocationList.exists(rvk => tokenRevocationList.contains(rvk))) {
           Left(handleBiscuitErrors(new Error.FormatError.DeserializationError("Token is revoked")))
         } else {
-          val maxFacts = 1000 // TODO: from config
-          val maxIterations = 100 // TODO: from config
-          val maxTime = java.time.Duration.ofMillis(100) // TODO: from config
+          val maxFacts = env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[Int]("verifier_run_limit.max_facts").getOrElse(1000)
+          val maxIterations = env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[Int]("verifier_run_limit.max_iterations").getOrElse(100)
+          val maxTime = java.time.Duration.ofMillis(env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[Int]("verifier_run_limit.max_time").getOrElse(1000))
           // Perform authorization
           if (verifier.policies().isEmpty) {
             Try(verifier.allow().authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
