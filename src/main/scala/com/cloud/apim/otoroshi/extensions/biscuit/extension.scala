@@ -122,7 +122,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
   lazy val treeSitterComponent = getResourceBytes("cloudapim/extensions/biscuit/webcomponents/assets/tree-sitter.wasm")
   lazy val treeSitterBiscuitComponent = getResourceBytes("cloudapim/extensions/biscuit/webcomponents/assets/tree-sitter-biscuit.wasm")
   lazy val biscuitWasmComponents = getResourceBytes("cloudapim/extensions/biscuit/webcomponents/assets/biscuit.wasm")
-  private lazy val datastores = new BiscuitExtensionDatastores(env, id)
+  lazy val datastores = new BiscuitExtensionDatastores(env, id)
   val logger = Logger("cloud-apim-biscuit-extension")
 
   override def name: String = "Otoroshi Biscuit Studio"

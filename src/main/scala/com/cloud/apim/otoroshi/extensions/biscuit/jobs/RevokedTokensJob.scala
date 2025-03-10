@@ -1,10 +1,13 @@
 package otoroshi.jobs.revokedbicsuit
 
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.BiscuitRemoteFactsConfig
 import otoroshi.env.Env
 import otoroshi.next.plugins.api.NgPluginCategory
 import otoroshi.script.{Job, JobContext, JobId, JobInstantiation, JobKind, JobStarting, JobVisibility}
 import play.api.Logger
 import otoroshi.utils.syntax.implicits._
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.BiscuitExtension
+import play.api.libs.json.Json
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
@@ -24,7 +27,7 @@ class RevokedTokensJob extends Job {
 
   override def kind: JobKind = JobKind.ScheduledEvery
 
-  override def initialDelay(ctx: JobContext, env: Env): Option[FiniteDuration] = 5.seconds.some
+  override def initialDelay(ctx: JobContext, env: Env): Option[FiniteDuration] = 20.seconds.some
 
   override def interval(ctx: JobContext, env: Env): Option[FiniteDuration] = 1.minutes.some
 
@@ -40,6 +43,26 @@ class RevokedTokensJob extends Job {
 
     //TODO: load from remote system new revoked tokens
 
-    ().vfuture
+    //TODO: from config
+    val rfconfig = BiscuitRemoteFactsConfig(
+      apiUrl = "http://localhost:3333/api/revoked",
+      method = "GET"
+    )
+
+    rfconfig.getRemoteFacts(Json.obj()).flatMap{
+      case Left(_) => ().vfuture
+      case Right(rfdata) => {
+        if(rfdata.revoked.nonEmpty){
+          rfdata.revoked.map{
+            token =>
+              env.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.add(
+                id = token,
+                reason = "Job".some
+              )
+          }
+        }
+        ().vfuture
+      }
+    }
   }
 }

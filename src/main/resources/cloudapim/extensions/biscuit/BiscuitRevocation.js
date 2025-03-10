@@ -38,7 +38,7 @@ class BiscuitRevocation extends Component {
     const { newTokenId, newReason } = this.state;
     if (!newTokenId) return;
 
-    fetch("/extensions/cloud-apim/extensions/biscuit/tokens/_revoke", {
+    fetch("/extensions/cloud-apim/extensions/biscuit/tokens/revocation/_revoke", {
       method: "POST",
       credentials: "include",
       headers: {
