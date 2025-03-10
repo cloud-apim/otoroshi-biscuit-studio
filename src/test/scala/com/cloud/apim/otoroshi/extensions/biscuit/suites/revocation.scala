@@ -27,7 +27,7 @@ class RevocationSuite extends BiscuitStudioOneOtoroshiClusterPerSuite {
     )
 
     // Call worker 2 api to revoke a token
-    val resRevocation = workerClient2.call("POST", s"http://otoroshi-api.oto.tools:${workerPort2}/api/extensions/biscuit/tokens/revocation/_revoke",
+    val resRevocation = leaderClient.call("POST", s"http://otoroshi-api.oto.tools:${leaderPort}/api/extensions/biscuit/tokens/revocation/_revoke",
       Map(
         "Content-Type" -> s"application/json",
         "Otoroshi-Client-Id" -> "admin-api-apikey-id",

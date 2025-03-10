@@ -20,7 +20,23 @@ object BiscuitUtils {
   def handleBiscuitErrors(error: org.biscuitsec.biscuit.error.Error)(implicit env: Env): String = {
     error match {
       case err: org.biscuitsec.biscuit.error.Error.FormatError.UnknownPublicKey => {
-        s"UnknownPublicKey"
+        s"Biscuit FormatError - UnknownPublicKey"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.FormatError.Signature => {
+        s"Biscuit FormatError - Signature"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.FormatError.SealedSignature => {
+        s"Biscuit FormatError - SealedSignature"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.FormatError.EmptyKeys => {
+        s"Biscuit FormatError - EmptyKeys"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.FormatError.SerializationError => {
+        s"SerializationError - ${err.e}"
       }
 
       case err: org.biscuitsec.biscuit.error.Error.FormatError.DeserializationError => {
@@ -43,8 +59,24 @@ object BiscuitUtils {
         s"Biscuit MissingSymbols"
       }
 
+      case err: org.biscuitsec.biscuit.error.Error.Language => {
+        s"Biscuit Language Error ${err.langError}"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.TooManyFacts => {
+        s"Biscuit TooManyFacts"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.TooManyIterations => {
+        s"Biscuit TooManyIterations"
+      }
+
       case err: org.biscuitsec.biscuit.error.Error.Timeout => {
         s"Biscuit Timeout"
+      }
+
+      case err: org.biscuitsec.biscuit.error.Error.Execution => {
+        s"Biscuit Execution Error - ${err.toString}"
       }
 
       case err: org.biscuitsec.biscuit.error.Error.InvalidType => {
