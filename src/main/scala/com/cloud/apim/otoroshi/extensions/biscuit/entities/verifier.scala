@@ -45,7 +45,7 @@ case class VerifierConfig(
   rbacPolicyRefs: Seq[String] = Seq.empty,
   remoteFactsRefs: Seq[String] = Seq.empty,
 ) {
-
+  private val logger = Logger("otoroshi-biscuit-studio-verifier")
   def json: JsValue = VerifierConfig.format.writes(this)
   def verify(biscuitToken: Biscuit, ctxOpt: Option[VerificationContext])(implicit env: Env, ec: ExecutionContext): Future[Either[String, Unit]] = {
 
@@ -178,7 +178,10 @@ case class VerifierConfig(
               if (remoteFactsEntity.config.apiUrl.nonEmpty && remoteFactsEntity.config.headers.nonEmpty) {
                 val jsonCtx = ctxOpt.map(_.json.asObject).getOrElse(Json.obj()) ++ Json.obj("phase" -> "access", "plugin" -> "biscuit_verifier")
                 remoteFactsEntity.config.getRemoteFacts(jsonCtx).map {
-                  case Left(error) => RemoteFactsData() // TODO: log error though
+                  case Left(err) => {
+                    logger.debug(s"got remote facts error - ${err}")
+                    RemoteFactsData()
+                  }
                   case Right(factsData) => factsData
                 }
               } else {
@@ -226,9 +229,10 @@ case class VerifierConfig(
           } else {
             Try(verifier.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
               case Left(err: org.biscuitsec.biscuit.error.Error) =>
+                logger.debug(s"got verify error - ${err}")
                 Left(handleBiscuitErrors(err))
               case Left(err) =>
-                // TODO: log
+                logger.debug(s"got verify error - ${err}")
                 Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError()))
               case Right(_) =>
                 Right(())
