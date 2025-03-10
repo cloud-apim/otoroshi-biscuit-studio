@@ -202,7 +202,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
     AdminExtensionBackofficeAuthRoute(
       method = "GET",
       path = "/extensions/cloud-apim/extensions/biscuit/tokens/revocation/_all",
-      wantsBody = true,
+      wantsBody = false,
       handle = handleGetAllRevokedTokens
     ),
     AdminExtensionBackofficeAuthRoute(
@@ -843,7 +843,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
     AdminExtensionAdminApiRoute(
       "GET",
       "/api/extensions/biscuit/tokens/revocation/_all",
-      wantsBody = true,
+      wantsBody = false,
       (ctx, request, apk, body) => {
         implicit val ev = env
         implicit val ec = env.otoroshiExecutionContext

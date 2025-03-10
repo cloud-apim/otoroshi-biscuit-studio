@@ -18,6 +18,7 @@ import otoroshi.storage.{BasicStore, RedisLike, RedisLikeStore}
 import otoroshi.utils.http.RequestImplicits.EnhancedRequestHeader
 import otoroshi.utils.syntax.implicits._
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtension, BiscuitExtensionDatastores, BiscuitExtensionState}
+import play.api.Logger
 import play.api.libs.json._
 import play.api.mvc.RequestHeader
 
@@ -46,7 +47,6 @@ case class VerifierConfig(
 ) {
 
   def json: JsValue = VerifierConfig.format.writes(this)
-
   def verify(biscuitToken: Biscuit, ctxOpt: Option[VerificationContext])(implicit env: Env, ec: ExecutionContext): Future[Either[String, Unit]] = {
 
     val verifier = biscuitToken.authorizer()
@@ -212,7 +212,7 @@ case class VerifierConfig(
         } else {
           val maxFacts = env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[Int]("verifier_run_limit.max_facts").getOrElse(1000)
           val maxIterations = env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[Int]("verifier_run_limit.max_iterations").getOrElse(100)
-          val maxTime = java.time.Duration.ofMillis(env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[Int]("verifier_run_limit.max_time").getOrElse(1000))
+          val maxTime = java.time.Duration.ofMillis(env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[Long]("verifier_run_limit.max_time").getOrElse(1000))
           // Perform authorization
           if (verifier.policies().isEmpty) {
             Try(verifier.allow().authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {

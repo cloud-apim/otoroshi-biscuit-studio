@@ -4,11 +4,9 @@ import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiCluste
 import com.cloud.apim.otoroshi.extensions.biscuit.entities.{BiscuitExtractorConfig, BiscuitKeyPair, BiscuitVerifier, VerifierConfig}
 import org.joda.time.DateTime
 import otoroshi.models.EntityLocation
-import otoroshi.next.models.{NgBackend, NgDomainAndPath, NgFrontend, NgPluginInstance, NgPluginInstanceConfig, NgPlugins, NgRoute, NgTarget}
 import otoroshi.security.IdGenerator
 import otoroshi.utils.syntax.implicits.{BetterFuture, BetterJsValue}
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.BiscuitExtension
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenValidator
 import play.api.libs.json.Json
 
 import java.util.UUID
@@ -16,10 +14,10 @@ import scala.concurrent.duration.DurationInt
 
 class RevocationSuite extends BiscuitStudioOneOtoroshiClusterPerSuite {
 
-  test("should revoke on all cluster"){
+  test("should revoke on all cluster") {
 
-      val token = "Eo0BCiMKBDEyMzQYAyIJCgcIChIDGIAIMg4KDAoCCBsSBggDEgIYABIkCAASIO5XgWOCNcmU7hLSWg5kl9CcJuOfGg049qB6Msxi43MQGkAaT-TlhUULsSNCdhJmM-Ixl-VNCwnhiP3Ijjc0RiSb6uJOeDOxl0bmKlg6kNb6bygZCAtFvnfbC7scMzvAfxEHGoIBChgKA2RldhgDMg8KDQoCCBsSBwgGEgMYgQgSJAgAEiD73BEy0MywJgKQRGileTkSqOHIoMUiMZHMtoxNpE9AaxpAMon9LKykhc0YwHi6V5hUaI9IEYdLGIr36bPoSFhtZrHqnRzQqa5jdkPScvPWvoyct1t4gop4DJ-KLDYWYCBoCCIiCiAnReFaEoEjZtLxePwTKU7KbnvIW9_v0WlJvcMp44mMTg=="
-      val revocationId = "3289fd2caca485cd18c078ba579854688f4811874b188af7e9b3e848586d66b1ea9d1cd0a9ae637643d272f3d6be8c9cb75b78828a780c9f8a2c361660206808"
+    val token = "Eo0BCiMKBDEyMzQYAyIJCgcIChIDGIAIMg4KDAoCCBsSBggDEgIYABIkCAASIO5XgWOCNcmU7hLSWg5kl9CcJuOfGg049qB6Msxi43MQGkAaT-TlhUULsSNCdhJmM-Ixl-VNCwnhiP3Ijjc0RiSb6uJOeDOxl0bmKlg6kNb6bygZCAtFvnfbC7scMzvAfxEHGoIBChgKA2RldhgDMg8KDQoCCBsSBwgGEgMYgQgSJAgAEiD73BEy0MywJgKQRGileTkSqOHIoMUiMZHMtoxNpE9AaxpAMon9LKykhc0YwHi6V5hUaI9IEYdLGIr36bPoSFhtZrHqnRzQqa5jdkPScvPWvoyct1t4gop4DJ-KLDYWYCBoCCIiCiAnReFaEoEjZtLxePwTKU7KbnvIW9_v0WlJvcMp44mMTg=="
+    val revocationId = "3289fd2caca485cd18c078ba579854688f4811874b188af7e9b3e848586d66b1ea9d1cd0a9ae637643d272f3d6be8c9cb75b78828a780c9f8a2c361660206808"
     val revokedTokenBody = Some(Json.arr(
       Json.obj(
         "id" -> revocationId,
@@ -27,10 +25,6 @@ class RevocationSuite extends BiscuitStudioOneOtoroshiClusterPerSuite {
         "revocation_date" -> DateTime.now().toString()
       ))
     )
-
-    // Used token
-    // Eo0BCiMKBDEyMzQYAyIJCgcIChIDGIAIMg4KDAoCCBsSBggDEgIYABIkCAASIHS1xEsEbwjjsW390Tu0Iz6JWHB_XVQD9eCq9pncR3zYGkDx1E1fOsbnQVWqJLClKouVgSz7zWto0zUB8Y01GjUi9IrOTZHlkl6zpdoiqt5Xml17yK2M-egQNbLTvYRMw3cFGoIBChgKA2RldhgDMg8KDQoCCBsSBwgGEgMYgQgSJAgAEiAkqKaZsLUXlWjGQ6AHcTWa22JLhVBSAaatzAhfTjMcyBpA1GzXb8cYiUvCEDbuTKywAWMs-mIGOJ4u4uKQqzREO--FrikYnQ6OYjbVCuAQ1lvrPF0QsnjgJtSCgAiAK-0ZDCIiCiCFDocKFnhkO3y5aHFVDYsow0YitpllvSoeFlr50Fm40Q==
-
 
     // Call worker 2 api to revoke a token
     val resRevocation = workerClient2.call("POST", s"http://otoroshi-api.oto.tools:${workerPort2}/api/extensions/biscuit/tokens/revocation/_revoke",
@@ -45,30 +39,10 @@ class RevocationSuite extends BiscuitStudioOneOtoroshiClusterPerSuite {
     assert(resRevocation.json.at("total_revoked").isDefined, "total_revoked should be defined")
     assertEquals(resRevocation.json.at("total_revoked").as[Int], 1, "total_revoked nb should be 1")
 
-    await(5.seconds)
-    var allRvkTokensWrk1 = envWorker.adminExtensions.extension[BiscuitExtension].get.states.allRevokedTokens()
-    var allRvkTokensWrk2 = envWorker2.adminExtensions.extension[BiscuitExtension].get.states.allRevokedTokens()
-    var allRvkTokensLeader = env.adminExtensions.extension[BiscuitExtension].get.states.allRevokedTokens()
-
-    println(s"allRvkTokens WRK1 = ${allRvkTokensWrk1}")
-    println(s"allRvkTokens LEAD = ${allRvkTokensLeader}")
-    println(s"allRvkTokens WRK2 = ${allRvkTokensWrk2}")
-
-//    assertEquals(allRvkTokensLeader.size, 0, "revoked tokens should be empty on worker 2")
-//    assertEquals(allRvkTokensLeader.size, 0, "revoked tokens should be empty on cluster leader")
-//    assertEquals(allRvkTokensWrk1.size, 1, "revoked tokens should not be empty on worker 1")
-
     await(20.seconds)
 
-    allRvkTokensWrk2 = envWorker2.adminExtensions.extension[BiscuitExtension].get.states.allRevokedTokens()
-    println(s"allRvkTokens size = ${allRvkTokensWrk2.size}")
-    println(s"allRvkTokens = ${allRvkTokensWrk2}")
-
-    val revTokenWrk2 =  envWorker2.adminExtensions.extension[BiscuitExtension].get.states.biscuitRevokedTokens(revocationId)
-    val revTokenLeader =  envWorker2.adminExtensions.extension[BiscuitExtension].get.states.biscuitRevokedTokens(revocationId)
-
-    println(s"got revtoken on worker = ${revTokenWrk2}")
-    println(s"got revtoken on leader = ${revTokenLeader}")
+    val revTokenWrk2 = envWorker2.adminExtensions.extension[BiscuitExtension].get.states.biscuitRevokedTokens(revocationId)
+    val revTokenLeader = envWorker2.adminExtensions.extension[BiscuitExtension].get.states.biscuitRevokedTokens(revocationId)
 
     assert(revTokenWrk2.isDefined, "token should be defined")
     assertEquals(revTokenWrk2.get.revocationId, revocationId, "token id should not be wrong")
@@ -110,27 +84,6 @@ class RevocationSuite extends BiscuitStudioOneOtoroshiClusterPerSuite {
         revokedIds = Seq.empty,
       ),
       extractor = BiscuitExtractorConfig()
-    )
-
-    val routeApi = NgRoute(
-      location = EntityLocation.default,
-      id = UUID.randomUUID().toString,
-      name = "test route",
-      description = "test route",
-      tags = Seq.empty,
-      metadata = Map.empty,
-      enabled = true,
-      debugFlow = false,
-      capture = false,
-      exportReporting = false,
-      frontend = NgFrontend.empty.copy(domains = Seq(NgDomainAndPath("verifier.oto.tools")), stripPath = false),
-      backend = NgBackend.empty.copy(targets = Seq(NgTarget.default)),
-      plugins = NgPlugins(Seq(NgPluginInstance(
-        plugin = s"cp:${classOf[BiscuitTokenValidator].getName}",
-        config = NgPluginInstanceConfig(Json.obj(
-          "verifier_refs" -> Seq(validator.id)
-        )))
-      ))
     )
 
     leaderClient.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair)
@@ -209,8 +162,6 @@ class RevocationSuite extends BiscuitStudioOneOtoroshiClusterPerSuite {
          |    }
          |  ]
          |}""".stripMargin)).awaitf(2.seconds)
-
-    println(s"routeWithVerifier = ${routeWithVerifier.bodyJson}")
 
     assert(routeWithVerifier.created, s"verifier route has not been created")
     await(2.seconds)
