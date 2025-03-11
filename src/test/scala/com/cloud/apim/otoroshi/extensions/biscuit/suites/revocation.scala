@@ -39,6 +39,18 @@ class RevocationSuite extends BiscuitStudioOneOtoroshiClusterPerSuite {
     assert(resRevocation.json.at("total_revoked").isDefined, "total_revoked should be defined")
     assertEquals(resRevocation.json.at("total_revoked").as[Int], 1, "total_revoked nb should be 1")
 
+    val prevLeader = envWorker.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.exists(revocationId).awaitf(2.seconds)
+    val revTokenWrk1Prev = envWorker.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.exists(revocationId).awaitf(2.seconds)
+    val revTokenWrk2Prev = envWorker2.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.exists(revocationId).awaitf(2.seconds)
+
+    println(s"prevLeader = ${prevLeader}")
+    println(s"prevLeader = ${revTokenWrk1Prev}")
+    println(s"prevLeader = ${revTokenWrk2Prev}")
+
+    assert(prevLeader, "leader SHOULD get the revoked token before revocation distribution")
+    assert(!revTokenWrk1Prev, "worker 1 should NOT get the revoked token before revocation distribution")
+    assert(!revTokenWrk2Prev, "worker 2 should NOT get the revoked token before revocation distribution")
+
     await(10.seconds)
 
     val revTokenWrk1 = envWorker.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.exists(revocationId).awaitf(2.seconds)

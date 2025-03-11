@@ -61,7 +61,21 @@ class RevocationDatastore()(implicit env: Env) {
     env.datastores.rawDataStore.exists(key)
   }
   def existsAny(ids: Seq[String])(implicit ec: ExecutionContext): Future[Boolean] = {
-    Future.sequence(ids.map(exists)).map(_.contains(true))
+    def next(remainingIds: Seq[String]): Future[Boolean] = {
+      if (remainingIds.isEmpty) {
+        Future(false)
+      } else {
+        val currentId = remainingIds.head
+        exists(currentId).flatMap { existsResult =>
+          if (existsResult) {
+            Future(true)
+          } else {
+            next(remainingIds.tail)
+          }
+        }
+      }
+    }
+    next(ids)
   }
 
   def add(id: String, reason: Option[String])(implicit ec: ExecutionContext): Future[Unit] = {
