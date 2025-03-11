@@ -45,13 +45,15 @@ class RevokedTokensJob extends Job {
 
     val apiUrl = env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[String]("revocation_job.api_url")
     val apiMethod = env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[String]("revocation_job.api_method")
+    val apiHeaders = env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[Map[String, String]]("revocation_job.api_headers").getOrElse(Map.empty)
 
     if (isJobActive && apiUrl.isDefined && apiUrl.isDefined) {
       logger.info("loading new revoked tokens from remote facts ...")
 
       val rfconfig = BiscuitRemoteFactsConfig(
         apiUrl = apiUrl.get,
-        method = apiMethod.get
+        method = apiMethod.get,
+        headers = apiHeaders
       )
 
       rfconfig.getRemoteFacts(Json.obj()).flatMap {

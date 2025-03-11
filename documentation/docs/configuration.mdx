@@ -31,6 +31,7 @@ By default, the job is disabled, you will have to enable it by yourself to use i
 | `BISCUIT_REVOCATION_INTERVAL`              | `300` seconds (5 min) |
 | `BISCUIT_REVOCATION_JOB_API_URL`           | "" (Mandatory, required) |
 | `BISCUIT_REVOCATION_JOB_API_METHOD`        | `GET` (Mandatory, required) |
+| `BISCUIT_REVOCATION_JOB_API_HEADERS`        | `Map[String, String]` (Optional) |
 
 
 ## `.env` File example
@@ -53,4 +54,5 @@ BISCUIT_REVOCATION_INTERVAL=300                  # Interval between revocation j
 # Biscuit Revocation API Configuration
 BISCUIT_REVOCATION_JOB_API_URL=                  # API URL for revocation
 BISCUIT_REVOCATION_JOB_API_METHOD=               # HTTP method for the API call (e.g., GET, POST)
+BISCUIT_REVOCATION_JOB_API_HEADERS=              # List of headers (could be empty)
 ```

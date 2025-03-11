@@ -201,9 +201,10 @@ case class VerifierConfig(
       remoteFacts.acl.foreach(f => verifier.add_fact(f))
 
       val listOfTokenRevocationIds = biscuitToken.revocation_identifiers().asScala.map(_.toHex).toList
-      env.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.list().flatMap {
-        tokens =>
-          if(tokens.exists(rvk => listOfTokenRevocationIds.contains(rvk.revocationId))){
+
+      env.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.existsAny(listOfTokenRevocationIds).flatMap{
+        existAnyRevokedToken =>
+          if(existAnyRevokedToken){
             Left("Token is revoked").vfuture
           }else{
             // Check for token revocation from verifier configuration and remote facts
