@@ -1,6 +1,7 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.entities
 
-import com.cloud.apim.otoroshi.extensions.biscuit.utils.{BiscuitRemoteUtils, BiscuitUtils}
+import akka.util.ByteString
+import com.github.blemale.scaffeine.Scaffeine
 import otoroshi.api.{GenericResourceAccessApiWithState, Resource, ResourceVersion}
 import otoroshi.env.Env
 import otoroshi.models.{EntityLocation, EntityLocationSupport}
@@ -8,13 +9,84 @@ import otoroshi.next.extensions.AdminExtensionId
 import otoroshi.next.models.NgTlsConfig
 import otoroshi.security.IdGenerator
 import otoroshi.storage.{BasicStore, RedisLike, RedisLikeStore}
+import otoroshi.utils.syntax.implicits._
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionDatastores, BiscuitExtensionState}
 import play.api.libs.json._
-import otoroshi.utils.syntax.implicits._
 
 import scala.concurrent.duration.{DurationInt, DurationLong, FiniteDuration}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
+
+object RemoteReads {
+
+  implicit val rolesReads: Reads[List[Role]] = Reads { json =>
+    (json \ "roles").validateOpt[List[Map[String, List[String]]]].map {
+      case Some(roles) =>
+        roles.flatMap(_.toList.map { case (name, permissions) =>
+          Role(name, permissions)
+        })
+      case None => List.empty
+    }
+  }
+
+  implicit val revokedIdsReads: Reads[List[BiscuitrevokedId]] = Reads { json =>
+    (json \ "revoked").validateOpt[List[String]].map {
+      case Some(ids) => ids.map(BiscuitrevokedId)
+      case None => List.empty
+    }
+  }
+
+  implicit val factsReads: Reads[List[Fact]] = Reads { json =>
+    (json \ "facts").validateOpt[List[Map[String, String]]].map {
+      case Some(facts) =>
+        facts.flatMap { fact =>
+          for {
+            name <- fact.get("name")
+            value <- fact.get("value")
+          } yield Fact(name, value)
+        }
+      case None => List.empty
+    }
+  }
+
+  implicit val aclReads: Reads[List[ACL]] = Reads { json =>
+    (json \ "acl").validateOpt[List[Map[String, String]]].map {
+      case Some(acls) =>
+        acls.flatMap { acl =>
+          for {
+            user <- acl.get("user")
+            resource <- acl.get("resource")
+            action <- acl.get("action")
+          } yield ACL(user, resource, action)
+        }
+      case None => List.empty
+    }
+  }
+
+  implicit val userRolesReads: Reads[List[UserRole]] = Reads { json =>
+    (json \ "user_roles").validateOpt[List[Map[String, JsValue]]].map {
+      case Some(userRoles) =>
+        userRoles.flatMap { userRole =>
+          for {
+            id <- userRole.get("id").flatMap(_.asOpt[Int])
+            name <- userRole.get("name").flatMap(_.asOpt[String])
+            roles <- userRole.get("roles").flatMap(_.asOpt[List[String]])
+          } yield UserRole(id, name, roles)
+        }
+      case None => List.empty
+    }
+  }
+}
+
+case class Role(name: String, permissions: List[String])
+
+case class BiscuitrevokedId(id: String)
+
+case class Fact(name: String, value: String)
+
+case class ACL(user: String, resource: String, action: String)
+
+case class UserRole(id: Int, name: String, roles: List[String])
 
 case class RemoteFactsData(
     acl: List[String] = List.empty,
@@ -24,6 +96,15 @@ case class RemoteFactsData(
     checks: List[String] = List.empty
 ) {
   def json: JsValue = RemoteFactsData.format.writes(this)
+  def merge(other: RemoteFactsData): RemoteFactsData = {
+    RemoteFactsData(
+      acl = acl ++ other.acl,
+      roles = roles ++ other.roles,
+      facts = facts ++ other.facts,
+      revoked = revoked ++ other.revoked,
+      checks = checks ++ other.checks,
+    )
+  }
 }
 
 object RemoteFactsData {
@@ -54,17 +135,126 @@ object RemoteFactsData {
   }
 }
 
+
+
 case class BiscuitRemoteFactsConfig(
-    apiUrl: String = "",
-    method: String = "POST",
-    headers: Map[String, String] = Map.empty,
-    tlsConfig: NgTlsConfig = NgTlsConfig(),
-    timeout: FiniteDuration = 10.seconds
+  apiUrl: String = "",
+  method: String = "POST",
+  headers: Map[String, String] = Map.empty,
+  tlsConfig: NgTlsConfig = NgTlsConfig(),
+  timeout: FiniteDuration = 10.seconds
 ) {
+
   def json: JsValue = BiscuitRemoteFactsConfig.format.writes(this)
+
+  def getRemoteFacts(ctx: JsValue)(implicit env: Env, ec: ExecutionContext): Future[Either[String, RemoteFactsData]] = {
+    val withBody = method == "POST" || method == "PUT" || method == "PATCH"
+    val key = apiUrl // TODO: find a way to cache even with context
+
+    def call(): Future[Either[String, RemoteFactsData]] = {
+      env.MtlsWs
+        .url(apiUrl, tlsConfig.legacy)
+        .withHttpHeaders(
+          headers.toSeq: _*
+        )
+        .withMethod(method)
+        .applyOnIf(withBody) { builder =>
+          builder.withBody(Json.obj("context" -> ctx))
+        }
+        .withRequestTimeout(timeout)
+        .execute()
+        .map { resp =>
+          resp.status match {
+            case 200 =>
+              val rolesResult = (resp.json \ "roles").validate[List[Map[String, List[String]]]].getOrElse(List.empty)
+              val revokedResult = (resp.json \ "revoked").validate[List[String]].getOrElse(List.empty)
+              val factsResult = (resp.json \ "facts").validate[List[Map[String, String]]].getOrElse(List.empty)
+              val aclResult = (resp.json \ "acl").validate[List[Map[String, String]]].getOrElse(List.empty)
+              val userRolesResult = (resp.json \ "user_roles").validate[List[Map[String, JsValue]]].getOrElse(List.empty)
+              val checksResult = (resp.json \ "checks").validate[List[String]].getOrElse(List.empty)
+
+
+              val roles = rolesResult.flatMap(_.toList.map { case (name, permissions) =>
+                Role(name, permissions)
+              })
+
+              val revokedIds = revokedResult.map(BiscuitrevokedId)
+
+              val facts = factsResult.flatMap { fact =>
+                for {
+                  name <- fact.get("name")
+                  value <- fact.get("value")
+                } yield Fact(name, value)
+              }
+
+              val aclEntries = aclResult.flatMap { acl =>
+                for {
+                  user <- acl.get("user")
+                  resource <- acl.get("resource")
+                  action <- acl.get("action")
+                } yield ACL(user, resource, action)
+              }
+
+              val userRoles = userRolesResult.flatMap { userRole =>
+                for {
+                  id <- userRole.get("id").flatMap(_.asOpt[Int])
+                  name <- userRole.get("name").flatMap(_.asOpt[String])
+                  roles <- userRole.get("roles").flatMap(_.asOpt[List[String]])
+                } yield UserRole(id, name, roles)
+              }
+
+              val roleFacts = roles.map { role =>
+                s"""role("${role.name}", [${role.permissions.map(p => s""""$p"""").mkString(", ")}]);"""
+              }
+
+              val userRoleFacts = userRoles.map { userRole =>
+                s"""user_roles(${userRole.id}, "${userRole.name}", [${userRole.roles.map(r => s""""$r"""").mkString(", ")}]);"""
+              }
+
+
+              val revokedIdsRemote = revokedIds.map(_.id)
+              val factsStrings = facts.map(fact => s"""${fact.name}("${fact.value}")""")
+              val aclStrings = aclEntries.map(acl => s"""right("${acl.user}", "${acl.resource}", "${acl.action}");""")
+
+
+              val rfd = RemoteFactsData(
+                acl = aclStrings,
+                roles = roleFacts ++ userRoleFacts,
+                facts = factsStrings,
+                revoked = revokedIdsRemote,
+                checks = checksResult
+              )
+
+              if (withBody) {
+                BiscuitRemoteFactsConfig.cache.put(key, rfd)
+              }
+
+              Right(rfd)
+
+            case _ =>
+              Left(s"API request failed with status ${resp.status} (${resp.statusText})")
+          }
+        }
+        .recover {
+          case ex: Exception =>
+            Left(s"An error occurred during API request: ${ex.getMessage}")
+        }
+    }
+
+    if (withBody) {
+      call()
+    } else {
+      BiscuitRemoteFactsConfig.cache.getIfPresent(key) match {
+        case Some(data) => data.rightf
+        case None => call()
+      }
+    }
+  }
+
 }
 
 object BiscuitRemoteFactsConfig {
+  val cache = Scaffeine().maximumSize(10000).build[String, RemoteFactsData]
   val format = new Format[BiscuitRemoteFactsConfig] {
     override def writes(o: BiscuitRemoteFactsConfig): JsValue = {
       Json.obj(
@@ -115,13 +305,12 @@ case class RemoteFactsLoader(
   def theTags: Seq[String] = tags
 
   def loadFacts(ctx: JsValue)(implicit env: Env, ec: ExecutionContext): Future[Either[String, RemoteFactsData]] = {
-    BiscuitRemoteUtils.getRemoteFacts(config, ctx).flatMap {
+    config.getRemoteFacts(ctx).flatMap {
       case Left(err) => Left(s"unable to get remote facts ${err}").vfuture
       case Right(facts) => Right(facts).vfuture
     }
   }
 }
-
 
 object RemoteFactsLoader {
   val format = new Format[RemoteFactsLoader] {

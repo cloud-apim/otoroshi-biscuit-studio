@@ -2,7 +2,7 @@ package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import akka.stream.Materializer
 import com.cloud.apim.otoroshi.extensions.biscuit.domains.{BiscuitAttenuatorsUtils, BiscuitKeyPairsUtils}
-import com.cloud.apim.otoroshi.extensions.biscuit.entities.{AttenuatorConfig, BiscuitAttenuator, BiscuitKeyPair}
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.{AttenuatorConfig, BiscuitAttenuator, BiscuitExtractorConfig, BiscuitKeyPair}
 import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils
 import com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionSuite, OtoroshiClient}
 import org.biscuitsec.biscuit.crypto.PublicKey
@@ -15,6 +15,7 @@ import play.api.libs.json.Json
 import java.util.UUID
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
+import scala.jdk.CollectionConverters._
 
 class TestAttenuators extends BiscuitExtensionSuite {
   val port: Int = freePort
@@ -29,7 +30,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
     keypairRef = "",
     config = AttenuatorConfig(
       checks = List.empty,
-    ).some
+    )
   )
   implicit var ec: ExecutionContext = _
   implicit var mat: Materializer = _
@@ -151,6 +152,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
     )
 
     BiscuitKeyPairsUtils.createKeypairEntity(client)(demoKeyPair)
+    val publicKeyFormatted = demoKeyPair.getPubKey
 
     val conf = AttenuatorConfig(
       checks = Seq("check if time($date), $date >= 2025-12-30T19:00:10Z;"),
@@ -164,7 +166,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
       tags = Seq.empty,
       location = EntityLocation.default,
       keypairRef = keypairId,
-      config = conf.some
+      config = conf
     )
 
     BiscuitAttenuatorsUtils.createAttenuatorEntity(client)(attenuator)
@@ -252,13 +254,11 @@ class TestAttenuators extends BiscuitExtensionSuite {
     assertEquals(resp.status, 200, s"attenuator route did not respond with 200")
     assert(resp.json.at("headers.biscuit-attenuated-token").isDefined, s"response headers don't contains the biscuit attenuated token")
 
-    val attenuatedToken = BiscuitUtils.replaceHeader(resp.json.at("headers.biscuit-attenuated-token").get.asString)
+    val attenuatedToken = BiscuitExtractorConfig.replaceHeader(resp.json.at("headers.biscuit-attenuated-token").get.asString)
     assert(attenuatedToken.nonEmpty, s"attenuated token is empty")
 
-    val publicKeyFormatted = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, publicKey)
-
     val encodedBiscuit = Biscuit.from_b64url(attenuatedToken, publicKeyFormatted)
-    assertEquals(encodedBiscuit.authorizer().checks().size(), conf.checks.size, s"attenuated token doesn't contain checks list")
+    assertEquals(encodedBiscuit.authorizer().checks().asScala.flatMap(_._2.asScala).size, conf.checks.size, s"attenuated token doesn't contain checks list")
 
     client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeId)
     client.forBiscuitEntity("biscuit-attenuators").deleteEntity(attenuator)
@@ -305,7 +305,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
       tags = Seq.empty,
       location = EntityLocation.default,
       keypairRef = keypairId,
-      config = conf.some
+      config = conf
     )
 
     BiscuitAttenuatorsUtils.createAttenuatorEntity(client)(attenuator)
@@ -371,7 +371,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
          |        "attenuator_ref": "${attenuatorId}",
          |        "extractor_type": "header",
          |        "extractor_name": "biscuit-token-test",
-         |        "token_replace_loc": "cookies",
+         |        "token_replace_loc": "cookie",
          |        "token_replace_name": "biscuit-attenuated-token"
          |      },
          |      "bound_listeners": [],
@@ -460,7 +460,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
       tags = Seq.empty,
       location = EntityLocation.default,
       keypairRef = keypairId,
-      config = conf.some
+      config = conf
     )
 
     BiscuitAttenuatorsUtils.createAttenuatorEntity(client)(attenuator)

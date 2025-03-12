@@ -15,20 +15,20 @@ The Otoroshi Biscuit Studio documentation is available here : https://cloud-apim
 Follow this guide in order to get Otoroshi with the Biscuit Studio Extension.
 ### Download Otoroshi
 
-[ ![Download Otoroshi](https://img.shields.io/github/release/MAIF/otoroshi.svg) ](https://github.com/MAIF/otoroshi/releases/download/v16.23.2/otoroshi.jar)
+[ ![Download Otoroshi](https://img.shields.io/github/release/MAIF/otoroshi.svg) ](https://github.com/MAIF/otoroshi/releases/download/v16.24.0/otoroshi.jar)
 
 ```sh
-curl -L -o otoroshi.jar 'https://github.com/MAIF/otoroshi/releases/download/v16.23.2/otoroshi.jar'
+curl -L -o otoroshi.jar 'https://github.com/MAIF/otoroshi/releases/download/v16.24.0/otoroshi.jar'
 ```
 
 ### Download the Biscuit Studio extension
   
-[![Download Otoroshi Biscuit Studio extension](https://img.shields.io/github/release/cloud-apim/otoroshi-biscuit-studio.svg) ](https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/v0.0.5/otoroshi-biscuit-studio-v0.0.5.jar)
+[![Download Otoroshi Biscuit Studio extension](https://img.shields.io/github/release/cloud-apim/otoroshi-biscuit-studio.svg) ](https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/0.0.9/otoroshi-biscuit-studio-0.0.9.jar)
 
 You can download the latest release of `otoroshi-biscuit-studio` from https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/latest
 
 ```sh
-curl -L -o biscuit-studio-extension.jar 'https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/v0.0.5/otoroshi-biscuit-studio-v0.0.5.jar'
+curl -L -o biscuit-studio-extension.jar 'https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/0.0.9/otoroshi-biscuit-studio-0.0.9.jar'
 ```
 
 ### Run Otoroshi with the Biscuit Studio Extension
@@ -63,13 +63,10 @@ curl -X POST -H 'Content-Type: application/json' 'http://otoroshi-api.oto.tools:
 Here is a demo configuration :
 
 ```js
-  {
-    "verifier_ref": "YOUR_BISCUIT_VERIFIER_ENTITY_REF",
-    "rbac_ref": "RBAC_POLICY_ENTITY_REF" // optional
-    "enforce": false, // true or false
-    "extractor_type": "header", // header, query or cookies
-    "extractor_name": "Authorization"
-  }
+{
+  "verifier_refs": ["biscuit-verifier_ef2d067d-b9a7-4635-8bd0-0b5d1953dca3", "biscuit-verifier_c1215c55-8c6b-4dd9-934e-ae05967b8c20"], // type : 'array' - it takes a list of verifiers
+  "enforce": true, // type: 'boolean'
+}
 ```
 
 ### Attenuator Plugin configuration
@@ -77,13 +74,13 @@ Here is a demo configuration :
 Here is a demo configuration :
 
 ```js
-  {
-    "ref": "YOUR_BISCUIT_ATTENUATOR_REF",
-    "extractor_type": "header", // header, query or cookies
-    "extractor_name": "Authorization"
-    "token_replace_loc": "header", // header, query or cookies
-    "token_replace_name": "biscuit_token"
-  }
+{
+  "ref": "YOUR_BISCUIT_ATTENUATOR_REF",
+  "extractor_type": "header", // header, query or cookie
+  "extractor_name": "Authorization"
+  "token_replace_loc": "header", // header, query or cookie
+  "token_replace_name": "biscuit_token"
+}
 ```
 
 ### Biscuit Studio API Reference

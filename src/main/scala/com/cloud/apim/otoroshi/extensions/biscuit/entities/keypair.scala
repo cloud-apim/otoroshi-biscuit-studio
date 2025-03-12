@@ -1,6 +1,6 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.entities
 
-import org.biscuitsec.biscuit.crypto.KeyPair
+import org.biscuitsec.biscuit.crypto.{KeyPair, PublicKey}
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionDatastores, BiscuitExtensionState}
 
 import scala.util.{Failure, Success, Try}
@@ -14,15 +14,16 @@ import play.api.libs.json._
 import otoroshi.security.IdGenerator
 
 case class BiscuitKeyPair(
-                           id: String,
-                           name: String,
-                           description: String,
-                           privKey: String,
-                           pubKey: String,
-                           tags: Seq[String],
-                           metadata: Map[String, String],
-                           location: EntityLocation
-                         ) extends EntityLocationSupport {
+  id: String,
+  name: String = "",
+  description: String = "",
+  isPublic: Boolean = false,
+  privKey: String = "",
+  pubKey: String = "",
+  tags: Seq[String] = Seq.empty,
+  metadata: Map[String, String] = Map.empty,
+  location: EntityLocation
+) extends EntityLocationSupport {
   def json: JsValue = BiscuitKeyPair.format.writes(this)
 
   def internalId: String = id
@@ -36,6 +37,8 @@ case class BiscuitKeyPair(
   def theTags: Seq[String] = tags
 
   def keyPair: KeyPair = new KeyPair(privKey)
+
+  def getPubKey: PublicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, pubKey)
 }
 
 object BiscuitKeyPair {
@@ -46,6 +49,7 @@ object BiscuitKeyPair {
         "name" -> o.name,
         "description" -> o.description,
         "metadata" -> o.metadata,
+        "is_public" -> o.isPublic,
         "pubKey" -> o.pubKey,
         "privKey" -> o.privKey,
         "tags" -> JsArray(o.tags.map(JsString.apply)),
@@ -59,6 +63,7 @@ object BiscuitKeyPair {
           id = (json \ "id").as[String],
           name = (json \ "name").as[String],
           description = (json \ "description").asOpt[String].getOrElse("--"),
+          isPublic = (json \ "is_public").asOpt[Boolean].getOrElse(false),
           pubKey = (json \ "pubKey").asOpt[String].getOrElse("--"),
           privKey = (json \ "privKey").asOpt[String].getOrElse("--"),
           metadata = (json \ "metadata").asOpt[Map[String, String]].getOrElse(Map.empty),
@@ -90,8 +95,6 @@ object BiscuitKeyPair {
             id = IdGenerator.namedId("biscuit-keypair", env),
             name = "New Biscuit Key Pair",
             description = "New biscuit KeyPair",
-            metadata = Map.empty,
-            tags = Seq.empty,
             location = EntityLocation.default,
             privKey = biscuitKeyPair.toHex,
             pubKey = biscuitKeyPair.public_key().toHex

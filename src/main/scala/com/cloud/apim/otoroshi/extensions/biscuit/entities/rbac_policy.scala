@@ -13,16 +13,16 @@ import otoroshi.utils.syntax.implicits._
 import scala.util.{Failure, Success, Try}
 
 case class BiscuitRbacPolicy(
-                              id: String,
-                              name: String,
-                              description: String,
-                              strict: Boolean = true,
-                              enabled: Boolean = true,
-                              tags: Seq[String] = Seq.empty,
-                              metadata: Map[String, String] = Map.empty,
-                              location: EntityLocation,
-                              roles: Map[String, Seq[String]] = Map.empty,
-                            ) extends EntityLocationSupport {
+  id: String,
+  name: String,
+  description: String,
+  strict: Boolean = true,
+  enabled: Boolean = true,
+  tags: Seq[String] = Seq.empty,
+  metadata: Map[String, String] = Map.empty,
+  location: EntityLocation,
+  roles: Map[String, Seq[String]] = Map.empty,
+) extends EntityLocationSupport {
   def json: JsValue = BiscuitRbacPolicy.format.writes(this)
 
   def internalId: String = id
@@ -113,7 +113,9 @@ object BiscuitRbacPolicy {
     )
   }
 }
+
 trait BiscuitRbacPolicyDataStore extends BasicStore[BiscuitRbacPolicy]
+
 class KvBiscuitRbacPolicyDataStore(extensionId: AdminExtensionId, redisCli: RedisLike, _env: Env)
   extends BiscuitRbacPolicyDataStore
     with RedisLikeStore[BiscuitRbacPolicy] {

@@ -28,6 +28,10 @@ class BiscuitKeyPairPage extends Component {
 			type: "array",
 			props: { label: "Tags" },
 		},
+		is_public: {
+			type: "bool",
+			props: { label: "Expose public key" },
+		},
 		keypair_generator: {
 			type: KeyPairGenerator,
 		},
@@ -69,9 +73,11 @@ class BiscuitKeyPairPage extends Component {
 		"id",
 		"name",
 		"description",
-    ">>>Metadata and tags",
+		">>>Metadata and tags",
 		"tags",
 		"metadata",
+		"<<<Public Key exposition",
+		"is_public",
 		"<<<KeyPair parameters",
 		"keypair_generator",
 		// "<<< Biscuit playground",
@@ -113,7 +119,7 @@ class BiscuitKeyPairPage extends Component {
 							"metadata.updated_at",
 						],
 					}),
-        updateItem: (e) => {
+				updateItem: (e) => {
 					if (!e.privKey || !e.pubKey) {
 						alert("Public key or private key not provided !");
 					} else {

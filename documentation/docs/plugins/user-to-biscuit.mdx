@@ -1,0 +1,54 @@
+---
+sidebar_position: 6
+---
+
+import Terminal from '@site/src/components/Terminal';
+
+# User to Biscuit Token Plugin
+
+This plugin enables seamless authentication by extracting the user identity from the request context, generating a Biscuit Token, and injecting it into the request as a valid authentication token. 
+
+## How It Works
+
+1. **User Extraction**: The plugin retrieves the user information from the request header or other specified sources.
+2. **Biscuit Token Generation**: Using the extracted user data, the plugin forges a Biscuit Token.
+3. **Request Augmentation**: The generated Biscuit Token is inserted into the request.
+
+## Configuration
+
+The plugin requires a minimal configuration to function properly. Below is a sample configuration:
+
+```json
+{
+  "forge_ref": "YOUR_FORGE_ID",    // The reference to your Biscuit Forge ID used for signing tokens.
+  "extractor_header_name": "header",   // The name of the request header that contains the user identity (e.g., "Authorization").
+  "auto_facts": true                    // Boolean flag indicating whether additional facts should be automatically included in the token.
+}
+```
+
+### Configuration Example
+
+A practical configuration example is as follows:
+
+```json
+{
+  "forge_ref": "biscuit-forge_be34f21f-14fd-4fa0-acc0-0a07b4233393",
+  "extractor_header_name": "user-token",
+  "auto_facts": true
+}
+```
+
+### Configuration Parameters
+
+| Parameter               | Type    | Description |
+|-------------------------|---------|-------------|
+| `forge_ref`            | String  | Unique reference to the Biscuit Forge responsible for signing and issuing tokens. |
+| `extractor_header_name` | String  | The header name from which the user identity is extracted. |
+| `auto_facts`           | Boolean | If set to `true`, additional user-related facts will be automatically embedded into the generated Biscuit Token. |
+
+## Usage
+
+1. Configure the plugin as per the above specifications.
+2. Ensure the appropriate request headers include user identity data.
+3. Upon receiving a request, the plugin will extract the user, generate a Biscuit Token, and insert it into the request.
+4. The authenticated request is sent to the destination service.

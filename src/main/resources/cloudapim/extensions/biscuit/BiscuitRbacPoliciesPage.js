@@ -31,7 +31,7 @@ class BiscuitRbacPoliciesPage extends Component {
 		roles: {
 			type: "object",
 			props: { label: "List of Roles" },
-		}
+		},
 	};
 
 	columns = [
@@ -81,7 +81,7 @@ class BiscuitRbacPoliciesPage extends Component {
 				parentProps: this.props,
 				selfUrl: "extensions/cloud-apim/biscuit/rbac",
 				defaultTitle: "All Biscuit RBAC Policies",
-        defaultValue: () => this.client.template(),
+				defaultValue: () => this.client.template(),
 				itemName: "Biscuit RBAC Policy",
 				formSchema: this.formSchema,
 				formFlow: this.formFlow,
@@ -89,21 +89,17 @@ class BiscuitRbacPoliciesPage extends Component {
 				stayAfterSave: true,
 				fetchTemplate: () => this.client.template(),
 				fetchItems: (paginationState) => this.client.findAll(),
-        updateItem: (e) => {
+				updateItem: (e) => {
 					if (Object.keys(e.roles).length === 0) {
-						alert(
-							"Your roles list seems to be empty."
-						);
+						alert("Your roles list seems to be empty.");
 					} else {
 						return this.client.update(e);
 					}
 				},
 				deleteItem: this.client.delete,
-        createItem: (e) => {
+				createItem: (e) => {
 					if (Object.keys(e.roles).length === 0) {
-						alert(
-							"Your roles list seems to be empty."
-						);
+						alert("Your roles list seems to be empty.");
 					} else {
 						return this.client.create(e);
 					}

@@ -1,0 +1,75 @@
+---
+sidebar_position: 5
+---
+
+import Terminal from '@site/src/components/Terminal';
+
+# Biscuit User Extractor plugin
+
+The **Biscuit User Extractor** plugin enables you to extract user-related information from a Biscuit token and inject it into the request context as an authenticated user. 
+
+This allows seamless integration of user authentication and authorization into your application, ensuring secure and streamlined access management.
+
+## Configuration
+
+Here is a sample configuration for the plugin:
+
+```js
+{
+  "keypair_ref": "YOUR_KEYPAIR_ID",    // The reference to your keypair ID.
+  "extractor_type": "header",          // Type of extractor: 'header', 'query', or 'cookie'.
+  "extractor_name": "Authorization",   // The name of the extractor, usually the header name (e.g., "Authorization").
+  "enforce": true,                     // Boolean value: Whether to enforce the extraction (true/false).
+  "username_key": "name"               // The key in the Biscuit token that represents the username.
+}
+```
+
+### Configuration Options:
+
+- **`keypair_ref`**:  
+  - The ID of your keypair used for signing and verifying Biscuit tokens.
+  
+- **`extractor_type`**:  
+  - Specifies where to extract the Biscuit token from:
+    - `"header"`: Extract from HTTP headers.
+    - `"query"`: Extract from URL query parameters.
+    - `"cookie"`: Extract from cookies.
+
+- **`extractor_name`**:  
+  - The name of the field from where the token should be extracted. For example, if you use the `Authorization` header, the value should be `"Authorization"`.
+
+- **`enforce`**:  
+  - A boolean value that specifies whether to enforce the extraction of the Biscuit token. If set to `true`, the plugin will ensure the token is present and valid. If set to `false`, the absence or invalid token may be ignored.
+
+- **`username_key`**:  
+  - The key name in the Biscuit token that holds the username. Typically, this is `"name"` or another identifier used for the user.
+
+## Example Use Case
+
+If you want to extract the `Authorization` header, enforce token verification, and store the user's username under the key `name`, your configuration would look like the example provided.
+
+This configuration ensures that the user's identity (extracted from the Biscuit token) is included in your application's request context, making it easy to access authenticated user details across your services.
+
+## User Profile Endpoint Configuration
+
+In addition to extracting user information from the Biscuit token, you can configure a **UserProfileEndpoint** to retrieve detailed user profile data from your application. 
+
+This user profile information can be accessed by configuring the endpoint route and it provides essential details such as the user's name, email, role, and more extracted from Biscuit Token's facts.
+
+### User Profile Data Format
+
+The response from the **UserProfileEndpoint** typically includes the following data:
+
+```json
+{
+  "name": "JohnDoe",  
+  "email": "randomuser123@example.com",  
+  "profile": {
+    "user_id": "john.doe@example.com",
+    "username": "JohnDoe", 
+    "role": "guest"
+  },
+  "metadata": {}, 
+  "tags": []
+}
+```

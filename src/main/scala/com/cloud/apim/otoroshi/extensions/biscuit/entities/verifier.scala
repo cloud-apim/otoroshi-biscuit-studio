@@ -1,26 +1,234 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.entities
 
+import akka.stream.scaladsl.Source
+import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils.{handleBiscuitErrors, readOrWrite}
+import org.biscuitsec.biscuit.datalog.RunLimits
+import org.biscuitsec.biscuit.error.Error
+import org.biscuitsec.biscuit.token.Biscuit
+import org.biscuitsec.biscuit.token.builder.Utils.{fact, string}
+import org.biscuitsec.biscuit.token.builder.parser.Parser
 import otoroshi.api.{GenericResourceAccessApiWithState, Resource, ResourceVersion}
 import otoroshi.env.Env
-import otoroshi.models.{EntityLocation, EntityLocationSupport}
+import otoroshi.models.{ApiKey, EntityLocation, EntityLocationSupport, PrivateAppsUser}
 import otoroshi.next.extensions.AdminExtensionId
+import otoroshi.next.models.NgRoute
+import otoroshi.next.utils.JsonHelpers
 import otoroshi.security.IdGenerator
 import otoroshi.storage.{BasicStore, RedisLike, RedisLikeStore}
+import otoroshi.utils.http.RequestImplicits.EnhancedRequestHeader
 import otoroshi.utils.syntax.implicits._
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionDatastores, BiscuitExtensionState}
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtension, BiscuitExtensionDatastores, BiscuitExtensionState}
 import play.api.libs.json._
+import play.api.mvc.RequestHeader
 
+import scala.concurrent.{ExecutionContext, Future}
+import scala.jdk.CollectionConverters._
 import scala.util.{Failure, Success, Try}
 
+case class VerificationContext(route: NgRoute, request: RequestHeader, user: Option[PrivateAppsUser], apikey: Option[ApiKey]) {
+  def json: JsObject = Json.obj(
+    "apikey" -> apikey.map(_.lightJson).getOrElse(JsNull).as[JsValue],
+    "user" -> user.map(_.lightJson).getOrElse(JsNull).as[JsValue],
+    "request" -> JsonHelpers.requestToJson(request),
+    "route" -> route.json,
+  )
+}
+
 case class VerifierConfig(
-                           checks: Seq[String],
-                           facts: Seq[String],
-                           resources: Seq[String],
-                           rules: Seq[String],
-                           policies: Seq[String],
-                           revokedIds: Seq[String]
-                         ) {
+  checks: Seq[String] = Seq.empty,
+  facts: Seq[String] = Seq.empty,
+  resources: Seq[String] = Seq.empty,
+  rules: Seq[String] = Seq.empty,
+  policies: Seq[String] = Seq.empty,
+  revokedIds: Seq[String] = Seq.empty,
+  rbacPolicyRefs: Seq[String] = Seq.empty,
+  remoteFactsRefs: Seq[String] = Seq.empty,
+) {
+
   def json: JsValue = VerifierConfig.format.writes(this)
+
+  def verify(biscuitToken: Biscuit, ctxOpt: Option[VerificationContext])(implicit env: Env, ec: ExecutionContext): Future[Either[String, Unit]] = {
+
+    val verifier = biscuitToken.authorizer()
+    verifier.set_time()
+
+    if (ctxOpt.nonEmpty) {
+      val ctx = ctxOpt.get
+
+      verifier.add_fact(s"""operation("${readOrWrite(ctx.request.method)}")""")
+
+      verifier.add_fact(
+        fact(
+          "resource",
+          Seq(
+            string(ctx.request.method.toLowerCase),
+            string(ctx.request.domain),
+            string(ctx.request.path)
+          ).asJava
+        )
+      )
+      verifier.add_fact(fact("hostname", Seq(string(ctx.request.theHost)).asJava))
+      verifier.add_fact(fact("resource", Seq(string(ctx.request.domain)).asJava))
+      verifier.add_fact(fact("req_path", Seq(string(ctx.request.path)).asJava))
+      verifier.add_fact(fact("req_domain", Seq(string(ctx.request.domain)).asJava))
+      verifier.add_fact(fact("req_method", Seq(string(ctx.request.method.toLowerCase)).asJava))
+      verifier.add_fact(fact("route_id", Seq(string(ctx.route.id)).asJava))
+      verifier.add_fact(fact("ip_address", Seq(string(ctx.request.theIpAddress)).asJava))
+      verifier.add_fact(fact("user_agent", Seq(string(ctx.request.theUserAgent)).asJava))
+      verifier.add_fact(fact("req_protocol", Seq(string(ctx.request.theProtocol)).asJava))
+
+      if (ctx.user.isDefined) {
+        verifier.add_fact(fact("user_name", Seq(string(ctx.user.get.name)).asJava))
+        verifier.add_fact(fact("user_email", Seq(string(ctx.user.get.email)).asJava))
+        verifier.add_fact(fact("auth_method", Seq(string("user")).asJava))
+
+        ctx.user.get.tags.foreach { tag => {
+          verifier.add_fact(fact("user_tag", Seq(string(tag)).asJava))
+        }
+        }
+
+        ctx.user.get.metadata.foreach {
+          case (key, value) => verifier.add_fact(fact("user_metadata", Seq(string(key), string(value)).asJava))
+        }
+      }
+
+      if (ctx.apikey.isDefined) {
+        verifier.add_fact(fact("auth_method", Seq(string("apikey")).asJava))
+        verifier.add_fact(fact("apikey_client_id", Seq(string(ctx.apikey.get.clientId)).asJava))
+        verifier.add_fact(fact("apikey_client_name", Seq(string(ctx.apikey.get.clientName)).asJava))
+
+        ctx.apikey.get.tags.foreach { tag => {
+          verifier.add_fact(fact("apikey_tag", Seq(string(tag)).asJava))
+        }
+        }
+
+        ctx.apikey.get.metadata.foreach {
+          case (key, value) => verifier.add_fact(fact("apikey_metadata", Seq(string(key), string(value)).asJava))
+        }
+      }
+
+      ctx.request.headers.headers.map { case (headerName, headerValue) =>
+        verifier.add_fact(fact(
+          "req_headers",
+          Seq(string(headerName.toLowerCase), string(headerValue)).asJava
+        ))
+      }
+    }
+
+    // Add resources from the configuration
+    resources
+      .map(_.trim.stripSuffix(";"))
+      .foreach(r => verifier.add_fact(s"""resource("${r}")"""))
+
+    // Checks
+    checks
+      .map(_.trim.stripSuffix(";"))
+      .map(Parser.check)
+      .filter(_.isRight)
+      .map(_.get()._2)
+      .foreach(r => verifier.add_check(r))
+
+    // Facts
+    facts
+      .map(_.trim.stripSuffix(";"))
+      .map(Parser.fact)
+      .filter(_.isRight)
+      .map(_.get()._2)
+      .foreach(r => verifier.add_fact(r))
+
+    // Rules
+    rules
+      .map(_.trim.stripSuffix(";"))
+      .map(Parser.rule)
+      .filter(_.isRight)
+      .map(_.get()._2)
+      .foreach(r => verifier.add_rule(r))
+
+    // Policies : allow or deny
+    policies
+      .map(_.trim.stripSuffix(";"))
+      .map(Parser.policy)
+      .filter(_.isRight)
+      .map(_.get()._2)
+      .foreach(r => verifier.add_policy(r))
+
+    if (rbacPolicyRefs.nonEmpty) {
+      rbacPolicyRefs.foreach { rbacPolicyRef =>
+        env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitRbacPolicy(rbacPolicyRef)) match {
+          case None => ()
+          case Some(rbacPolicyConf) => {
+            val rbacConf = rbacPolicyConf.roles
+              .map(r => s"""role("${r._1}", ${r._2})""")
+              .map(_.stripSuffix(";"))
+              .toSeq
+            rbacConf.foreach(f => verifier.add_fact(f))
+          }
+        }
+      }
+    }
+
+    val remoteFactsF: Future[RemoteFactsData] = if (remoteFactsRefs.isEmpty) {
+      RemoteFactsData().vfuture
+    } else {
+      Source(remoteFactsRefs.toList)
+        .mapAsync(1) { remoteFactsRef =>
+          env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitRemoteFactsLoader(remoteFactsRef)) match {
+            case None => RemoteFactsData().vfuture // TODO: log error though
+            case Some(remoteFactsEntity) => {
+              if (remoteFactsEntity.config.apiUrl.nonEmpty && remoteFactsEntity.config.headers.nonEmpty) {
+                val jsonCtx = ctxOpt.map(_.json.asObject).getOrElse(Json.obj()) ++ Json.obj("phase" -> "access", "plugin" -> "biscuit_verifier")
+                remoteFactsEntity.config.getRemoteFacts(jsonCtx).map {
+                  case Left(error) => RemoteFactsData() // TODO: log error though
+                  case Right(factsData) => factsData
+                }
+              } else {
+                RemoteFactsData().vfuture
+              }
+            }
+          }
+        }
+        .runFold(RemoteFactsData())(_.merge(_))(env.otoroshiMaterializer)
+    }
+
+    remoteFactsF.map { remoteFacts =>
+
+      remoteFacts.facts.foreach(f => verifier.add_fact(f))
+      remoteFacts.checks.foreach(f => verifier.add_check(f))
+      remoteFacts.roles.foreach(f => verifier.add_fact(f))
+      remoteFacts.acl.foreach(f => verifier.add_fact(f))
+
+      // Check for token revocation
+      val ids = biscuitToken.revocation_identifiers().asScala.map(_.toHex).toList ++ remoteFacts.revoked
+      if (revokedIds.nonEmpty && ids.exists(revokedIds.contains)) {
+        Left(handleBiscuitErrors(new Error.FormatError.DeserializationError("Revoked token")))
+      } else {
+        val maxFacts = 1000 // TODO: from config
+        val maxIterations = 100 // TODO: from config
+        val maxTime = java.time.Duration.ofMillis(100) // TODO: from config
+        // Perform authorization
+        if (verifier.policies().isEmpty) {
+          Try(verifier.allow().authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
+            case Left(err: org.biscuitsec.biscuit.error.Error) =>
+              Left(handleBiscuitErrors(err))
+            case Left(err) =>
+              Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError()))
+            case Right(_) =>
+              Right(())
+          }
+        } else {
+          Try(verifier.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
+            case Left(err: org.biscuitsec.biscuit.error.Error) =>
+              Left(handleBiscuitErrors(err))
+            case Left(err) =>
+              // TODO: log
+              Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError()))
+            case Right(_) =>
+              Right(())
+          }
+        }
+      }
+    }
+  }
 }
 
 object VerifierConfig {
@@ -32,7 +240,9 @@ object VerifierConfig {
         "resources" -> o.resources,
         "rules" -> o.rules,
         "policies" -> o.policies,
-        "revokedIds" -> o.revokedIds
+        "rbac_refs" -> o.rbacPolicyRefs,
+        "revoked_ids" -> o.revokedIds,
+        "remote_facts_refs" -> o.remoteFactsRefs,
       )
     }
 
@@ -44,7 +254,9 @@ object VerifierConfig {
           resources = (json \ "resources").asOpt[Seq[String]].getOrElse(Seq.empty),
           rules = (json \ "rules").asOpt[Seq[String]].getOrElse(Seq.empty),
           policies = (json \ "policies").asOpt[Seq[String]].getOrElse(Seq.empty),
-          revokedIds = (json \ "revokedIds").asOpt[Seq[String]].getOrElse(Seq.empty)
+          rbacPolicyRefs = (json \ "rbac_refs").asOpt[Seq[String]].getOrElse(Seq.empty),
+          revokedIds = (json \ "revoked_ids").asOpt[Seq[String]].getOrElse(Seq.empty),
+          remoteFactsRefs = (json \ "remote_facts_refs").asOpt[Seq[String]].getOrElse(Seq.empty)
         )
       } match {
         case Failure(e) => JsError(e.getMessage)
@@ -53,18 +265,72 @@ object VerifierConfig {
   }
 }
 
+case class BiscuitExtractorConfig(extractorType: String = "header", extractorName: String = "Authorization") {
+
+  def json: JsValue = BiscuitExtractorConfig.format.writes(this)
+
+  def extractToken(req: RequestHeader): Option[String] = {
+    (extractorType match {
+      case "header" => req.headers.get(extractorName)
+      case "query" => req.getQueryString(extractorName)
+      case "cookie" => req.cookies.get(extractorName).map(_.value)
+      case _ => None
+    }).map { token =>
+      BiscuitExtractorConfig.replaceHeader(token)
+    }
+  }
+}
+
+object BiscuitExtractorConfig {
+  val format = new Format[BiscuitExtractorConfig] {
+    override def reads(json: JsValue): JsResult[BiscuitExtractorConfig] = Try {
+      BiscuitExtractorConfig(
+        extractorType = json.select("extractor_type").asOpt[String].getOrElse("header"),
+        extractorName = json.select("extractor_name").asOpt[String].getOrElse("Authorization")
+      )
+    } match {
+      case Failure(exception) => JsError(exception.getMessage)
+      case Success(value) => JsSuccess(value)
+    }
+
+    override def writes(o: BiscuitExtractorConfig): JsValue = Json.obj(
+      "extractor_type" -> o.extractorType,
+      "extractor_name" -> o.extractorName,
+    )
+  }
+
+  def replaceHeader(token: String): String = {
+    token
+      .replace("Bearer ", "")
+      .replace("Bearer: ", "")
+      .replace("Bearer:", "")
+      .replace("Biscuit ", "")
+      .replace("Biscuit: ", "")
+      .replace("Biscuit-Token ", "")
+      .replace("Biscuit-Token", "")
+      .replace("BiscuitToken ", "")
+      .replace("BiscuitToken", "")
+      .replace("biscuit: ", "")
+      .replace("biscuit:", "")
+      .replace("sealed-biscuit: ", "")
+      .replace("sealed-biscuit:", "")
+      .trim
+  }
+}
+
 case class BiscuitVerifier(
-                            id: String,
-                            name: String,
-                            description: String,
-                            strict: Boolean = true,
-                            enabled: Boolean = true,
-                            tags: Seq[String] = Seq.empty,
-                            metadata: Map[String, String] = Map.empty,
-                            location: EntityLocation,
-                            keypairRef: String,
-                            config: Option[VerifierConfig]
-                          ) extends EntityLocationSupport {
+  id: String,
+  name: String,
+  description: String,
+  strict: Boolean = true,
+  enabled: Boolean = true,
+  tags: Seq[String] = Seq.empty,
+  metadata: Map[String, String] = Map.empty,
+  location: EntityLocation,
+  keypairRef: String = "",
+  config: VerifierConfig,
+  extractor: BiscuitExtractorConfig,
+) extends EntityLocationSupport {
   def json: JsValue = BiscuitVerifier.format.writes(this)
 
   def internalId: String = id
@@ -76,8 +342,24 @@ case class BiscuitVerifier(
   def theName: String = name
 
   def theTags: Seq[String] = tags
-}
 
+  def verify(req: RequestHeader, ctxOpt: Option[VerificationContext])(implicit env: Env, ec: ExecutionContext): Future[Either[String, Unit]] = {
+    env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(keypairRef)) match {
+      case None => Left("keypair_ref not found").vfuture
+      case Some(keypair) => {
+        extractor.extractToken(req) match {
+          case Some(token) => {
+            Try(Biscuit.from_b64url(token, keypair.getPubKey)).toEither match {
+              case Left(err) => Left(s"Unable to deserialize Biscuit token : ${err}").vfuture
+              case Right(biscuitToken) => config.verify(biscuitToken, ctxOpt)
+            }
+          }
+          case _ => Left("no token").vfuture
+        }
+      }
+    }
+  }
+}
 
 object BiscuitVerifier {
   val format = new Format[BiscuitVerifier] {
@@ -91,7 +373,8 @@ object BiscuitVerifier {
         "metadata" -> o.metadata,
         "strict" -> o.strict,
         "tags" -> JsArray(o.tags.map(JsString.apply)),
-        "config" -> o.config.map(_.json).getOrElse(JsNull).asValue
+        "config" -> o.config.json,
+        "extractor" -> o.extractor.json,
       )
     }
 
@@ -107,7 +390,8 @@ object BiscuitVerifier {
           strict = (json \ "strict").asOpt[Boolean].getOrElse(true),
           metadata = (json \ "metadata").asOpt[Map[String, String]].getOrElse(Map.empty),
           tags = (json \ "tags").asOpt[Seq[String]].getOrElse(Seq.empty[String]),
-          config = VerifierConfig.format.reads(json.select("config").getOrElse(JsNull)).asOpt
+          config = json.select("config").asOpt(VerifierConfig.format).getOrElse(VerifierConfig()),
+          extractor = json.select("extractor").asOpt(BiscuitExtractorConfig.format).getOrElse(BiscuitExtractorConfig()),
         )
       } match {
         case Failure(e) => JsError(e.getMessage)
@@ -134,18 +418,9 @@ object BiscuitVerifier {
             id = IdGenerator.namedId("biscuit-verifier", env),
             name = "New biscuit verifier",
             description = "New biscuit verifier",
-            metadata = Map.empty,
-            tags = Seq.empty,
             location = EntityLocation.default,
-            keypairRef = "",
-            config = VerifierConfig(
-              checks = Seq.empty,
-              facts = Seq.empty,
-              resources = Seq.empty,
-              rules = Seq.empty,
-              policies = Seq.empty,
-              revokedIds = Seq.empty,
-            ).some
+            config = VerifierConfig(),
+            extractor = BiscuitExtractorConfig(),
           ).json
         },
         canRead = true,

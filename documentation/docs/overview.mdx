@@ -27,6 +27,12 @@ Their versatility and unique features make them an ideal choice for modern token
 * **[Biscuit Attenuators](/docs/entities/attenuators)**  
   Configure attenuators to modify and return Biscuit tokens that have been "attenuated" (limited in scope or permissions), ensuring fine-grained control over access levels in your API routes.
   
+* **[Biscuit RBAC Policies](/docs/entities/rbac)**  
+  Implement Role-Based Access Control (RBAC) policies using Biscuit tokens to enforce structured, flexible access control mechanisms within your application. This allows for secure, role-based user management.
+
+* **[Biscuit Remote Facts Loader](/docs/entities/remotefacts)**  
+  Integrate external data sources (remote facts) to enhance the authorization decisions made by Biscuit tokens, allowing dynamic and context-aware access control.
+
 ### Supported Plugins in Otoroshi Biscuit Studio
 
 * **[Verifier plugin](/docs/plugins/verifiers)**  
@@ -42,3 +48,7 @@ Their versatility and unique features make them an ideal choice for modern token
 * **[Client Credentials plugin](/docs/plugins/clientcredentials)**
 
   The Client Credentials Plugin is a `Backend` plugin that enables the OAuth2 `client_credentials` flow, using a [Biscuit Token](/docs/introduction) as the `access_token`.
+
+* **[Biscuit User Extractor plugin](/docs/plugins/biscuit-user-extractor)**
+
+  The Biscuit User Extractor plugin allows extracting user information from a Biscuit token and passing it along with the request to backend services.This helps identify users and enforce user-specific policies without additional authentication mechanisms.
