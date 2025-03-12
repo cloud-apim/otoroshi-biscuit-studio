@@ -41,48 +41,110 @@ Below is an example of the data structure that your API might return. This JSON 
 
 ```json
 {
+  "facts": [
+    {
+      "name": "role",
+      "value": "admin"
+    },
+    {
+      "name": "resource",
+      "value": "file1"
+    }
+  ],
+  "checks": [
+    "check if user(\"demo\")",
+    "check if resource(\"file1\")",
+    "check if role(\"admin\")"
+  ],
+  "revoked": [
+    "e5e58ecad81377019ddeb1b7cf2afbc1a54321a29cd5f8c8d3ed2bd1237ebd8b5bc3e855e4ba1d44d18705394698beb9a46c6413510a0842907c1eb867d7a90a",
+    "20c81040a822e4cf7b028b938fa1b350a36d612c52a800f75f3fba96ca5b2b5db597e468be09c404d6948a5a209031d40bc1c7b33897b912c3aceae8ba30df07"
+  ],
   "roles": [
     {
-      "admin": ["billing:read", "billing:write", "address:read", "address:write"]
+      "admin": [
+        "billing:read",
+        "billing:write",
+        "address:read",
+        "address:write"
+      ]
     },
     {
-      "accounting": ["billing:read", "billing:write", "address:read"]
+      "accounting": [
+        "billing:read",
+        "billing:write",
+        "address:read"
+      ]
     },
     {
-      "support": ["address:read", "address:write"]
+      "support": [
+        "address:read",
+        "address:write"
+      ]
     },
     {
-      "pilot": ["spaceship:drive", "address:read"]
+      "pilot": [
+        "spaceship:drive",
+        "address:read"
+      ]
     },
     {
-      "delivery": ["address:read", "package:load", "package:unload", "package:deliver"]
+      "delivery": [
+        "address:read",
+        "package:load",
+        "package:unload",
+        "package:deliver"
+      ]
     }
   ],
   "user_roles": [
     {
-      "id": 0,
+      "id": "0",
       "name": "Professor Farnsworth",
-      "roles": ["admin"]
+      "roles": [
+        "admin"
+      ]
     },
     {
-      "id": 1,
+      "id": "1",
       "name": "Hermes Conrad",
-      "roles": ["accounting"]
+      "roles": [
+        "accounting"
+      ]
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Amy Wong",
-      "roles": ["support"]
+      "roles": [
+        "support"
+      ]
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Leela",
-      "roles": ["pilot", "delivery"]
+      "roles": [
+        "pilot",
+        "delivery"
+      ]
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Fry",
-      "roles": ["delivery"]
+      "roles": [
+        "delivery"
+      ]
+    }
+  ],
+  "acl": [
+    {
+      "user": "1234",
+      "resource": "admin.doc",
+      "action": "read"
+    },
+    {
+      "user": "1234",
+      "resource": "admin.doc",
+      "action": "write"
     }
   ]
 }
