@@ -99,7 +99,7 @@ class BiscuitRevocation extends Component {
               filteredTokens.map((token) =>
                 React.createElement("tr", { key: token.id }, [
                   React.createElement("td", null, token.id),
-                  React.createElement("td", null, token.reason.length > 30 ? token.reason.substring(0, 30) + "..." : token.reason),
+                  React.createElement("td", null, !token.reason ? "Unknown" : token.reason.length > 30 ? token.reason.substring(0, 30) + "..." : token.reason),
                   React.createElement("td", null, new Date(token.revocation_date).toLocaleString())
                 ])
               )
