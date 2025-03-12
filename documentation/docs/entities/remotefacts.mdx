@@ -18,7 +18,25 @@ The Remote Facts Loader connects to an API endpoint to fetch data, such as roles
 
 ![](/screenshots/biscuit-remote-facts-loader-create-entity-configuration.png)
 
+## API Input Fields
+
+This document describes the schema of the "Remote facts data" retrieved from a JSON response within the context of Biscuit tokens. The schema consists of multiple fields, each containing a specific type of data used for authentication, authorization, and policy enforcement.
+
+## Schema Details
+
+| Field         | Data Type                                      | Description |
+|--------------|--------------------------------|-------------|
+| `roles`      | `List[Map[String, List[String]]]` | A list of maps, where each key is a string representing a role type, and its value is a list of associated role values. |
+| `revoked`    | `List[String]`                          | A list of revoked roles or permissions represented as strings. |
+| `facts`      | `List[Map[String, String]]`             | A list of key-value pairs representing factual data. Each entry is a map where keys and values are both strings. |
+| `acl`        | `List[Map[String, String]]`             | A list of access control list (ACL) rules. Each entry is a map where keys are ACL identifiers, and values are their respective permissions. |
+| `user_roles` | `List[Map[String, JsValue]]`            | A list of user role mappings. Each entry is a map where keys represent user role identifiers, and values are JSON values (which could be strings, objects, or arrays). |
+| `checks`     | `List[String]`                          | A list of security or validation checks, represented as strings. |
+
+Each field is extracted from the JSON response using Play JSON's validation methods (`validate`). If parsing fails, a default empty list is used as a fallback.
+
 ## API Input Example
+
 Below is an example of the data structure that your API might return. This JSON array defines roles and their associated permissions:
 
 ```json
@@ -34,18 +52,41 @@ Below is an example of the data structure that your API might return. This JSON 
       "support": ["address:read", "address:write"]
     },
     {
-      "pilot":  ["spaceship:drive", "address:read"]
+      "pilot": ["spaceship:drive", "address:read"]
     },
     {
-      "delivery":  ["address:read", "package:load", "package:unload", "package:deliver"]
+      "delivery": ["address:read", "package:load", "package:unload", "package:deliver"]
+    }
+  ],
+  "user_roles": [
+    {
+      "id": 0,
+      "name": "Professor Farnsworth",
+      "roles": ["admin"]
+    },
+    {
+      "id": 1,
+      "name": "Hermes Conrad",
+      "roles": ["accounting"]
+    },
+    {
+      "id": 2,
+      "name": "Amy Wong",
+      "roles": ["support"]
+    },
+    {
+      "id": 3,
+      "name": "Leela",
+      "roles": ["pilot", "delivery"]
+    },
+    {
+      "id": 4,
+      "name": "Fry",
+      "roles": ["delivery"]
     }
   ]
 }
 ```
-
-### Key Fields in the JSON:
-- **roles**: An array of objects, each representing a role.
-- Each role object contains a key-value pair where the key is the role name (e.g., `admin`) and the value is an array of permissions associated with the role.
 
 ## Entity Configuration Example
 Below is an example configuration for the Remote Facts Loader entity:
