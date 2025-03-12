@@ -57,7 +57,7 @@ class RevocationSuite extends BiscuitStudioOneOtoroshiClusterPerSuite {
 
     // Call a verifier plugin with the revoked token
     val keypair = BiscuitKeyPair(
-      id = IdGenerator.namedId("biscuit-keypair", envWorker2),
+      id = IdGenerator.namedId("biscuit-keypair", env),
       name = "New Biscuit Key Pair",
       description = "New biscuit KeyPair",
       metadata = Map.empty,
@@ -68,7 +68,7 @@ class RevocationSuite extends BiscuitStudioOneOtoroshiClusterPerSuite {
     )
 
     val validator = BiscuitVerifier(
-      id = IdGenerator.namedId("biscuit-verifier", envWorker2),
+      id = IdGenerator.namedId("biscuit-verifier", env),
       name = "New biscuit verifier",
       description = "New biscuit verifier",
       metadata = Map.empty,
