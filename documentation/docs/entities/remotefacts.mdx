@@ -8,15 +8,51 @@ import Terminal from '@site/src/components/Terminal';
 
 ![](/img/undraw_cloud-sync.svg)
 
-The **Remote Facts Loader** entity facilitates the loading of external facts provided by an API. This entity is particularly useful for dynamic role and permission management based on external data sources.
+The **Remote Facts Loader** entity facilitates the loading of external facts (checks, rules, acl, rbac) provided by an API. 
+
+This entity is particularly useful for dynamic role and permission management based on external data sources.
 
 ## Overview
 
 The Remote Facts Loader connects to an API endpoint to fetch data, such as roles and their associated permissions, and integrates it into your system. This entity is configured with metadata and API details to ensure smooth interaction.
 
-![](/screenshots/biscuit-remote-facts-loader-create-entity.png)
+Go to [http://otoroshi.oto.tools:8080/bo/dashboard/extensions/cloud-apim/biscuit/remote-facts](http://otoroshi.oto.tools:8080/bo/dashboard/extensions/cloud-apim/biscuit/remote-facts) and click on `Add Item` to cerate a new entity.
 
-![](/screenshots/biscuit-remote-facts-loader-create-entity-configuration.png)
+![](/screenshots/remote-facts-entity-config-1.png)
+
+Go under in the section `Configuration`
+
+You can configure various aspects of your API request, including the URL, HTTP method, headers, and timeout settings.  
+
+### **1. API URL**  
+Set the endpoint for your API request. This should be a valid URL pointing to the desired API resource.  
+
+**Example:**  
+```plaintext
+https://api.example.com/data
+```
+
+### **2. HTTP Method**  
+Specify the HTTP method to be used for the request. Common methods include:  
+- `GET` – Retrieve data  
+- `POST` – Submit data  
+- `PUT` – Update existing data
+
+### **3. HTTP Headers**  
+Define custom headers for the request. Headers allow you to send metadata such as authentication tokens, content types, or custom fields.  
+
+**Example:**  
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer your_token_here"
+}
+```
+
+### **4. HTTP Timeout**  
+Set the maximum time (in seconds) the request should wait for a response before timing out.  
+
+![](/screenshots/remote-facts-entity-config-2.png)
 
 ## API Input Fields
 
@@ -159,9 +195,7 @@ Below is an example configuration for the Remote Facts Loader entity:
   "id": "biscuit_remote_facts_2ae76425-194d-436b-9977-0cdeb8680fbb",
   "name": "Remote fact loader example",
   "description": "",
-  "metadata": {
-    "created_at": "2024-12-23T15:30:01.241+01:00"
-  },
+  "metadata": {},
   "tags": [],
   "config": {
     "apiUrl": "http://localhost:3333/api/facts",
@@ -169,10 +203,6 @@ Below is an example configuration for the Remote Facts Loader entity:
       "Accept": "application/json",
       "Authorization": "Bearer: xxxxx"
     }
-  },
-  "kind": "BiscuitRemoteFactsLoader",
-  "_loc": {
-    "tenant": "default"
   }
 }
 ```
@@ -188,8 +218,6 @@ Below is an example configuration for the Remote Facts Loader entity:
 - **config**:
   - **apiUrl**: The endpoint URL where the API data is fetched.
   - **headers**: HTTP headers to include in the request, such as `Authorization` or `Accept`.
-- **kind**: Specifies the type of loader, in this case, `BiscuitRemoteFactsLoader`.
-- **_loc**: Location or tenant-specific details, useful for multi-tenant applications.
 
 ## Usage
 
