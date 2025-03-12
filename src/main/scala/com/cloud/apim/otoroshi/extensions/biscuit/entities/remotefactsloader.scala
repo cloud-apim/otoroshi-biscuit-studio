@@ -258,7 +258,7 @@ object BiscuitRemoteFactsConfig {
     override def writes(o: BiscuitRemoteFactsConfig): JsValue = {
       Json.obj(
         "api_url" -> o.apiUrl,
-        "tls_config" -> o.tlsConfig.json,
+        "tls" -> o.tlsConfig.json,
         "headers" -> o.headers,
         "method" -> o.method,
         "timeout" -> o.timeout.toMillis,
@@ -269,7 +269,7 @@ object BiscuitRemoteFactsConfig {
       Try {
         BiscuitRemoteFactsConfig(
           apiUrl = json.select("api_url").asOpt[String].orElse(json.select("apiUrl").asOpt[String]).getOrElse(""),
-          tlsConfig = json.select("tls_config").asOpt[JsObject].flatMap(o => NgTlsConfig.format.reads(o).asOpt).getOrElse(NgTlsConfig()),
+          tlsConfig = json.select("tls").asOpt[JsObject].flatMap(o => NgTlsConfig.format.reads(o).asOpt).getOrElse(NgTlsConfig()),
           headers = json.select("headers").asOpt[Map[String, String]].getOrElse(Map.empty),
           timeout = json.select("timeout").asOpt[Long].map(_.millis).getOrElse(10.seconds),
           method = json.select("method").asOpt[String].getOrElse("POST"),

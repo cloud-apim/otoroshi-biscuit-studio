@@ -198,11 +198,20 @@ Below is an example configuration for the Remote Facts Loader entity:
   "metadata": {},
   "tags": [],
   "config": {
-    "apiUrl": "http://localhost:3333/api/facts",
+    "api_url": "http://localhost:3333/api/facts",
+    "tls_config": {
+      "certs": [],
+      "trusted_certs": [],
+      "enabled": false,
+      "loose": false,
+      "trust_all": false
+    },
     "headers": {
-      "Accept": "application/json",
+      "Content-Type": "application/json",
       "Authorization": "Bearer: xxxxx"
-    }
+    },
+    "method": "GET",
+    "timeout": 10000
   }
 }
 ```
@@ -216,7 +225,7 @@ Below is an example configuration for the Remote Facts Loader entity:
 - **metadata**: Contains system-generated metadata such as creation time.
 - **tags**: Optional tags for categorization or searching.
 - **config**:
-  - **apiUrl**: The endpoint URL where the API data is fetched.
+  - **api_url**: The endpoint URL where the API data is fetched.
   - **headers**: HTTP headers to include in the request, such as `Authorization` or `Accept`.
 
 ## Usage
