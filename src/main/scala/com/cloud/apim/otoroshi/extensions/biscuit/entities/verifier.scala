@@ -192,10 +192,19 @@ case class VerifierConfig(
 
     remoteFactsF.map { remoteFacts =>
 
-      remoteFacts.facts.foreach(f => verifier.add_fact(f))
-      remoteFacts.checks.foreach(f => verifier.add_check(f))
-      remoteFacts.roles.foreach(f => verifier.add_fact(f))
-      remoteFacts.acl.foreach(f => verifier.add_fact(f))
+      (remoteFacts.facts ++ remoteFacts.roles ++ remoteFacts.acl)
+        .map(_.trim.stripSuffix(";"))
+        .map(Parser.fact)
+        .filter(_.isRight)
+        .map(_.get()._2)
+        .foreach(r => verifier.add_fact(r))
+
+      remoteFacts.checks
+        .map(_.trim.stripSuffix(";"))
+        .map(Parser.check)
+        .filter(_.isRight)
+        .map(_.get()._2)
+        .foreach(r => verifier.add_check(r))
 
       // Check for token revocation
       val ids = biscuitToken.revocation_identifiers().asScala.map(_.toHex).toList ++ remoteFacts.revoked
