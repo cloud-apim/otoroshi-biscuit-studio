@@ -47,6 +47,30 @@ case class VerifierConfig(
 
   def json: JsValue = VerifierConfig.format.writes(this)
 
+  def getRemoteFacts()(implicit env: Env, ec: ExecutionContext): Future[RemoteFactsData] = {
+    if (remoteFactsRefs.isEmpty) {
+      RemoteFactsData().vfuture
+    } else {
+      Source(remoteFactsRefs.toList)
+        .mapAsync(1) { remoteFactsRef =>
+          env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitRemoteFactsLoader(remoteFactsRef)) match {
+            case None => RemoteFactsData().vfuture
+            case Some(remoteFactsEntity) => {
+              if (remoteFactsEntity.config.apiUrl.nonEmpty && remoteFactsEntity.config.headers.nonEmpty) {
+                remoteFactsEntity.config.getRemoteFacts(Json.obj()).map {
+                  case Left(error) => RemoteFactsData()
+                  case Right(factsData) => factsData
+                }
+              } else {
+                RemoteFactsData().vfuture
+              }
+            }
+          }
+        }
+        .runFold(RemoteFactsData())(_.merge(_))(env.otoroshiMaterializer)
+    }
+  }
+
   def verify(biscuitToken: Biscuit, ctxOpt: Option[VerificationContext])(implicit env: Env, ec: ExecutionContext): Future[Either[String, Unit]] = {
 
     val verifier = biscuitToken.authorizer()
@@ -167,30 +191,7 @@ case class VerifierConfig(
       }
     }
 
-    val remoteFactsF: Future[RemoteFactsData] = if (remoteFactsRefs.isEmpty) {
-      RemoteFactsData().vfuture
-    } else {
-      Source(remoteFactsRefs.toList)
-        .mapAsync(1) { remoteFactsRef =>
-          env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitRemoteFactsLoader(remoteFactsRef)) match {
-            case None => RemoteFactsData().vfuture // TODO: log error though
-            case Some(remoteFactsEntity) => {
-              if (remoteFactsEntity.config.apiUrl.nonEmpty && remoteFactsEntity.config.headers.nonEmpty) {
-                val jsonCtx = ctxOpt.map(_.json.asObject).getOrElse(Json.obj()) ++ Json.obj("phase" -> "access", "plugin" -> "biscuit_verifier")
-                remoteFactsEntity.config.getRemoteFacts(jsonCtx).map {
-                  case Left(error) => RemoteFactsData() // TODO: log error though
-                  case Right(factsData) => factsData
-                }
-              } else {
-                RemoteFactsData().vfuture
-              }
-            }
-          }
-        }
-        .runFold(RemoteFactsData())(_.merge(_))(env.otoroshiMaterializer)
-    }
-
-    remoteFactsF.map { remoteFacts =>
+    getRemoteFacts().map { remoteFacts =>
 
       remoteFacts.facts.foreach(f => verifier.add_fact(f))
       remoteFacts.checks.foreach(f => verifier.add_check(f))

@@ -188,6 +188,12 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       handle = handleVerifierTester
     ),
     AdminExtensionBackofficeAuthRoute(
+      method = "GET",
+      path = "/extensions/cloud-apim/extensions/biscuit/tokens/verifiers/:verifier_id/_datalog",
+      wantsBody = false,
+      handle = handleGetVerifierDatalog
+    ),
+    AdminExtensionBackofficeAuthRoute(
       method = "POST",
       path = "/extensions/cloud-apim/extensions/biscuit/remote-facts/_test",
       wantsBody = true,
@@ -200,6 +206,37 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       handle = handleAttenuatorTester
     ),
   )
+
+  def handleGetVerifierDatalog(ctx: AdminExtensionRouterContext[AdminExtensionBackofficeAuthRoute], req: RequestHeader, user: Option[BackOfficeUser], body: Option[Source[ByteString, _]]): Future[Result] = {
+    implicit val ev = env
+    implicit val ec = env.otoroshiExecutionContext
+    implicit val mat = env.otoroshiMaterializer
+
+    ctx.named("verifier_id") match {
+      case None => Results.NotFound(Json.obj(
+        "done" -> false,
+        "error" -> "Path parameter 'verifier_id' is not found"
+      )).vfuture
+      case Some(verifierRefId) => {
+        env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitVerifier(verifierRefId)) match {
+          case None => Results.NotFound(Json.obj(
+            "done" -> false,
+            "error" -> "Verifier entity does not exist"
+          )).vfuture
+          case Some(verifier) => {
+            verifier.config.getRemoteFacts().flatMap { remoteFacts =>
+              env.logger.info(s"got final list of facts = ${remoteFacts.json}")
+
+            Results.Ok(Json.obj(
+              "done" -> true,
+              "config" -> remoteFacts.json
+            )).vfuture
+          }
+          }
+        }
+      }
+    }
+  }
 
   def handleGenerateToken(ctx: AdminExtensionRouterContext[AdminExtensionBackofficeAuthRoute], req: RequestHeader, user: Option[BackOfficeUser], body: Option[Source[ByteString, _]]): Future[Result] = {
     generateTokenFromBody(body, false)
@@ -239,6 +276,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
         if (isAdminApiRoute) {
           Results.InternalServerError(Json.obj("error" -> e.getMessage))
         } else {
+          env.logger.info(s"got error ehehhhehzeh = ${e}")
           Results.Ok(Json.obj(
             "done" -> false,
             "error" -> e.getMessage
@@ -369,7 +407,10 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
               )).vfuture
               case Right(biscuitKp) => {
                 forge.forgeToken(remoteCtx).flatMap {
-                  case Left(err) => handleError(err, isAdminApiRoute = true)
+                  case Left(err) => Results.NotFound(Json.obj(
+                    "done" -> false,
+                    "error" -> err
+                  )).vfuture
                   case Right(token) => {
                     Results.Ok(
                       Json.obj(
@@ -423,7 +464,6 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                         env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitTokenForge(biscuitForgeRef.get)) match {
                           case None => handleError("forge is not provided", isAdminApiRoute)
                           case Some(biscuitForge) => {
-
                             verifyWithForgeInput(keypairRef, biscuitForge.config, config, isAdminApiRoute)
                           }
                         }
@@ -504,7 +544,10 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
         val publicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)
 
         forgeConfigInput.createToken(keypair.privKey) match {
-          case Left(err) => Results.Ok(Json.obj("done" -> false, "error" -> err)).vfuture
+          case Left(err) => Results.Ok(Json.obj(
+            "done" -> false,
+            "error" -> err
+          )).vfuture
           case Right(biscuitToken) => {
             val generatedToken = biscuitToken.serialize_b64url()
 
@@ -516,9 +559,16 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                   case Left(err) => handleError(err, isAdminApiRoute)
                   case Right(_) => {
                     if (isAdminApiRoute) {
-                      Results.Ok(Json.obj("status" -> "success", "message" -> "Checked successfully")).vfuture
+                      Results.Ok(Json.obj(
+                        "status" -> "success",
+                        "message" -> "Checked successfully"
+                      )).vfuture
                     } else {
-                      Results.Ok(Json.obj("status" -> "success", " done" -> true, "message" -> "Checked successfully")).vfuture
+                      Results.Ok(Json.obj(
+                        "status" -> "success",
+                        "done" -> true,
+                        "message" -> "Checked successfully"
+                      )).vfuture
                     }
                   }
                 }
@@ -532,9 +582,14 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
 
   def handleError(errorMessage: String, isAdminApiRoute: Boolean): Future[Result] = {
     if (isAdminApiRoute) {
-      Results.BadRequest(Json.obj("error" -> errorMessage)).vfuture
+      Results.BadRequest(Json.obj(
+        "error" -> errorMessage
+      )).vfuture
     } else {
-      Results.Ok(Json.obj("done" -> false, "error" -> errorMessage)).vfuture
+      Results.Ok(Json.obj(
+        "done" -> false,
+        "error" -> errorMessage
+      )).vfuture
     }
   }
 

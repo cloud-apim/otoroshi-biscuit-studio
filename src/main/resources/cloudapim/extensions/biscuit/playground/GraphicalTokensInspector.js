@@ -39,7 +39,7 @@ class GraphicalTokensInspector extends Component {
         method: "POST",
         credentials: "include",
         headers: {
-          Accept: "application/json",
+          "Accept": "application/json",
           "Content-Type": "application/json",
         },
       }
@@ -62,6 +62,39 @@ class GraphicalTokensInspector extends Component {
 
   loadVerifierFacts = () => {
     console.log("loading authorizer facts ...", this.state.verifierRef);
+
+    fetch(`/extensions/cloud-apim/extensions/biscuit/tokens/verifiers/${this.state.verifierRef}/_datalog`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((d) => d.json())
+    .then((data) => {
+      if (!data?.done) {
+        this.setState({
+          isReqLoading: false,
+          errorMessage: `Something went wrong : ${data.error}`,
+        });
+      } else {
+        const finalArray = [
+          ...(data?.config.facts || []),
+          ...(data?.config.checks || []),
+          ...(data?.config.policies || []),
+          ...(data?.config.resources || []),
+          ...(data?.config.rules || []),
+        ];
+
+        console.log("final facts array : ", finalArray);
+
+        this.setState({ loadedFacts: finalArray })
+      }
+    });
+
   }
 
   render() {
@@ -122,22 +155,7 @@ class GraphicalTokensInspector extends Component {
         "button",
         {
           className: "btn btn-success d-flex align-items-center mx-auto px-4 py-2",
-          onClick: () => {
-            this.verifiersClient.findById(this.state.verifierRef).then((verifier) => {
-              console.log("verifier info = ", verifier)
-
-              const finalArray = [
-                ...(verifier?.config.roles || []),
-                ...(verifier?.config.facts || []),
-                ...(verifier?.config.acl || []),
-              ];
-
-              console.log("final facts array : ", finalArray);
-
-              this.setState({ loadedFacts: finalArray })
-            }
-            );
-          },
+          onClick: () => this.loadVerifierFacts(),
         },
         React.createElement("i", { className: "fas fa-cogs me-2 fs-5" }),
         "Load verifier facts"

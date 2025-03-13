@@ -56,7 +56,7 @@ object BiscuitUtils {
       }
 
       case _ => {
-        error.toString
+        error.getMessage
       }
     }
   }
