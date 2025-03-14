@@ -110,6 +110,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
   lazy val biscuitGraphicalTokensInspector = getResourceCode("cloudapim/extensions/biscuit/playground/GraphicalTokensInspector.js")
   lazy val biscuitGraphicalTokensSnapshot = getResourceCode("cloudapim/extensions/biscuit/playground/GraphicalTokensSnapshot.js")
   lazy val biscuitGraphicalDatalogPlayground = getResourceCode("cloudapim/extensions/biscuit/playground/GraphicalDatalogPlayground.js")
+  lazy val biscuitGraphicalAttenuator = getResourceCode("cloudapim/extensions/biscuit/playground/GraphicalTokensAttenuator.js")
 
   lazy val biscuitWebComponents = getResourceCode("cloudapim/extensions/biscuit/webcomponents/index.js")
     .replace("/assets/tree-sitter.wasm", "/extensions/assets/cloud-apim/extensions/biscuit/assets/tree-sitter.wasm")
@@ -810,6 +811,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |    ${biscuitGraphicalTokensInspector}
              |    ${biscuitGraphicalTokensSnapshot}
              |    ${biscuitGraphicalDatalogPlayground}
+             |    ${biscuitGraphicalAttenuator}
              |
              |    const s = document.createElement("script")
              |    s.setAttribute("type", "module")
@@ -873,19 +875,26 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          icon: () => 'tower-broadcast'
              |        },
              |         {
-             |           title: 'Biscuit Tokens Snapshot',
+             |          title: 'Biscuit Tokens Snapshot',
              |          text: 'All your Biscuit Remote Facts Loader',
              |          link: '/extensions/cloud-apim/biscuit/tokens/snapshot',
              |          display: () => true,
              |          icon: () => 'tower-broadcast'
              |        },
              |        {
-             |           title: 'Biscuit Datalog Playground',
-             |          text: 'All your Biscuit Remote Facts Loader',
+             |          title: 'Biscuit Datalog Playground',
+             |          text: 'A playground to test datalog policies',
              |          link: '/extensions/cloud-apim/biscuit/tokens/datalog-playground',
              |          display: () => true,
              |          icon: () => 'tower-broadcast'
              |        },
+             |        {
+             |          title: 'Tokens Attenuator Playground',
+             |          text: 'A playground to test tokens attenuation',
+             |          link: '/extensions/cloud-apim/biscuit/tokens/attenuator-playground',
+             |          display: () => true,
+             |          icon: () => 'volume-low'
+             |        }
              |        ]
              |      }],
              |      features: [
@@ -936,22 +945,29 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          description: 'All your Biscuit Remote Facts Loader',
              |          link: '/extensions/cloud-apim/biscuit/tokens/inspector',
              |          display: () => true,
-             |          icon: () => 'tower-broadcast'
+             |          icon: () => 'fa-tower-broadcast'
              |        },
              |         {
              |           title: 'Biscuit Tokens Snapshot',
              |          description: 'All your Biscuit Remote Facts Loader',
              |          link: '/extensions/cloud-apim/biscuit/tokens/snapshot',
              |          display: () => true,
-             |          icon: () => 'tower-broadcast'
+             |          icon: () => 'fa-tower-broadcast'
              |        },
              |        {
              |           title: 'Biscuit Datalog Playground',
              |          description: 'All your Biscuit Remote Facts Loader',
              |          link: '/extensions/cloud-apim/biscuit/tokens/datalog-playground',
-             |            display: () => true,
+             |          display: () => true,
              |          icon: () => 'fa-tower-broadcast'
              |        },
+             |        {
+             |          title: 'Tokens Attenuator Playground',
+             |          description: 'A playground to test tokens attenuation',
+             |          link: '/extensions/cloud-apim/biscuit/tokens/attenuator-playground',
+             |          display: () => true,
+             |          icon: () => 'fa-volume-low'
+             |        }
              |      ],
              |      sidebarItems: [
              |        {
@@ -1012,6 +1028,13 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          display: () => true,
              |          icon: () => 'tower-broadcast'
              |        },
+             |          {
+             |          title: 'Tokens Attenuator Playground',
+             |          text: 'A playground to test tokens attenuation',
+             |          link: '/extensions/cloud-apim/biscuit/tokens/attenuator-playground',
+             |          display: () => true,
+             |          icon: () => 'volume-low'
+             |        }
              |      ],
              |      searchItems: [
              |        {
@@ -1061,6 +1084,14 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          env: React.createElement('span', { className: "fas fa-tower-broadcast" }, null),
              |          label: 'Biscuit Remote Facts Loader',
              |          value: 'biscuit-facts-loader',
+             |        },
+             |         {
+             |          action: () => {
+             |            window.location.href = `/bo/dashboard/extensions/cloud-apim/biscuit/tokens/attenuator-playground`
+             |          },
+             |          env: React.createElement('span', { className: "fas fa-volume-low" }, null),
+             |          label: 'Biscuit Attenuator Playground',
+             |          value: 'biscuit-attenuator-playground',
              |        },
              |      ],
              |      routes: [
@@ -1188,6 +1219,12 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          path: '/extensions/cloud-apim/biscuit/tokens/datalog-playground',
              |          component: (props) => {
              |            return React.createElement(GraphicalDatalogPlayground, props, null)
+             |          }
+             |        },
+             |         {
+             |          path: '/extensions/cloud-apim/biscuit/tokens/attenuator-playground',
+             |          component: (props) => {
+             |            return React.createElement(GraphicalTokensAttenuator, props, null)
              |          }
              |        }
              |      ]
