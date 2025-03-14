@@ -5,9 +5,12 @@ class GraphicalTokensInspector extends Component {
       forgeRef: "",
       token: null,
       pubKey: null,
-      verifierRef: null,
+      verifierRef: "",
       errorMessage: null,
       loadedFacts: [],
+      showToast: false,
+      toastMessage: "",
+      toastType: "",
     };
   }
 
@@ -23,12 +26,19 @@ class GraphicalTokensInspector extends Component {
     "biscuit-verifiers"
   );
 
+  showToast = (message, type) => {
+    this.setState({ showToast: true, toastMessage: message, toastType: type });
+    setTimeout(() => this.setState({ showToast: false, toastMessage: "", toastType: "" }), 3000);
+  };
+
   resetAll = () => {
-    this.setState({ forgeRef: null, verifierRef: null, loadedFacts: [], token: null, pubKey: null });
+    this.setState({ forgeRef: "", verifierRef: "", loadedFacts: [], token: null, pubKey: null });
+    this.showToast("Reset successful", "success");
   };
 
   generateNewToken = () => {
     if (!this.state.forgeRef) {
+      this.showToast("Forge is null", "error");
       return;
     }
 
@@ -46,14 +56,13 @@ class GraphicalTokensInspector extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (!data?.done) {
-          this.setState({
-            errorMessage: `Something went wrong: ${data.error}`,
-          });
+          this.showToast(`Error: ${data.error}`, "error");
         } else {
           this.setState({
             pubKey: data.pubKey,
             token: data.token,
           });
+          this.showToast("Token generated successfully", "success");
         }
       });
   };
@@ -73,11 +82,10 @@ class GraphicalTokensInspector extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (!data?.done) {
-          this.setState({
-            errorMessage: `Something went wrong: ${data.error}`,
-          });
+          this.showToast(`Error: ${data.error}`, "error");
         } else {
           this.setState({ loadedFacts: data?.datalog || [] });
+          this.showToast("Verifier facts loaded", "success");
         }
       });
   };
@@ -85,15 +93,15 @@ class GraphicalTokensInspector extends Component {
   render() {
     return React.createElement(
       "div",
-      { className: "container py-5 text-center" },
-      React.createElement("h1", { className: "mb-4 fw-bold text-white bg-primary p-3 rounded" }, "Graphical Tokens Inspector"),
+      { className: "container py-5 bg-white rounded shadow p-4" },
+      React.createElement("h1", { className: "mb-4 fw-bold text-white bg-primary p-3 rounded text-center" }, "Graphical Tokens Inspector"),
       React.createElement(
         "div",
-        { className: "row justify-content-center" },
+        { className: "row" },
         React.createElement(
           "div",
-          { className: "col-md-6 mb-4" },
-          React.createElement("div", { className: "card shadow p-3 bg-white rounded" },
+          { className: "col-md-6" },
+          React.createElement("div", { className: "card shadow p-3 bg-white rounded mb-3" },
             React.createElement("div", { className: "card-body" },
               React.createElement(SelectInput, {
                 label: "Use a token forge",
@@ -103,11 +111,10 @@ class GraphicalTokensInspector extends Component {
                 transformer: (item) => ({ label: item.name, value: item.id }),
               })
             )
-          )
-        ),
-        React.createElement(
-          "div",
-          { className: "col-md-6 mb-4" },
+          ),
+          React.createElement("button", { className: "btn btn-success w-100 mb-3", onClick: this.generateNewToken },
+            React.createElement("i", { className: "fas fa-cogs me-2" }), "Generate Token"
+          ),
           React.createElement("div", { className: "card shadow p-3 bg-white rounded" },
             React.createElement("div", { className: "card-body" },
               React.createElement(SelectInput, {
@@ -118,29 +125,32 @@ class GraphicalTokensInspector extends Component {
                 transformer: (item) => ({ label: item.name, value: item.id }),
               })
             )
+          ),
+          React.createElement("button", { className: "btn btn-primary w-100 mb-3", onClick: this.loadVerifierFacts },
+            React.createElement("i", { className: "fas fa-cogs me-2" }), "Load Verifier Facts"
+          ),
+          React.createElement("button", { className: "btn btn-danger w-100", onClick: this.resetAll },
+            React.createElement("i", { className: "fas fa-trash-alt me-2" }), "Reset All"
+          )
+        ),
+        React.createElement(
+          "div",
+          { className: "col-md-6 d-flex align-items-center" },
+          React.createElement("div", { className: "card shadow p-4 bg-light w-100" },
+            React.createElement("bc-token-printer", {
+              showauthorizer: true,
+              readonly: true,
+              rootPublicKey: this.state.pubKey,
+              biscuit: this.state.token,
+              authorizer: this.state.loadedFacts.map((line) => line.trim()).join("\n"),
+            })
           )
         )
       ),
-      this.state.forgeRef &&
-      React.createElement("button", { className: "btn btn-primary mb-3 px-4 py-2", onClick: this.generateNewToken },
-        React.createElement("i", { className: "fas fa-cogs me-2" }), "Generate Token"
-      ),
-      this.state.verifierRef &&
-      React.createElement("button", { className: "btn btn-info mb-3 px-4 py-2", onClick: this.loadVerifierFacts },
-        React.createElement("i", { className: "fas fa-cogs me-2" }), "Load Verifier Facts"
-      ),
-      React.createElement("button", { className: "btn btn-danger px-4 py-2", onClick: this.resetAll },
-        React.createElement("i", { className: "fas fa-trash-alt me-2" }), "Reset All"
-      ),
-      React.createElement("div", { className: "row justify-content-center mt-4" },
-        React.createElement("div", { className: "col-lg-6 col-md-8 col-sm-10 bg-light p-4 rounded shadow" },
-          React.createElement("bc-token-printer", {
-            showauthorizer: true,
-            readonly: true,
-            rootPublicKey: this.state.pubKey,
-            biscuit: this.state.token,
-            authorizer: this.state.loadedFacts.map((line) => line.trim()).join("\n"),
-          })
+      this.state.showToast &&
+      React.createElement("div", { className: "position-fixed bottom-0 end-0 p-3" },
+        React.createElement("div", { className: `toast show text-white ${this.state.toastType === "success" ? "bg-success" : "bg-danger"}`, role: "alert" },
+          React.createElement("div", { className: "toast-body" }, this.state.toastMessage)
         )
       )
     );
