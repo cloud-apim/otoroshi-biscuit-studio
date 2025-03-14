@@ -5,3 +5,34 @@ sidebar_position: 3
 import Terminal from '@site/src/components/Terminal';
 
 # Attenuator playground
+
+![Otoroshi Biscuit Attenuator Inspector playground](/img/attenuator-playground.svg)]
+
+The **Attenuator Playground** allows users to experiment with **Attenuation** in the context of Eclipse Biscuit Tokens. 
+
+But before diving into our tutorial, what is attenuation process of a token ??
+
+Attenuation is the process of reducing or limiting authority in a decentralized system, and the Attenuator Playground provides a visual and interactive environment to test the effects of attenuation on tokens.
+
+Our tool allows you to visually explore the list of 'checks' ( = restrictions) and generate an attenuated token based on the previous one, incorporating the conditions of these checks.
+
+## Example
+
+For our example, let's use this Eclipse Biscuit token (you can use the same by clicking on `Use token example` button in the Graphical Attenuator page):
+
+`EncKDRgDIgkKBwgKEgMQ0gkSJAgAEiDPkePanf8chDmSNa5N19PMGMepAT_eUXvNJR5NfNX7JhpA4apyFF_za3liqw7DRNI0GrbiL9GPihRTQSZh7q06j7_2k0qgC5N6k76YdOjT9DWSA4tABLfLJTmo2FsEPR9vDCIiCiAdLBMHlQCsJbLVJHViqsa9a8D0GCZob8W6VBuEsptU1g==`
+
+![](/screenshots/attenuator-playground-example-1.png)
+
+![](/screenshots/attenuator-playground-example-2.png)
+
+![](/screenshots/attenuator-playground-example-3.png)
+
+![](/screenshots/attenuator-playground-example-4.png)
+
+It will generate an attenuated token from `EncKDRgDIgkKBwgKEgMQ0gkSJAgAEiDPkePanf8chDmSNa5N19PMGMepAT_eUXvNJR5NfNX7JhpA4apyFF_za3liqw7DRNI0GrbiL9GPihRTQSZh7q06j7_2k0qgC5N6k76YdOjT9DWSA4tABLfLJTmo2FsEPR9vDCIiCiAdLBMHlQCsJbLVJHViqsa9a8D0GCZob8W6VBuEsptU1g` 
+adding the restriction `check if user(1234)`
+
+The attenuated token = `EncKDRgDIgkKBwgKEgMQ0gkSJAgAEiDPkePanf8chDmSNa5N19PMGMepAT_eUXvNJR5NfNX7JhpA4apyFF_za3liqw7DRNI0GrbiL9GPihRTQSZh7q06j7_2k0qgC5N6k76YdOjT9DWSA4tABLfLJTmo2FsEPR9vDBp9ChMYAzIPCg0KAggbEgcIChIDENIJEiQIABIgh5vOIMyvhOb9tpQ3ghUVx6Hi-qe41g9t1FkWg7nFVM0aQHtXM5lyGTjLhqkViivfRDmcjPNSh55si24tPDwDcPJCeGnQAkUvj1opcBZsblGHGAdBRYZiPjIAnpu1H02F-g8iIgogSwOFqXlIuOeri8n9Uaj03g8tPhT7uylHbBJ1xCQZePU=`
+
+In two simple clicks we loaded our token that we wanted to attenuate, we added our restrictions to the token and then we generated an attenuated token derived from the main token we restrictions.
