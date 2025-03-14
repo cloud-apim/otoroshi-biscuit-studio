@@ -47,6 +47,49 @@ case class VerifierConfig(
 
   def json: JsValue = VerifierConfig.format.writes(this)
 
+  def getDatalog(): List[String] = {
+    (
+      policies
+        .map(_.trim.stripSuffix(";"))
+        .map(Parser.policy)
+        .filter(_.isRight)
+        .map(_.get()._2)
+        .map(r => s"${r.toString};")
+
+      ++
+
+      rules
+        .map(_.trim.stripSuffix(";"))
+        .map(Parser.rule)
+        .filter(_.isRight)
+        .map(_.get()._2)
+        .map(r => s"${r.toString};")
+
+      ++
+
+      resources
+        .map(_.trim.stripSuffix(";"))
+        .map(r => s"""resource("${r}");""")
+      ++
+
+      facts
+        .map(_.trim.stripSuffix(";"))
+        .map(Parser.fact)
+        .filter(_.isRight)
+        .map(_.get()._2)
+        .map(r => s"${r.toString};")
+      ++
+
+      checks
+        .map(_.trim.stripSuffix(";"))
+        .map(Parser.check)
+        .filter(_.isRight)
+        .map(_.get()._2)
+        .map(r => s"${r.toString};")
+
+      ).toList
+  }
+
   def getRemoteFacts()(implicit env: Env, ec: ExecutionContext): Future[RemoteFactsData] = {
     if (remoteFactsRefs.isEmpty) {
       RemoteFactsData().vfuture

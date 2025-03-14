@@ -2,6 +2,7 @@ package com.cloud.apim.otoroshi.extensions.biscuit.entities
 
 import akka.util.ByteString
 import com.github.blemale.scaffeine.Scaffeine
+import org.biscuitsec.biscuit.token.builder.parser.Parser
 import otoroshi.api.{GenericResourceAccessApiWithState, Resource, ResourceVersion}
 import otoroshi.env.Env
 import otoroshi.models.{EntityLocation, EntityLocationSupport}
@@ -105,6 +106,28 @@ case class RemoteFactsData(
       checks = checks ++ other.checks,
     )
   }
+
+  def getDatalog(): List[String] = {
+    (
+      (acl ++ roles ++ facts)
+        .map(_.trim.stripSuffix(";"))
+        .map(Parser.fact)
+        .filter(_.isRight)
+        .map(_.get()._2)
+        .map(r => s"${r.toString};")
+
+        ++
+
+        checks
+          .map(_.trim.stripSuffix(";"))
+          .map(Parser.check)
+          .filter(_.isRight)
+          .map(_.get()._2)
+          .map(r => s"${r.toString};")
+
+      ).toList
+  }
+
 }
 
 object RemoteFactsData {

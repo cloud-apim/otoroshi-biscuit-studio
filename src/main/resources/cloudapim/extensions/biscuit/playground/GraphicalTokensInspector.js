@@ -61,8 +61,6 @@ class GraphicalTokensInspector extends Component {
   };
 
   loadVerifierFacts = () => {
-    console.log("loading authorizer facts ...", this.state.verifierRef);
-
     fetch(`/extensions/cloud-apim/extensions/biscuit/tokens/verifiers/${this.state.verifierRef}/_datalog`,
     {
       method: "GET",
@@ -81,17 +79,7 @@ class GraphicalTokensInspector extends Component {
           errorMessage: `Something went wrong : ${data.error}`,
         });
       } else {
-        const finalArray = [
-          ...(data?.config.facts || []),
-          ...(data?.config.checks || []),
-          ...(data?.config.policies || []),
-          ...(data?.config.resources || []),
-          ...(data?.config.rules || []),
-        ];
-
-        console.log("final facts array : ", finalArray);
-
-        this.setState({ loadedFacts: finalArray })
+        this.setState({ loadedFacts: data?.datalog || [] })
       }
     });
 
@@ -138,11 +126,9 @@ class GraphicalTokensInspector extends Component {
         "div",
         { className: "mb-3" },
         React.createElement(SelectInput, {
-          label: "Use a token forge",
+          label: "Use a verifier",
           value: this.state.verifierRef,
           onChange: (verifierRef) => {
-            console.log("forgeRef = ", verifierRef);
-
             this.setState({ verifierRef });
           },
           valuesFrom:

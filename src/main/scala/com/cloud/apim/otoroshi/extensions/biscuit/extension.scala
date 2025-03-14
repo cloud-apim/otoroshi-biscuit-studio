@@ -225,11 +225,11 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
           )).vfuture
           case Some(verifier) => {
             verifier.config.getRemoteFacts().flatMap { remoteFacts =>
-              env.logger.info(s"got final list of facts = ${remoteFacts.json}")
+            val finalDatalog = remoteFacts.getDatalog() ++ verifier.config.getDatalog()
 
             Results.Ok(Json.obj(
               "done" -> true,
-              "config" -> remoteFacts.json
+              "datalog" -> finalDatalog
             )).vfuture
           }
           }
@@ -276,7 +276,6 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
         if (isAdminApiRoute) {
           Results.InternalServerError(Json.obj("error" -> e.getMessage))
         } else {
-          env.logger.info(s"got error ehehhhehzeh = ${e}")
           Results.Ok(Json.obj(
             "done" -> false,
             "error" -> e.getMessage
