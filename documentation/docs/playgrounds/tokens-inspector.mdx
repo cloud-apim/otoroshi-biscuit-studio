@@ -1,0 +1,46 @@
+---
+sidebar_position: 1
+---
+
+import Terminal from '@site/src/components/Terminal';
+
+# Tokens Inspector
+
+## Overview
+
+Our **Tokens Inspector Playground** included in the Otoroshi Biscuit Studio provides a graphical interface to intersact with Eclipse Biscuit tokens.
+
+This tool allows you to generate tokens from a [forge entity](/docs/entities/forges), inspect existing tokens, and authorize them using manually set or entity-loaded facts.
+
+## Features
+
+### 1. Token Generation
+- Generate a Biscuit token from a **forge entity**.
+
+### 2. Token Inspection
+- Load an existing **Biscuit token** to visualize its structure.
+- Decode and display the token’s **facts, rules, and checks** in a graphical format.
+
+### 3. Authorization
+- Load an **authorizer fact** from a [Verifier entity](/docs/entities/verifiers) or manually define it.
+- Get a visual representation of the authorization result.
+
+## How to Use
+1. **Generating a Token**
+   - Select the **Forge Entity** option.
+   - Configure token parameters.
+   - Generate and display the token.
+
+2. **Inspecting a Token**
+   - Upload or paste a Biscuit token.
+   - View the decoded details, including facts, rules, and checks.
+
+3. **Setting Up Authorization**
+   - Load authorization facts from an entity or enter them manually.
+   - Run authorization to check token validity.
+   - View the decision result based on the provided facts.
+
+## Use Cases
+- Debugging and analyzing **Biscuit tokens**.
+- Visualizing token structures for better understanding.
+- Testing token authorization with various fact sets.

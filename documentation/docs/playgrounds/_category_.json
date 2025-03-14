@@ -1,0 +1,8 @@
+{
+  "label": "Playgrounds",
+  "position": 8,
+  "link": {
+      "type": "generated-index",
+      "description": "Playground to test your entities and biscuit"
+  }
+}
