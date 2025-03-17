@@ -836,7 +836,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                           case None => handleError("forge is not provided", isAdminApiRoute)
                           case Some(biscuitForge) => {
 
-                            verifyWithForgeInput(keypairRef, biscuitForge.config, config, isAdminApiRoute)
+                            verifyWithForgeInput(keypairRef, biscuitForge, config, isAdminApiRoute)
                           }
                         }
 
@@ -899,22 +899,22 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
     }
   }
 
-  private def verifyWithForgeInput(keypairRef: String, forgeConfigInput: BiscuitForgeConfig, verifierConfig: VerifierConfig, isAdminApiRoute: Boolean): Future[Result] = {
+  private def verifyWithForgeInput(verifierKeyPairRef: String, forge: BiscuitTokenForge, verifierConfig: VerifierConfig, isAdminApiRoute: Boolean): Future[Result] = {
     implicit val ec = env.otoroshiExecutionContext
     implicit val mat = env.otoroshiMaterializer
     implicit val ev = env
 
-    env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(keypairRef)) match {
+    env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(verifierKeyPairRef)) match {
       case None => handleError("keypair doesn't exist", isAdminApiRoute)
       case Some(keypair) => {
-        val publicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)
+        val verifierPublicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)
 
-        forgeConfigInput.createToken(keypair.privKey) match {
+        forge.forgeToken().flatMap {
           case Left(err) => Results.Ok(Json.obj("done" -> false, "error" -> err)).vfuture
           case Right(biscuitToken) => {
             val generatedToken = biscuitToken.serialize_b64url()
 
-            Try(Biscuit.from_b64url(generatedToken, publicKey)).toEither match {
+            Try(Biscuit.from_b64url(generatedToken, verifierPublicKey)).toEither match {
               case Left(err: org.biscuitsec.biscuit.error.Error) => handleError(BiscuitUtils.handleBiscuitErrors(err), isAdminApiRoute)
               case Left(err) => handleError(s"Unable to deserialize Biscuit token : ${err.getMessage}", isAdminApiRoute)
               case Right(biscuitToken) => {
@@ -922,7 +922,10 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                   case Left(err) => handleError(err, isAdminApiRoute)
                   case Right(_) => {
                     if (isAdminApiRoute){
-                      Results.Ok(Json.obj("status" -> "success", "message" -> "Checked successfully")).vfuture
+                      Results.Ok(Json.obj(
+                        "status" -> "success",
+                        "message" -> "Checked successfully"
+                      )).vfuture
                     }else{
                       Results.Ok(Json.obj(
                         "status"-> "success",
