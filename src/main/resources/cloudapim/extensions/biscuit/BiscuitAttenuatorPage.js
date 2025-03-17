@@ -79,6 +79,11 @@ class BiscuitAttenuatorPage extends Component {
 			filterId: "metadata.created_at",
 			content: (item) => item?.metadata?.created_at,
 		},
+    {
+			title: "Updated At",
+			filterId: "metadata.updated_at",
+			content: (item) => item?.metadata?.updated_at || "--",
+		}
 	];
 
 	formFlow = [
