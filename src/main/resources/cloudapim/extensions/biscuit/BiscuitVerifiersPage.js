@@ -204,10 +204,10 @@ class BiscuitVerifiersPage extends Component {
       content: (item) => item?.metadata?.created_at,
     },
     {
-			title: "Updated At",
-			filterId: "metadata.updated_at",
-			content: (item) => item?.metadata?.updated_at || "--",
-		}
+      title: "Updated At",
+      filterId: "metadata.updated_at",
+      content: (item) => item?.metadata?.updated_at || "--",
+    }
   ];
 
   formFlow = [
@@ -343,7 +343,7 @@ class BiscuitVerifierTester extends Component {
         config: { ...this.props.rawValue?.config },
         keypair_ref: this.props.rawValue?.keypair_ref,
         forge_ref: forgeRef,
-        token: tokenInput,
+        token: forgeRef ? null : tokenInput,
       }),
     })
       .then((r) => r.json())
@@ -378,11 +378,13 @@ class BiscuitVerifierTester extends Component {
           label: "Use a token forge",
           value: forgeRef,
           onChange: (forgeRef) => this.setState({ forgeRef }),
+          isClearable: true,
           valuesFrom:
             "/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-forges",
           transformer: (item) => ({ label: item.name, value: item.id }),
         })
       ),
+      !forgeRef &&
       React.createElement(
         "div",
         {
@@ -449,7 +451,7 @@ class BiscuitVerifierTester extends Component {
             onClick: this.send,
           },
           React.createElement("i", { className: "fas fa-play" }),
-          React.createElement("span", null, " Test Configuration")
+          React.createElement("span", null, "Test Configuration")
         )
       ),
     ]);
