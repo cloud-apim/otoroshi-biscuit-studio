@@ -1,6 +1,18 @@
 class GraphicalDatalogPlayground extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      datalogCode: null
+    }
+  }
+
+  loadCode = () => {
+    this.setState({
+      datalogCode: `right("/file1", "read");
+right("/file2", "read");
+right("/file2", "write");
+check if operation("read");`
+    })
   }
 
   render() {
@@ -29,12 +41,21 @@ class GraphicalDatalogPlayground extends Component {
               "Settings"
             ),
             React.createElement(
+              "button",
+              { className: "btn btn-primary d-flex align-items-center px-4 py-2", onClick: this.loadCode },
+              React.createElement("i", { className: "fas fa-plus-circle me-2 fs-5" }),
+              "Use code Example"
+            ),
+            React.createElement(
               "div",
               { className: "card-body" },
               React.createElement("bc-datalog-playground", {
                 showauthorizer: true,
-                showBlocks: true
-              })
+                showBlocks: true,
+              },
+                React.createElement("code", { className: "block" }, `"allow if true;"`),
+                React.createElement("code", { className: "block" }, this.state?.datalogCode),
+              )
             )
           )
         )
