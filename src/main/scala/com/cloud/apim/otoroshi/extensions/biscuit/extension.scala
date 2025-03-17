@@ -749,6 +749,48 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
         verifyTokenFromBody(body, isAdminApiRoute = true)
       }
     ),
+    // Verify a token from a verifier entity
+    AdminExtensionAdminApiRoute(
+      "POST",
+      "/api/extensions/biscuit/biscuit-verifiers/:id/_verify",
+      wantsBody = true,
+      (ctx, request, apk, body) => {
+        implicit val ev = env
+        implicit val ec = env.otoroshiExecutionContext
+        implicit val mat = env.otoroshiMaterializer
+
+        ctx.named("id") match {
+          case None => Results.NotFound(Json.obj("error" -> "Path parameter 'id' is not found")).vfuture
+          case Some(verifierId) => {
+            env.adminExtensions.extension[BiscuitExtension].get.states.biscuitVerifier(verifierId) match {
+              case None => Results.NotFound(Json.obj("error" -> "The verifier entity is not found")).vfuture
+              case Some(verifier) => {
+                body match {
+                  case None => Results.NotFound(Json.obj("error" -> "body is empty")).vfuture
+                  case Some(bodySource) => bodySource.runFold(ByteString.empty)(_ ++ _).flatMap { bodyRaw =>
+                    val bodyJson = bodyRaw.utf8String.parseJson
+                    bodyJson.select("token").asOpt[String] match {
+                      case None => Results.NotFound(Json.obj("error" -> "Token not provided")).vfuture
+                      case Some(token) => {
+
+                        env.logger.info(s"got token here = ${token}")
+
+                        env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(verifier.keypairRef)) match {
+                          case None => Results.NotFound(Json.obj("error" -> "No keypair found in attenuator entity")).vfuture
+                          case Some(keypairDb) => {
+                            verifyWithTokenInput(verifier.keypairRef, token, verifier.config, isAdminApiRoute = true)
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ),
     // Attenuate a token from a body token and checks config
     AdminExtensionAdminApiRoute(
       "POST",
@@ -920,7 +962,11 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                     if (isAdminApiRoute){
                       Results.Ok(Json.obj("status" -> "success", "message" -> "Checked successfully")).vfuture
                     }else{
-                      Results.Ok(Json.obj("status"-> "success"," done" -> true, "message" -> "Checked successfully")).vfuture
+                      Results.Ok(Json.obj(
+                        "status"-> "success",
+                        "done" -> true,
+                        "message" -> "Checked successfully"
+                      )).vfuture
                     }
                   }
                 }

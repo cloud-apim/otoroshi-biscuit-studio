@@ -1111,6 +1111,56 @@
 				]
 			}
 		},
+    "/api/extensions/biscuit/biscuit-verifiers/:id/verify": {
+			"post": {
+				"tags": ["biscuit-admin-api"],
+				"summary": "Verify a biscuit token from a verifier entity",
+				"description": "Verify a biscuit token from a verifier entity",
+				"operationId": "verifierTokenFromVerifierEntity",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": { "type": "string" },
+						"description": "ID of the verifier entity."
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Verifier token created.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"token": { "type": "string" }
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Unable to verify the Token",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"error": { "type": "string" }
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"basicAuth": []
+					}
+				]
+			}
+		},
 		"/api/extensions/biscuit/biscuit-attenuators/:id/_attenuate": {
 			"post": {
 				"tags": ["biscuit-admin-api"],
