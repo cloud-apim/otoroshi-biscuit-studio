@@ -163,7 +163,7 @@ class BiscuitTokenForge extends Component {
     {
 			title: "Updated At",
 			filterId: "metadata.updated_at",
-			content: (item) => item?.metadata?.updated_at,
+			content: (item) => item?.metadata?.updated_at || "--",
 		}
 	];
 
