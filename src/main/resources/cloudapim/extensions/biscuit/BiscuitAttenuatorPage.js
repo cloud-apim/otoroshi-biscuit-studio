@@ -179,6 +179,17 @@ class BiscuitAttenuatorTester extends Component {
     };
   }
 
+  forgeClient = BackOfficeServices.apisClient(
+    "biscuit.extensions.cloud-apim.com",
+    "v1",
+    "biscuit-forges"
+  );
+
+  getForgeInfo = (forgeRef) => {
+    this.forgeClient.findById(forgeRef)
+      .then(forgeData => this.setState({ selectedForge: forgeData }))
+  }
+
   handleInputChange = (event) => {
     this.setState({ biscuitToken: event.target.value });
   };
@@ -253,7 +264,10 @@ class BiscuitAttenuatorTester extends Component {
           label: "Use a token forge",
           isClearable: true,
           value: forgeRef,
-          onChange: (forgeRef) => this.setState({ forgeRef }),
+          onChange: (forgeRef) => {
+            this.getForgeInfo(forgeRef)
+            this.setState({ forgeRef })
+          },
           valuesFrom:
             "/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-forges",
           transformer: (item) => ({ label: item.name, value: item.id }),
@@ -277,6 +291,24 @@ class BiscuitAttenuatorTester extends Component {
             value: tokenInput,
             onChange: (e) => this.setState({ tokenInput: e.target.value }),
           })
+        )
+      ),
+      forgeRef && (this.state?.selectedForge?.keypair_ref !== this.props.rawValue?.keypair_ref) &&
+      React.createElement(
+        "div",
+        {
+          style: { maxWidth: "80%", marginLeft: "15%", textAlign: "center" },
+        },
+        React.createElement(
+          "div",
+          {
+            className: "alert alert-warning rounded mx-auto",
+            style: { width: "100%", textAlign: "center" },
+          },
+          React.createElement("i", {
+            className: "fas fa-exclamation-circle",
+          }),
+          React.createElement("span", null, `Warning : Your Verifier KeyPair reference is not matching to your forge entity keypair reference`)
         )
       ),
       errorMesage &&

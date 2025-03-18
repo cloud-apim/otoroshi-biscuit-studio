@@ -253,6 +253,8 @@ class BiscuitVerifiersPage extends Component {
     "biscuit-verifiers"
   );
 
+
+
   render() {
     return React.createElement(
       Table,
@@ -311,12 +313,24 @@ class BiscuitVerifierTester extends Component {
       tokenInput: undefined,
       errorMesage: "",
       successMessage: "",
+      selectedForge: null
     };
   }
 
   handleInputChange = (event) => {
     this.setState({ biscuitToken: event.target.value });
   };
+
+  forgeClient = BackOfficeServices.apisClient(
+    "biscuit.extensions.cloud-apim.com",
+    "v1",
+    "biscuit-forges"
+  );
+
+  getForgeInfo = (forgeRef) => {
+    this.forgeClient.findById(forgeRef)
+      .then(forgeData => this.setState({ selectedForge: forgeData }))
+  }
 
   send = () => {
     const { forgeRef, tokenInput } = this.state;
@@ -377,7 +391,10 @@ class BiscuitVerifierTester extends Component {
         React.createElement(SelectInput, {
           label: "Use a token forge",
           value: forgeRef,
-          onChange: (forgeRef) => this.setState({ forgeRef }),
+          onChange: (forgeRef) => {
+            this.getForgeInfo(forgeRef)
+            this.setState({ forgeRef })
+          },
           isClearable: true,
           valuesFrom:
             "/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-forges",
@@ -402,6 +419,24 @@ class BiscuitVerifierTester extends Component {
             value: tokenInput,
             onChange: (e) => this.setState({ tokenInput: e.target.value }),
           })
+        )
+      ),
+      forgeRef && (this.state?.selectedForge?.keypair_ref !== this.props.rawValue?.keypair_ref) &&
+      React.createElement(
+        "div",
+        {
+          style: { maxWidth: "80%", marginLeft: "15%", textAlign: "center" },
+        },
+        React.createElement(
+          "div",
+          {
+            className: "alert alert-warning rounded mx-auto",
+            style: { width: "100%", textAlign: "center" },
+          },
+          React.createElement("i", {
+            className: "fas fa-exclamation-circle",
+          }),
+          React.createElement("span", null, `Warning : Your Verifier KeyPair reference is not matching to your forge entity keypair reference`)
         )
       ),
       errorMesage &&
