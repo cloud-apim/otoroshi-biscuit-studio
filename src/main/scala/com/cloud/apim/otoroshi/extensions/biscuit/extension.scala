@@ -702,7 +702,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
     AdminExtensionAdminApiRoute(
       "POST",
       "/api/extensions/biscuit/biscuit-forges/:id/_generate",
-      wantsBody = true,
+      wantsBody = false,
       (ctx, request, apk, body) => {
         implicit val ev = env
         implicit val ec = env.otoroshiExecutionContext
@@ -776,7 +776,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                         env.logger.info(s"got token here = ${token}")
 
                         env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(verifier.keypairRef)) match {
-                          case None => Results.NotFound(Json.obj("error" -> "No keypair found in attenuator entity")).vfuture
+                          case None => Results.NotFound(Json.obj("error" -> "No keypair found in verifier entity")).vfuture
                           case Some(keypairDb) => {
                             verifyWithTokenInput(verifier.keypairRef, token, verifier.config, isAdminApiRoute = true)
                           }

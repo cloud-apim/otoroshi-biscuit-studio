@@ -3,7 +3,6 @@ package com.cloud.apim.otoroshi.extensions.biscuit.suites
 import akka.stream.Materializer
 import com.cloud.apim.otoroshi.extensions.biscuit.domains.{BiscuitAttenuatorsUtils, BiscuitKeyPairsUtils}
 import com.cloud.apim.otoroshi.extensions.biscuit.entities.{AttenuatorConfig, BiscuitAttenuator, BiscuitExtractorConfig, BiscuitKeyPair}
-import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils
 import com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionSuite, OtoroshiClient}
 import org.biscuitsec.biscuit.crypto.PublicKey
 import org.biscuitsec.biscuit.token.Biscuit
@@ -413,7 +412,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
     val publicKeyFormatted = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, publicKey)
 
     val encodedBiscuit = Biscuit.from_b64url(attenuatedToken, publicKeyFormatted)
-    assertEquals(encodedBiscuit.authorizer().checks().size(), conf.checks.size, s"attenuated token doesn't contain checks list")
+    assertEquals(encodedBiscuit.authorizer().checks().asScala.flatMap(_._2.asScala).size, conf.checks.length, s"attenuated token doesn't contain checks list")
 
     client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeId)
     client.forBiscuitEntity("biscuit-attenuators").deleteEntity(attenuator)
@@ -569,7 +568,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
     val publicKeyFormatted = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, publicKey)
 
     val encodedBiscuit = Biscuit.from_b64url(attenuatedToken, publicKeyFormatted)
-    assertEquals(encodedBiscuit.authorizer().checks().size(), conf.checks.size, s"attenuated token doesn't contain checks list")
+    assertEquals(encodedBiscuit.authorizer().checks().asScala.flatMap(_._2.asScala).size, conf.checks.size, s"attenuated token doesn't contain checks list")
 
     client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeId)
     client.forBiscuitEntity("biscuit-attenuators").deleteEntity(attenuator)
