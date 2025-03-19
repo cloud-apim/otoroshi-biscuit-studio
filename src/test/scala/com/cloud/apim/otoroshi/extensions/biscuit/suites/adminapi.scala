@@ -666,7 +666,7 @@ class AdminAPISuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     assertEquals(goodAttenuator.json.at("message").asString, "Token attenuated successfully", "message should be 'Token attenuated successfully'")
 
     val encodedAttenuatedToken = Biscuit.from_b64url(attenuatedToken, keypair.getPubKey)
-    assertEquals(encodedAttenuatedToken.authorizer().checks().asScala.flatMap(_._2.asScala).size, attenuatorConfig.size, s"attenuated token doesn't contain checks list")
+    assertEquals(encodedAttenuatedToken.authorizer().checks().asScala.flatMap(_._2.asScala).size, forge.config.checks.size + attenuatorConfig.size, s"attenuated token doesn't contain checks list")
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                          test Good biscuit attenuator with RAW keypair                         ///////////
@@ -721,5 +721,104 @@ class AdminAPISuite extends BiscuitStudioOneOtoroshiServerPerSuite {
 
     val encodedAttenuatedTokenWithRawKp = Biscuit.from_b64url(attenuatedTokenWithRawKp, rawPublicKey)
     assertEquals(encodedAttenuatedTokenWithRawKp.authorizer().checks().asScala.flatMap(_._2.asScala).size, attenuatorConfig.size, s"attenuated token doesn't contain checks list")
+  }
+
+  test("should be able to attenuate a token from the ADMIN API with an attenuator config") {
+    val biscuitKeyPair = new KeyPair()
+    val keypair = BiscuitKeyPair(
+      id = IdGenerator.namedId("biscuit-keypair", otoroshi.env),
+      name = "New Biscuit Key Pair",
+      description = "New biscuit KeyPair",
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      privKey = biscuitKeyPair.toHex,
+      pubKey = biscuitKeyPair.public_key().toHex
+    )
+
+    val forge = BiscuitTokenForge(
+      id = IdGenerator.namedId("biscuit-forge", otoroshi.env),
+      name = "New biscuit token",
+      description = "New biscuit token",
+      keypairRef = keypair.id,
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      config = BiscuitForgeConfig(
+        facts = Seq(
+          "name(\"otoroshi-biscuit-studio-test\")",
+          "user(\"biscuit-test-user\")",
+          "role(\"user\")"
+        )
+      )
+    )
+
+    val attenuator = BiscuitAttenuator(
+      id = IdGenerator.namedId("biscuit-attenuator", otoroshi.env),
+      name = "New Biscuit Attenuator entity",
+      description = "New biscuit Attenuator entity",
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      keypairRef = keypair.id,
+      config = AttenuatorConfig(
+        checks = Seq(
+          "check if name(\"otoroshi-biscuit-studio-test\")",
+          "check if user(\"biscuit-test-user\")",
+          "check if role(\"user\")",
+          "check if operation(\"read\")"
+        )
+      )
+    )
+
+    /// Create entities
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair)
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-forges").upsertEntity(forge)
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-attenuators").upsertEntity(attenuator)
+    await(5.seconds)
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                                  test biscuit creation from forge                              ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val tokenResp = client.call("POST", s"http://otoroshi-api.oto.tools:${port}/api/extensions/biscuit/biscuit-forges/${forge.id}/_generate", Map(
+      "Content-Type" -> s"application/json",
+      "Otoroshi-Client-Id" -> "admin-api-apikey-id",
+      "Otoroshi-Client-Secret" -> "admin-api-apikey-secret"
+    ), None).awaitf(5.seconds)
+
+    assert(tokenResp.json.at("token").isDefined, "token should be successfully generated")
+
+    val genToken = tokenResp.json.at("token").asString
+    val encodedBiscuit = Biscuit.from_b64url(genToken, keypair.getPubKey)
+
+    println(s"token before attenuation = ${genToken}")
+
+    assertEquals(encodedBiscuit.authorizer().facts().size(), forge.config.facts.length, s"generated token from forge ADMIN API doesn't contain all facts")
+    assertEquals(encodedBiscuit.authorizer().checks().asScala.flatMap(_._2.asScala).size, forge.config.checks.length, s"generated token from forge ADMIN API doesn't contain all checks")
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                       test Good biscuit attenuator with keypair reference                      ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val goodAttenuator = client.call("POST", s"http://otoroshi-api.oto.tools:${port}/api/extensions/biscuit/biscuit-attenuators/${attenuator.id}/_attenuate", Map(
+      "Content-Type" -> s"application/json",
+      "Otoroshi-Client-Id" -> "admin-api-apikey-id",
+      "Otoroshi-Client-Secret" -> "admin-api-apikey-secret"
+    ), Some(Json.obj(
+      "token" -> genToken
+    ))).awaitf(5.seconds)
+
+    val attenuatedToken = goodAttenuator.json.at("token").asString
+
+    println(s"token after attenuation = ${attenuatedToken}")
+
+
+    assert(goodAttenuator.json.at("token").isDefined, "attenuated token should be defined in body response")
+    assert(goodAttenuator.json.at("status").isDefined, "status for good verifier should be defined")
+    assert(goodAttenuator.json.at("message").isDefined, "message for good verifier should be defined")
+    assertEquals(goodAttenuator.json.at("status").asString, "success", "status message should be success")
+    assertEquals(goodAttenuator.json.at("message").asString, "Token attenuated successfully", "message should be 'Token attenuated successfully'")
+
+    val encodedAttenuatedToken = Biscuit.from_b64url(attenuatedToken, keypair.getPubKey)
+    assertEquals(encodedAttenuatedToken.authorizer().checks().asScala.flatMap(_._2.asScala).size, forge.config.checks.size + attenuator.config.checks.size, s"attenuated token doesn't contain checks list")
   }
 }
