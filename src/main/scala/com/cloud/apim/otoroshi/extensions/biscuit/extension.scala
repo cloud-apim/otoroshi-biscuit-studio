@@ -163,6 +163,12 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
 
   override def backofficeAuthRoutes(): Seq[AdminExtensionBackofficeAuthRoute] = Seq(
     AdminExtensionBackofficeAuthRoute(
+      method = "GET",
+      path = "/extensions/cloud-apim/extensions/biscuit/keypairs/_generate",
+      wantsBody = false,
+      handle = handleGenerateKeypair
+    ),
+    AdminExtensionBackofficeAuthRoute(
       method = "POST",
       path = "/extensions/cloud-apim/extensions/biscuit/tokens/_generate",
       wantsBody = true,
@@ -187,6 +193,17 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       handle = handleAttenuatorTester
     ),
   )
+
+  def handleGenerateKeypair(ctx: AdminExtensionRouterContext[AdminExtensionBackofficeAuthRoute], req: RequestHeader, user: Option[BackOfficeUser], body: Option[Source[ByteString, _]]): Future[Result] = {
+    val generatedKeyPair = KeyPair.generate(Algorithm.Ed25519)
+
+    Results.Ok(
+      Json.obj(
+        "pubKey" -> generatedKeyPair.public_key().toHex.toUpperCase,
+        "privKey" -> generatedKeyPair.toHex.toUpperCase
+      )
+    ).vfuture
+  }
 
   def handleGenerateToken(ctx: AdminExtensionRouterContext[AdminExtensionBackofficeAuthRoute], req: RequestHeader, user: Option[BackOfficeUser], body: Option[Source[ByteString, _]]): Future[Result] = {
     generateTokenFromBody(body, false)
@@ -283,19 +300,6 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
     }
   }
   override def assets(): Seq[AdminExtensionAssetRoute] = Seq(
-    AdminExtensionAssetRoute(
-      path = "/extensions/assets/cloud-apim/extensions/biscuit/keypairs/generate",
-      handle = (ctx: AdminExtensionRouterContext[AdminExtensionAssetRoute], req: RequestHeader) => {
-        val generatedKeyPair = KeyPair.generate(Algorithm.Ed25519)
-
-        Results.Ok(
-          Json.obj(
-            "publickey" -> generatedKeyPair.public_key().toHex.toLowerCase,
-            "privateKey" -> generatedKeyPair.toHex.toLowerCase
-          )
-        ).as("application/json").vfuture
-      }
-    ),
     AdminExtensionAssetRoute(
       path = "/extensions/assets/cloud-apim/extensions/biscuit/assets/tree-sitter.wasm",
       handle = (ctx: AdminExtensionRouterContext[AdminExtensionAssetRoute], req: RequestHeader) => {
