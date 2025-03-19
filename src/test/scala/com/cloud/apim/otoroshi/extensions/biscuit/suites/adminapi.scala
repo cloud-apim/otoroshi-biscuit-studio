@@ -72,6 +72,82 @@ class AdminAPISuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     assertEquals(encodedBiscuit.authorizer().checks().asScala.flatMap(_._2.asScala).size, forge.config.checks.length, s"generated token from forge ADMIN API doesn't contain all checks")
   }
 
+  test("should be able to generate a token from the ADMIN API with a body configuration") {
+    val biscuitKeyPair = new KeyPair()
+    val keypair = BiscuitKeyPair(
+      id = IdGenerator.namedId("biscuit-keypair", otoroshi.env),
+      name = "New Biscuit Key Pair",
+      description = "New biscuit KeyPair",
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      privKey = biscuitKeyPair.toHex,
+      pubKey = biscuitKeyPair.public_key().toHex
+    )
+
+    val publicKeyFormatted = keypair.getPubKey
+
+    val forgeConfig = BiscuitForgeConfig(
+      facts = Seq(
+        "name(\"otoroshi-biscuit-studio-test\")",
+        "user(\"biscuit-test-user\")",
+        "role(\"user\")"
+      ),
+      checks = Seq(
+        "check if user(\"biscuit-test-user\")",
+        "check if role(\"user\")"
+      )
+    )
+
+    /// Add entities
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair)
+    await(5.seconds)
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                test biscuit creation from forge with keypair ref and body config               ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val tokenRespWithKpRef = client.call("POST", s"http://otoroshi-api.oto.tools:${port}/api/extensions/biscuit/tokens/_generate", Map(
+      "Content-Type" -> s"application/json",
+      "Otoroshi-Client-Id" -> "admin-api-apikey-id",
+      "Otoroshi-Client-Secret" -> "admin-api-apikey-secret"
+    ), Some(Json.obj(
+      "keypair_ref" -> keypair.id,
+      "config" -> forgeConfig.json
+    ))).awaitf(5.seconds)
+
+    assert(tokenRespWithKpRef.json.at("token").isDefined, "token should be successfully generated")
+
+    val genToken = tokenRespWithKpRef.json.at("token").asString
+    val encodedBiscuitWithKpRef = Biscuit.from_b64url(genToken, publicKeyFormatted)
+
+    assertEquals(encodedBiscuitWithKpRef.authorizer().facts().size(), forgeConfig.facts.length, s"generated token from forge ADMIN API doesn't contain all facts")
+    assertEquals(encodedBiscuitWithKpRef.authorizer().checks().asScala.flatMap(_._2.asScala).size, forgeConfig.checks.length, s"generated token from forge ADMIN API doesn't contain all checks")
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                test biscuit creation from forge with RAW keypair and body config               ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val rawKp = new KeyPair()
+
+    val tokenRespWithRawKp = client.call("POST", s"http://otoroshi-api.oto.tools:${port}/api/extensions/biscuit/tokens/_generate", Map(
+      "Content-Type" -> s"application/json",
+      "Otoroshi-Client-Id" -> "admin-api-apikey-id",
+      "Otoroshi-Client-Secret" -> "admin-api-apikey-secret"
+    ), Some(Json.obj(
+      "privKey" -> rawKp.toHex,
+      "pubKey" -> rawKp.public_key().toHex,
+      "config" -> forgeConfig.json
+    ))).awaitf(5.seconds)
+
+    assert(tokenRespWithRawKp.json.at("token").isDefined, "token should be successfully generated")
+
+    val genTokenWithRawKp = tokenRespWithRawKp.json.at("token").asString
+    val encodedBiscuitWithRawKp = Biscuit.from_b64url(genTokenWithRawKp, rawKp.public_key())
+
+    assertEquals(encodedBiscuitWithRawKp.authorizer().facts().size(), forgeConfig.facts.length, s"generated token from forge ADMIN API doesn't contain all facts")
+    assertEquals(encodedBiscuitWithRawKp.authorizer().checks().asScala.flatMap(_._2.asScala).size, forgeConfig.checks.length, s"generated token from forge ADMIN API doesn't contain all checks")
+  }
+
   test("should be able to generate a token from the ADMIN API from body parameters with keypair Ref") {
     val biscuitKeyPair = new KeyPair()
     val keypair = BiscuitKeyPair(
