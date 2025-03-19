@@ -44,9 +44,10 @@ class BiscuitExtensionState(env: Env) {
   def keypair(id: String): Option[BiscuitKeyPair] = _keypairs.get(id)
 
   def allKeypairs(): Seq[BiscuitKeyPair] = _keypairs.values.toSeq
+
   def allPublicKeyPairs(authorizedKeys: Seq[String]): Seq[BiscuitKeyPair] = {
-    if(authorizedKeys.nonEmpty)
-    _keypairs.values.toSeq.filter(kp => authorizedKeys.contains(kp.id))
+    if (authorizedKeys.nonEmpty)
+      _keypairs.values.toSeq.filter(kp => authorizedKeys.contains(kp.id))
     else _keypairs.values.toSeq.filter(kp => kp.isPublic)
   }
 
@@ -136,7 +137,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
   )
 
   override def publicKeys(): Future[Seq[PublicKeyJwk]] = {
-    env.adminExtensions.extension[BiscuitExtension].get.states.allKeypairs().map{
+    env.adminExtensions.extension[BiscuitExtension].get.states.allKeypairs().map {
       keypair => {
         val jwk = new OctetKeyPairGenerator(Curve.Ed25519).keyID(keypair.id).generate()
         val publicJWK = jwk.toPublicJWK.toJSONString.parseJson
@@ -282,6 +283,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       }
     }
   }
+
   override def assets(): Seq[AdminExtensionAssetRoute] = Seq(
     AdminExtensionAssetRoute(
       path = "/extensions/assets/cloud-apim/extensions/biscuit/keypairs/generate",
@@ -921,11 +923,11 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
             verifierConfig.verify(biscuitToken, None) flatMap {
               case Left(err) => handleError(err, isAdminApiRoute)
               case Right(_) => {
-                if(isAdminApiRoute){
+                if (isAdminApiRoute) {
                   Results.Ok(Json.obj("status" -> "success", "message" -> "Checked successfully")).vfuture
-                }else{
+                } else {
                   Results.Ok(Json.obj(
-                    "status"-> "success",
+                    "status" -> "success",
                     "done" -> true,
                     "message" -> "Checked successfully"
                   )).vfuture
@@ -960,14 +962,14 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                 verifierConfig.verify(biscuitToken, None) flatMap {
                   case Left(err) => handleError(err, isAdminApiRoute)
                   case Right(_) => {
-                    if (isAdminApiRoute){
+                    if (isAdminApiRoute) {
                       Results.Ok(Json.obj(
                         "status" -> "success",
                         "message" -> "Checked successfully"
                       )).vfuture
-                    }else{
+                    } else {
                       Results.Ok(Json.obj(
-                        "status"-> "success",
+                        "status" -> "success",
                         "done" -> true,
                         "message" -> "Checked successfully"
                       )).vfuture
@@ -1127,7 +1129,13 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
         if (keypairPubKey.isDefined && keypairPrivKey.isDefined) {
           processTokenAttenuation(tokenBody, None, attenuatorChecks, keypairPubKey.get, isAdminApiRoute) match {
             case Left(err) => Results.Ok(Json.obj("error" -> err)).vfuture
-            case Right(attenuatedToken) => Results.Ok(Json.obj("token" -> attenuatedToken.serialize_b64url())).vfuture
+            case Right(attenuatedToken) => Results.Ok(
+              Json.obj(
+                "status" -> "success",
+                "message" -> "Token attenuated successfully",
+                "token" -> attenuatedToken.serialize_b64url()
+              )
+            ).vfuture
           }
         } else {
           keypairRef match {
@@ -1138,7 +1146,13 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                 case Some(keypairDb) =>
                   processTokenAttenuation(tokenBody, None, attenuatorChecks, keypairDb.pubKey, isAdminApiRoute) match {
                     case Left(err) => Results.Ok(Json.obj("error" -> err)).vfuture
-                    case Right(attenuatedToken) => Results.Ok(Json.obj("token" -> attenuatedToken.serialize_b64url())).vfuture
+                    case Right(attenuatedToken) => Results.Ok(
+                      Json.obj(
+                        "status" -> "success",
+                        "message" -> "Token attenuated successfully",
+                        "token" -> attenuatedToken.serialize_b64url()
+                      )
+                    ).vfuture
                   }
               }
           }
