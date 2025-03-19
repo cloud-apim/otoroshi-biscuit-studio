@@ -195,12 +195,12 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
   )
 
   def handleGenerateKeypair(ctx: AdminExtensionRouterContext[AdminExtensionBackofficeAuthRoute], req: RequestHeader, user: Option[BackOfficeUser], body: Option[Source[ByteString, _]]): Future[Result] = {
-    val generatedKeyPair = KeyPair.generate(Algorithm.Ed25519)
+    val generatedKeyPair = KeyPair.generate(Algorithm.Ed25519) // TODO - support new algorithm secp256r1
 
     Results.Ok(
       Json.obj(
-        "pubKey" -> generatedKeyPair.public_key().toHex.toUpperCase,
-        "privKey" -> generatedKeyPair.toHex.toUpperCase
+        "pubKey" -> generatedKeyPair.public_key().toHex.toLowerCase,
+        "privKey" -> generatedKeyPair.toHex.toLowerCase
       )
     ).vfuture
   }
@@ -876,7 +876,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
     env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(keypairRef)) match {
       case None => handleError("keypair doesn't exist", isAdminApiRoute)
       case Some(keypair) => {
-        val publicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)
+        val publicKey = new PublicKey(keypair.getCurrentAlgo, keypair.pubKey)
 
         Try(Biscuit.from_b64url(inputToken, publicKey)).toEither match {
           case Left(err: org.biscuitsec.biscuit.error.Error) => handleError(BiscuitUtils.handleBiscuitErrors(err), isAdminApiRoute)
@@ -911,7 +911,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
     env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(verifierKeyPairRef)) match {
       case None => handleError("keypair doesn't exist", isAdminApiRoute)
       case Some(keypair) => {
-        val verifierPublicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)
+        val verifierPublicKey = new PublicKey(keypair.getCurrentAlgo, keypair.pubKey)
 
         forge.forgeToken().flatMap {
           case Left(err) => Results.Ok(Json.obj("done" -> false, "error" -> err)).vfuture

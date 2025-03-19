@@ -20,6 +20,7 @@ case class BiscuitKeyPair(
   isPublic: Boolean = false,
   privKey: String = "",
   pubKey: String = "",
+  algo: String = "ED25519",
   tags: Seq[String] = Seq.empty,
   metadata: Map[String, String] = Map.empty,
   location: EntityLocation
@@ -37,8 +38,14 @@ case class BiscuitKeyPair(
   def theTags: Seq[String] = tags
 
   def keyPair: KeyPair = new KeyPair(privKey)
-
-  def getPubKey: PublicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, pubKey)
+  def getPubKey: PublicKey = new PublicKey(getCurrentAlgo, pubKey)
+  def getCurrentAlgo: biscuit.format.schema.Schema.PublicKey.Algorithm = {
+    algo.toUpperCase match {
+      case "ED25519" => biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519
+//      case "SECP256R1" => biscuit.format.schema.Schema.PublicKey.Algorithm.SECP256R1 -- waiting for support in java lib
+      case _ => biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519
+    }
+  }
 }
 
 object BiscuitKeyPair {
@@ -50,6 +57,7 @@ object BiscuitKeyPair {
         "description" -> o.description,
         "metadata" -> o.metadata,
         "is_public" -> o.isPublic,
+        "algo" -> o.algo,
         "pubKey" -> o.pubKey,
         "privKey" -> o.privKey,
         "tags" -> JsArray(o.tags.map(JsString.apply)),
@@ -62,6 +70,7 @@ object BiscuitKeyPair {
           location = EntityLocation.readFromKey(json),
           id = (json \ "id").as[String],
           name = (json \ "name").as[String],
+          algo = (json \ "algo").asOpt[String].getOrElse("ED25519"),
           description = (json \ "description").asOpt[String].getOrElse("--"),
           isPublic = (json \ "is_public").asOpt[Boolean].getOrElse(false),
           pubKey = (json \ "pubKey").asOpt[String].getOrElse("--"),
