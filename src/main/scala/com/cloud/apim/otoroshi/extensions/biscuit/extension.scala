@@ -199,6 +199,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
 
     Results.Ok(
       Json.obj(
+        "done" -> true,
         "pubKey" -> generatedKeyPair.public_key().toHex.toUpperCase,
         "privKey" -> generatedKeyPair.toHex.toUpperCase
       )
