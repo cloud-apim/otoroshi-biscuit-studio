@@ -772,9 +772,6 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                     bodyJson.select("token").asOpt[String] match {
                       case None => Results.NotFound(Json.obj("error" -> "Token not provided")).vfuture
                       case Some(token) => {
-
-                        env.logger.info(s"got token here = ${token}")
-
                         env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(verifier.keypairRef)) match {
                           case None => Results.NotFound(Json.obj("error" -> "No keypair found in verifier entity")).vfuture
                           case Some(keypairDb) => {

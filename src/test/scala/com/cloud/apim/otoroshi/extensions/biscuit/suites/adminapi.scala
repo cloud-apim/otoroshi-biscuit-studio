@@ -404,4 +404,108 @@ class AdminAPISuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     assertEquals(goodVerifier.json.at("status").asString, "success", "status message should be success")
     assertEquals(goodVerifier.json.at("message").asString, "Checked successfully", "message should be 'Checked successfully'")
   }
+
+  test("should be able to verify a token from the ADMIN API with a body containing the token and the verifier configuration") {
+    val biscuitKeyPair = new KeyPair()
+    val keypair = BiscuitKeyPair(
+      id = IdGenerator.namedId("biscuit-keypair", otoroshi.env),
+      name = "New Biscuit Key Pair",
+      description = "New biscuit KeyPair",
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      privKey = biscuitKeyPair.toHex,
+      pubKey = biscuitKeyPair.public_key().toHex
+    )
+
+    val publicKeyFormatted = keypair.getPubKey
+
+    val forge = BiscuitTokenForge(
+      id = IdGenerator.namedId("biscuit-forge", otoroshi.env),
+      name = "New biscuit token",
+      description = "New biscuit token",
+      keypairRef = keypair.id,
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      config = BiscuitForgeConfig(
+        facts = Seq(
+          "name(\"otoroshi-biscuit-studio-test\")",
+          "user(\"biscuit-test-user\")",
+          "role(\"user\")"
+        ),
+        checks = Seq(
+          "check if server(\"biscuit-server-test\")",
+          "check if operation(\"read\")"
+        )
+      )
+    )
+
+    val verifierConfig = VerifierConfig(
+      checks = Seq(
+        "check if name(\"otoroshi-biscuit-studio-test\")",
+        "check if user(\"biscuit-test-user\")",
+        "check if role(\"user\")"
+      ),
+      facts = Seq(
+        "server(\"biscuit-server-test\")",
+        "operation(\"read\")"
+      )
+    )
+
+    /// Create entities
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair)
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-forges").upsertEntity(forge)
+    await(5.seconds)
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                                  test biscuit creation from forge                              ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val tokenResp = client.call("POST", s"http://otoroshi-api.oto.tools:${port}/api/extensions/biscuit/biscuit-forges/${forge.id}/_generate", Map(
+      "Content-Type" -> s"application/json",
+      "Otoroshi-Client-Id" -> "admin-api-apikey-id",
+      "Otoroshi-Client-Secret" -> "admin-api-apikey-secret"
+    ), Some(Json.obj())).awaitf(5.seconds)
+
+    assert(tokenResp.json.at("token").isDefined, "token should be successfully generated")
+
+    val genToken = tokenResp.json.at("token").asString
+    val encodedBiscuit = Biscuit.from_b64url(genToken, publicKeyFormatted)
+
+    assertEquals(encodedBiscuit.authorizer().facts().size(), forge.config.facts.length, s"token doesn't contain all facts")
+    assertEquals(encodedBiscuit.authorizer().checks().asScala.flatMap(_._2.asScala).size, forge.config.checks.length, s"token doesn't contain all checks")
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                                  test without keypair ref                                  ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val badVerifierKpRef = client.call("POST", s"http://otoroshi-api.oto.tools:${port}/api/extensions/biscuit/tokens/_verify", Map(
+      "Content-Type" -> s"application/json",
+      "Otoroshi-Client-Id" -> "admin-api-apikey-id",
+      "Otoroshi-Client-Secret" -> "admin-api-apikey-secret"
+    ), Some(Json.obj(
+      "token" -> genToken,
+      "config" -> verifierConfig.json
+    ))).awaitf(5.seconds)
+
+    assert(badVerifierKpRef.json.at("error").isDefined, "Error should be defined")
+    assertEquals(badVerifierKpRef.json.at("error").asString, "keypairRef is empty", "Error message should be 'keypairRef is empty'")
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                                  test Good biscuit verifier                                    ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val goodVerifier = client.call("POST", s"http://otoroshi-api.oto.tools:${port}/api/extensions/biscuit/tokens/_verify", Map(
+      "Content-Type" -> s"application/json",
+      "Otoroshi-Client-Id" -> "admin-api-apikey-id",
+      "Otoroshi-Client-Secret" -> "admin-api-apikey-secret"
+    ), Some(Json.obj(
+      "token" -> genToken,
+      "keypair_ref" -> keypair.id,
+      "config" -> verifierConfig.json
+    ))).awaitf(5.seconds)
+
+    assert(goodVerifier.json.at("status").isDefined, "status for good verifier should be defined")
+    assert(goodVerifier.json.at("message").isDefined, "message for good verifier should be defined")
+    assertEquals(goodVerifier.json.at("status").asString, "success", "status message should be success")
+    assertEquals(goodVerifier.json.at("message").asString, "Checked successfully", "message should be 'Checked successfully'")
+  }
 }
