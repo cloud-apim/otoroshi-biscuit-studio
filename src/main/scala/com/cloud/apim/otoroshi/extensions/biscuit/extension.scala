@@ -864,7 +864,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
             val verifierConfig = VerifierConfig.format.reads(verifierConfigBody.get).asOpt
 
             verifierConfig match {
-              case None => handleError("keypairRef provided", isAdminApiRoute)
+              case None => handleError("verifier config not provided or bad formatted", isAdminApiRoute)
               case Some(config) => {
 
                 biscuitKeyPairRef match {
