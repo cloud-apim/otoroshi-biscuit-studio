@@ -5,6 +5,7 @@ import com.cloud.apim.otoroshi.extensions.biscuit.entities._
 import org.biscuitsec.biscuit.crypto.KeyPair
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.models.EntityLocation
+import otoroshi.next.models.NgTlsConfig
 import otoroshi.security.IdGenerator
 import otoroshi.utils.syntax.implicits._
 import play.api.libs.json.Json
@@ -58,8 +59,8 @@ class BackofficeRoutesSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
           "pubKey" -> keypair.public_key().toHex,
           "privKey" -> keypair.toHex,
           "config" -> tokenConfig.json
-          )
         )
+      )
     ).awaitf(5.seconds)
     assertEquals(resp.status, 200, s"verifier route did not respond with 200")
     assert(resp.json.at("done").isDefined, s"'done' field should be defined")
@@ -310,7 +311,7 @@ class BackofficeRoutesSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
       "Content-Type" -> s"application/json"
     ), Some(Json.obj(
       "forge_ref" -> forge.id,
-      "keypair_ref"-> keypair.id,
+      "keypair_ref" -> keypair.id,
       "config" -> verifierConfig.json
     ))).awaitf(5.seconds)
 
@@ -319,4 +320,75 @@ class BackofficeRoutesSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     assertEquals(goodVerifier.json.at("status").asString, "success", "status message should be success")
     assertEquals(goodVerifier.json.at("message").asString, "Checked successfully", "message should be 'Checked successfully'")
   }
+
+  test("should be able to test remote facts") {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                                       test endpoint                                            ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val domainAPIPrefix = "test-api"
+    val routeAPIPath = "/api/facts"
+
+    val (tport, _) = createTestServerWithRoutes(domainAPIPrefix, routes => routes.post(routeAPIPath, (req, response) => {
+      req.receive().retain().asString().flatMap { body =>
+        response
+          .status(200)
+          .addHeader("Content-Type", "application/json")
+          .sendString(Mono.just(
+            s"""{
+               |"facts": [
+               |{
+               |  "name": "role",
+               |  "value": "dev"
+               |},
+               |{
+               |  "name": "user",
+               |  "value": "biscuit-demo"
+               |},
+               |{
+               |  "name": "version",
+               |  "value": "dev"
+               |},
+               |{
+               |  "name": "operation",
+               |  "value": "write"
+               |}
+               |]
+               |}""".stripMargin))
+      }
+    }))
+
+    val fullDomain = s"http://${domainAPIPrefix}.oto.tools:${tport}${routeAPIPath}"
+
+    val respRemoteAPI = client.call("POST", fullDomain, Map("Content-Type" -> "application/json"), Some(Json.obj("foo" -> "bar"))).awaitf(5.seconds)
+    assertEquals(respRemoteAPI.status, 200, s"remote facts API did not respond with 200")
+    assert(respRemoteAPI.json.at("facts").isDefined, s"forge facts array is not defined")
+
+    val forgeFactsArr = respRemoteAPI.json.at("facts").as[List[Map[String, String]]]
+    assertEquals(forgeFactsArr.length, 4, s"forge facts array length doesn't match")
+
+    val respLoadedFacts = client.call("POST", s"http://otoroshi.oto.tools:${port}/extensions/cloud-apim/extensions/biscuit/remote-facts/_test",
+      Map(
+        "Content-Type" -> s"application/json"
+      ),
+      Some(
+        Json.obj(
+          "api_url" -> fullDomain,
+          "headers" -> Map(
+            "Content-Type" -> s"application/json"
+          ),
+          "method" -> "POST"
+        )
+      )
+    ).awaitf(5.seconds)
+    assertEquals(respLoadedFacts.status, 200, s"verifier route did not respond with 200")
+
+    assert(respLoadedFacts.json.at("done").isDefined, s"'done' field should be defined")
+    assert(respLoadedFacts.json.at("done").asBoolean, s"request 'done' status should be true")
+    assert(respLoadedFacts.json.at("loadedFacts").isDefined, "'loadedFacts' should be defined")
+    assert(respLoadedFacts.json.at("loadedFacts.facts").isDefined, "'facts' array should be defined")
+
+    val loadedFacts = respLoadedFacts.json.at("loadedFacts.facts").as[List[String]]
+    assertEquals(loadedFacts.length, 4, s"loaded facts array length doesn't match")
+  }
+
 }
