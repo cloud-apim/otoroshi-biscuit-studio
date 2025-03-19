@@ -8,11 +8,166 @@ import otoroshi.models.EntityLocation
 import otoroshi.security.IdGenerator
 import otoroshi.utils.syntax.implicits._
 import play.api.libs.json.Json
-import scala.jdk.CollectionConverters._
 
+import scala.jdk.CollectionConverters._
 import scala.concurrent.duration.DurationInt
+import scala.util.Try
 
 class AdminAPISuite extends BiscuitStudioOneOtoroshiServerPerSuite {
+  test("should be able to generate a token from the ADMIN API with a Forge entity") {
+    val biscuitKeyPair = new KeyPair()
+    val keypair = BiscuitKeyPair(
+      id = IdGenerator.namedId("biscuit-keypair", otoroshi.env),
+      name = "New Biscuit Key Pair",
+      description = "New biscuit KeyPair",
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      privKey = biscuitKeyPair.toHex,
+      pubKey = biscuitKeyPair.public_key().toHex
+    )
+
+    val publicKeyFormatted = keypair.getPubKey
+
+    val forge = BiscuitTokenForge(
+      id = IdGenerator.namedId("biscuit-forge", otoroshi.env),
+      name = "New biscuit token",
+      description = "New biscuit token",
+      keypairRef = keypair.id,
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      config = BiscuitForgeConfig(
+        facts = Seq(
+          "name(\"otoroshi-biscuit-studio-test\")",
+          "user(\"biscuit-test-user\")",
+          "role(\"user\")"
+        ),
+        checks = Seq(
+          "check if user(\"biscuit-test-user\")",
+          "check if role(\"user\")"
+        )
+      )
+    )
+
+    /// Add entities
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair)
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-forges").upsertEntity(forge)
+    await(5.seconds)
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                                  test biscuit creation from forge                              ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val tokenResp = client.call("POST", s"http://otoroshi-api.oto.tools:${port}/api/extensions/biscuit/biscuit-forges/${forge.id}/_generate", Map(
+      "Content-Type" -> s"application/json",
+      "Otoroshi-Client-Id" -> "admin-api-apikey-id",
+      "Otoroshi-Client-Secret" -> "admin-api-apikey-secret"
+    ), Some(Json.obj())).awaitf(5.seconds)
+
+    assert(tokenResp.json.at("token").isDefined, "token should be successfully generated")
+
+    val genToken = tokenResp.json.at("token").asString
+    val encodedBiscuit = Biscuit.from_b64url(genToken, publicKeyFormatted)
+
+    println(s"generated token from forge ADMIN API  = ${encodedBiscuit.authorizer().print_world()}")
+
+    assertEquals(encodedBiscuit.authorizer().facts().size(), forge.config.facts.length, s"generated token from forge ADMIN API doesn't contain all facts")
+    assertEquals(encodedBiscuit.authorizer().checks().asScala.flatMap(_._2.asScala).size, forge.config.checks.length, s"generated token from forge ADMIN API doesn't contain all checks")
+  }
+
+  test("should be able to generate a token from the ADMIN API from body parameters with keypair Ref") {
+    val biscuitKeyPair = new KeyPair()
+    val keypair = BiscuitKeyPair(
+      id = IdGenerator.namedId("biscuit-keypair", otoroshi.env),
+      name = "New Biscuit Key Pair",
+      description = "New biscuit KeyPair",
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      privKey = biscuitKeyPair.toHex,
+      pubKey = biscuitKeyPair.public_key().toHex
+    )
+
+    val publicKeyFormatted = keypair.getPubKey
+
+    val config = BiscuitForgeConfig(
+      facts = Seq(
+        "user(\"demo\")",
+        "role(\"test\")",
+      ),
+      checks = Seq(
+        "check if user(\"demo\")",
+        "check if role(\"test\")"
+      )
+    )
+
+    /// Add entities
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair)
+    await(5.seconds)
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                          test biscuit creation from forge with body parameters                 ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val tokenResp = client.call("POST", s"http://otoroshi-api.oto.tools:${port}/api/extensions/biscuit/tokens/_generate", Map(
+      "Content-Type" -> s"application/json",
+      "Otoroshi-Client-Id" -> "admin-api-apikey-id",
+      "Otoroshi-Client-Secret" -> "admin-api-apikey-secret"
+    ), Some(Json.obj(
+      "keypair_ref" -> keypair.id,
+      "config" -> config.json
+    ))).awaitf(5.seconds)
+
+    assert(tokenResp.json.at("token").isDefined, "token should be successfully generated")
+
+
+    val genToken = tokenResp.json.at("token").asString
+    val encodedBiscuit = Biscuit.from_b64url(genToken, publicKeyFormatted)
+
+    println(s"gen token with keypair ref = ${encodedBiscuit.authorizer().print_world()}")
+
+
+    assertEquals(encodedBiscuit.authorizer().facts().size(), config.facts.length, s"genereated token from body parameters WITH keypair ref doesn't contain all facts")
+    assertEquals(encodedBiscuit.authorizer().checks().asScala.flatMap(_._2.asScala).size, config.checks.length, s"genereated token from body parameters WITH keypair ref doesn't contain all checks")
+  }
+
+  test("should be able to generate a token from the ADMIN API from body parameters without keypair Ref") {
+    val biscuitKeyPair = new KeyPair()
+    val privKey = biscuitKeyPair.toHex
+    val pubKey = biscuitKeyPair.public_key()
+
+    val config = BiscuitForgeConfig(
+      facts = Seq(
+        "user(\"demo\")",
+        "role(\"test\")",
+      ),
+      checks = Seq(
+        "check if user(\"demo\")",
+        "check if role(\"test\")"
+      )
+    )
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                          test biscuit creation from forge with body parameters                 ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val tokenResp = client.call("POST", s"http://otoroshi-api.oto.tools:${port}/api/extensions/biscuit/tokens/_generate", Map(
+      "Content-Type" -> s"application/json",
+      "Otoroshi-Client-Id" -> "admin-api-apikey-id",
+      "Otoroshi-Client-Secret" -> "admin-api-apikey-secret"
+    ), Some(Json.obj(
+      "privKey"-> privKey,
+      "pubKey"-> pubKey.toHex,
+      "config" -> config.json
+    ))).awaitf(5.seconds)
+
+    assert(tokenResp.json.at("token").isDefined, "token should be successfully generated")
+
+    val genToken = tokenResp.json.at("token").asString
+    val encodedBiscuit = Biscuit.from_b64url(genToken, pubKey)
+    println(s"gen token WITHOUT keypair ref = ${encodedBiscuit.authorizer().print_world()}")
+
+    assertEquals(encodedBiscuit.authorizer().facts().size(), config.facts.length, s"genereated token from body parameters WITHOUT keypair ref doesn't contain all facts")
+    assertEquals(encodedBiscuit.authorizer().checks().asScala.flatMap(_._2.asScala).size, config.checks.length, s"genereated token from body parameters WITHOUT keypair ref doesn't contain all checks")
+  }
 
   test("should be able to generate a token from the ADMIN API with a Forge entity and then verify it with a verifier entity") {
     val biscuitKeyPair = new KeyPair()
