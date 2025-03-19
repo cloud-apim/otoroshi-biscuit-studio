@@ -249,7 +249,13 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
 
         if (keypairPubKey.isDefined && keypairPrivKey.isDefined) {
           processTokenAttenuation(tokenBody, biscuitForgeRef, attenuatorChecks, keypairPubKey.get, isAdminApiRoute = false) match {
-            case Left(err) => Results.Ok(Json.obj("done" -> false, "error" -> err)).vfuture
+            case Left(err) => Results.Ok(
+              Json.obj(
+                "status" -> "error",
+                "done" -> false,
+                "error" -> err
+              )
+            ).vfuture
             case Right(attenuatedToken) => Results.Ok(Json.obj(
               "done" -> true,
               "token" -> attenuatedToken.serialize_b64url(),
@@ -264,7 +270,13 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                 case None => handleError("no keypair found", isAdminApiRoute = false)
                 case Some(keypairDb) =>
                   processTokenAttenuation(tokenBody, biscuitForgeRef, attenuatorChecks, keypairDb.pubKey, isAdminApiRoute = false) match {
-                    case Left(err) => Results.Ok(Json.obj("done" -> false, "error" -> err)).vfuture
+                    case Left(err) => Results.Ok(
+                      Json.obj(
+                        "status" -> "error",
+                        "done" -> false,
+                        "error" -> err
+                      )
+                    ).vfuture
                     case Right(attenuatedToken) => Results.Ok(
                       Json.obj(
                         "done" -> true,
@@ -810,26 +822,62 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
         implicit val mat = env.otoroshiMaterializer
 
         ctx.named("id") match {
-          case None => Results.NotFound(Json.obj("error" -> "Path parameter 'id' is not found")).vfuture
+          case None => Results.NotFound(
+            Json.obj(
+              "status" -> "error",
+              "error" -> "Path parameter 'id' is not found"
+            )
+          ).vfuture
           case Some(attenuatorId) => {
             env.adminExtensions.extension[BiscuitExtension].get.states.biscuitAttenuator(attenuatorId) match {
-              case None => Results.NotFound(Json.obj("error" -> "The attenuator entity is not found")).vfuture
+              case None => Results.NotFound(
+                Json.obj(
+                  "status" -> "error",
+                  "error" -> "The attenuator entity is not found"
+                )
+              ).vfuture
               case Some(attenuator) => {
                 body match {
-                  case None => Results.NotFound(Json.obj("error" -> "body is empty")).vfuture
+                  case None => Results.NotFound(
+                    Json.obj(
+                      "status" -> "error",
+                      "error" -> "body is empty"
+                    )
+                  ).vfuture
                   case Some(bodySource) => bodySource.runFold(ByteString.empty)(_ ++ _).flatMap { bodyRaw =>
                     val bodyJson = bodyRaw.utf8String.parseJson
                     bodyJson.select("token").asOpt[String] match {
-                      case None => Results.NotFound(Json.obj("error" -> "Token not provided")).vfuture
+                      case None => Results.NotFound(
+                        Json.obj(
+                          "status" -> "error",
+                          "error" -> "Token not provided"
+                        )
+                      ).vfuture
                       case Some(token) => {
 
                         env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(attenuator.keypairRef)) match {
-                          case None => Results.NotFound(Json.obj("error" -> "No keypair found in attenuator entity")).vfuture
+                          case None => Results.NotFound(
+                            Json.obj(
+                              "status" -> "error",
+                              "error" -> "No keypair found in attenuator entity"
+                            )
+                          ).vfuture
                           case Some(keypairDb) => {
 
-                            processTokenAttenuation(token.some, None, attenuator.config.checks.toList.some, keypairDb.pubKey, true) match {
-                              case Left(err) => Results.BadRequest(Json.obj("error" -> err)).vfuture
-                              case Right(biscuitToken) => Results.Ok(Json.obj("token" -> biscuitToken.serialize_b64url())).vfuture
+                            processTokenAttenuation(token.some, None, attenuator.config.checks.toList.some, keypairDb.pubKey, isAdminApiRoute = true) match {
+                              case Left(err) => Results.BadRequest(
+                                Json.obj(
+                                  "status" -> "error",
+                                  "error" -> err
+                                )
+                              ).vfuture
+                              case Right(attenuatedToken) => Results.Ok(
+                                Json.obj(
+                                  "status" -> "success",
+                                  "message" -> "Token attenuated successfully",
+                                  "token" -> attenuatedToken.serialize_b64url()
+                                )
+                              ).vfuture
                             }
                           }
                         }
@@ -1128,7 +1176,12 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
 
         if (keypairPubKey.isDefined && keypairPrivKey.isDefined) {
           processTokenAttenuation(tokenBody, None, attenuatorChecks, keypairPubKey.get, isAdminApiRoute) match {
-            case Left(err) => Results.Ok(Json.obj("error" -> err)).vfuture
+            case Left(err) => Results.Ok(
+              Json.obj(
+                "error" -> err,
+                "status" -> "error"
+              )
+            ).vfuture
             case Right(attenuatedToken) => Results.Ok(
               Json.obj(
                 "status" -> "success",
@@ -1161,9 +1214,20 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
     }).recover {
       case e: Throwable => {
         if (isAdminApiRoute) {
-          Results.InternalServerError(Json.obj("error" -> e.getMessage))
+          Results.InternalServerError(
+            Json.obj(
+              "status" -> "error",
+              "error" -> e.getMessage
+            )
+          )
         } else {
-          Results.Ok(Json.obj("done" -> false, "error" -> e.getMessage))
+          Results.Ok(
+            Json.obj(
+              "status" -> "error",
+              "done" -> false,
+              "error" -> e.getMessage
+            )
+          )
         }
       }
     }
@@ -1208,8 +1272,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
       }
       case None => {
         tokenBody match {
-          case None =>
-            Left("no token provided")
+          case None => Left("no token provided")
           case Some(token) =>
             val tokenParsed = BiscuitExtractorConfig.replaceHeader(token)
 
@@ -1218,12 +1281,8 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
               case Some(publicKeyString) => {
                 val publicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, publicKeyString)
                 Try(Biscuit.from_b64url(tokenParsed, publicKey)).toEither match {
-                  case Left(err: org.biscuitsec.biscuit.error.Error) =>
-                    Left(BiscuitUtils.handleBiscuitErrors(err))
-
-                  case Left(err) =>
-                    Left(s"Unable to deserialize Biscuit token : ${err.getMessage}")
-
+                  case Left(err: org.biscuitsec.biscuit.error.Error) => Left(BiscuitUtils.handleBiscuitErrors(err))
+                  case Left(err) => Left(s"Unable to deserialize Biscuit token : ${err.getMessage}")
                   case Right(biscuitToken) => Right(biscuitToken)
                 }
               }
@@ -1235,9 +1294,20 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
 
   def handleError(errorMessage: String, isAdminApiRoute: Boolean): Future[Result] = {
     if (isAdminApiRoute) {
-      Results.BadRequest(Json.obj("error" -> errorMessage)).vfuture
+      Results.BadRequest(
+        Json.obj(
+          "status" -> "error",
+          "error" -> errorMessage
+        )
+      ).vfuture
     } else {
-      Results.Ok(Json.obj("done" -> false, "error" -> errorMessage)).vfuture
+      Results.Ok(
+        Json.obj(
+          "status" -> "error",
+          "done" -> false,
+          "error" -> errorMessage
+        )
+      ).vfuture
     }
   }
 }
