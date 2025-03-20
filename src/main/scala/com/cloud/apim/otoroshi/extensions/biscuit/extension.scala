@@ -2,7 +2,6 @@ package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit
 
 import akka.stream.scaladsl.{Source, StreamConverters}
 import akka.util.ByteString
-import biscuit.format.schema.Schema.PublicKey.Algorithm
 import com.cloud.apim.otoroshi.extensions.biscuit.entities._
 import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils
 import com.nimbusds.jose.jwk.Curve
@@ -163,7 +162,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
 
   override def backofficeAuthRoutes(): Seq[AdminExtensionBackofficeAuthRoute] = Seq(
     AdminExtensionBackofficeAuthRoute(
-      method = "GET",
+      method = "POST",
       path = "/extensions/cloud-apim/extensions/biscuit/keypairs/_generate",
       wantsBody = true,
       handle = handleGenerateKeypair
@@ -232,7 +231,11 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
           )
         ).vfuture
       }
-    })
+    }).recover {
+      case e: Throwable => {
+        Results.Ok(Json.obj("done" -> false, "error" -> e.getMessage))
+      }
+    }
   }
 
   def handleGenerateToken(ctx: AdminExtensionRouterContext[AdminExtensionBackofficeAuthRoute], req: RequestHeader, user: Option[BackOfficeUser], body: Option[Source[ByteString, _]]): Future[Result] = {

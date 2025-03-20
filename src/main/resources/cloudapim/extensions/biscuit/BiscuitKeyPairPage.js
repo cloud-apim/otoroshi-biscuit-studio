@@ -158,7 +158,18 @@ class BiscuitKeyPairPage extends Component {
 }
 class KeyPairGenerator extends Component {
   fetchNewKeyPair = () => {
-    fetch("/extensions/cloud-apim/extensions/biscuit/keypairs/_generate")
+    fetch("/extensions/cloud-apim/extensions/biscuit/keypairs/_generate",
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          algorithm: this.props?.rawValue?.algo
+        }),
+      })
       .then((d) => d.json())
       .then((data) => {
         this.props.changeValue("pubKey", data.pubKey);

@@ -410,7 +410,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
 
     assert(attenuatedToken.nonEmpty, s"attenuated token is empty")
 
-    val publicKeyFormatted = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, publicKey)
+    val publicKeyFormatted = new PublicKey(demoKeyPair.getCurrentAlgo, publicKey)
 
     val encodedBiscuit = Biscuit.from_b64url(attenuatedToken, publicKeyFormatted)
     assertEquals(encodedBiscuit.authorizer().checks().size(), conf.checks.size, s"attenuated token doesn't contain checks list")
@@ -566,7 +566,7 @@ class TestAttenuators extends BiscuitExtensionSuite {
 
     assert(attenuatedToken.nonEmpty, s"attenuated token is empty")
 
-    val publicKeyFormatted = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, publicKey)
+    val publicKeyFormatted = new PublicKey(demoKeyPair.getCurrentAlgo, publicKey)
 
     val encodedBiscuit = Biscuit.from_b64url(attenuatedToken, publicKeyFormatted)
     assertEquals(encodedBiscuit.authorizer().checks().size(), conf.checks.size, s"attenuated token doesn't contain checks list")
@@ -601,21 +601,21 @@ class TestAttenuators extends BiscuitExtensionSuite {
 
   test(s"attenuator plugin should throw an error - attenuator not provided") {
     printHeader("", "test verifier plugin without ref")
-    testAttenuatorWithoutRef(client, 30.seconds)
+    testAttenuatorWithoutRef(client, 10.seconds)
   }
 
   test(s"testing attenuator in headers") {
     printHeader("", "testing attenuator plugin : result in headers")
-    testAttenuatorPluginHeaders(client, 30.seconds)
+    testAttenuatorPluginHeaders(client, 10.seconds)
   }
 
   test(s"testing attenuator in cookies") {
     printHeader("", "testing attenuator plugin : result in cookies")
-    testAttenuatorPluginCookie(client, 30.seconds)
+    testAttenuatorPluginCookie(client, 10.seconds)
   }
 
   test(s"testing attenuator in query params") {
     printHeader("", "testing attenuator plugin : result in query params")
-    testAttenuatorPluginQueryParams(client, 30.seconds)
+    testAttenuatorPluginQueryParams(client, 10.seconds)
   }
 }
