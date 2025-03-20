@@ -23,15 +23,20 @@ class AdminAPISuite extends BiscuitStudioOneOtoroshiServerPerSuite {
       "Otoroshi-Client-Secret" -> "admin-api-apikey-secret"
     ), Some(
       Json.obj(
-        "algorithm" -> "SECP256R1"
+        "algorithm" -> "ED25519"
       ))).awaitf(5.seconds)
 
     assert(keypairResp.json.at("algorithm").isDefined, "algorithm should be defined")
     assert(keypairResp.json.at("pubKey").isDefined, "public key should be defined")
     assert(keypairResp.json.at("privKey").isDefined, "private key should be defined")
+    assert(keypairResp.json.at("algoPubKey").isDefined, "algoPubKey should be defined")
 
+    val pubKey = keypairResp.json.at("pubKey").asString
     val algo = keypairResp.json.at("algorithm").asString
-    assertEquals(algo, "SECP256R1", "algorithm should be 'Ed25519'")
+    assertEquals(algo, "Ed25519", "algorithm should be 'Ed25519'")
+
+    val algoPubKey = keypairResp.json.at("algoPubKey").asString
+    assertEquals(algoPubKey, s"${algo.toLowerCase}/${pubKey.toLowerCase}", "algoPubKey should be combination of algorithm and public key")
   }
 
   test("should be able to generate a biscuit keypair with DEFAULT algorithm (no one provided)") {
@@ -47,9 +52,14 @@ class AdminAPISuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     assert(keypairResp.json.at("algorithm").isDefined, "algorithm should be defined")
     assert(keypairResp.json.at("pubKey").isDefined, "public key should be defined")
     assert(keypairResp.json.at("privKey").isDefined, "private key should be defined")
+    assert(keypairResp.json.at("algoPubKey").isDefined, "algoPubKey should be defined")
 
+    val pubKey = keypairResp.json.at("pubKey").asString
     val algo = keypairResp.json.at("algorithm").asString
     assertEquals(algo, "Ed25519", "algorithm should be 'Ed25519'")
+
+    val algoPubKey = keypairResp.json.at("algoPubKey").asString
+    assertEquals(algoPubKey, s"${algo.toLowerCase}/${pubKey.toLowerCase}", "algoPubKey should be combination of algorithm and public key")
   }
 
   test("should be able to generate a token from the ADMIN API with a Forge entity") {

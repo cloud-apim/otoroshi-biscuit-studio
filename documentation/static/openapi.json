@@ -1097,6 +1097,62 @@
         ]
       }
     },
+    "/api/extensions/biscuit/keypairs/_generate": {
+      "post": {
+        "tags": [
+          "biscuit-admin-api"
+        ],
+        "summary": "Generate a biscuit Keypair",
+        "description": "Generate a biscuit Keypair",
+        "operationId": "generateKeypair",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "algorithm": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Keypair successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "algorithm": {
+                      "type": "string"
+                    },
+                    "pubKey": {
+                      "type": "string"
+                    },
+                    "privKey": {
+                      "type": "string"
+                    },
+                    "algoPubKey": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
     "/api/extensions/biscuit/tokens/_generate": {
       "post": {
         "tags": [

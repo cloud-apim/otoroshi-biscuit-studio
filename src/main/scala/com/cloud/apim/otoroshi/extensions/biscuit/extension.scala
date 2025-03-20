@@ -737,12 +737,15 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
               }
 
               val generatedKeyPair = KeyPair.generate(pkAlgo)
+              val pubKey = generatedKeyPair.public_key().toHex.toUpperCase
+              val privKey = generatedKeyPair.toHex.toUpperCase
 
               Results.Ok(
                 Json.obj(
                   "algorithm" -> algo,
-                  "pubKey" -> generatedKeyPair.public_key().toHex.toUpperCase,
-                  "privKey" -> generatedKeyPair.toHex.toUpperCase
+                  "pubKey" -> pubKey,
+                  "privKey" -> privKey,
+                  "algoPubKey" -> s"${algo.toLowerCase}/${pubKey.toLowerCase}"
                 )
               ).vfuture
             }
