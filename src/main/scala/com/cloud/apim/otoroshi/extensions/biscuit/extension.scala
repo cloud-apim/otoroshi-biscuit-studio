@@ -1168,7 +1168,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
     }
   }
 
-  def extractTokenFromBodyOrForge(tokenBody: Option[String], forgeRef: Option[String], pubKey: Option[String])(implicit env: Env): Either[String, Biscuit] = {
+  def extractTokenFromBodyOrForge(tokenBody: Option[String], forgeRef: Option[String], pubKey: Option[String], kpAlgo: String = "ED25519")(implicit env: Env): Either[String, Biscuit] = {
     forgeRef match {
       case Some(forgeId) => {
         env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitTokenForge(forgeId)) match {
@@ -1196,11 +1196,9 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
             Left("no token provided")
           case Some(token) =>
             val tokenParsed = BiscuitExtractorConfig.replaceHeader(token)
-
             pubKey match {
-              case None => Left("Public key not provided")
-              case Some(publicKeyString) => {
-                val publicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, publicKeyString)
+              case Some(pk) => {
+                val publicKey = new PublicKey(BiscuitUtils.getAlgo(kpAlgo), pk)
                 Try(Biscuit.from_b64url(tokenParsed, publicKey)).toEither match {
                   case Left(err: org.biscuitsec.biscuit.error.Error) =>
                     Left(BiscuitUtils.handleBiscuitErrors(err))
@@ -1211,6 +1209,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                   case Right(biscuitToken) => Right(biscuitToken)
                 }
               }
+              case _ => Left("public key or keypair algorithm not provided")
             }
         }
       }

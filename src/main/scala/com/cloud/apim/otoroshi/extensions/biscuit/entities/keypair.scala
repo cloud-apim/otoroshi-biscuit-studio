@@ -1,5 +1,6 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.entities
 
+import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils
 import org.biscuitsec.biscuit.crypto.{KeyPair, PublicKey}
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionDatastores, BiscuitExtensionState}
 
@@ -39,13 +40,7 @@ case class BiscuitKeyPair(
 
   def keyPair: KeyPair = new KeyPair(privKey)
   def getPubKey: PublicKey = new PublicKey(getCurrentAlgo, pubKey)
-  def getCurrentAlgo: biscuit.format.schema.Schema.PublicKey.Algorithm = {
-    algo.toUpperCase match {
-      case "ED25519" => biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519
-//      case "SECP256R1" => biscuit.format.schema.Schema.PublicKey.Algorithm.SECP256R1 -- waiting for support in java lib
-      case _ => biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519
-    }
-  }
+  def getCurrentAlgo: biscuit.format.schema.Schema.PublicKey.Algorithm = BiscuitUtils.getAlgo(algo)
 }
 
 object BiscuitKeyPair {
