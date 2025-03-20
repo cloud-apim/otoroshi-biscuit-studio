@@ -13,6 +13,45 @@ import scala.jdk.CollectionConverters._
 import scala.concurrent.duration.DurationInt
 
 class AdminAPISuite extends BiscuitStudioOneOtoroshiServerPerSuite {
+  test("should be able to generate a biscuit keypair WITH provided algorithm body") {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                                test keypair generation from ADMIN API                          ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val keypairResp = client.call("POST", s"http://otoroshi-api.oto.tools:${port}/api/extensions/biscuit/keypairs/_generate", Map(
+      "Content-Type" -> s"application/json",
+      "Otoroshi-Client-Id" -> "admin-api-apikey-id",
+      "Otoroshi-Client-Secret" -> "admin-api-apikey-secret"
+    ), Some(
+      Json.obj(
+        "algorithm" -> "SECP256R1"
+      ))).awaitf(5.seconds)
+
+    assert(keypairResp.json.at("algorithm").isDefined, "algorithm should be defined")
+    assert(keypairResp.json.at("pubKey").isDefined, "public key should be defined")
+    assert(keypairResp.json.at("privKey").isDefined, "private key should be defined")
+
+    val algo = keypairResp.json.at("algorithm").asString
+    assertEquals(algo, "SECP256R1", "algorithm should be 'Ed25519'")
+  }
+
+  test("should be able to generate a biscuit keypair with DEFAULT algorithm (no one provided)") {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                                test keypair generation from ADMIN API                          ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val keypairResp = client.call("POST", s"http://otoroshi-api.oto.tools:${port}/api/extensions/biscuit/keypairs/_generate", Map(
+      "Content-Type" -> s"application/json",
+      "Otoroshi-Client-Id" -> "admin-api-apikey-id",
+      "Otoroshi-Client-Secret" -> "admin-api-apikey-secret"
+    ), Some(Json.obj())).awaitf(5.seconds)
+
+    assert(keypairResp.json.at("algorithm").isDefined, "algorithm should be defined")
+    assert(keypairResp.json.at("pubKey").isDefined, "public key should be defined")
+    assert(keypairResp.json.at("privKey").isDefined, "private key should be defined")
+
+    val algo = keypairResp.json.at("algorithm").asString
+    assertEquals(algo, "Ed25519", "algorithm should be 'Ed25519'")
+  }
+
   test("should be able to generate a token from the ADMIN API with a Forge entity") {
     val biscuitKeyPair = new KeyPair()
     val keypair = BiscuitKeyPair(
@@ -791,8 +830,6 @@ class AdminAPISuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     val genToken = tokenResp.json.at("token").asString
     val encodedBiscuit = Biscuit.from_b64url(genToken, keypair.getPubKey)
 
-    println(s"token before attenuation = ${genToken}")
-
     assertEquals(encodedBiscuit.authorizer().facts().size(), forge.config.facts.length, s"generated token from forge ADMIN API doesn't contain all facts")
     assertEquals(encodedBiscuit.authorizer().checks().asScala.flatMap(_._2.asScala).size, forge.config.checks.length, s"generated token from forge ADMIN API doesn't contain all checks")
 
@@ -808,9 +845,6 @@ class AdminAPISuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     ))).awaitf(5.seconds)
 
     val attenuatedToken = goodAttenuator.json.at("token").asString
-
-    println(s"token after attenuation = ${attenuatedToken}")
-
 
     assert(goodAttenuator.json.at("token").isDefined, "attenuated token should be defined in body response")
     assert(goodAttenuator.json.at("status").isDefined, "status for good verifier should be defined")

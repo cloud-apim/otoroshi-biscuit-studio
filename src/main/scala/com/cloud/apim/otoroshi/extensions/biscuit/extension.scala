@@ -707,6 +707,48 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
   }
 
   override def adminApiRoutes(): Seq[AdminExtensionAdminApiRoute] = Seq(
+    // Generate a keypair from a body configuration
+    AdminExtensionAdminApiRoute(
+      "POST",
+      "/api/extensions/biscuit/keypairs/_generate",
+      wantsBody = true,
+      (ctx, request, apk, body) => {
+        implicit val ec = env.otoroshiExecutionContext
+        implicit val mat = env.otoroshiMaterializer
+        implicit val ev = env
+        (body match {
+          case None => handleError("no body provided", isAdminApiRoute = true)
+          case Some(bodySource) =>
+            bodySource.runFold(ByteString.empty)(_ ++ _).flatMap { bodyRaw =>
+              val bodyJson = bodyRaw.utf8String.parseJson
+
+              val algoInput = bodyJson.select("algorithm").asOpt[String].getOrElse("ED25519")
+
+              val algo = algoInput.toUpperCase match {
+                case "ED25519" => "Ed25519"
+                // case "SECP256R1" => "SECP256R1" -- waiting for support in java lib
+                case _ => "Ed25519"
+              }
+
+              val pkAlgo = algo.toUpperCase match {
+                case "ED25519" => biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519
+                //      case "SECP256R1" => biscuit.format.schema.Schema.PublicKey.Algorithm.SECP256R1 -- waiting for support in java lib
+                case _ => biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519
+              }
+
+              val generatedKeyPair = KeyPair.generate(pkAlgo)
+
+              Results.Ok(
+                Json.obj(
+                  "algorithm" -> algo,
+                  "pubKey" -> generatedKeyPair.public_key().toHex.toUpperCase,
+                  "privKey" -> generatedKeyPair.toHex.toUpperCase
+                )
+              ).vfuture
+            }
+        })
+      }
+    ),
     // Generate a token from a body
     AdminExtensionAdminApiRoute(
       "POST",
