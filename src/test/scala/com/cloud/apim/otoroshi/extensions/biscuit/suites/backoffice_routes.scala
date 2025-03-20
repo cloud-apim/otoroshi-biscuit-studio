@@ -5,7 +5,6 @@ import com.cloud.apim.otoroshi.extensions.biscuit.entities._
 import org.biscuitsec.biscuit.crypto.KeyPair
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.models.EntityLocation
-import otoroshi.next.models.NgTlsConfig
 import otoroshi.security.IdGenerator
 import otoroshi.utils.syntax.implicits._
 import play.api.libs.json.Json
@@ -254,7 +253,7 @@ class BackofficeRoutesSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     assertEquals(encodedBiscuit.authorizer().checks().asScala.flatMap(_._2.asScala).size, tokenConfig.checks.length, s"generated token doesn't contain all checks")
   }
 
-  test("should be able to verify a token  with a forge_ref and body config") {
+  test("should be able to verify a token with a forge_ref and body config") {
     val biscuitKeyPair = new KeyPair()
     val keypair = BiscuitKeyPair(
       id = IdGenerator.namedId("biscuit-keypair", otoroshi.env),
@@ -391,4 +390,230 @@ class BackofficeRoutesSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     assertEquals(loadedFacts.length, 4, s"loaded facts array length doesn't match")
   }
 
+  test("should be able to attenuate a token with a forge_ref, keypair_ref and a body config") {
+    val biscuitKeyPair = new KeyPair()
+    val keypair = BiscuitKeyPair(
+      id = IdGenerator.namedId("biscuit-keypair", otoroshi.env),
+      name = "New Biscuit Key Pair",
+      description = "New biscuit KeyPair",
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      privKey = biscuitKeyPair.toHex,
+      pubKey = biscuitKeyPair.public_key().toHex
+    )
+
+    val forge = BiscuitTokenForge(
+      id = IdGenerator.namedId("biscuit-forge", otoroshi.env),
+      name = "New biscuit token",
+      description = "New biscuit token",
+      keypairRef = keypair.id,
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      config = BiscuitForgeConfig(
+        facts = Seq(
+          "name(\"otoroshi-biscuit-studio-test\")",
+          "user(\"biscuit-test-user\")",
+          "role(\"user\")"
+        )
+      )
+    )
+
+    val attenuatorConfig = AttenuatorConfig(
+        checks = Seq(
+          "check if name(\"otoroshi-biscuit-studio-test\")",
+          "check if user(\"biscuit-test-user\")",
+          "check if role(\"user\")",
+          "check if operation(\"read\")"
+        )
+      )
+
+    /// Create entities
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair)
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-forges").upsertEntity(forge)
+    await(5.seconds)
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                       test attenuator with keypair reference                      ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val goodAttenuator = client.call("POST", s"http://otoroshi.oto.tools:${port}/extensions/cloud-apim/extensions/biscuit/tokens/attenuators/_test", Map(
+      "Content-Type" -> s"application/json"
+    ), Some(Json.obj(
+      "keypair_ref" -> keypair.id,
+      "forge_ref" -> forge.id,
+      "checks" -> attenuatorConfig.checks
+    ))).awaitf(5.seconds)
+
+    val attenuatedToken = goodAttenuator.json.at("token").asString
+
+    assert(goodAttenuator.json.at("done").isDefined, "'done' should be defined in body response")
+    assert(goodAttenuator.json.at("done").asBoolean, "'done' should be true")
+    assert(goodAttenuator.json.at("token").isDefined, "token should be defined")
+    assert(goodAttenuator.json.at("pubKey").isDefined, "token should be defined")
+
+    val encodedAttenuatedToken = Biscuit.from_b64url(attenuatedToken, keypair.getPubKey)
+    assertEquals(encodedAttenuatedToken.authorizer().checks().asScala.flatMap(_._2.asScala).size, forge.config.checks.size + attenuatorConfig.checks.size, s"attenuated token doesn't contain all the checks")
+  }
+
+  test("should be able to attenuate a token with a forge_ref, public and private keys") {
+    val biscuitKeyPair = new KeyPair()
+
+    val privKey = biscuitKeyPair.toHex
+    val pubKey = biscuitKeyPair.public_key()
+
+    val keypair = BiscuitKeyPair(
+      id = IdGenerator.namedId("biscuit-keypair", otoroshi.env),
+      name = "New Biscuit Key Pair",
+      description = "New biscuit KeyPair",
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      privKey = privKey,
+      pubKey = pubKey.toHex
+    )
+
+    val forge = BiscuitTokenForge(
+      id = IdGenerator.namedId("biscuit-forge", otoroshi.env),
+      name = "New biscuit token",
+      description = "New biscuit token",
+      keypairRef = keypair.id,
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      config = BiscuitForgeConfig(
+        facts = Seq(
+          "name(\"otoroshi-biscuit-studio-test\")",
+          "user(\"biscuit-test-user\")",
+          "role(\"user\")"
+        )
+      )
+    )
+
+    val attenuatorConfig = AttenuatorConfig(
+      checks = Seq(
+        "check if name(\"otoroshi-biscuit-studio-test\")",
+        "check if user(\"biscuit-test-user\")",
+        "check if role(\"user\")",
+        "check if operation(\"read\")"
+      )
+    )
+
+    /// Create entities
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair)
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-forges").upsertEntity(forge)
+    await(5.seconds)
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                       test attenuator with keypair reference                      ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val goodAttenuator = client.call("POST", s"http://otoroshi.oto.tools:${port}/extensions/cloud-apim/extensions/biscuit/tokens/attenuators/_test", Map(
+      "Content-Type" -> s"application/json"
+    ), Some(Json.obj(
+      "pubKey" -> pubKey.toHex,
+      "privKey" -> privKey,
+      "forge_ref" -> forge.id,
+      "checks" -> attenuatorConfig.checks
+    ))).awaitf(5.seconds)
+
+    val attenuatedToken = goodAttenuator.json.at("token").asString
+
+    assert(goodAttenuator.json.at("done").isDefined, "'done' should be defined in body response")
+    assert(goodAttenuator.json.at("done").asBoolean, "'done' should be true")
+    assert(goodAttenuator.json.at("token").isDefined, "token should be defined")
+    assert(goodAttenuator.json.at("pubKey").isDefined, "token should be defined")
+
+    val encodedAttenuatedToken = Biscuit.from_b64url(attenuatedToken, pubKey)
+    assertEquals(encodedAttenuatedToken.authorizer().checks().asScala.flatMap(_._2.asScala).size, forge.config.checks.size + attenuatorConfig.checks.size, s"attenuated token doesn't contain all the checks")
+  }
+
+  test("should be able to attenuate a token with a token input, public and private keys") {
+    val biscuitKeyPair = new KeyPair()
+
+    val privKey = biscuitKeyPair.toHex
+    val pubKey = biscuitKeyPair.public_key()
+
+    val keypair = BiscuitKeyPair(
+      id = IdGenerator.namedId("biscuit-keypair", otoroshi.env),
+      name = "New Biscuit Key Pair",
+      description = "New biscuit KeyPair",
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      privKey = privKey,
+      pubKey = pubKey.toHex
+    )
+
+    val tokenConfig = BiscuitForgeConfig(
+      facts = Seq(
+        "name(\"otoroshi-biscuit-studio-test\")",
+        "user(\"biscuit-test-user\")",
+        "role(\"user\")"
+      )
+    )
+
+    val attenuatorConfig = AttenuatorConfig(
+      checks = Seq(
+        "check if name(\"otoroshi-biscuit-studio-test\")",
+        "check if user(\"biscuit-test-user\")",
+        "check if role(\"user\")",
+        "check if operation(\"read\")"
+      )
+    )
+
+    /// Create entities
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair)
+    await(5.seconds)
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                       generate token                      ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val respForgeToken = client.call("POST", s"http://otoroshi.oto.tools:${port}/extensions/cloud-apim/extensions/biscuit/tokens/_generate",
+      Map(
+        "Content-Type" -> s"application/json"
+      ),
+      Some(
+        Json.obj(
+          "keypair_ref" -> keypair.id,
+          "config" -> tokenConfig.json
+        )
+      )
+    ).awaitf(5.seconds)
+    assertEquals(respForgeToken.status, 200, s"verifier route did not respond with 200")
+    assert(respForgeToken.json.at("done").isDefined, s"'done' field should be defined")
+    assert(respForgeToken.json.at("done").asBoolean, s"request 'done' status should be true")
+    assert(respForgeToken.json.at("pubKey").isDefined, "'pubKey' should be defined")
+    assertEquals(respForgeToken.json.at("pubKey").asString, biscuitKeyPair.public_key().toHex, "public key response should match to given public key")
+    assert(respForgeToken.json.at("token").isDefined, "'token' should be defined")
+
+    assert(respForgeToken.json.at("token").isDefined, "token should be successfully generated")
+
+    val genToken = respForgeToken.json.at("token").asString
+    val encodedBiscuit = Biscuit.from_b64url(genToken, biscuitKeyPair.public_key())
+
+    assertEquals(encodedBiscuit.authorizer().facts().size(), tokenConfig.facts.length, s"generated token doesn't contain all facts")
+    assertEquals(encodedBiscuit.authorizer().checks().asScala.flatMap(_._2.asScala).size, tokenConfig.checks.length, s"generated token doesn't contain all checks")
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                       test attenuator with keypair reference                      ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    val goodAttenuator = client.call("POST", s"http://otoroshi.oto.tools:${port}/extensions/cloud-apim/extensions/biscuit/tokens/attenuators/_test", Map(
+      "Content-Type" -> s"application/json"
+    ), Some(Json.obj(
+      "pubKey" -> pubKey.toHex,
+      "privKey" -> privKey,
+      "token" -> genToken,
+      "checks" -> attenuatorConfig.checks
+    ))).awaitf(5.seconds)
+
+    val attenuatedToken = goodAttenuator.json.at("token").asString
+    
+    assert(goodAttenuator.json.at("done").isDefined, "'done' should be defined in body response")
+    assert(goodAttenuator.json.at("done").asBoolean, "'done' should be true")
+    assert(goodAttenuator.json.at("token").isDefined, "token should be defined")
+    assert(goodAttenuator.json.at("pubKey").isDefined, "token should be defined")
+
+    val encodedAttenuatedToken = Biscuit.from_b64url(attenuatedToken, pubKey)
+    assertEquals(encodedAttenuatedToken.authorizer().checks().asScala.flatMap(_._2.asScala).size, tokenConfig.checks.size + attenuatorConfig.checks.size, s"attenuated token doesn't contain all the checks")
+  }
 }
