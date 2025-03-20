@@ -140,7 +140,7 @@ case class BiscuitTokenForge(
   id: String,
   name: String,
   description: String = "",
-  keypairRef: String = "",
+  keypairRef: String,
   config: BiscuitForgeConfig,
   tags: Seq[String] = Seq.empty,
   metadata: Map[String, String] = Map.empty,
@@ -161,7 +161,7 @@ case class BiscuitTokenForge(
 
   def forgeToken(remoteFactsCtx: JsValue = JsNull, userOpt: Option[PrivateAppsUser] = None)(implicit env: Env, ec: ExecutionContext): Future[Either[String, Biscuit]] = {
     env.adminExtensions.extension[BiscuitExtension].get.states.keypair(keypairRef) match {
-      case None => Left("keypair not found").vfuture
+      case None => Left("keypair entity not found").vfuture
       case Some(kp) => {
         if (kp.pubKey.isEmpty || kp.privKey.isEmpty) {
           Left("public or private key not defined in keypair entity").vfuture
@@ -175,7 +175,7 @@ case class BiscuitTokenForge(
             }
             case Some(remoteFactsRef) => {
               env.adminExtensions.extension[BiscuitExtension].get.states.biscuitRemoteFactsLoader(remoteFactsRef) match {
-                case None => Left("remote facts reference not found").vfuture
+                case None => Left("remote facts entity not found").vfuture
                 case Some(remoteFacts) => {
                   remoteFacts.loadFacts(remoteFactsCtx).flatMap {
                     case Left(error) => Left(error).vfuture
@@ -259,7 +259,8 @@ object BiscuitTokenForge {
             name = "New biscuit forge",
             description = "New biscuit forge",
             location = EntityLocation.default,
-            config = BiscuitForgeConfig()
+            config = BiscuitForgeConfig(),
+            keypairRef = ""
           ).json
         },
         canRead = true,

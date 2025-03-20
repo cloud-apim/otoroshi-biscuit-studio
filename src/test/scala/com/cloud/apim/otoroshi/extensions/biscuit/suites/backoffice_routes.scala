@@ -61,6 +61,7 @@ class BackofficeRoutesSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
         )
       )
     ).awaitf(5.seconds)
+
     assertEquals(resp.status, 200, s"verifier route did not respond with 200")
     assert(resp.json.at("done").isDefined, s"'done' field should be defined")
     assert(resp.json.at("done").asBoolean, s"request 'done' status should be true")
