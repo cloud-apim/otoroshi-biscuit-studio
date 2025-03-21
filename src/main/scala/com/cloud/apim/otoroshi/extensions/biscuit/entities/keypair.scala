@@ -1,25 +1,25 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.entities
 
 import org.biscuitsec.biscuit.crypto.{KeyPair, PublicKey}
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionDatastores, BiscuitExtensionState}
-
-import scala.util.{Failure, Success, Try}
 import otoroshi.api.{GenericResourceAccessApiWithState, Resource, ResourceVersion}
 import otoroshi.env.Env
 import otoroshi.models._
 import otoroshi.next.extensions.AdminExtensionId
+import otoroshi.security.IdGenerator
 import otoroshi.storage._
 import otoroshi.utils.syntax.implicits._
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionDatastores, BiscuitExtensionState}
 import play.api.libs.json._
-import otoroshi.security.IdGenerator
+
+import scala.util.{Failure, Success, Try}
 
 case class BiscuitKeyPair(
   id: String,
   name: String = "",
   description: String = "",
   isPublic: Boolean = false,
-  privKey: String = "",
-  pubKey: String = "",
+  privKey: String,
+  pubKey: String,
   tags: Seq[String] = Seq.empty,
   metadata: Map[String, String] = Map.empty,
   location: EntityLocation

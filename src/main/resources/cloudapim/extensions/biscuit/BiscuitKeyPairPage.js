@@ -152,11 +152,11 @@ class BiscuitKeyPairPage extends Component {
 }
 class KeyPairGenerator extends Component {
 	fetchNewKeyPair = () => {
-		fetch("/extensions/assets/cloud-apim/extensions/biscuit/keypairs/generate")
+		fetch("/extensions/cloud-apim/extensions/biscuit/keypairs/_generate")
 			.then((d) => d.json())
 			.then((data) => {
-				this.props.changeValue("pubKey", data.publickey);
-				this.props.changeValue("privKey", data.privateKey);
+				this.props.changeValue("pubKey", data.pubKey);
+				this.props.changeValue("privKey", data.privKey);
 			});
 	};
 
