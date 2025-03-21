@@ -20,8 +20,8 @@ import play.api.libs.json._
 import java.security.SecureRandom
 import scala.concurrent.duration.{DurationLong, FiniteDuration}
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.{Failure, Success, Try}
 import scala.jdk.CollectionConverters._
+import scala.util.{Failure, Success, Try}
 
 case class BiscuitForgeConfig(
   checks: Seq[String] = Seq.empty,
@@ -140,7 +140,7 @@ case class BiscuitTokenForge(
   id: String,
   name: String,
   description: String = "",
-  keypairRef: String = "",
+  keypairRef: String,
   config: BiscuitForgeConfig,
   tags: Seq[String] = Seq.empty,
   metadata: Map[String, String] = Map.empty,
@@ -159,32 +159,36 @@ case class BiscuitTokenForge(
 
   def theTags: Seq[String] = tags
 
-  def forgeToken(remoteFactsCtx: JsValue, userOpt: Option[PrivateAppsUser] = None)(implicit env: Env, ec: ExecutionContext): Future[Either[String, Biscuit]] = {
+  def forgeToken(remoteFactsCtx: JsValue = JsNull, userOpt: Option[PrivateAppsUser] = None)(implicit env: Env, ec: ExecutionContext): Future[Either[String, Biscuit]] = {
     env.adminExtensions.extension[BiscuitExtension].get.states.keypair(keypairRef) match {
-      case None => Left("keypair not found").vfuture
+      case None => Left("keypair entity not found").vfuture
       case Some(kp) => {
-        remoteFactsLoaderRef match {
-          case None => {
-            createToken(kp.privKey, userOpt) match {
-              case Left(err) => Left("unable to forge token").vfuture
-              case Right(token) => Right(token).vfuture
+        if (kp.pubKey.isEmpty || kp.privKey.isEmpty) {
+          Left("public or private key not defined in keypair entity").vfuture
+        } else {
+          remoteFactsLoaderRef match {
+            case None => {
+              createToken(kp.privKey, userOpt) match {
+                case Left(err) => Left(s"unable to forge token : ${err}").vfuture
+                case Right(token) => Right(token).vfuture
+              }
             }
-          }
-          case Some(remoteFactsRef) => {
-            env.adminExtensions.extension[BiscuitExtension].get.states.biscuitRemoteFactsLoader(remoteFactsRef) match {
-              case None => Left("remote facts reference not found").vfuture
-              case Some(remoteFacts) => {
-                remoteFacts.loadFacts(remoteFactsCtx).flatMap {
-                  case Left(error) => Left(error).vfuture
-                  case Right(remoteFacts) => {
+            case Some(remoteFactsRef) => {
+              env.adminExtensions.extension[BiscuitExtension].get.states.biscuitRemoteFactsLoader(remoteFactsRef) match {
+                case None => Left("remote facts entity not found").vfuture
+                case Some(remoteFacts) => {
+                  remoteFacts.loadFacts(remoteFactsCtx).flatMap {
+                    case Left(error) => Left(error).vfuture
+                    case Right(remoteFacts) => {
 
-                    val finalConfig = config.copy(
-                      facts = config.facts ++ remoteFacts.facts ++ remoteFacts.acl ++ remoteFacts.roles,
-                    )
+                      val finalConfig = config.copy(
+                        facts = config.facts ++ remoteFacts.facts ++ remoteFacts.acl ++ remoteFacts.roles,
+                      )
 
-                    finalConfig.createToken(kp.privKey, userOpt) match {
-                      case Left(err) => Left("unable to forge token").vfuture
-                      case Right(token) => Right(token).vfuture
+                      finalConfig.createToken(kp.privKey, userOpt) match {
+                        case Left(err) => Left("unable to forge token").vfuture
+                        case Right(token) => Right(token).vfuture
+                      }
                     }
                   }
                 }
@@ -255,7 +259,8 @@ object BiscuitTokenForge {
             name = "New biscuit forge",
             description = "New biscuit forge",
             location = EntityLocation.default,
-            config = BiscuitForgeConfig()
+            config = BiscuitForgeConfig(),
+            keypairRef = ""
           ).json
         },
         canRead = true,

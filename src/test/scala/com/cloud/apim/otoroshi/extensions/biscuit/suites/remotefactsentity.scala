@@ -1,7 +1,7 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiServerPerSuite
-import com.cloud.apim.otoroshi.extensions.biscuit.domains.{BiscuitAttenuatorsUtils, BiscuitVerifiersUtils}
+import com.cloud.apim.otoroshi.extensions.biscuit.domains.BiscuitVerifiersUtils
 import com.cloud.apim.otoroshi.extensions.biscuit.entities._
 import org.biscuitsec.biscuit.crypto.KeyPair
 import org.biscuitsec.biscuit.token.Biscuit
@@ -73,7 +73,7 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  test API Roles route                                          ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    val resp = client.call("POST", s"http://test-api.oto.tools:${tport1}/api/facts", Map("Content-Type" -> "application/json"), Some(Json.obj("foo" -> "bar"))).awaitf(30.seconds)
+    val resp = client.call("POST", s"http://test-api.oto.tools:${tport1}/api/facts", Map("Content-Type" -> "application/json"), Some(Json.obj("foo" -> "bar"))).awaitf(5.seconds)
     assertEquals(resp.status, 200, s"remote facts API did not respond with 200")
     assert(resp.json.at("acl").isDefined, s"acl array is not defined")
     assert(resp.json.at("facts").isDefined, s"facts array is not defined")
@@ -213,7 +213,7 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  test remote facts API for forge                               ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    val respRemoteAPIForge = client.call("POST", fullDomainForForge, Map("Content-Type" -> "application/json"), Some(Json.obj("foo" -> "bar"))).awaitf(30.seconds)
+    val respRemoteAPIForge = client.call("POST", fullDomainForForge, Map("Content-Type" -> "application/json"), Some(Json.obj("foo" -> "bar"))).awaitf(5.seconds)
     assertEquals(respRemoteAPIForge.status, 200, s"FORGE remote facts API did not respond with 200")
     assert(respRemoteAPIForge.json.at("facts").isDefined, s"forge facts array is not defined")
 
@@ -341,7 +341,7 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
          |      }
          |    }
          |  ]
-         |}""".stripMargin)).awaitf(30.seconds)
+         |}""".stripMargin)).awaitf(5.seconds)
     assert(routeWithAttenuator.created, s"attenuator route has not been created")
     await(1500.millis)
 
@@ -349,7 +349,7 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  test remote facts API for verifier                            ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    val respVerifierAPI = client.call("POST", fullDomain, Map("Content-Type" -> "application/json"), Some(Json.obj("foo" -> "bar"))).awaitf(30.seconds)
+    val respVerifierAPI = client.call("POST", fullDomain, Map("Content-Type" -> "application/json"), Some(Json.obj("foo" -> "bar"))).awaitf(5.seconds)
 
     assertEquals(respVerifierAPI.status, 200, s"verifier remote facts API did not respond with 200")
     assert(respVerifierAPI.json.at("checks").isDefined, s"verifier facts array is not defined")
@@ -361,12 +361,12 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  call the verifier route with the forged token                 ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    val respWithBadTokenHeader = client.call("GET", s"http://${routeDomain}:${port}", Map("biscuit-test" -> token), None).awaitf(30.seconds)
+    val respWithBadTokenHeader = client.call("GET", s"http://${routeDomain}:${port}", Map("biscuit-test" -> token), None).awaitf(5.seconds)
 
     assertEquals(respWithBadTokenHeader.status, 403, s"route should return forbidden for bad token in headers")
     assert(respWithBadTokenHeader.json.at("Otoroshi-Error").isDefined, s"'Otoroshi-Error' should be defined")
 
-    val respWithGoodTokenHeader = client.call("GET", s"http://${routeDomain}:${port}", Map("biscuit-header" -> token), None).awaitf(30.seconds)
+    val respWithGoodTokenHeader = client.call("GET", s"http://${routeDomain}:${port}", Map("biscuit-header" -> token), None).awaitf(5.seconds)
 
     assertEquals(respWithGoodTokenHeader.status, 200, s"verifier route with good token in headers did not respond with 200")
 
@@ -503,7 +503,7 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  test remote facts API for forge                               ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    val respRemoteAPIForge = client.call("POST", fullDomainForForge, Map("Content-Type" -> "application/json"), Some(Json.obj("foo" -> "bar"))).awaitf(30.seconds)
+    val respRemoteAPIForge = client.call("POST", fullDomainForForge, Map("Content-Type" -> "application/json"), Some(Json.obj("foo" -> "bar"))).awaitf(5.seconds)
     assertEquals(respRemoteAPIForge.status, 200, s"FORGE remote facts API did not respond with 200")
     assert(respRemoteAPIForge.json.at("facts").isDefined, s"forge facts array is not defined")
 
@@ -545,7 +545,7 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
       config = AttenuatorConfig()
     )
 
-    BiscuitAttenuatorsUtils.createAttenuatorEntity(client)(attenuator)
+    client.forBiscuitEntity("biscuit-attenuators").createEntity(attenuator).awaitf(5.seconds)
 
     val routeId = s"route_${UUID.randomUUID().toString}"
     val routeDomain = "attenuator-headers.oto.tools"
@@ -622,7 +622,7 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
          |      }
          |    }
          |  ]
-         |}""".stripMargin)).awaitf(30.seconds)
+         |}""".stripMargin)).awaitf(5.seconds)
     assert(routeWithAttenuator.created, s"attenuator route has not been created")
     await(1500.millis)
 
@@ -630,7 +630,7 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  test remote facts API for attenuator                               ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    val respAttenuatorAPI = client.call("POST", fullDomain, Map("Content-Type" -> "application/json"), Some(Json.obj("foo" -> "bar"))).awaitf(30.seconds)
+    val respAttenuatorAPI = client.call("POST", fullDomain, Map("Content-Type" -> "application/json"), Some(Json.obj("foo" -> "bar"))).awaitf(5.seconds)
 
     assertEquals(respAttenuatorAPI.status, 200, s"attenuator remote facts API did not respond with 200")
     assert(respAttenuatorAPI.json.at("checks").isDefined, s"attenuator facts array is not defined")
@@ -646,7 +646,7 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
       "biscuit-token-test" -> token
     )
 
-    val resp3 = client.call("GET", s"http://${routeDomain}:${port}", headers, None).awaitf(30.seconds)
+    val resp3 = client.call("GET", s"http://${routeDomain}:${port}", headers, None).awaitf(5.seconds)
     assertEquals(resp3.status, 200, s"attenuator route did not respond with 200")
     assert(resp3.json.at("headers.biscuit-attenuated-token").isDefined, s"response headers don't contains the biscuit attenuated token")
 
