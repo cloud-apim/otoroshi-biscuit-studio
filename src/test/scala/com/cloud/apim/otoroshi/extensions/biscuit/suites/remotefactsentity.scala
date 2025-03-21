@@ -7,8 +7,10 @@ import org.biscuitsec.biscuit.crypto.KeyPair
 import org.biscuitsec.biscuit.token.Biscuit
 import org.joda.time.DateTime
 import otoroshi.models.EntityLocation
+import otoroshi.next.models._
 import otoroshi.security.IdGenerator
 import otoroshi.utils.syntax.implicits._
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenAttenuatorPlugin
 import play.api.libs.json.Json
 import reactor.core.publisher.Mono
 
@@ -486,10 +488,9 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
       tags = Seq.empty,
       location = EntityLocation.default,
       config = BiscuitForgeConfig(
-        checks = List.empty,
-        facts = List.empty,
-        resources = List.empty,
-        rules = List.empty
+        facts = Seq(
+          "user(\"demo\")"
+        ),
       ),
       remoteFactsLoaderRef = rflForForge.id.some
     )
@@ -507,8 +508,8 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
     assertEquals(respRemoteAPIForge.status, 200, s"FORGE remote facts API did not respond with 200")
     assert(respRemoteAPIForge.json.at("facts").isDefined, s"forge facts array is not defined")
 
-    val forgeFactsArr = respRemoteAPIForge.json.at("facts").as[List[Map[String, String]]]
-    assertEquals(forgeFactsArr.length, 3, s"forge facts array length doesn't match")
+    val remoteForgeFacts = respRemoteAPIForge.json.at("facts").as[List[Map[String, String]]]
+    assertEquals(remoteForgeFacts.length, 3, s"forge facts array length doesn't match")
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  test biscuit creation from forge                              ///////////
@@ -527,105 +528,67 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
     assert(token.nonEmpty, s"token is empty")
 
     val encodedBiscuit = Biscuit.from_b64url(token, publicKeyFormatted)
-    assertEquals(encodedBiscuit.authorizer().facts().size(), forgeFactsArr.length, s"token doesn't contain all remote facts")
+    assertEquals(encodedBiscuit.authorizer().facts().size(), remoteForgeFacts.length + forge.config.facts.length, s"token doesn't contain all remote facts")
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                      create the attenuator entity and the route with attenuator                ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    val attenuatorId = s"biscuit-attenuator_${UUID.randomUUID()}"
-
     val attenuator = BiscuitAttenuator(
-      id = attenuatorId,
+      id = IdGenerator.namedId("biscuit-attenuator", otoroshi.env),
       name = "New Biscuit Attenuator entity",
       description = "New biscuit Attenuator entity",
       metadata = Map.empty,
       tags = Seq.empty,
       location = EntityLocation.default,
       keypairRef = keypair.id,
-      config = AttenuatorConfig()
+      config = AttenuatorConfig(
+        checks = Seq(
+          "check if user(\"biscuit-demo\")"
+        )
+      )
     )
 
-    client.forBiscuitEntity("biscuit-attenuators").createEntity(attenuator).awaitf(5.seconds)
+    val attenuatorRouteDomain = "attenuator-headers.oto.tools"
 
-    val routeId = s"route_${UUID.randomUUID().toString}"
-    val routeDomain = "attenuator-headers.oto.tools"
+    val routeWithAttenuator = NgRoute(
+      location = EntityLocation.default,
+      id = UUID.randomUUID().toString,
+      name = "test attenuator route",
+      description = "test attenuator route",
+      tags = Seq.empty,
+      metadata = Map.empty,
+      enabled = true,
+      debugFlow = false,
+      capture = false,
+      exportReporting = false,
+      frontend = NgFrontend.empty.copy(domains = Seq(NgDomainAndPath(attenuatorRouteDomain))),
+      backend = NgBackend.empty.copy(targets = Seq(NgTarget.default)),
+      plugins = NgPlugins(Seq(
+        NgPluginInstance(
+          plugin = s"cp:otoroshi.next.plugins.EchoBackend",
+          config = NgPluginInstanceConfig(Json.obj(
+            "limit" -> "524288"
+          ))
+        ),
+        NgPluginInstance(
+          plugin = s"cp:${classOf[BiscuitTokenAttenuatorPlugin].getName}",
+          config = NgPluginInstanceConfig(Json.obj(
+            "attenuator_ref" -> attenuator.id,
+            "extractor_type" -> "header",
+            "extractor_name" -> "biscuit-token-test",
+            "token_replace_loc" -> "header",
+            "token_replace_name" -> "biscuit-attenuated-token",
+            "remote_facts_ref" -> rfl.id,
+            "enable_remote_facts" -> true
+          ))
+        )))
+    )
 
-    val routeWithAttenuator = client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertRaw(routeId, Json.parse(
-      s"""{
-         |  "id": "${routeId}",
-         |  "name": "biscuit-attenuator",
-         |  "frontend": {
-         |    "domains": [
-         |      "${routeDomain}"
-         |    ]
-         |  },
-         |  "backend": {
-         |    "targets": [
-         |      {
-         |        "id": "target_1",
-         |        "hostname": "request.otoroshi.io",
-         |        "port": 443,
-         |        "tls": true
-         |      }
-         |    ],
-         |    "root": "/",
-         |    "rewrite": false,
-         |    "load_balancing": {
-         |      "type": "RoundRobin"
-         |    }
-         |  },
-         |   "backend_ref": null,
-         |"plugins": [
-         |    {
-         |      "enabled": true,
-         |      "debug": false,
-         |      "plugin": "cp:otoroshi.next.plugins.OverrideHost",
-         |      "include": [],
-         |      "exclude": [],
-         |      "config": {},
-         |      "bound_listeners": [],
-         |      "plugin_index": {
-         |        "transform_request": 0
-         |      }
-         |    },
-         |     {
-         |      "plugin_index": {},
-         |      "nodeId": "cp:otoroshi.next.plugins.EchoBackend-0",
-         |      "plugin": "cp:otoroshi.next.plugins.EchoBackend",
-         |      "enabled": true,
-         |      "debug": false,
-         |      "include": [],
-         |      "exclude": [],
-         |      "bound_listeners": [],
-         |      "config": {
-         |        "limit": 524288
-         |      }
-         |    },
-         |    {
-         |      "enabled": true,
-         |      "debug": false,
-         |      "plugin": "cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenAttenuator",
-         |      "include": [],
-         |      "exclude": [],
-         |      "config": {
-         |        "attenuator_ref": "${attenuatorId}",
-         |        "extractor_type": "header",
-         |        "extractor_name": "biscuit-token-test",
-         |        "token_replace_loc": "header",
-         |        "token_replace_name": "biscuit-attenuated-token",
-         |        "remote_facts_ref": "${rfl.id}",
-         |        "enable_remote_facts": true
-         |      },
-         |      "bound_listeners": [],
-         |      "plugin_index": {
-         |        "validate_access": 0
-         |      }
-         |    }
-         |  ]
-         |}""".stripMargin)).awaitf(5.seconds)
-    assert(routeWithAttenuator.created, s"attenuator route has not been created")
-    await(1500.millis)
+    // Create entities
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-attenuators").upsertEntity(attenuator)
+    client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertEntity(routeWithAttenuator)
 
+    await(3.seconds)
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  test remote facts API for attenuator                               ///////////
@@ -636,7 +599,6 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
     assert(respAttenuatorAPI.json.at("checks").isDefined, s"attenuator facts array is not defined")
 
     val attenuatorAPIChecks = respAttenuatorAPI.json.at("checks").as[List[String]]
-
     assertEquals(attenuatorAPIChecks.length, 3, s"attenuator checks from API array length doesn't match")
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -646,20 +608,25 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
       "biscuit-token-test" -> token
     )
 
-    val resp3 = client.call("GET", s"http://${routeDomain}:${port}", headers, None).awaitf(5.seconds)
+    val resp3 = client.call("GET", s"http://${attenuatorRouteDomain}:${port}", headers, None).awaitf(5.seconds)
     assertEquals(resp3.status, 200, s"attenuator route did not respond with 200")
     assert(resp3.json.at("headers.biscuit-attenuated-token").isDefined, s"response headers don't contains the biscuit attenuated token")
 
-    val attenuatedTokenStr = BiscuitExtractorConfig.replaceHeader(resp3.json.at("headers.biscuit-attenuated-token").get.asString)
+    val attenuatedTokenStr = BiscuitExtractorConfig.replaceHeader(resp3.json.at("headers.biscuit-attenuated-token").asString)
     assert(attenuatedTokenStr.nonEmpty, s"attenuated token is empty")
 
     val attenuatedToken = Biscuit.from_b64url(attenuatedTokenStr, publicKeyFormatted)
+
+    println(s"got ATTENUATED token = ${attenuatedTokenStr}")
     assertEquals(attenuatedToken.authorizer().checks().asScala.flatMap(_._2.asScala).size, attenuator.config.checks.size + attenuatorAPIChecks.length, s"attenuated token doesn't contain checks list")
 
-    client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeId)
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                                  teardown                                                      ///////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteEntity(routeWithAttenuator)
     client.forBiscuitEntity("biscuit-attenuators").deleteEntity(attenuator)
     client.forBiscuitEntity("biscuit-keypairs").deleteEntity(keypair)
-    await(2500.millis)
+    await(2.seconds)
   }
 
 }
