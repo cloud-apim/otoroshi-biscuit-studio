@@ -77,7 +77,8 @@ object BiscuitAttenuatorConfig {
         "options" -> Seq(
           Json.obj("label" -> "Header", "value" -> "header"),
           Json.obj("label" -> "Cookies", "value" -> "cookie"),
-          Json.obj("label" -> "Query params", "value" -> "query")
+          Json.obj("label" -> "Query params", "value" -> "query"),
+          Json.obj("label" -> "User tokens", "value" -> "user_tokens")
         )
       ),
     ),
