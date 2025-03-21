@@ -1,7 +1,7 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiServerPerSuite
-import com.cloud.apim.otoroshi.extensions.biscuit.domains.{BiscuitAttenuatorsUtils, BiscuitVerifiersUtils}
+import com.cloud.apim.otoroshi.extensions.biscuit.domains.BiscuitVerifiersUtils
 import com.cloud.apim.otoroshi.extensions.biscuit.entities._
 import org.biscuitsec.biscuit.crypto.KeyPair
 import org.biscuitsec.biscuit.token.Biscuit
@@ -545,7 +545,7 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
       config = AttenuatorConfig()
     )
 
-    BiscuitAttenuatorsUtils.createAttenuatorEntity(client)(attenuator)
+    client.forBiscuitEntity("biscuit-attenuators").createEntity(attenuator).awaitf(5.seconds)
 
     val routeId = s"route_${UUID.randomUUID().toString}"
     val routeDomain = "attenuator-headers.oto.tools"

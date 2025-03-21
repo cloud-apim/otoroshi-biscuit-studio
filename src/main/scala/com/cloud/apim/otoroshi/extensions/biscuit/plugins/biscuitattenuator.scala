@@ -119,7 +119,7 @@ object BiscuitAttenuatorConfig {
   ))
 }
 
-class BiscuitTokenAttenuator extends NgRequestTransformer {
+class BiscuitTokenAttenuatorPlugin extends NgRequestTransformer {
 
   private val logger = Logger("biscuit-token-attenuator-plugin")
 
@@ -184,7 +184,7 @@ class BiscuitTokenAttenuator extends NgRequestTransformer {
 
   def doAttenuation(ctx: NgTransformerRequestContext, config: BiscuitAttenuatorConfig, attenuator: BiscuitAttenuator, attenuatorConfig: AttenuatorConfig)(implicit env: Env, ec: ExecutionContext, mat: Materializer): Future[Either[Result, NgPluginHttpRequest]] = {
     env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(attenuator.keypairRef)) match {
-      case None => Left(Results.InternalServerError(Json.obj("error" -> "keypair not existing"))).vfuture
+      case None => Left(Results.InternalServerError(Json.obj("error" -> "keypair entity not found"))).vfuture
       case Some(keypair) => {
         val publicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)
         BiscuitExtractorConfig(config.extractorType, config.extractorName).extractToken(ctx.request) match {
@@ -197,7 +197,7 @@ class BiscuitTokenAttenuator extends NgRequestTransformer {
                   case Left(error) => Left(Results.InternalServerError(Json.obj("error" -> s"Unable to verify biscuit token - token is not valid : ${error}"))).vfuture
                   case Right(biscuitToken) => {
                     AttenuatorConfig(attenuatorConfig.checks).attenuate(biscuitToken) match {
-                      case Left(err) => Left(Results.InternalServerError(Json.obj("error" -> s"Unable to generate attenuated biscuit token - : ${err}"))).vfuture
+                      case Left(err) => Left(Results.InternalServerError(Json.obj("error" -> s"Unable to generate an attenuated biscuit token : ${err}"))).vfuture
                       case Right(attenuatedToken) => {
 
                         var finalRequest = ctx.otoroshiRequest
