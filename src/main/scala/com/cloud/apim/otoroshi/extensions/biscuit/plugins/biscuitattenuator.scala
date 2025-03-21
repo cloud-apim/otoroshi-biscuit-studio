@@ -77,7 +77,8 @@ object BiscuitAttenuatorConfig {
         "options" -> Seq(
           Json.obj("label" -> "Header", "value" -> "header"),
           Json.obj("label" -> "Cookies", "value" -> "cookie"),
-          Json.obj("label" -> "Query params", "value" -> "query")
+          Json.obj("label" -> "Query params", "value" -> "query"),
+          Json.obj("label" -> "User tokens", "value" -> "user_tokens")
         )
       ),
     ),
@@ -187,7 +188,7 @@ class BiscuitTokenAttenuatorPlugin extends NgRequestTransformer {
       case None => Left(Results.InternalServerError(Json.obj("error" -> "keypair entity not found"))).vfuture
       case Some(keypair) => {
         val publicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)
-        BiscuitExtractorConfig(config.extractorType, config.extractorName).extractToken(ctx.request) match {
+        BiscuitExtractorConfig(config.extractorType, config.extractorName).extractToken(ctx.request, ctx.user) match {
           case None => Left(Results.InternalServerError(Json.obj("error" -> "token not found from header"))).vfuture
           case Some(token) => {
             Try(Biscuit.from_b64url(token, publicKey)).toEither match {
