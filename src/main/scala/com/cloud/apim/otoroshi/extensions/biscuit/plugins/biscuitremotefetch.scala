@@ -21,7 +21,10 @@ import scala.util.{Failure, Success, Try}
 case class BiscuitRemoteTokenFetcherConfig(
   apiUrl: String = "",
   method: String = "POST",
-  headers: Map[String, String] = Map.empty,
+  headers: Map[String, String] = Map(
+    "Content-Type" -> "application/json",
+    "Authorization" -> "Bearer ${user.tokens.access_token}"
+  ),
   tlsConfig: NgTlsConfig = NgTlsConfig(),
   timeout: FiniteDuration = 10.seconds,
   tokenReplaceLoc: String = "header",
