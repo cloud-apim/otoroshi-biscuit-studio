@@ -304,7 +304,7 @@ case class RemoteFactsLoader(
 
   def theTags: Seq[String] = tags
 
-  def loadFacts(ctx: JsValue)(implicit env: Env, ec: ExecutionContext): Future[Either[String, RemoteFactsData]] = {
+  def loadFacts(ctx: JsValue = JsNull)(implicit env: Env, ec: ExecutionContext): Future[Either[String, RemoteFactsData]] = {
     config.getRemoteFacts(ctx).flatMap {
       case Left(err) => Left(s"unable to get remote facts ${err}").vfuture
       case Right(facts) => Right(facts).vfuture
