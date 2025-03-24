@@ -46,7 +46,6 @@ Default Otoroshi UI credentials : admin / password
   - [Attenuators](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/entities/attenuators)
   - [RBAC Policies](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/entities/rbac)
   - [Remote Facts Loader](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/entities/remotefacts)
-
 ## Plugins
  - [Verifier plugin](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/plugins/verifiers)
  - [Attenuator plugin](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/plugins/attenuators)
@@ -54,6 +53,7 @@ Default Otoroshi UI credentials : admin / password
  - [Biscuit to User plugin](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/plugins/biscuit-user-extractor)
  - [User to Biscuit plugin](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/plugins/user-to-biscuit)
  - [Biscuit to ApiKey Bridge Plugin](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/plugins/apikeybridge)
+ - [Public Keys exposition](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/plugins/keypairsexposition)
 
 ### Biscuit Studio API Reference
 
