@@ -1,51 +1,68 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
-import akka.stream.Materializer
-import com.cloud.apim.otoroshi.extensions.biscuit.domains.BiscuitKeyPairsUtils
-import com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionSuite, OtoroshiClient}
+import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiServerPerSuite
 import com.cloud.apim.otoroshi.extensions.biscuit.entities.BiscuitKeyPair
-import otoroshi.api.Otoroshi
+import org.biscuitsec.biscuit.crypto.KeyPair
 import otoroshi.models.EntityLocation
-import scala.concurrent.ExecutionContext
-class TestKeypairs extends BiscuitExtensionSuite {
-  def printHeader(str: String, what: String): Unit = {
-    println("\n\n-----------------------------------------")
-    println(s"  [${str}] - ${what}")
-    println("-----------------------------------------\n\n")
+import otoroshi.security.IdGenerator
+import otoroshi.utils.syntax.implicits.{BetterFuture, BetterJsValue}
+
+import scala.concurrent.duration.DurationInt
+
+class TestKeypairs extends BiscuitStudioOneOtoroshiServerPerSuite {
+  test("should be able to create a biscuit keypair entity with default algorithm") {
+
+    val biscuitKeyPair = new KeyPair()
+
+    val keypair = BiscuitKeyPair(
+      id = IdGenerator.namedId("biscuit-keypair", otoroshi.env),
+      name = "New Biscuit Key Pair",
+      description = "New biscuit KeyPair",
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      privKey = biscuitKeyPair.toHex,
+      pubKey = biscuitKeyPair.public_key().toHex,
+    )
+
+    val keypairRes = client.forBiscuitEntity("biscuit-keypairs").createEntity(keypair).awaitf(5.seconds)
+
+    assert(keypairRes.created, s"[${keypair.id}] keypair has not been created")
+    assert(keypairRes.resp.json.at("pubKey").isDefined, s"public key is missing")
+    assert(keypairRes.resp.json.at("privKey").isDefined, s"private key is missing")
+    assert(keypairRes.resp.json.at("algo").isDefined, s"keypair algorithm is missing")
+    assertEquals(keypairRes.resp.json.at("id").as[String], keypair.id, "keypair id not matching with provided id")
+    assertEquals(keypairRes.resp.json.at("pubKey").as[String], keypair.pubKey, s"public key is not same as provided")
+    assertEquals(keypairRes.resp.json.at("privKey").as[String], keypair.privKey, s"private key is not same as provided")
+    assertEquals(keypairRes.resp.json.at("algo").as[String], "ED25519", s"algorithm not matching 'ED25519'")
   }
 
-  val port: Int = freePort
-  var otoroshi: Otoroshi = _
-  var client: OtoroshiClient = _
-  implicit var ec: ExecutionContext = _
-  implicit var mat: Materializer = _
+  test("should be able to create a biscuit keypair entity with CUSTOM algorithm") {
 
-  override def beforeAll(): Unit = {
-    otoroshi = startOtoroshiServer(port)
-    client = clientFor(port)
-    ec = otoroshi.executionContext
-    mat = otoroshi.materializer
-  }
+    val biscuitKeyPair = new KeyPair()
 
-  override def afterAll(): Unit = {
-    otoroshi.stop()
-  }
+    val keypair = BiscuitKeyPair(
+      id = IdGenerator.namedId("biscuit-keypair", otoroshi.env),
+      name = "New Biscuit Key Pair",
+      description = "New biscuit KeyPair",
+      metadata = Map.empty,
+      tags = Seq.empty,
+      location = EntityLocation.default,
+      privKey = biscuitKeyPair.toHex,
+      pubKey = biscuitKeyPair.public_key().toHex,
+      algo = "SECP256K1"
+    )
 
-  val keypairID = s"biscuit-keypair_97930360-d343-461d-98d1-8505b5ccf2f0"
 
-  val demoKeyPair = BiscuitKeyPair(
-    id = keypairID,
-    name = "New Biscuit Key Pair",
-    description = "New biscuit KeyPair",
-    metadata = Map.empty,
-    tags = Seq.empty,
-    location = EntityLocation.default,
-    pubKey = "CA31F831E8A750EF0E9C5F8B3D0CA1265428BFA9CB506CFCF4B8E883168B13C8",
-    privKey = "B09F278A4E37DBCC0AC9C10F941DFB90B5A59D3678C0B33ED76C47F760E57DB2"
-  )
+    val keypairRes = client.forBiscuitEntity("biscuit-keypairs").createEntity(keypair).awaitf(5.seconds)
 
-  test(s"create keypair") {
-    printHeader(demoKeyPair.name, "Create new keypair")
-    BiscuitKeyPairsUtils.createKeypairEntity(client)(demoKeyPair)
+    assert(keypairRes.created, s"[${keypair.id}] keypair has not been created")
+    assert(keypairRes.resp.json.at("pubKey").isDefined, s"public key is missing")
+    assert(keypairRes.resp.json.at("privKey").isDefined, s"private key is missing")
+    assert(keypairRes.resp.json.at("algo").isDefined, s"keypair algorithm is missing")
+    assertEquals(keypairRes.resp.json.at("id").as[String], keypair.id, "keypair id not matching with provided id")
+    assertEquals(keypairRes.resp.json.at("pubKey").as[String], keypair.pubKey, s"public key is not same as provided")
+    assertEquals(keypairRes.resp.json.at("privKey").as[String], keypair.privKey, s"private key is not same as provided")
+    assertEquals(keypairRes.resp.json.at("algo").as[String], "SECP256K1", s"algorithm not matching 'ED25519'")
   }
 }
