@@ -204,18 +204,17 @@ case class BiscuitRemoteFactsConfig(
               }
 
               val roleFacts = roles.map { role =>
-                s"""role("${role.name}", [${role.permissions.map(p => s""""$p"""").mkString(", ")}]);"""
+                s"""role("${role.name}", [${role.permissions.map(p => s""""$p"""").mkString(", ")}])"""
               }
 
               val userRoleFacts = userRoles.map { userRole =>
-                s"""user_roles(${userRole.id}, "${userRole.name}", [${userRole.roles.map(r => s""""$r"""").mkString(", ")}]);"""
+                s"""user_roles(${userRole.id}, "${userRole.name}", [${userRole.roles.map(r => s""""$r"""").mkString(", ")}])"""
               }
 
 
               val revokedIdsRemote = revokedIds.map(_.id)
               val factsStrings = facts.map(fact => s"""${fact.name}("${fact.value}")""")
-              val aclStrings = aclEntries.map(acl => s"""right("${acl.user}", "${acl.resource}", "${acl.action}");""")
-
+              val aclStrings = aclEntries.map(acl => s"""right("${acl.user}", "${acl.resource}", "${acl.action}")""")
 
               val rfd = RemoteFactsData(
                 acl = aclStrings,
@@ -259,7 +258,7 @@ object BiscuitRemoteFactsConfig {
     override def writes(o: BiscuitRemoteFactsConfig): JsValue = {
       Json.obj(
         "api_url" -> o.apiUrl,
-        "tls_config" -> o.tlsConfig.json,
+        "tls" -> o.tlsConfig.json,
         "headers" -> o.headers,
         "method" -> o.method,
         "timeout" -> o.timeout.toMillis,
@@ -270,7 +269,7 @@ object BiscuitRemoteFactsConfig {
       Try {
         BiscuitRemoteFactsConfig(
           apiUrl = json.select("api_url").asOpt[String].orElse(json.select("apiUrl").asOpt[String]).getOrElse(""),
-          tlsConfig = json.select("tls_config").asOpt[JsObject].flatMap(o => NgTlsConfig.format.reads(o).asOpt).getOrElse(NgTlsConfig()),
+          tlsConfig = json.select("tls").asOpt[JsObject].flatMap(o => NgTlsConfig.format.reads(o).asOpt).getOrElse(NgTlsConfig()),
           headers = json.select("headers").asOpt[Map[String, String]].getOrElse(Map.empty),
           timeout = json.select("timeout").asOpt[Long].map(_.millis).getOrElse(10.seconds),
           method = json.select("method").asOpt[String].getOrElse("POST"),
@@ -304,7 +303,7 @@ case class RemoteFactsLoader(
 
   def theTags: Seq[String] = tags
 
-  def loadFacts(ctx: JsValue)(implicit env: Env, ec: ExecutionContext): Future[Either[String, RemoteFactsData]] = {
+  def loadFacts(ctx: JsValue = JsNull)(implicit env: Env, ec: ExecutionContext): Future[Either[String, RemoteFactsData]] = {
     config.getRemoteFacts(ctx).flatMap {
       case Left(err) => Left(s"unable to get remote facts ${err}").vfuture
       case Right(facts) => Right(facts).vfuture

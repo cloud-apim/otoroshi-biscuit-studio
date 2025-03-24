@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 import Terminal from '@site/src/components/Terminal';
@@ -8,17 +8,15 @@ import Terminal from '@site/src/components/Terminal';
 
 ![](/img/undraw_secure-server.svg)
 
-A Biscuit Verifier is a key component in the Biscuit token framework, used to validate and enforce additional constraints on a Biscuit token.
-
-While Biscuit tokens inherently carry embedded rules and checks, a verifier allows you to apply context-specific restrictions during token validation without modifying the token itself.
-
-Using a verifier means you don’t need to modify or reissue tokens for every new constraint. Instead, constraints can be added at runtime when validating the token.
-
-![](/screenshots/biscuit-verifier-creation.png)
-
-![](/screenshots/biscuit-verifier-entity-config2.png)
-
 ## Overview
+
+A Biscuit Verifier is a key component in the Eclipse Biscuit token framework, used to validate and enforce additional constraints on an Eclipse Biscuit token.
+
+While tokens inherently carry embedded rules and checks, a verifier allows you to apply context-specific restrictions during token validation without modifying the token itself.
+
+Using a verifier means you don’t need to modify or reissue tokens for every new constraint.
+
+Instead, constraints can be added at runtime when validating the token.
 
 ### Key Features
 - **Dynamic Constraint Management**: Add new constraints at runtime without altering the original token.
@@ -30,26 +28,31 @@ Using a verifier means you don’t need to modify or reissue tokens for every ne
 - Restricting token access to particular resources.
 - Enforcing domain-specific rules dynamically.
 
+![](/screenshots/biscuit-verifier-creation.png)
+
+![](/screenshots/biscuit-verifier-entity-config2.png)
+
 ## Example Configuration
 
 The following JSON configuration defines a Biscuit Verifier with a time constraint:
 
-```json
+```javascript
 {
   "enabled": true,
-  "id": "biscuit-verifier_8c6cc80d-8305-4d5a-b82d-c81fe2f5e7c6",
-  "keypair_ref": "biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9",
-  "name": "New biscuit verifier",
-  "description": "New biscuit verifier",
-  "metadata": {},
+  "id": "biscuit_verifier_6f5f20a5-2c65-4860-8ad1-7b6495ee03bf",
+  "keypair_ref": "biscuit-keypair_dev_d25612c6-b4d0-43ed-a711-16b6c09a5155",
+  "name": "New Biscuit Verifier",
+  "description": "New Biscuit Verifier",
   "strict": true,
   "tags": [],
   "config": {
-    "checks": [
-      "check if time($date), $date <= 2024-12-30T19:00:10Z;"
+    "checks": [],
+    "facts": [
+      "operation(\"read\")"
     ],
-    "facts": [],
-    "resources": [],
+    "resources": [
+      "/folder1/file1"
+    ],
     "rules": [],
     "policies": [],
     "rbac_refs": [],
@@ -65,33 +68,31 @@ The following JSON configuration defines a Biscuit Verifier with a time constrai
 
 ### Explanation of Fields
 
-- **`enabled`**: Indicates if the verifier is active.
-- **`id`**: Unique identifier for the verifier.
-- **`keypair_ref`**: Reference to the cryptographic keypair used for token verification.
-- **`name`**: Human-readable name for the verifier.
-- **`description`**: Description of the verifier’s purpose.
-- **`strict`**: Enforces strict checking of constraints.
-- **`tags`**: Metadata tags for organizing verifiers.
-- **`config`**: Contains the specific rules, checks, facts, and other configurations applied by the verifier.
-  - **`checks`**: Constraints enforced during validation (e.g., time-based restrictions).
-  - **`facts`**: Contextual facts provided to the verifier.
-  - **`resources`**: Specifies resources associated with the token.
-  - **`rules`**: Defines custom rules for validation.
-  - **`revocation_ids`**: List of IDs marking revoked tokens.
-- **`kind`**: Specifies the resource type for integration with APIs.
+| Item            | Type       | Default value |          Explanation        |
+|-----------------|------------|---------------|-----------------------------|
+| `id` | String      |  | Unique identifier for the verifier entity |
+| `enabled` | Boolean      | `true` | Indicates if the verifier is active |
+| `keypair_ref` | String      |  | Reference to the [keypair entity](/docs/entities/keypairs) used for token verification |
+| `name` | String      | `New Biscuit Verifier` | Human-readable name for the verifier. |
+| `description` | String      | `New Biscuit Verifier` | Description of the verifier’s purpose. |
+| `remote_facts_refs` | String      |  | Reference to the [Remote Facts entity](/docs/entities/remotefacts) to load external facts|
 
+## Get a Biscuit Verifier Entity template with Otoroshi's API
 
-## Get a Biscuit Verifier template with Otoroshi's API
-```bash 
-curl -X GET -H 'Content-Type: application/json' 'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers/_template' -u admin-api-apikey-id:admin-api-apikey-secret
+```sh 
+curl -X GET \
+  -H 'Content-Type: application/json' \
+  -H 'Otoroshi-Client-Id: admin-api-apikey-id' \
+  -H 'Otoroshi-Client-Secret: admin-api-apikey-secret' \
+  'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers/_template'
 ```
 
 Result : 
 
-```json
+```javascript
 {
   "enabled": true,
-  "id": "biscuit-verifier_b11857d7-b000-4815-8704-290077966914",
+  "id": "biscuit-verifier_eaa118fe-c59c-4c22-b446-cb415c33c887",
   "keypair_ref": "",
   "name": "New biscuit verifier",
   "description": "New biscuit verifier",
@@ -115,28 +116,30 @@ Result :
 }
 ```
 
-## Creating a Biscuit Verifier from Command Line
+## Create a Biscuit Verifier Entity from Command Line
 
 You can create a Biscuit Verifier using the Otoroshi API with the following `curl` command:
 
-```bash
+```sh
 curl -X POST -H 'Content-Type: application/json' \
   'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers' \
   -u admin-api-apikey-id:admin-api-apikey-secret \
   -d '{
     "enabled": true,
     "id": "biscuit_verifier_6f5f20a5-2c65-4860-8ad1-7b6495ee03bf",
-    "keypair_ref": "biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9",
-    "name": "Biscuit Verifier CURL",
-    "description": "A Biscuit Verifier created from Otoroshi API",
+    "keypair_ref": "biscuit-keypair_dev_d25612c6-b4d0-43ed-a711-16b6c09a5155",
+    "name": "New Biscuit Verifier",
+    "description": "New Biscuit Verifier",
     "strict": true,
     "tags": [],
     "config": {
-      "checks": [
-        "check if time($date), $date <= 2024-12-30T19:00:10Z;"
+      "checks": [],
+      "facts": [
+        "operation(\"read\")"
       ],
-      "facts": [],
-      "resources": [],
+      "resources": [
+        "/folder1/file1"
+      ],
       "rules": [],
       "policies": [],
       "rbac_refs": [],
@@ -147,8 +150,7 @@ curl -X POST -H 'Content-Type: application/json' \
       "extractor_type": "header",
       "extractor_name": "Authorization"
     }
-    "kind": "biscuit.extensions.cloud-apim.com/BiscuitVerifier"
-  }'
+}'
 ```
 
 ### Bulk creation
@@ -161,7 +163,7 @@ curl -X POST -H 'Content-Type: application/x-ndjson' \
 ```
 
 #### Response
-```js
+```javascript
 {"status":201,"created":true,"id":"verifier_bulk_1","id_field":"id"}
 {"status":201,"created":true,"id":"verifier_bulk_2","id_field":"id"}
 ```
@@ -176,7 +178,7 @@ Rules are logical expressions used to define conditions under which certain acti
 
 The following rule determines whether a user is allowed to perform an operation on a resource:
 
-```js
+```javascript
 is_allowed($user, $res, $op) <- 
     user($user),          // Declares the user
     resource($res),       // Declares the resource
@@ -196,7 +198,7 @@ In this example:
 
 Facts are data points or assertions stored in the Biscuit token. They are used as inputs to evaluate the rules. For example:
 
-```js
+```javascript
 user("alice");
 resource("file1");
 operation("read");
@@ -219,7 +221,7 @@ Policies are used to define the decision logic for allowing or denying access. B
 
 The following policy allows access if the `is_allowed` rule evaluates to true:
 
-```js
+```javascript
 allow if is_allowed($user, $resource, $op);
 ```
 
@@ -230,7 +232,7 @@ This policy specifies that:
 
 Policies can also include deny conditions, such as:
 
-```js
+```javascript
 deny if user($user), resource($res), operation($op), not right($user, $res, $op);
 ```
 
@@ -248,7 +250,7 @@ Biscuit tokens support additional contextual restrictions using caveats. Caveats
 
 To restrict access to a specific time range:
 
-```js
+```javascript
 time($t), $t <= 1672531200, $t >= 1672444800;
 ```
 
@@ -260,7 +262,7 @@ Here:
 
 To restrict access based on IP address:
 
-```js
+```javascript
 ip("192.168.1.1");
 ```
 
@@ -274,7 +276,7 @@ Access is allowed only if the IP matches `192.168.1.1`.
 
 Defining a hierarchy where admin users have access to all resources and operations:
 
-```js
+```javascript
 right($user, $res, $op) <- role($user, "admin");
 ```
 
@@ -282,7 +284,7 @@ right($user, $res, $op) <- role($user, "admin");
 
 Defining a "read-only" role:
 
-```js
+```javascript
 right($user, $res, "read") <- role($user, "read-only");
 ```
 
@@ -290,44 +292,6 @@ right($user, $res, "read") <- role($user, "read-only");
 
 Granting a user specific rights on a specific resource:
 
-```js
+```javascript
 right("bob", "file2", "write");
-```
-
-### Example as CURL call with Rules and Policies
-
-```bash
-curl -X POST -H 'Content-Type: application/json' \
-  'http://otoroshi-api.oto.tools:8080/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers' \
-  -u admin-api-apikey-id:admin-api-apikey-secret \
-  -d '{
-    "enabled": true,
-    "keypair_ref": "biscuit_keypair_e42033bc-f181-485f-857d-576e4728f6f9",
-    "name": "Biscuit Verifier FROM CURL 1",
-    "description": "A Biscuit Verifier created from Otoroshi API",
-    "strict": true,
-    "tags": [],
-    "config": {
-      "checks": [
-        "check if time($date), $date <= 2025-12-30T19:00:10Z;"
-      ],
-      "facts": [
-        "user(\"alice\");",
-        "resource(\"file1\");",
-        "operation(\"read\");",
-        "right(\"alice\",\"file1\",\"read\");"
-      ],
-      "resources": [],
-      "rules": [
-        "is_allowed($user, $res, $op) <- user($user), resource($res), operation($op), right($user, $res, $op);"
-      ],
-      "policies": [
-         "allow if is_allowed($user, $resource, $op);"
-      ],
-      "rbac_refs": [],
-      "revoked_ids": [],
-      "remote_facts_refs": []
-    },
-    "kind": "biscuit.extensions.cloud-apim.com/BiscuitVerifier"
-  }'
 ```

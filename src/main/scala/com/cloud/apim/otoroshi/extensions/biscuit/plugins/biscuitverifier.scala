@@ -41,14 +41,14 @@ object BiscuitVerifierPluginConfig {
     }
   }
 
-  def configSchema(name: String): Option[JsObject] = Some(Json.obj(
+  def configSchema: Option[JsObject] = Some(Json.obj(
     "verifier_refs" -> Json.obj(
       "type" -> "select",
       "label" -> s"Biscuit Verifiers",
       "array" -> true,
       "props" -> Json.obj(
         "isClearable" -> true,
-        "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/${name}",
+        "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers",
         "optionsTransformer" -> Json.obj(
           "label" -> "name",
           "value" -> "id",
@@ -78,7 +78,7 @@ class BiscuitTokenValidator extends NgAccessValidator {
 
   override def configFlow: Seq[String] = BiscuitVerifierPluginConfig.configFlow
 
-  override def configSchema: Option[JsObject] = BiscuitVerifierPluginConfig.configSchema("biscuit-verifiers")
+  override def configSchema: Option[JsObject] = BiscuitVerifierPluginConfig.configSchema
 
   override def visibility: NgPluginVisibility = NgPluginVisibility.NgUserLand
 
@@ -97,25 +97,33 @@ class BiscuitTokenValidator extends NgAccessValidator {
   override def access(ctx: NgAccessContext)(implicit env: Env, ec: ExecutionContext): Future[NgAccess] = {
     val config = ctx.cachedConfig(internalName)(BiscuitVerifierPluginConfig.format).getOrElse(BiscuitVerifierPluginConfig())
 
-
     env.adminExtensions.extension[BiscuitExtension] match {
       case None => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> "extension not found"))).vfuture
       case Some(ext) => {
         val verifiers = config.verifierRefs.flatMap(id => ext.states.biscuitVerifier(id))
         var hasFailed = false
+        var errors = Seq.empty[String]
 
         def next(items: Seq[BiscuitVerifier]): Future[NgAccess] = {
           items.headOption match {
-            case None if hasFailed => forbidden(ctx)
-            case None if !hasFailed && config.enforce => forbidden(ctx)
+            case None if hasFailed => forbidden(ctx, errors)
+            case None if !hasFailed && config.enforce => forbidden(ctx, errors)
             case None if !hasFailed && !config.enforce => NgAllowed.vfuture
             case Some(head) => {
               head.verify(ctx.request, Some(VerificationContext(ctx.route, ctx.request, ctx.user, ctx.apikey))) flatMap {
-                case Left(err) if err == "no token" => next(items.tail)
-                case Left(err) =>
+                case Left(err) if err == "no token" => {
+                  errors = errors:+ err
+                  next(items.tail)
+                }
+                case Left(err) =>{
                   hasFailed = true
-                  next(items.tail) // TODO: log error
-                case Right(_) => NgAllowed.vfuture
+                  errors = errors:+ err
+                  next(items.tail)
+                }
+                case Right(_) => {
+                  hasFailed = false
+                  NgAllowed.vfuture
+                }
               }
             }
           }
@@ -130,10 +138,10 @@ class BiscuitTokenValidator extends NgAccessValidator {
     }
   }
 
-  def forbidden(ctx: NgAccessContext, msg: String = "forbidden")(implicit env: Env, ec: ExecutionContext): Future[NgAccess] = {
+  def forbidden(ctx: NgAccessContext, msg: Seq[String] = Seq.empty)(implicit env: Env, ec: ExecutionContext): Future[NgAccess] = {
     Errors
       .craftResponseResult(
-        msg,
+        msg.mkString(", "),
         Results.Forbidden,
         ctx.request,
         None,

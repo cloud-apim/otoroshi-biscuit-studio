@@ -55,7 +55,7 @@ object BiscuitUserExtractorConfig {
     }
   }
 
-  def configSchema(name: String): Option[JsObject] = Some(Json.obj(
+  def configSchema: Option[JsObject] = Some(Json.obj(
     "keypair_ref" -> Json.obj(
       "type" -> "select",
       "label" -> s"Biscuit Keypair Reference",
@@ -110,7 +110,7 @@ class BiscuitUserExtractor extends NgPreRouting {
 
   override def configFlow: Seq[String] = BiscuitUserExtractorConfig.configFlow
 
-  override def configSchema: Option[JsObject] = BiscuitUserExtractorConfig.configSchema("biscuit-user-extractor")
+  override def configSchema: Option[JsObject] = BiscuitUserExtractorConfig.configSchema
 
   override def visibility: NgPluginVisibility = NgPluginVisibility.NgUserLand
 
@@ -133,7 +133,7 @@ class BiscuitUserExtractor extends NgPreRouting {
     env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(config.keypairRef)) match {
       case None => handleError("keypair_ref not found")
       case Some(keypair) => {
-        BiscuitExtractorConfig(config.extractorType, config.extractorName).extractToken(ctx.request) match {
+        BiscuitExtractorConfig(config.extractorType, config.extractorName).extractToken(ctx.request, None) match {
           case Some(token) => {
             Try(Biscuit.from_b64url(token, keypair.getPubKey)).toEither match {
               case Left(err) => handleError(s"Unable to deserialize Biscuit token : ${err}")
