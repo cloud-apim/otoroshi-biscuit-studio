@@ -29,12 +29,13 @@ case class BiscuitRemoteTokenFetcherConfig(
   timeout: FiniteDuration = 10.seconds,
   tokenReplaceLoc: String = "header",
   tokenReplaceName: String = "Authorization",
+  tokenRespLoc: String = "token"
 ) extends NgPluginConfig {
   def json: JsValue = BiscuitRemoteTokenFetcherConfig.format.writes(this)
 }
 
 object BiscuitRemoteTokenFetcherConfig {
-  val configFlow: Seq[String] = Seq("api_url", "api_method", "api_headers", "api_timeout", "token_replace_loc", "token_replace_name")
+  val configFlow: Seq[String] = Seq("api_url", "api_method", "api_headers", "api_timeout", "token_replace_loc", "token_replace_name", "token_resp_loc")
   val format = new Format[BiscuitRemoteTokenFetcherConfig] {
     override def writes(o: BiscuitRemoteTokenFetcherConfig): JsValue = Json.obj(
       "api_url" -> o.apiUrl,
@@ -43,7 +44,8 @@ object BiscuitRemoteTokenFetcherConfig {
       "api_timeout" -> o.timeout.toMillis,
       "api_tls_config" -> o.tlsConfig.json,
       "token_replace_loc" -> o.tokenReplaceLoc,
-      "token_replace_name" -> o.tokenReplaceName
+      "token_replace_name" -> o.tokenReplaceName,
+      "token_resp_loc" -> o.tokenRespLoc
     )
 
     override def reads(json: JsValue): JsResult[BiscuitRemoteTokenFetcherConfig] = Try {
@@ -54,7 +56,8 @@ object BiscuitRemoteTokenFetcherConfig {
         timeout = json.select("api_timeout").asOpt[Long].map(_.millis).getOrElse(10.seconds),
         method = json.select("api_method").asOpt[String].getOrElse("POST"),
         tokenReplaceLoc = json.select("token_replace_loc").asOpt[String].getOrElse("header"),
-        tokenReplaceName = json.select("token_replace_name").asOpt[String].getOrElse("Authorization")
+        tokenReplaceName = json.select("token_replace_name").asOpt[String].getOrElse("Authorization"),
+        tokenRespLoc = json.select("token_resp_loc").asOpt[String].getOrElse("token")
       )
     } match {
       case Failure(exception) => JsError(exception.getMessage)
@@ -158,7 +161,11 @@ class BiscuitRemoteTokenFetcherPlugin extends NgRequestTransformer {
       .map { resp =>
         resp.status match {
           case 200 => {
-            Right(Some(resp.body))
+            if (resp.contentType.contains("application/json") && resp.json.at(config.tokenRespLoc).isDefined){
+              Right(Some(resp.json.at(config.tokenRespLoc).asString))
+            }else{
+              Right(Some(resp.body))
+            }
           }
           case _ => {
             Left("Unable to fetch token from API")
