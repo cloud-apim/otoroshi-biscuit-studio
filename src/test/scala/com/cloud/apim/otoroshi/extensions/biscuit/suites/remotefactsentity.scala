@@ -617,7 +617,6 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
 
     val attenuatedToken = Biscuit.from_b64url(attenuatedTokenStr, publicKeyFormatted)
 
-    println(s"got ATTENUATED token = ${attenuatedTokenStr}")
     assertEquals(attenuatedToken.authorizer().checks().asScala.flatMap(_._2.asScala).size, attenuator.config.checks.size + attenuatorAPIChecks.length, s"attenuated token doesn't contain checks list")
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

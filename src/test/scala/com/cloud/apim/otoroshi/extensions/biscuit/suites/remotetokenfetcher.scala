@@ -7,7 +7,7 @@ import otoroshi.models.{ApiKey, EntityLocation, RouteIdentifier}
 import otoroshi.next.models._
 import otoroshi.security.IdGenerator
 import otoroshi.utils.syntax.implicits._
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.{BiscuitRemoteTokenFetcherPlugin, BiscuitTokenValidator, ClientCredentialBiscuitTokenEndpoint}
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.{BiscuitRemoteTokenFetcherPlugin, BiscuitTokenVerifierPlugin, ClientCredentialBiscuitTokenEndpoint}
 import play.api.libs.json.Json
 import reactor.core.publisher.Mono
 

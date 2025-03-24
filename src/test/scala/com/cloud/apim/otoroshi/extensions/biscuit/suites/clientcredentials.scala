@@ -7,7 +7,7 @@ import otoroshi.models.{ApiKey, EntityLocation, RouteIdentifier}
 import otoroshi.next.models._
 import otoroshi.security.IdGenerator
 import otoroshi.utils.syntax.implicits._
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.{BiscuitTokenValidator, ClientCredentialBiscuitTokenEndpoint}
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.{BiscuitTokenVerifierPlugin, ClientCredentialBiscuitTokenEndpoint}
 import play.api.libs.json.Json
 import reactor.core.publisher.Mono
 
@@ -116,7 +116,7 @@ class ClientcredentialsSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
       frontend = NgFrontend.empty.copy(domains = Seq(NgDomainAndPath("test.oto.tools/api")), stripPath = false),
       backend = NgBackend.empty.copy(targets = Seq(NgTarget.parse(s"http://localhost:${tport}"))),
       plugins = NgPlugins(Seq(NgPluginInstance(
-        plugin = s"cp:${classOf[BiscuitTokenValidator].getName}",
+        plugin = s"cp:${classOf[BiscuitTokenVerifierPlugin].getName}",
         config = NgPluginInstanceConfig(Json.obj(
           "verifier_refs" -> Seq(validator.id)
         )))

@@ -64,8 +64,6 @@ class TestBiscuitExpositionKpPlugin extends BiscuitStudioOneOtoroshiServerPerSui
       )))
     )
 
-    println(s"got config = ${routeEndpoint.plugins.json}")
-
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair)
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair2)
     client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertEntity(routeEndpoint)

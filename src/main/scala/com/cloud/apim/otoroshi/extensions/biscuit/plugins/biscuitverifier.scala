@@ -62,9 +62,9 @@ object BiscuitVerifierPluginConfig {
   ))
 }
 
-class BiscuitTokenValidator extends NgAccessValidator {
+class BiscuitTokenVerifierPlugin extends NgAccessValidator {
 
-  private val logger = Logger("biscuit-token-validator-plugin")
+  private val logger = Logger("biscuit-verifier-plugin")
 
   override def name: String = "Cloud APIM - Biscuit Tokens Verifier"
 
