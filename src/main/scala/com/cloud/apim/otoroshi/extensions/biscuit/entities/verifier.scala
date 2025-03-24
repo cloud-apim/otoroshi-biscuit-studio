@@ -294,11 +294,12 @@ case class BiscuitExtractorConfig(extractorType: String = "header", extractorNam
 
   def json: JsValue = BiscuitExtractorConfig.format.writes(this)
 
-  def extractToken(req: RequestHeader): Option[String] = {
+  def extractToken(req: RequestHeader, user: Option[PrivateAppsUser]): Option[String] = {
     (extractorType match {
       case "header" => req.headers.get(extractorName)
       case "query" => req.getQueryString(extractorName)
       case "cookie" => req.cookies.get(extractorName).map(_.value)
+      case "user_tokens" => user.map(_.token).getOrElse(Json.obj()).at(extractorName).asOpt[String]
       case _ => None
     }).map { token =>
       BiscuitExtractorConfig.replaceHeader(token)
@@ -372,7 +373,7 @@ case class BiscuitVerifier(
     env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(keypairRef)) match {
       case None => Left("keypair_ref not found").vfuture
       case Some(keypair) => {
-        extractor.extractToken(req) match {
+        extractor.extractToken(req, ctxOpt.flatMap(_.user)) match {
           case Some(token) => {
             Try(Biscuit.from_b64url(token, keypair.getPubKey)).toEither match {
               case Left(err) => Left(s"Unable to deserialize Biscuit token : ${err}").vfuture

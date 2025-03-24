@@ -1091,7 +1091,62 @@
         ],
         "responses": {
           "204": {
-            "description": "Biscuit Remote Facts Loader entity deleted successfully."
+            "description": "Biscuit Remote Facts Loader entity deleted successfully."}
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/api/extensions/biscuit/keypairs/_generate": {
+      "post": {
+        "tags": [
+          "biscuit-admin-api"
+        ],
+        "summary": "Generate a biscuit Keypair",
+        "description": "Generate a biscuit Keypair",
+        "operationId": "generateKeypair",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "algorithm": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Keypair successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "algorithm": {
+                      "type": "string"
+                    },
+                    "pubKey": {
+                      "type": "string"
+                    },
+                    "privKey": {
+                      "type": "string"
+                    },
+                    "algoPubKey": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -1340,7 +1395,67 @@
                   "properties": {
                     "error": {
                       "type": "string",
-                      "example": "error message"
+                      "example": "error message"}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/api/extensions/biscuit/biscuit-verifiers/:id/verify": {
+      "post": {
+        "tags": [
+          "biscuit-admin-api"
+        ],
+        "summary": "Verify a biscuit token from a verifier entity",
+        "description": "Verify a biscuit token from a verifier entity",
+        "operationId": "verifierTokenFromVerifierEntity",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the verifier entity."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Verifier token created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unable to verify the Token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
                     }
                   }
                 }

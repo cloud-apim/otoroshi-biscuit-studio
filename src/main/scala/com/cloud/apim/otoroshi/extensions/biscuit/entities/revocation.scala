@@ -9,12 +9,6 @@ import play.api.libs.json._
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
-// TODO: admin API for those methods  (list revoked tokens, add token to revocation list)
-// TODO: backoffice api for the UIs (list revoked tokens, add token to revocation list)
-// TODO: call exists from the verifier API **every time**
-// TODO: add some kind of way to query a remote system, config from the config file (job that add list of ids every 5 minutes ?)
-// TODO: instance of this object on the extension instance
-
 case class RevokedToken(
   revocationId: String = "",
   reason: String = "unknown",

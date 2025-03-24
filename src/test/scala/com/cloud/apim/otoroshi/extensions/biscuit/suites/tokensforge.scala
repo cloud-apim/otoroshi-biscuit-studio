@@ -12,6 +12,7 @@ import otoroshi.security.IdGenerator
 import otoroshi.utils.syntax.implicits._
 import play.api.libs.json.Json
 import reactor.core.publisher.Mono
+import scala.jdk.CollectionConverters._
 
 import java.util.UUID
 import scala.concurrent.ExecutionContext
@@ -315,7 +316,7 @@ class TestsTokensForge extends BiscuitExtensionSuite {
     val token = BiscuitExtractorConfig.replaceHeader(resp2.json.at("token").get.asString)
     assert(token.nonEmpty, s"token is empty")
 
-    val publicKeyFormatted = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)
+    val publicKeyFormatted = new PublicKey(keypair.getCurrentAlgo, keypair.pubKey)
 
     val encodedBiscuit = Biscuit.from_b64url(token, publicKeyFormatted)
     assertEquals(encodedBiscuit.authorizer().facts().size(), aclArr.length, s"token doesn't contain all remote facts")
@@ -383,11 +384,11 @@ class TestsTokensForge extends BiscuitExtensionSuite {
     val token = BiscuitExtractorConfig.replaceHeader(resp.json.at("token").get.asString)
     assert(token.nonEmpty, s"token is empty")
 
-    val publicKeyFormatted = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)
+    val publicKeyFormatted = new PublicKey(keypair.getCurrentAlgo, keypair.pubKey)
 
     val encodedBiscuit = Biscuit.from_b64url(token, publicKeyFormatted)
     assertEquals(encodedBiscuit.authorizer().facts().size(), forge.config.facts.length, s"token doesn't contain all facts")
-    assertEquals(encodedBiscuit.authorizer().checks().size(), forge.config.checks.length, s"token doesn't contain all checks")
+    assertEquals(encodedBiscuit.authorizer().checks().asScala.flatMap(_._2.asScala).size, forge.config.checks.length, s"token doesn't contain all checks")
 
     await(2500.millis)
   }

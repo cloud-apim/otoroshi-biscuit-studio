@@ -8,44 +8,183 @@ import Terminal from '@site/src/components/Terminal';
 
 ![](/img/undraw_cloud-sync.svg)
 
-The **Remote Facts Loader** entity facilitates the loading of external facts provided by an API. This entity is particularly useful for dynamic role and permission management based on external data sources.
+The **Remote Facts Loader** entity facilitates the loading of external facts (checks, rules, acl, rbac) provided by an API. 
+
+This entity is particularly useful for dynamic role and permission management based on external data sources.
 
 ## Overview
 
 The Remote Facts Loader connects to an API endpoint to fetch data, such as roles and their associated permissions, and integrates it into your system. This entity is configured with metadata and API details to ensure smooth interaction.
 
-![](/screenshots/biscuit-remote-facts-loader-create-entity.png)
+Go to [http://otoroshi.oto.tools:8080/bo/dashboard/extensions/cloud-apim/biscuit/remote-facts](http://otoroshi.oto.tools:8080/bo/dashboard/extensions/cloud-apim/biscuit/remote-facts) and click on `Add Item` to cerate a new entity.
 
-![](/screenshots/biscuit-remote-facts-loader-create-entity-configuration.png)
+![](/screenshots/remote-facts-entity-config-1.png)
+
+Go under in the section `Configuration`
+
+You can configure various aspects of your API request, including the URL, HTTP method, headers, and timeout settings.  
+
+### **1. API URL**  
+Set the endpoint for your API request. This should be a valid URL pointing to the desired API resource.  
+
+**Example:**  
+```plaintext
+https://api.example.com/data
+```
+
+### **2. HTTP Method**  
+Specify the HTTP method to be used for the request. Common methods include:  
+- `GET` – Retrieve data  
+- `POST` – Submit data  
+- `PUT` – Update existing data
+
+### **3. HTTP Headers**  
+Define custom headers for the request. Headers allow you to send metadata such as authentication tokens, content types, or custom fields.  
+
+**Example:**  
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer your_token_here"
+}
+```
+
+### **4. HTTP Timeout**  
+Set the maximum time (in seconds) the request should wait for a response before timing out.  
+
+![](/screenshots/remote-facts-entity-config-2.png)
+
+## API Input Fields
+
+This document describes the schema of the "Remote facts data" retrieved from a JSON response within the context of Biscuit tokens. The schema consists of multiple fields, each containing a specific type of data used for authentication, authorization, and policy enforcement.
+
+## Schema Details
+
+| Field         | Data Type                                      | Description |
+|--------------|--------------------------------|-------------|
+| `roles`      | `List[Map[String, List[String]]]` | A list of maps, where each key is a string representing a role type, and its value is a list of associated role values. |
+| `revoked`    | `List[String]`                          | A list of revoked roles or permissions represented as strings. |
+| `facts`      | `List[Map[String, String]]`             | A list of key-value pairs representing factual data. Each entry is a map where keys and values are both strings. |
+| `acl`        | `List[Map[String, String]]`             | A list of access control list (ACL) rules. Each entry is a map where keys are ACL identifiers, and values are their respective permissions. |
+| `user_roles` | `List[Map[String, JsValue]]`            | A list of user role mappings. Each entry is a map where keys represent user role identifiers, and values are JSON values (which could be strings, objects, or arrays). |
+| `checks`     | `List[String]`                          | A list of security or validation checks, represented as strings. |
+
+Each field is extracted from the JSON response using Play JSON's validation methods (`validate`). If parsing fails, a default empty list is used as a fallback.
 
 ## API Input Example
+
 Below is an example of the data structure that your API might return. This JSON array defines roles and their associated permissions:
 
 ```json
 {
+  "facts": [
+    {
+      "name": "role",
+      "value": "admin"
+    },
+    {
+      "name": "resource",
+      "value": "file1"
+    }
+  ],
+  "checks": [
+    "check if user(\"demo\")",
+    "check if resource(\"file1\")",
+    "check if role(\"admin\")"
+  ],
+  "revoked": [
+    "e5e58ecad81377019ddeb1b7cf2afbc1a54321a29cd5f8c8d3ed2bd1237ebd8b5bc3e855e4ba1d44d18705394698beb9a46c6413510a0842907c1eb867d7a90a",
+    "20c81040a822e4cf7b028b938fa1b350a36d612c52a800f75f3fba96ca5b2b5db597e468be09c404d6948a5a209031d40bc1c7b33897b912c3aceae8ba30df07"
+  ],
   "roles": [
     {
-      "admin": ["billing:read", "billing:write", "address:read", "address:write"]
+      "admin": [
+        "billing:read",
+        "billing:write",
+        "address:read",
+        "address:write"
+      ]
     },
     {
-      "accounting": ["billing:read", "billing:write", "address:read"]
+      "accounting": [
+        "billing:read",
+        "billing:write",
+        "address:read"
+      ]
     },
     {
-      "support": ["address:read", "address:write"]
+      "support": [
+        "address:read",
+        "address:write"
+      ]
     },
     {
-      "pilot":  ["spaceship:drive", "address:read"]
+      "pilot": [
+        "spaceship:drive",
+        "address:read"
+      ]
     },
     {
-      "delivery":  ["address:read", "package:load", "package:unload", "package:deliver"]
+      "delivery": [
+        "address:read",
+        "package:load",
+        "package:unload",
+        "package:deliver"
+      ]
+    }
+  ],
+  "user_roles": [
+    {
+      "id": "0",
+      "name": "Professor Farnsworth",
+      "roles": [
+        "admin"
+      ]
+    },
+    {
+      "id": "1",
+      "name": "Hermes Conrad",
+      "roles": [
+        "accounting"
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Amy Wong",
+      "roles": [
+        "support"
+      ]
+    },
+    {
+      "id": "3",
+      "name": "Leela",
+      "roles": [
+        "pilot",
+        "delivery"
+      ]
+    },
+    {
+      "id": "4",
+      "name": "Fry",
+      "roles": [
+        "delivery"
+      ]
+    }
+  ],
+  "acl": [
+    {
+      "user": "1234",
+      "resource": "admin.doc",
+      "action": "read"
+    },
+    {
+      "user": "1234",
+      "resource": "admin.doc",
+      "action": "write"
     }
   ]
 }
 ```
-
-### Key Fields in the JSON:
-- **roles**: An array of objects, each representing a role.
-- Each role object contains a key-value pair where the key is the role name (e.g., `admin`) and the value is an array of permissions associated with the role.
 
 ## Entity Configuration Example
 Below is an example configuration for the Remote Facts Loader entity:
@@ -56,20 +195,23 @@ Below is an example configuration for the Remote Facts Loader entity:
   "id": "biscuit_remote_facts_2ae76425-194d-436b-9977-0cdeb8680fbb",
   "name": "Remote fact loader example",
   "description": "",
-  "metadata": {
-    "created_at": "2024-12-23T15:30:01.241+01:00"
-  },
+  "metadata": {},
   "tags": [],
   "config": {
-    "apiUrl": "http://localhost:3333/api/facts",
+    "api_url": "http://localhost:3333/api/facts",
+    "tls_config": {
+      "certs": [],
+      "trusted_certs": [],
+      "enabled": false,
+      "loose": false,
+      "trust_all": false
+    },
     "headers": {
-      "Accept": "application/json",
+      "Content-Type": "application/json",
       "Authorization": "Bearer: xxxxx"
-    }
-  },
-  "kind": "BiscuitRemoteFactsLoader",
-  "_loc": {
-    "tenant": "default"
+    },
+    "method": "GET",
+    "timeout": 10000
   }
 }
 ```
@@ -83,10 +225,8 @@ Below is an example configuration for the Remote Facts Loader entity:
 - **metadata**: Contains system-generated metadata such as creation time.
 - **tags**: Optional tags for categorization or searching.
 - **config**:
-  - **apiUrl**: The endpoint URL where the API data is fetched.
+  - **api_url**: The endpoint URL where the API data is fetched.
   - **headers**: HTTP headers to include in the request, such as `Authorization` or `Accept`.
-- **kind**: Specifies the type of loader, in this case, `BiscuitRemoteFactsLoader`.
-- **_loc**: Location or tenant-specific details, useful for multi-tenant applications.
 
 ## Usage
 

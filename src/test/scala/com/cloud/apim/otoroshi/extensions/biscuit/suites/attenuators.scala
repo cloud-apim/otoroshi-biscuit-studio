@@ -362,8 +362,6 @@ class TestAttenuators extends BiscuitStudioOneOtoroshiServerPerSuite {
       name = "New biscuit token",
       description = "New biscuit token",
       keypairRef = keypair.id,
-      metadata = Map.empty,
-      tags = Seq.empty,
       location = EntityLocation.default,
       config = BiscuitForgeConfig(
         checks = Seq(
@@ -372,11 +370,8 @@ class TestAttenuators extends BiscuitStudioOneOtoroshiServerPerSuite {
         facts = Seq(
           "user(\"biscuit-demo\");",
           "role(\"user\");",
-        ),
-        resources = List.empty,
-        rules = List.empty
-      ),
-      remoteFactsLoaderRef = None
+        )
+      )
     )
 
     val attenuatorTest = BiscuitAttenuator(

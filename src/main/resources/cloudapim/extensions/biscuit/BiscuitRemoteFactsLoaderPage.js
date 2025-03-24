@@ -56,6 +56,40 @@ class BiscuitRemoteFactsLoaderPage extends Component {
       type: "object",
       props: { label: "HTTP headers" },
     },
+    'config.tls.enabled': {
+      type: 'bool',
+      props: { label: 'Custom TLS Settings' },
+    },
+    'config.tls.loose': {
+      type: 'bool',
+      display: (v) => v.config.tls.enabled,
+      props: { label: 'TLS loose' },
+    },
+    'config.tls.trust_all': {
+      type: 'bool',
+      display: (v) => v.config.tls.enabled,
+      props: { label: 'Trust All' },
+    },
+    'config.tls.certs': {
+      type: 'array',
+      display: (v) => v.config.tls.enabled,
+      props: {
+        label: 'Client certificates',
+        placeholder: 'Choose a client certificate',
+        valuesFrom: '/bo/api/proxy/api/certificates',
+        transformer: (item) => ({ label: item.name, value: item.id })
+      },
+    },
+    'config.tls.trusted_certs': {
+      type: 'array',
+      display: (v) => v.config.tls.enabled && !v.config.tls.trust_all,
+      props: {
+        label: 'Trusted certificates',
+        placeholder: 'Choose a trusted certificate',
+        valuesFrom: '/bo/api/proxy/api/certificates',
+        transformer: (item) => ({ label: item.name, value: item.id })
+      }
+    },
     tester: {
       type: RemoteFactsTester,
     },
@@ -97,6 +131,12 @@ class BiscuitRemoteFactsLoaderPage extends Component {
     "config.method",
     "config.headers",
     "config.timeout",
+    '<<<TLS Configuration',
+    'config.tls.enabled',
+    'config.tls.loose',
+    'config.tls.trust_all',
+    'config.tls.certs',
+    'config.tls.trusted_certs',
     "<<<Tester",
     "tester",
   ];
