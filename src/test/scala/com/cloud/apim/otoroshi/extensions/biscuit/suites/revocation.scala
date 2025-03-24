@@ -93,12 +93,11 @@ class RevocationSuite extends BiscuitStudioOneOtoroshiClusterPerSuite {
       extractor = BiscuitExtractorConfig()
     )
 
+    // Create entities
     leaderClient.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair)
     leaderClient.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-verifiers").upsertEntity(validator)
-
     await(5.seconds)
 
-    val routeVerifierId = s"${UUID.randomUUID().toString}"
     val routeDomain = s"${UUID.randomUUID().toString}.oto.tools"
 
     val routeWithVerifier = NgRoute(
