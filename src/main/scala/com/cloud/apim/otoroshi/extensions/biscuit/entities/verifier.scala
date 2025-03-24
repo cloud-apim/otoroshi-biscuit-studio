@@ -1,6 +1,7 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.entities
 
 import akka.stream.scaladsl.Source
+import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils
 import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils.{handleBiscuitErrors, readOrWrite}
 import org.biscuitsec.biscuit.datalog.RunLimits
 import org.biscuitsec.biscuit.error.Error
@@ -15,6 +16,7 @@ import otoroshi.next.models.NgRoute
 import otoroshi.next.utils.JsonHelpers
 import otoroshi.security.IdGenerator
 import otoroshi.storage.{BasicStore, RedisLike, RedisLikeStore}
+import otoroshi.utils.TypedMap
 import otoroshi.utils.http.RequestImplicits.EnhancedRequestHeader
 import otoroshi.utils.syntax.implicits._
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtension, BiscuitExtensionDatastores, BiscuitExtensionState}
@@ -179,7 +181,6 @@ case class VerifierConfig(
                 val jsonCtx = ctxOpt.map(_.json.asObject).getOrElse(Json.obj()) ++ Json.obj("phase" -> "access", "plugin" -> "biscuit_verifier")
                 remoteFactsEntity.config.getRemoteFacts(jsonCtx).map {
                   case Left(err) => {
-                    logger.debug(s"got remote facts error - ${err}")
                     RemoteFactsData()
                   }
                   case Right(factsData) => factsData
@@ -229,10 +230,8 @@ case class VerifierConfig(
               if (verifier.policies().isEmpty) {
                 Try(verifier.allow().authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
                   case Left(err: org.biscuitsec.biscuit.error.Error) =>
-                    logger.debug(s"got verify error - ${err}")
                     Left(handleBiscuitErrors(err)).vfuture
                   case Left(err) =>
-                    logger.debug(s"got verify error - ${err}")
                     Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError())).vfuture
                   case Right(_) =>
                     Right(()).vfuture
@@ -240,10 +239,8 @@ case class VerifierConfig(
               } else {
                 Try(verifier.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
                   case Left(err: org.biscuitsec.biscuit.error.Error) =>
-                    logger.debug(s"got verify error - ${err}")
                     Left(handleBiscuitErrors(err)).vfuture
                   case Left(err) =>
-                    logger.debug(s"got verify error - ${err}")
                     Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError())).vfuture
                   case Right(_) =>
                     Right(()).vfuture
@@ -290,16 +287,20 @@ object VerifierConfig {
   }
 }
 
-case class BiscuitExtractorConfig(extractorType: String = "header", extractorName: String = "Authorization") {
+case class BiscuitExtractorConfig(
+  extractorType: String = "header",
+  extractorName: String = "Authorization"
+) {
 
   def json: JsValue = BiscuitExtractorConfig.format.writes(this)
 
-  def extractToken(req: RequestHeader, user: Option[PrivateAppsUser]): Option[String] = {
+  def extractToken(req: RequestHeader, user: Option[PrivateAppsUser], attrParams: TypedMap): Option[String] = {
     (extractorType match {
       case "header" => req.headers.get(extractorName)
       case "query" => req.getQueryString(extractorName)
       case "cookie" => req.cookies.get(extractorName).map(_.value)
       case "user_tokens" => user.map(_.token).getOrElse(Json.obj()).at(extractorName).asOpt[String]
+      case "attrs" => attrParams.get(BiscuitUtils.BiscuitTokenKey).map(_._1)
       case _ => None
     }).map { token =>
       BiscuitExtractorConfig.replaceHeader(token)
@@ -369,11 +370,11 @@ case class BiscuitVerifier(
 
   def theTags: Seq[String] = tags
 
-  def verify(req: RequestHeader, ctxOpt: Option[VerificationContext])(implicit env: Env, ec: ExecutionContext): Future[Either[String, Unit]] = {
+  def verify(req: RequestHeader, ctxOpt: Option[VerificationContext], attrs: TypedMap)(implicit env: Env, ec: ExecutionContext): Future[Either[String, Unit]] = {
     env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(keypairRef)) match {
       case None => Left("keypair_ref not found").vfuture
       case Some(keypair) => {
-        extractor.extractToken(req, ctxOpt.flatMap(_.user)) match {
+        extractor.extractToken(req, ctxOpt.flatMap(_.user), attrs) match {
           case Some(token) => {
             Try(Biscuit.from_b64url(token, keypair.getPubKey)).toEither match {
               case Left(err) => Left(s"Unable to deserialize Biscuit token : ${err}").vfuture

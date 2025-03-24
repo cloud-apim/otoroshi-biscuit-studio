@@ -1,8 +1,14 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.utils
 
+import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.env.Env
+import play.api.libs.typedmap.TypedKey
 
 object BiscuitUtils {
+
+  val BiscuitTokenKey = TypedKey[(String, Biscuit)](
+    "biscuit-token"
+  )
 
   def readOrWrite(method: String): String = {
     method match {

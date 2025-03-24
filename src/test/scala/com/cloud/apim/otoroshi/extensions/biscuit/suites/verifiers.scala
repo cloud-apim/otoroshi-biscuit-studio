@@ -1,14 +1,13 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import akka.stream.Materializer
-import com.cloud.apim.otoroshi.extensions.biscuit.domains.{BiscuitKeyPairsUtils, BiscuitVerifiersUtils}
+import com.cloud.apim.otoroshi.extensions.biscuit.domains.BiscuitVerifiersUtils
 import com.cloud.apim.otoroshi.extensions.biscuit.entities.{BiscuitExtractorConfig, BiscuitKeyPair, BiscuitVerifier, VerifierConfig}
 import com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionSuite, OtoroshiClient}
-import org.biscuitsec.biscuit.crypto.KeyPair
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.api.Otoroshi
 import otoroshi.models.EntityLocation
-import otoroshi.next.models.{NgBackend, NgDomainAndPath, NgFrontend, NgPluginInstance, NgPluginInstanceConfig, NgPlugins, NgRoute, NgTarget}
+import otoroshi.next.models._
 import otoroshi.utils.syntax.implicits._
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenVerifierPlugin
 import play.api.libs.json.Json
@@ -18,6 +17,29 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 
 class TestVerifiers extends BiscuitExtensionSuite {
+  val port: Int = freePort
+  val entityId = s"biscuit-verifier_7086fb05-0a0b-4be8-92b0-1f89ab243a83"
+  val conf = VerifierConfig(
+    checks = List.empty,
+    facts = List.empty,
+    resources = List.empty,
+    rules = List.empty,
+    policies = List.empty,
+    revokedIds = List.empty
+  )
+  val verifier = BiscuitVerifier(
+    id = entityId,
+    name = "New Biscuit Verifier entity",
+    description = "New biscuit Verifier entity",
+    metadata = Map.empty,
+    tags = Seq.empty,
+    location = EntityLocation.default,
+    keypairRef = "",
+    config = conf,
+    extractor = BiscuitExtractorConfig()
+  )
+  var otoroshi: Otoroshi = _
+  var client: OtoroshiClient = _
 
   def testBiscuitVerifier(client: OtoroshiClient, awaitFor: FiniteDuration)(implicit ec: ExecutionContext, mat: Materializer): Unit = {
     val port = client.port
@@ -71,7 +93,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
       tags = Seq.empty,
       location = EntityLocation.default,
       keypairRef = keypairID,
-      config =  conf,
+      config = conf,
       extractor = BiscuitExtractorConfig(
         "header", "biscuit-header"
       )
@@ -168,7 +190,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
       tags = Seq.empty,
       location = EntityLocation.default,
       keypairRef = keypairID,
-      config =  conf,
+      config = conf,
       extractor = BiscuitExtractorConfig(
         "header", "biscuit-header"
       )
@@ -265,7 +287,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
       tags = Seq.empty,
       location = EntityLocation.default,
       keypairRef = keypairID,
-      config =  conf,
+      config = conf,
       extractor = BiscuitExtractorConfig(
         "header", "biscuit-header"
       )
@@ -365,7 +387,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
       tags = Seq.empty,
       location = EntityLocation.default,
       keypairRef = keypairID,
-      config =  conf,
+      config = conf,
       extractor = BiscuitExtractorConfig(
         "header", "biscuit-header"
       )
@@ -421,6 +443,8 @@ class TestVerifiers extends BiscuitExtensionSuite {
 
     await(2500.millis)
   }
+  implicit var ec: ExecutionContext = _
+  implicit var mat: Materializer = _
 
   def testRevokedToken(client: OtoroshiClient, awaitFor: FiniteDuration)(implicit ec: ExecutionContext, mat: Materializer): Unit = {
     val port = client.port
@@ -464,7 +488,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
       tags = Seq.empty,
       location = EntityLocation.default,
       keypairRef = keypairID,
-      config =  conf,
+      config = conf,
       extractor = BiscuitExtractorConfig(
         "header", "biscuit-header"
       )
@@ -550,7 +574,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
       tags = Seq.empty,
       location = EntityLocation.default,
       keypairRef = demoKeyPair.id,
-      config =  VerifierConfig(
+      config = VerifierConfig(
         checks = List.empty,
         facts = Seq(
           "resource(\"file1\");"
@@ -629,12 +653,6 @@ class TestVerifiers extends BiscuitExtensionSuite {
     println("-----------------------------------------\n\n")
   }
 
-  val port: Int = freePort
-  var otoroshi: Otoroshi = _
-  var client: OtoroshiClient = _
-  implicit var ec: ExecutionContext = _
-  implicit var mat: Materializer = _
-
   override def beforeAll(): Unit = {
     otoroshi = startOtoroshiServer(port)
     client = clientFor(port)
@@ -645,29 +663,6 @@ class TestVerifiers extends BiscuitExtensionSuite {
   override def afterAll(): Unit = {
     otoroshi.stop()
   }
-
-  val entityId = s"biscuit-verifier_7086fb05-0a0b-4be8-92b0-1f89ab243a83"
-
-  val conf = VerifierConfig(
-    checks = List.empty,
-    facts = List.empty,
-    resources = List.empty,
-    rules = List.empty,
-    policies = List.empty,
-    revokedIds = List.empty
-  )
-
-  val verifier = BiscuitVerifier(
-    id = entityId,
-    name = "New Biscuit Verifier entity",
-    description = "New biscuit Verifier entity",
-    metadata = Map.empty,
-    tags = Seq.empty,
-    location = EntityLocation.default,
-    keypairRef = "",
-    config =  conf,
-    extractor = BiscuitExtractorConfig()
-  )
 
   test(s"create verifier entity") {
     printHeader(verifier.name, "Create new verifier entity")
@@ -685,22 +680,22 @@ class TestVerifiers extends BiscuitExtensionSuite {
   }
 
   test(s"testing verifier plugin with bad token") {
-    printHeader(verifier.name,  "testing verifier plugin with bad token")
+    printHeader(verifier.name, "testing verifier plugin with bad token")
     testBiscuitVerifierWithBadToken(client, 30.seconds)
   }
 
   test(s"testing role admin") {
-    printHeader(verifier.name,  "testing role admin")
+    printHeader(verifier.name, "testing role admin")
     testRoleAdmin(client, 30.seconds)
   }
 
   test(s"testing token revoked") {
-    printHeader(verifier.name,  "testing token revoked")
+    printHeader(verifier.name, "testing token revoked")
     testRevokedToken(client, 30.seconds)
   }
 
   test(s"testing unauthorized exception thrown by biscuit verifier") {
-    printHeader("",  "testing unauthorized exception thrown by biscuit verifier")
+    printHeader("", "testing unauthorized exception thrown by biscuit verifier")
     testUnauthorizedVerifierException(client, 30.seconds)
   }
 }

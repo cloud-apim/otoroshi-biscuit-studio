@@ -188,7 +188,7 @@ class BiscuitTokenAttenuatorPlugin extends NgRequestTransformer {
       case None => Left(Results.InternalServerError(Json.obj("error" -> "keypair entity not found"))).vfuture
       case Some(keypair) => {
         val publicKey = new PublicKey(keypair.getCurrentAlgo, keypair.pubKey)
-        BiscuitExtractorConfig(config.extractorType, config.extractorName).extractToken(ctx.request, ctx.user) match {
+        BiscuitExtractorConfig(config.extractorType, config.extractorName).extractToken(ctx.request, ctx.user, ctx.attrs) match {
           case None => Left(Results.InternalServerError(Json.obj("error" -> "token not found from header"))).vfuture
           case Some(token) => {
             Try(Biscuit.from_b64url(token, publicKey)).toEither match {

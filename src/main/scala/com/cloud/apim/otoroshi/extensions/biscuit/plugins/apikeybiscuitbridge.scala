@@ -129,7 +129,7 @@ class BiscuitApiKeyBridgePlugin extends NgPreRouting {
     env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(config.keypairRef)) match {
       case None => handleError("keypair_ref not found")
       case Some(keypair) => {
-        BiscuitExtractorConfig(config.extractorType, config.extractorName).extractToken(ctx.request, None) match {
+        BiscuitExtractorConfig(config.extractorType, config.extractorName).extractToken(ctx.request, None, ctx.attrs) match {
           case Some(token) => {
             Try(Biscuit.from_b64url(token, keypair.getPubKey)).toEither match {
               case Left(err) => handleError(s"Unable to deserialize Biscuit token : ${err}")
