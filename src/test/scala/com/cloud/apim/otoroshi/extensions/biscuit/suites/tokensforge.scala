@@ -12,6 +12,7 @@ import otoroshi.security.IdGenerator
 import otoroshi.utils.syntax.implicits._
 import play.api.libs.json.Json
 import reactor.core.publisher.Mono
+import scala.jdk.CollectionConverters._
 
 import java.util.UUID
 import scala.concurrent.ExecutionContext
@@ -387,7 +388,7 @@ class TestsTokensForge extends BiscuitExtensionSuite {
 
     val encodedBiscuit = Biscuit.from_b64url(token, publicKeyFormatted)
     assertEquals(encodedBiscuit.authorizer().facts().size(), forge.config.facts.length, s"token doesn't contain all facts")
-    assertEquals(encodedBiscuit.authorizer().checks().size(), forge.config.checks.length, s"token doesn't contain all checks")
+    assertEquals(encodedBiscuit.authorizer().checks().asScala.flatMap(_._2.asScala).size, forge.config.checks.length, s"token doesn't contain all checks")
 
     await(2500.millis)
   }
