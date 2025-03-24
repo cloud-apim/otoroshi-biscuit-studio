@@ -5,8 +5,11 @@ import com.cloud.apim.otoroshi.extensions.biscuit.entities._
 import org.biscuitsec.biscuit.crypto.KeyPair
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.models.EntityLocation
+import otoroshi.next.models.{NgBackend, NgDomainAndPath, NgFrontend, NgPluginInstance, NgPluginInstanceConfig, NgPlugins, NgRoute, NgTarget}
+import otoroshi.next.plugins.UserProfileEndpoint
 import otoroshi.security.IdGenerator
 import otoroshi.utils.syntax.implicits._
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.{BiscuitTokenAttenuatorPlugin, BiscuitUserExtractor}
 import play.api.libs.json.Json
 
 import java.util.UUID
@@ -111,73 +114,38 @@ class TestBiscuitUserExtractorPlugin extends BiscuitStudioOneOtoroshiServerPerSu
     val routeId = s"route_${UUID.randomUUID().toString}"
     val routeDomain = "user-extractor.oto.tools"
 
-    val routeWithAttenuator = client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertRaw(routeId, Json.parse(
-      s"""{
-         |  "id": "${routeId}",
-         |  "name": "biscuit-attenuator",
-         |  "frontend": {
-         |    "domains": [
-         |      "${routeDomain}"
-         |    ]
-         |  },
-         |  "backend": {
-         |    "targets": [
-         |      {
-         |        "id": "target_1",
-         |        "hostname": "request.otoroshi.io",
-         |        "port": 443,
-         |        "tls": true
-         |      }
-         |    ],
-         |    "root": "/",
-         |    "rewrite": false,
-         |    "load_balancing": {
-         |      "type": "RoundRobin"
-         |    }
-         |  },
-         |   "backend_ref": null,
-         |  "plugins": [
-         |    {
-         |      "enabled": true,
-         |      "debug": false,
-         |      "plugin": "cp:otoroshi.next.plugins.OverrideHost",
-         |      "include": [],
-         |      "exclude": [],
-         |      "config": {},
-         |      "bound_listeners": [],
-         |      "plugin_index": {
-         |        "transform_request": 0
-         |      }
-         |    },
-         |    {
-         |      "plugin_index": {},
-         |      "plugin": "cp:otoroshi.next.plugins.UserProfileEndpoint",
-         |      "enabled": true,
-         |      "debug": false,
-         |      "include": [],
-         |      "exclude": [],
-         |      "bound_listeners": [],
-         |      "config": {}
-         |    },
-         |    {
-         |      "enabled": true,
-         |      "debug": false,
-         |      "plugin": "cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitUserExtractor",
-         |      "include": [],
-         |      "exclude": [],
-         |      "config": {
-         |        "keypair_ref": "${keypair.id}",
-         |        "username_key": "username"
-         |      },
-         |      "bound_listeners": [],
-         |      "plugin_index": {
-         |        "validate_access": 0
-         |      }
-         |    }
-         |  ]
-         |}""".stripMargin)).awaitf(30.seconds)
-    assert(routeWithAttenuator.created, s"attenuator route has not been created")
-    await(5.seconds)
+    val routeWithAttenuator = NgRoute(
+      location = EntityLocation.default,
+      id = UUID.randomUUID().toString,
+      name = "test attenuator route",
+      description = "test attenuator route",
+      tags = Seq.empty,
+      metadata = Map.empty,
+      enabled = true,
+      debugFlow = false,
+      capture = false,
+      exportReporting = false,
+      frontend = NgFrontend.empty.copy(domains = Seq(NgDomainAndPath(routeDomain))),
+      backend = NgBackend.empty.copy(targets = Seq(NgTarget.default)),
+      plugins = NgPlugins(Seq(
+        NgPluginInstance(
+        plugin = s"cp:${classOf[UserProfileEndpoint].getName}",
+        config = NgPluginInstanceConfig(Json.obj())
+      ),
+        NgPluginInstance(
+          plugin = s"cp:${classOf[BiscuitUserExtractor].getName}",
+          config = NgPluginInstanceConfig(Json.obj(
+            "keypair_ref" -> keypair.id,
+            "username_key" -> "username"
+          ))
+        )
+      ))
+    )
+
+    // Create entities
+    client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertEntity(routeWithAttenuator)
+
+    await(3.seconds)
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                    call the route with the  BAD token                               ///////////
