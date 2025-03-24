@@ -428,7 +428,7 @@ class AdminAPISuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     ))).awaitf(5.seconds)
 
     assert(respBadVerifierKeypairRef.json.at("error").isDefined, "error for bad verifier with bad checks should be defined")
-    assertEquals(respBadVerifierKeypairRef.json.at("error").asString, "Err(Format(Signature(InvalidFormat(\"signature error: Verification equation was not satisfied\"))))", "error for bad verifier with bad checks should be defined")
+    assertEquals(respBadVerifierKeypairRef.json.at("error").asString, "Biscuit FormatError - Signature", "error for bad verifier with bad checks should be defined")
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
