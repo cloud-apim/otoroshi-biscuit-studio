@@ -179,7 +179,7 @@ class BiscuitApiKeyBridgeSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     val goodToken = BiscuitExtractorConfig.replaceHeader(respGoodToken.json.at("token").get.asString)
     assert(goodToken.nonEmpty, s"token is empty")
 
-    val publicKeyFormatted = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)
+    val publicKeyFormatted = new PublicKey(keypair.getCurrentAlgo, keypair.pubKey)
 
     val encodedGoodBiscuit =  org.biscuitsec.biscuit.token.Biscuit.from_b64url(goodToken, publicKeyFormatted)
 
