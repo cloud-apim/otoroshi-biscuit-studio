@@ -46,6 +46,7 @@ Default Otoroshi UI credentials : admin / password
   - [Attenuators](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/entities/attenuators)
   - [RBAC Policies](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/entities/rbac)
   - [Remote Facts Loader](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/entities/remotefacts)
+  - [Forges](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/entities/forges)
 ## Plugins
  - [Verifier plugin](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/plugins/verifiers)
  - [Attenuator plugin](https://cloud-apim.github.io/otoroshi-biscuit-studio/docs/plugins/attenuators)
