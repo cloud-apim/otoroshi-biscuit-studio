@@ -120,7 +120,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
          |    {
          |      "enabled": true,
          |      "debug": false,
-         |      "plugin": "cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenValidator",
+         |      "plugin": "cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenVerifierPlugin",
          |      "include": [],
          |      "exclude": [],
          |      "config": {
@@ -256,7 +256,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
          |    {
          |      "enabled": true,
          |      "debug": false,
-         |      "plugin": "cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenValidator",
+         |      "plugin": "cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenVerifierPlugin",
          |      "include": [],
          |      "exclude": [],
          |      "config": {
@@ -393,7 +393,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
          |    {
          |      "enabled": true,
          |      "debug": false,
-         |      "plugin": "cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenValidator",
+         |      "plugin": "cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenVerifierPlugin",
          |      "include": [],
          |      "exclude": [],
          |      "config": {
@@ -532,7 +532,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
          |    {
          |      "enabled": true,
          |      "debug": false,
-         |      "plugin": "cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenValidator",
+         |      "plugin": "cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenVerifierPlugin",
          |      "include": [],
          |      "exclude": [],
          |      "config": {
@@ -668,7 +668,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
          |    {
          |      "enabled": true,
          |      "debug": false,
-         |      "plugin": "cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenValidator",
+         |      "plugin": "cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenVerifierPlugin",
          |      "include": [],
          |      "exclude": [],
          |      "config": {
@@ -805,7 +805,7 @@ class TestVerifiers extends BiscuitExtensionSuite {
          |    {
          |      "enabled": true,
          |      "debug": false,
-         |      "plugin": "cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenValidator",
+         |      "plugin": "cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenVerifierPlugin",
          |      "include": [],
          |      "exclude": [],
          |      "config": {
