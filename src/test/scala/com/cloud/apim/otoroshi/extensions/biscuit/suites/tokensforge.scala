@@ -1,22 +1,24 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import akka.stream.Materializer
-import com.cloud.apim.otoroshi.extensions.biscuit.domains.{BiscuitKeyPairsUtils, BiscuitTokensForgeUtils, BiscuitVerifiersUtils}
+import com.cloud.apim.otoroshi.extensions.biscuit.domains.BiscuitVerifiersUtils
 import com.cloud.apim.otoroshi.extensions.biscuit.entities._
 import com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionSuite, OtoroshiClient}
 import org.biscuitsec.biscuit.crypto.{KeyPair, PublicKey}
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.api.Otoroshi
 import otoroshi.models.EntityLocation
+import otoroshi.next.models._
 import otoroshi.security.IdGenerator
 import otoroshi.utils.syntax.implicits._
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenVerifierPlugin
 import play.api.libs.json.Json
 import reactor.core.publisher.Mono
-import scala.jdk.CollectionConverters._
 
 import java.util.UUID
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
+import scala.jdk.CollectionConverters._
 
 class TestsTokensForge extends BiscuitExtensionSuite {
   val port: Int = freePort
@@ -112,63 +114,40 @@ class TestsTokensForge extends BiscuitExtensionSuite {
 
     BiscuitVerifiersUtils.createVerifierEntity(client)(verifier)
 
-    val routeWithVerifier = client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertRaw(routeVerifierId, Json.parse(
-      s"""{
-         |  "id": "${routeVerifierId}",
-         |  "name": "biscuit-verifier",
-         |  "frontend": {
-         |    "domains": [
-         |      "${routeDomain}"
-         |    ]
-         |  },
-         |  "backend": {
-         |    "targets": [
-         |      {
-         |        "id": "target_1",
-         |        "hostname": "request.otoroshi.io",
-         |        "port": 443,
-         |        "tls": true
-         |      }
-         |    ],
-         |    "root": "/",
-         |    "rewrite": false,
-         |    "load_balancing": {
-         |      "type": "RoundRobin"
-         |    }
-         |  },
-         |   "backend_ref": null,
-         |  "plugins": [
-         |    {
-         |      "enabled": true,
-         |      "debug": false,
-         |      "plugin": "cp:otoroshi.next.plugins.OverrideHost",
-         |      "include": [],
-         |      "exclude": [],
-         |      "config": {},
-         |      "bound_listeners": [],
-         |      "plugin_index": {
-         |        "transform_request": 0
-         |      }
-         |    },
-         |    {
-         |      "enabled": true,
-         |      "debug": false,
-         |      "plugin": "cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenVerifierPlugin",
-         |      "include": [],
-         |      "exclude": [],
-         |      "config": {
-         |        "verifier_refs": ["${verifierId}"],
-         |        "enforce": true
-         |      },
-         |      "bound_listeners": [],
-         |      "plugin_index": {
-         |        "validate_access": 0
-         |      }
-         |    }
-         |  ]
-         |}""".stripMargin)).awaitf(awaitFor)
-    assert(routeWithVerifier.created, s"verifier route has not been created")
-    await(1500.millis)
+    val routeWithVerifier = NgRoute(
+      location = EntityLocation.default,
+      id = UUID.randomUUID().toString,
+      name = "test verifier route",
+      description = "test verifier route",
+      tags = Seq.empty,
+      metadata = Map.empty,
+      enabled = true,
+      debugFlow = false,
+      capture = false,
+      exportReporting = false,
+      frontend = NgFrontend.empty.copy(domains = Seq(NgDomainAndPath(routeDomain))),
+      backend = NgBackend.empty.copy(targets = Seq(NgTarget.default)),
+      plugins = NgPlugins(Seq(
+        NgPluginInstance(
+          plugin = s"cp:otoroshi.next.plugins.EchoBackend",
+          config = NgPluginInstanceConfig(Json.obj(
+            "limit" -> "524288"
+          ))
+        ),
+        NgPluginInstance(
+          plugin = s"cp:${classOf[BiscuitTokenVerifierPlugin].getName}",
+          config = NgPluginInstanceConfig(Json.obj(
+            "verifier_refs" -> Seq(
+              verifierId
+            ),
+            "enforce" -> true
+          ))
+        )
+      ))
+    )
+
+    client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertEntity(routeWithVerifier)
+    await(3.seconds)
 
     val headers = Map(
       "biscuit-header" -> tokenDemo
@@ -184,9 +163,12 @@ class TestsTokensForge extends BiscuitExtensionSuite {
 
   test(s"create token from forge entity") {
     printHeader(demoKeyPair.name, "Create Keypair")
-    BiscuitKeyPairsUtils.createKeypairEntity(client)(demoKeyPair)
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(demoKeyPair).awaitf(5.seconds)
+
     printHeader(biscuitToken.name, "Create biscuit token entity")
-    BiscuitTokensForgeUtils.createTokenEntity(client)(biscuitToken)
+
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-forges").upsertEntity(biscuitToken).awaitf(5.seconds)
+
     printHeader("", "Testing the biscuit entity with a verifier")
     testWithVerifier(client, 30.seconds)
   }

@@ -52,8 +52,6 @@ class TestVerifiers extends BiscuitExtensionSuite {
       privKey = privkey
     )
 
-    BiscuitKeyPairsUtils.createKeypairEntity(client)(demoKeyPair)
-
     val conf = VerifierConfig(
       checks = List.empty,
       facts = List.empty,
@@ -78,8 +76,6 @@ class TestVerifiers extends BiscuitExtensionSuite {
         "header", "biscuit-header"
       )
     )
-
-    BiscuitVerifiersUtils.createVerifierEntity(client)(verifier)
 
     val routeWithVerifier = NgRoute(
       location = EntityLocation.default,
@@ -113,6 +109,9 @@ class TestVerifiers extends BiscuitExtensionSuite {
       ))
     )
 
+    // Create entities
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(demoKeyPair)
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-verifiers").upsertEntity(verifier)
     client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertEntity(routeWithVerifier)
     await(3.seconds)
 
@@ -152,8 +151,6 @@ class TestVerifiers extends BiscuitExtensionSuite {
       privKey = "1304480d1d9eea4075de296d8d84c2522703778c01b0a1459145716a7c33a665"
     )
 
-    BiscuitKeyPairsUtils.createKeypairEntity(client)(demoKeyPair)
-
     val conf = VerifierConfig(
       checks = List.empty,
       facts = List.empty,
@@ -176,8 +173,6 @@ class TestVerifiers extends BiscuitExtensionSuite {
         "header", "biscuit-header"
       )
     )
-
-    BiscuitVerifiersUtils.createVerifierEntity(client)(verifier)
 
     val routeWithVerifier = NgRoute(
       location = EntityLocation.default,
@@ -211,6 +206,9 @@ class TestVerifiers extends BiscuitExtensionSuite {
       ))
     )
 
+    // Create entities
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(demoKeyPair)
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-verifiers").upsertEntity(verifier)
     client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertEntity(routeWithVerifier)
     await(3.seconds)
 
@@ -250,8 +248,6 @@ class TestVerifiers extends BiscuitExtensionSuite {
       privKey = "1304480d1d9eea4075de296d8d84c2522703778c01b0a1459145716a7c33a665"
     )
 
-    BiscuitKeyPairsUtils.createKeypairEntity(client)(demoKeyPair)
-
     val conf = VerifierConfig(
       checks = List.empty,
       facts = List.empty,
@@ -274,8 +270,6 @@ class TestVerifiers extends BiscuitExtensionSuite {
         "header", "biscuit-header"
       )
     )
-
-    BiscuitVerifiersUtils.createVerifierEntity(client)(verifier)
 
     val routeWithVerifier = NgRoute(
       location = EntityLocation.default,
@@ -309,6 +303,9 @@ class TestVerifiers extends BiscuitExtensionSuite {
       ))
     )
 
+    // Create entities
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(demoKeyPair)
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-verifiers").upsertEntity(verifier)
     client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertEntity(routeWithVerifier)
     await(3.seconds)
 
@@ -349,8 +346,6 @@ class TestVerifiers extends BiscuitExtensionSuite {
       privKey = "ECD87DAF9153424EA7BBF3C55BE4ED000CEB78B102C4FB930BBEA159F3983E0A"
     )
 
-    BiscuitKeyPairsUtils.createKeypairEntity(client)(demoKeyPair)
-
     val conf = VerifierConfig(
       checks = List.empty,
       facts = List.empty,
@@ -375,8 +370,6 @@ class TestVerifiers extends BiscuitExtensionSuite {
         "header", "biscuit-header"
       )
     )
-
-    BiscuitVerifiersUtils.createVerifierEntity(client)(verifier)
 
     val routeWithVerifier = NgRoute(
       location = EntityLocation.default,
@@ -410,6 +403,9 @@ class TestVerifiers extends BiscuitExtensionSuite {
       ))
     )
 
+    // Create entities
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(demoKeyPair)
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-verifiers").upsertEntity(verifier)
     client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertEntity(routeWithVerifier)
     await(3.seconds)
 
@@ -447,8 +443,6 @@ class TestVerifiers extends BiscuitExtensionSuite {
       privKey = "284702b00861cdaaa5bc868768a06dbec3ebffe863db2c3d12aa413427a68493"
     )
 
-    BiscuitKeyPairsUtils.createKeypairEntity(client)(demoKeyPair)
-
     val conf = VerifierConfig(
       checks = List.empty,
       facts = List.empty,
@@ -475,8 +469,6 @@ class TestVerifiers extends BiscuitExtensionSuite {
         "header", "biscuit-header"
       )
     )
-
-    BiscuitVerifiersUtils.createVerifierEntity(client)(verifier)
 
     val routeWithVerifier = NgRoute(
       location = EntityLocation.default,
@@ -510,6 +502,9 @@ class TestVerifiers extends BiscuitExtensionSuite {
       ))
     )
 
+    // Create entities
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(demoKeyPair)
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-verifiers").upsertEntity(verifier)
     client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertEntity(routeWithVerifier)
     await(3.seconds)
 
@@ -547,8 +542,6 @@ class TestVerifiers extends BiscuitExtensionSuite {
       privKey = "99e87b0e9158531eeeb503ff15266e2b23c2a2507b138c9d1b1f2ab458df2d61"
     )
 
-    BiscuitKeyPairsUtils.createKeypairEntity(client)(demoKeyPair)
-
     val verifier = BiscuitVerifier(
       id = verifierId,
       name = "New Biscuit Verifier entity",
@@ -574,8 +567,6 @@ class TestVerifiers extends BiscuitExtensionSuite {
       ),
       extractor = BiscuitExtractorConfig()
     )
-
-    BiscuitVerifiersUtils.createVerifierEntity(client)(verifier)
 
     val routeWithVerifier = NgRoute(
       location = EntityLocation.default,
@@ -609,6 +600,9 @@ class TestVerifiers extends BiscuitExtensionSuite {
       ))
     )
 
+    // Create entities
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(demoKeyPair)
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-verifiers").upsertEntity(verifier)
     client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertEntity(routeWithVerifier)
     await(3.seconds)
 
