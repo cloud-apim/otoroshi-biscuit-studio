@@ -6,6 +6,7 @@ import akka.stream.scaladsl.{Framing, Sink, Source}
 import akka.util.ByteString
 import com.typesafe.config.ConfigFactory
 import otoroshi.api.Otoroshi
+import otoroshi.env.Env
 import otoroshi.models.Entity
 import otoroshi.utils.syntax.implicits._
 import play.api.Configuration
@@ -527,12 +528,14 @@ class BiscuitStudioOneOtoroshiServerPerSuite extends BiscuitExtensionSuite {
   var client: OtoroshiClient = _
   implicit var ec: ExecutionContext = _
   implicit var mat: Materializer = _
+  implicit var env: Env = _
 
   override def beforeAll(): Unit = {
     otoroshi = startOtoroshiServer(port)
     client = clientFor(port)
     ec = otoroshi.executionContext
     mat = otoroshi.materializer
+    env = otoroshi.env
   }
 
   override def afterAll(): Unit = {

@@ -6,6 +6,9 @@ import Terminal from '@site/src/components/Terminal';
 
 # Verifier plugin
 
+Integrate verifiers plugins into your Otoroshi routes to check the validity of Biscuit tokens and add your own rules to verify those tokens.
+
+This ensures that only authorized requests are processed, providing additional layers of security and control over your API traffic.
 
 ### **Example Request Before Using a Biscuit Verifier**
 
@@ -39,8 +42,6 @@ Authorization: Biscuit BISCUIT_TOKEN...originalTokenData
 
 - Select a Biscuit Verifier entity you would like to use.
 
-- Choose the location of the Biscuit Token to be extracted (in headers, in query params or in cookies)
-
 - Finally, choose the name of the extractor (Example : could be `Authorization` for headers)
 
 ## Example : Verifier Plugin configuration
@@ -48,19 +49,21 @@ Authorization: Biscuit BISCUIT_TOKEN...originalTokenData
 Here is a demo configuration :
 
 ```js
-  {
-    "verifier_ref": "YOUR_BISCUIT_VERIFIER_ENTITY_REF",
-    "rbac_ref": "RBAC_POLICY_ENTITY_REF" // optional
-    "enforce": true, // true or false
-    "extractor_type": "header", // header, query or cookies
-    "extractor_name": "Authorization"
-  }
+{
+  "verifier_refs": [], 
+  "enforce": true
+}
 ```
-# Biscuit Token: Default Facts in Authorization
 
-### Default Facts Table
+### Fields explanation : 
 
-# Biscuit Verifier Default Facts
+| Item            | Type       | Default value |          Explanation        |
+|-----------------|------------|---------------|-----------------------------|
+| `verifier_refs` | Array      | `[]` | A list a of verifier entities |
+| `enforce`       | Boolean    | `true` | If enabled and neither verifier could verify rightly the token, then should return forbidden. |
+
+
+# Biscuit Verifier Plugin Default Facts
 
 In the context of a Biscuit Verifier, the following data points are typically used to verify requests, ensuring proper authorization and access control. The facts are provided by the authorizer and give insight into the request, the user, and the environment to assess the legitimacy of the request.
 
@@ -151,3 +154,102 @@ In the context of a Biscuit Verifier, the following data points are typically us
     - **Remote-address**: Denotes the IP address and port of the requester.
     - **Request Start Time**: Can be used for validating time-based conditions in access control.
     - **Accept-Encoding**: Specifies what encoding methods the client supports, which might impact how the server processes the request.
+
+## Demo
+
+We need to create a route with our `Biscuit Verifier Plugin`
+
+```sh
+curl -X POST \
+  -H 'Content-Type: application/json' \
+  -H 'Otoroshi-Client-Id: admin-api-apikey-id' \
+  -H 'Otoroshi-Client-Secret: admin-api-apikey-secret' \
+  "http://otoroshi-api.oto.tools:8080/apis/proxy.otoroshi.io/v1/routes" \
+  -d '{
+  "_loc" : {
+    "tenant" : "default",
+    "teams" : [ "default" ]
+  },
+  "id" : "4874704c-56a2-4460-9a21-ff8055a19c75",
+  "name" : "test route",
+  "description" : "test route",
+  "tags" : [ ],
+  "metadata" : { },
+  "enabled" : true,
+  "groups" : [ "default" ],
+  "bound_listeners" : [ ],
+  "frontend" : {
+    "domains" : [ "biscuit-verifier.oto.tools" ],
+    "strip_path" : true,
+    "exact" : false,
+    "headers" : { },
+    "query" : { },
+    "methods" : [ ]
+  },
+  "backend" : {
+    "targets" : [ {
+      "id" : "www.otoroshi.io",
+      "hostname" : "www.otoroshi.io",
+      "port" : 443,
+      "tls" : true,
+      "weight" : 1,
+      "predicate" : {
+        "type" : "AlwaysMatch"
+      },
+      "protocol" : "HTTP/1.1",
+      "ip_address" : null,
+      "tls_config" : {
+        "certs" : [ ],
+        "trusted_certs" : [ ],
+        "enabled" : false,
+        "loose" : false,
+        "trust_all" : false
+      }
+    } ],
+    "root" : "/",
+    "rewrite" : false,
+    "load_balancing" : {
+      "type" : "RoundRobin"
+    }
+  },
+  "backend_ref" : null,
+  "plugins" : [ 
+      {
+      "enabled" : true,
+      "debug" : false,
+      "plugin" : "cp:otoroshi.next.plugins.EchoBackend",
+      "include" : [ ],
+      "exclude" : [ ],
+      "config" : {
+        "limit": 524288
+      },
+      "bound_listeners" : [ ]
+    },
+    {
+      "enabled" : true,
+      "debug" : false,
+      "plugin" : "cp:otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenValidator",
+      "include" : [ ],
+      "exclude" : [ ],
+      "config" : {
+        "verifier_refs" : [
+          "biscuit_verifier_6f5f20a5-2c65-4860-8ad1-7b6495ee03bf"
+        ],
+        "enforce": true
+      },
+      "bound_listeners" : [ ]
+    } 
+  ]
+}'
+```
+
+Now we can call the route with our token in `Authorization` header.
+
+```sh
+curl -X POST \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Biscuit: Eo0BCiMKBDEyMzQYAyIJCgcIChIDGIAIMg4KDAoCCBsSBggDEgIYABIkCAASIPCKFpXk1RhZiJoXZ0BHvsic65rH5MDSWZJt-8Rn1_XBGkDGK2CcUBcIdt7p3XmDCAEvYrFpB8w6nVPYz9vYFLUQ8M1wTSNaoP7M1UdD5S6AkA0ZJAaVkWsUHdcOgwNpiPwMIiIKIMHFnoE_nPPkAxIDCZ102kwX3z3SoXHp2xQCKik_38Fd' \
+  "http://biscuit-verifier.oto.tools:8080"
+```
+
+The request should pass successfully.

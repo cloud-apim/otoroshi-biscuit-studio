@@ -8,47 +8,60 @@ import Terminal from '@site/src/components/Terminal';
 
 ![Otoroshi Biscuit Studio](/img/undraw_features-overview_uone.svg)
 
-[**Otoroshi Biscuit Studio**](https://github.com/cloud-apim/otoroshi-biscuit-studio) is a powerful extension for [Otoroshi](https://maif.github.io/otoroshi/manual/index.html), designed to integrate and manage [Biscuit Tokens](https://biscuitsec.org) seamlessly within your beloved API Gateway. 
+[**Otoroshi Biscuit Studio**](https://github.com/cloud-apim/otoroshi-biscuit-studio) is a powerful extension for [Otoroshi](https://maif.github.io/otoroshi/manual/index.html), designed to integrate and manage [Eclipse Biscuit Tokens](https://biscuitsec.org) seamlessly within your beloved API Gateway. 
 
-Biscuit tokens offer a cutting-edge approach to secure and efficient access control. By combining advanced cryptographic techniques with a compact, extensible format, Biscuit tokens empower developers to create robust, scalable security solutions. 
+Biscuit tokens offer a cutting-edge approach to secure and efficient access control. By combining advanced cryptographic techniques with a compact, extensible format, **Eclipse Biscuit tokens** empower developers to create robust, scalable security solutions. 
 
 Their versatility and unique features make them an ideal choice for modern token-based authentication and authorization systems, enabling fine-grained control over user access and permissions.
 
 ### Supported Entities in Otoroshi Biscuit Studio
 
-* **[Biscuit KeyPairs](/docs/entities/keypairs)**  
-  Create Biscuit Keypairs to generate and verify Biscuit tokens. 
+* **[KeyPairs](/docs/entities/keypairs)**  
+  Create Biscuit Keypairs to forge, attenuate and verify tokens. 
   
   Keypairs are essential for signing and verifying tokens, ensuring the integrity and authenticity of requests.
 
-* **[Biscuit Verifiers](/docs/entities/verifiers)**  
-  Manage and configure verifiers that check the validity of incoming Biscuit tokens against defined rules and policies, ensuring proper authorization and security.
+* **[Forges](/docs/entities/forges)**  
+  Define a Forge to generate some tokens based on the facts and rules you provided in the forge configuration.
 
-* **[Biscuit Attenuators](/docs/entities/attenuators)**  
+  It's kind a template to generate some tokens with given data. 
+  
+* **[Verifiers](/docs/entities/verifiers)**  
+  Manage and configure verifiers that check the validity of incoming Eclipse Biscuit tokens against defined rules and policies, ensuring proper authorization and security.
+
+* **[Attenuators](/docs/entities/attenuators)**  
   Configure attenuators to modify and return Biscuit tokens that have been "attenuated" (limited in scope or permissions), ensuring fine-grained control over access levels in your API routes.
   
-* **[Biscuit RBAC Policies](/docs/entities/rbac)**  
-  Implement Role-Based Access Control (RBAC) policies using Biscuit tokens to enforce structured, flexible access control mechanisms within your application. This allows for secure, role-based user management.
+* **[RBAC Policies](/docs/entities/rbac)**  
+  Implement Role-Based Access Control (RBAC) policies using Eclipse Biscuit tokens to enforce structured, flexible access control mechanisms within your application. This allows for secure, role-based user management.
 
-* **[Biscuit Remote Facts Loader](/docs/entities/remotefacts)**  
-  Integrate external data sources (remote facts) to enhance the authorization decisions made by Biscuit tokens, allowing dynamic and context-aware access control.
+* **[Remote Facts Loader](/docs/entities/remotefacts)**  
+  Integrate external data sources (remote facts) to enhance the authorization decisions made by tokens, allowing dynamic and context-aware access control.
 
 ### Supported Plugins in Otoroshi Biscuit Studio
 
-* **[Verifier plugin](/docs/plugins/verifiers)**  
-  Integrate verifiers plugins into your Otoroshi routes to check the validity of Biscuit tokens. 
+* **[Verifier](/docs/plugins/verifiers)**  
+  Integrate verifiers plugins into your Otoroshi routes to check the validity of a provided token. 
   
-  This ensures that only authorized requests are processed, providing additional layers of security and control over your API traffic.
+  This ensures that only authorized tokens are accessing to the route, providing additional layers of security and control over your API traffic.
 
-* **[Attenuator plugin](/docs/plugins/attenuators)**  
-  Add attenuator plugins to your Otoroshi routes that apply attenuation to Biscuit tokens, allowing you to reduce or modify the scope of access granted by a token. 
+* **[Attenuator](/docs/plugins/attenuators)**  
+  Add attenuator plugins to your Otoroshi routes that apply attenuation to a token, allowing you to reduce or modify the scope of access granted by a token. 
   
   This can be used to tailor access permissions dynamically based on the specific needs of your routes or services.
 
-* **[Client Credentials plugin](/docs/plugins/clientcredentials)**
+* **[Client Credentials](/docs/plugins/clientcredentials)**
 
-  The Client Credentials Plugin is a `Backend` plugin that enables the OAuth2 `client_credentials` flow, using a [Biscuit Token](/docs/introduction) as the `access_token`.
+  The Client Credentials Plugin is a `Backend` plugin that enables the OAuth2 `client_credentials` flow, using an [Eclipse Biscuit Token](/docs/introduction) as the `access_token`.
 
-* **[Biscuit User Extractor plugin](/docs/plugins/biscuit-user-extractor)**
+* **[Biscuit User Extractor](/docs/plugins/biscuit-user-extractor)**
 
-  The Biscuit User Extractor plugin allows extracting user information from a Biscuit token and passing it along with the request to backend services.This helps identify users and enforce user-specific policies without additional authentication mechanisms.
+  The Biscuit User Extractor plugin allows extracting user information from an Eclipse Biscuit token and passing it along with the request to backend services.This helps identify users and enforce user-specific policies without additional authentication mechanisms.
+
+* **[User to Biscuit Extractor](/docs/plugins/user-to-biscuit)**
+
+  This plugin will allow you to forge an Eclipse Biscuit Token using the authenticated user from the request context. The token will be added into headers.
+
+* **[ApiKey Bridge](/docs/plugins/apikeybridge)**
+
+  The Biscuit API Key Bridge Plugin will extract an API key from the request.
