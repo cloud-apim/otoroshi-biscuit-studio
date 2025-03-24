@@ -2,12 +2,10 @@ package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiServerPerSuite
 import com.cloud.apim.otoroshi.extensions.biscuit.entities._
-import org.biscuitsec.biscuit.crypto.KeyPair
-import otoroshi.models.{ApiKey, EntityLocation, RouteIdentifier}
+import otoroshi.models.EntityLocation
 import otoroshi.next.models._
-import otoroshi.security.IdGenerator
 import otoroshi.utils.syntax.implicits._
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.{BiscuitRemoteTokenFetcherPlugin, BiscuitTokenVerifierPlugin, ClientCredentialBiscuitTokenEndpoint}
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitRemoteTokenFetcherPlugin
 import play.api.libs.json.Json
 import reactor.core.publisher.Mono
 
@@ -23,7 +21,6 @@ class RemoteTokenFetcherSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     val (tokenApiPort, _) = createTestServerWithRoutes("test", routes => routes.get("/api/token", (req, response) => {
       response
         .status(200)
-        .addHeader("Content-Type", "application/json")
         .sendString(Mono.just(
           "En0KEwoEMTIzNBgDIgkKBwgKEgMYgAgSJAgAEiAs2CFWr5WyHHWEiMhTXxVNw4gP7PlADPaGfr_AQk9WohpA6LZTjFfFhcFQrMsp2O7bOI9BOzP-jIE5PGhha62HDfX4t5FLQivX5rUhH5iTv2c-rd0kDSazrww4cD1UCeytDSIiCiCfMgpVPOuqq371l1wHVhCXoIscKW-wrwiKN80vR_Rfzg=="
         ))
@@ -52,13 +49,13 @@ class RemoteTokenFetcherSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
           ))
         ),
         NgPluginInstance(
-        plugin = s"cp:${classOf[BiscuitRemoteTokenFetcherPlugin].getName}",
-        config = NgPluginInstanceConfig(Json.obj(
-          "api_url" -> s"http://localhost:${tokenApiPort}/api/token",
-          "api_method" -> "GET",
-          "token_replace_loc" -> "header",
-          "token_replace_name" -> "biscuit-fetched"
-        )))
+          plugin = s"cp:${classOf[BiscuitRemoteTokenFetcherPlugin].getName}",
+          config = NgPluginInstanceConfig(Json.obj(
+            "api_url" -> s"http://localhost:${tokenApiPort}/api/token",
+            "api_method" -> "GET",
+            "token_replace_loc" -> "header",
+            "token_replace_name" -> "biscuit-fetched"
+          )))
       ))
     )
 
@@ -91,9 +88,13 @@ class RemoteTokenFetcherSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
       response
         .status(200)
         .addHeader("Content-Type", "application/json")
-        .sendString(Mono.just(
-          "En0KEwoEMTIzNBgDIgkKBwgKEgMYgAgSJAgAEiAs2CFWr5WyHHWEiMhTXxVNw4gP7PlADPaGfr_AQk9WohpA6LZTjFfFhcFQrMsp2O7bOI9BOzP-jIE5PGhha62HDfX4t5FLQivX5rUhH5iTv2c-rd0kDSazrww4cD1UCeytDSIiCiCfMgpVPOuqq371l1wHVhCXoIscKW-wrwiKN80vR_Rfzg=="
-        ))
+        .sendString(
+          Mono.just(
+            s"""{
+               |  "token": "En0KEwoEMTIzNBgDIgkKBwgKEgMYgAgSJAgAEiAs2CFWr5WyHHWEiMhTXxVNw4gP7PlADPaGfr_AQk9WohpA6LZTjFfFhcFQrMsp2O7bOI9BOzP-jIE5PGhha62HDfX4t5FLQivX5rUhH5iTv2c-rd0kDSazrww4cD1UCeytDSIiCiCfMgpVPOuqq371l1wHVhCXoIscKW-wrwiKN80vR_Rfzg=="
+               |}""".stripMargin
+          )
+        )
     }))
 
     val frontendDomain = "test.oto.tools"
@@ -157,7 +158,6 @@ class RemoteTokenFetcherSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     val (tokenApiPort, _) = createTestServerWithRoutes("test", routes => routes.get("/api/token", (req, response) => {
       response
         .status(200)
-        .addHeader("Content-Type", "application/json")
         .sendString(Mono.just(
           "En0KEwoEMTIzNBgDIgkKBwgKEgMYgAgSJAgAEiAs2CFWr5WyHHWEiMhTXxVNw4gP7PlADPaGfr_AQk9WohpA6LZTjFfFhcFQrMsp2O7bOI9BOzP-jIE5PGhha62HDfX4t5FLQivX5rUhH5iTv2c-rd0kDSazrww4cD1UCeytDSIiCiCfMgpVPOuqq371l1wHVhCXoIscKW-wrwiKN80vR_Rfzg=="
         ))
