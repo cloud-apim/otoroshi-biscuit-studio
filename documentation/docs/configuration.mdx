@@ -1,0 +1,64 @@
+---
+sidebar_position: 4
+---
+
+import Terminal from '@site/src/components/Terminal';
+
+# Environment variables
+
+Here is a little guide to help you configuring your Otoroshi Biscuit Studio environment variables.
+
+Those variables will be used to configure your extension with your own settings.
+
+## **Global Extension Settings**
+
+| **Environment Variable**                         | **Default Value**|
+|--------------------------------------------------|------------------|
+| `CLOUD_APIM_EXTENSIONS_BISCUIT_ENABLED`          | `true`           | 
+
+## **Biscuit Verifier Settings**
+
+| **Environment Variable**                          | **Default Value** |
+|--------------------------------------------------|------------------|
+| `BISCUIT_VERIFIER_RUN_LIMIT_MAX_FACTS`          | `1000`           | 
+| `BISCUIT_VERIFIER_RUN_LIMIT_MAX_ITERATIONS`     | `100`            |
+| `BISCUIT_VERIFIER_RUN_LIMIT_MAX_TIME_MILLIS`    | `1000ms` (1 sec)   |
+
+## **Biscuit Revocation Jobs Settings**
+
+The revocation job is a scheduled task to run every X minutes in order to query your remote system to get a list of revoked tokens.
+
+By default, the job is disabled, you will have to enable it by yourself to use it using `BISCUIT_REVOCATION_JOB_ENABLED` variable.
+
+| **Environment Variable**                     | **Default Value** |
+|---------------------------------------------|------------------|
+| `BISCUIT_REVOCATION_JOB_ENABLED`           | `false`          |
+| `BISCUIT_REVOCATION_INITIAL_DELAY`         | `60` seconds (1 min)    |
+| `BISCUIT_REVOCATION_INTERVAL`              | `300` seconds (5 min) |
+| `BISCUIT_REVOCATION_JOB_API_URL`           | "" (Mandatory, required) |
+| `BISCUIT_REVOCATION_JOB_API_METHOD`        | `GET` (Mandatory, required) |
+| `BISCUIT_REVOCATION_JOB_API_HEADERS`        | `Map[String, String]` (Optional) |
+
+
+## `.env` File example
+
+You can copy paste this following .env configuration file. It's an example using default values.
+
+You can customize the values ​​of the variables according to your needs.
+
+```sh 
+# Biscuit Verifier Configuration
+BISCUIT_VERIFIER_RUN_LIMIT_MAX_FACTS=1000        # Maximum number of facts to process
+BISCUIT_VERIFIER_RUN_LIMIT_MAX_ITERATIONS=100    # Maximum number of iterations allowed
+BISCUIT_VERIFIER_RUN_LIMIT_MAX_TIME_MILLIS=1000  # Timeout limit in milliseconds (1 sec)
+
+# Biscuit Revocation Job Configuration
+BISCUIT_REVOCATION_JOB_ENABLED=false             # Enable/Disable the revocation job (true/false)
+BISCUIT_REVOCATION_INITIAL_DELAY=60              # Initial delay before the first revocation job run (seconds)
+BISCUIT_REVOCATION_INTERVAL=300                  # Interval between revocation job executions (seconds)
+
+# Biscuit Revocation API Configuration
+BISCUIT_REVOCATION_JOB_API_URL=                  # API URL for revocation
+BISCUIT_REVOCATION_JOB_API_METHOD=               # HTTP method for the API call (e.g., GET, POST)
+BISCUIT_REVOCATION_JOB_API_HEADERS=              # List of headers (could be empty)
+```

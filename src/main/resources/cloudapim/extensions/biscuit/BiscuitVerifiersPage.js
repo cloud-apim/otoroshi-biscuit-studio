@@ -175,6 +175,7 @@ class BiscuitVerifiersPage extends Component {
           { label: 'Headers', value: 'header' },
           { label: 'Cookies', value: 'cookie' },
           { label: 'Query params', value: 'query' },
+          { label: 'User tokens', value: 'user_tokens' },
         ]
       }
     },

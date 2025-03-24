@@ -1,5 +1,6 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.entities
 
+import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils
 import org.biscuitsec.biscuit.crypto.{KeyPair, PublicKey}
 import otoroshi.api.{GenericResourceAccessApiWithState, Resource, ResourceVersion}
 import otoroshi.env.Env
@@ -20,6 +21,7 @@ case class BiscuitKeyPair(
   isPublic: Boolean = false,
   privKey: String,
   pubKey: String,
+  algo: String = "ED25519",
   tags: Seq[String] = Seq.empty,
   metadata: Map[String, String] = Map.empty,
   location: EntityLocation
@@ -37,8 +39,8 @@ case class BiscuitKeyPair(
   def theTags: Seq[String] = tags
 
   def keyPair: KeyPair = new KeyPair(privKey)
-
-  def getPubKey: PublicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, pubKey)
+  def getPubKey: PublicKey = new PublicKey(getCurrentAlgo, pubKey)
+  def getCurrentAlgo: biscuit.format.schema.Schema.PublicKey.Algorithm = BiscuitUtils.getAlgo(algo)
 }
 
 object BiscuitKeyPair {
@@ -50,6 +52,7 @@ object BiscuitKeyPair {
         "description" -> o.description,
         "metadata" -> o.metadata,
         "is_public" -> o.isPublic,
+        "algo" -> o.algo,
         "pubKey" -> o.pubKey,
         "privKey" -> o.privKey,
         "tags" -> JsArray(o.tags.map(JsString.apply)),
@@ -62,6 +65,7 @@ object BiscuitKeyPair {
           location = EntityLocation.readFromKey(json),
           id = (json \ "id").as[String],
           name = (json \ "name").as[String],
+          algo = (json \ "algo").asOpt[String].getOrElse("ED25519"),
           description = (json \ "description").asOpt[String].getOrElse("--"),
           isPublic = (json \ "is_public").asOpt[Boolean].getOrElse(false),
           pubKey = (json \ "pubKey").asOpt[String].getOrElse("--"),
