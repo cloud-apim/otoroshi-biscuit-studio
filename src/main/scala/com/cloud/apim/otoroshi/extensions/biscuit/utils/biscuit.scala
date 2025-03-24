@@ -60,4 +60,11 @@ object BiscuitUtils {
       }
     }
   }
+  def getAlgo(algoName: String): biscuit.format.schema.Schema.PublicKey.Algorithm = {
+    algoName.toUpperCase match {
+      case "ED25519" => biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519
+      //      case "SECP256R1" => biscuit.format.schema.Schema.PublicKey.Algorithm.SECP256R1 -- waiting for support in java lib
+      case _ => biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519
+    }
+  }
 }

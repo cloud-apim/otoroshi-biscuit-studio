@@ -2,7 +2,6 @@ package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit
 
 import akka.stream.scaladsl.{Source, StreamConverters}
 import akka.util.ByteString
-import biscuit.format.schema.Schema.PublicKey.Algorithm
 import com.cloud.apim.otoroshi.extensions.biscuit.entities._
 import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils
 import com.nimbusds.jose.jwk.Curve
@@ -165,9 +164,9 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
 
   override def backofficeAuthRoutes(): Seq[AdminExtensionBackofficeAuthRoute] = Seq(
     AdminExtensionBackofficeAuthRoute(
-      method = "GET",
+      method = "POST",
       path = "/extensions/cloud-apim/extensions/biscuit/keypairs/_generate",
-      wantsBody = false,
+      wantsBody = true,
       handle = handleGenerateKeypair
     ),
     AdminExtensionBackofficeAuthRoute(
@@ -197,15 +196,49 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
   )
 
   def handleGenerateKeypair(ctx: AdminExtensionRouterContext[AdminExtensionBackofficeAuthRoute], req: RequestHeader, user: Option[BackOfficeUser], body: Option[Source[ByteString, _]]): Future[Result] = {
-    val generatedKeyPair = KeyPair.generate(Algorithm.Ed25519)
+    implicit val ec = env.otoroshiExecutionContext
+    implicit val mat = env.otoroshiMaterializer
+    implicit val ev = env
 
-    Results.Ok(
-      Json.obj(
-        "done" -> true,
-        "pubKey" -> generatedKeyPair.public_key().toHex.toUpperCase,
-        "privKey" -> generatedKeyPair.toHex.toUpperCase
-      )
-    ).vfuture
+    (body match {
+      case None => Results.Ok(Json.obj("done" -> false, "error" -> "no body")).vfuture
+      case Some(bodySource) => bodySource.runFold(ByteString.empty)(_ ++ _).flatMap { bodyRaw =>
+        val bodyJson = bodyRaw.utf8String.parseJson
+
+        val algoInput = bodyJson.select("algorithm").asOpt[String].getOrElse("ED25519")
+
+        val algo = algoInput.toUpperCase match {
+          case "ED25519" => "Ed25519"
+          // case "SECP256R1" => "SECP256R1"
+          case _ => "Ed25519"
+        }
+
+        val pkAlgo = algo.toUpperCase match {
+          case "ED25519" => biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519
+          //      case "SECP256R1" => biscuit.format.schema.Schema.PublicKey.Algorithm.SECP256R1
+          case _ => biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519
+        }
+
+        val generatedKeyPair = KeyPair.generate(pkAlgo)
+
+        val pubKey = generatedKeyPair.public_key().toHex.toUpperCase
+        val privKey = generatedKeyPair.toHex.toUpperCase
+
+        Results.Ok(
+          Json.obj(
+            "done" -> true,
+            "algorithm" -> algo,
+            "pubKey" -> pubKey,
+            "privKey" -> privKey,
+            "algoPubKey" -> s"${algo.toLowerCase}/${pubKey.toLowerCase}"
+          )
+        ).vfuture
+      }
+    }).recover {
+      case e: Throwable => {
+        Results.Ok(Json.obj("done" -> false, "error" -> e.getMessage))
+      }
+    }
   }
 
   def handleGenerateToken(ctx: AdminExtensionRouterContext[AdminExtensionBackofficeAuthRoute], req: RequestHeader, user: Option[BackOfficeUser], body: Option[Source[ByteString, _]]): Future[Result] = {

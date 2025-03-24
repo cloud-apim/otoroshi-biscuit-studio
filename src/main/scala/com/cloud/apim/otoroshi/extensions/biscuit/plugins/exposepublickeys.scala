@@ -81,9 +81,20 @@ class ExposeBiscuitPublicKeysPlugin extends NgBackendCall {
   override def callBackend(ctx: NgbBackendCallContext, delegates: () => Future[Either[NgProxyEngineError, BackendCallResponse]])(implicit env: Env, ec: ExecutionContext, mat: Materializer): Future[Either[NgProxyEngineError, BackendCallResponse]] = {
     val config = ctx.cachedConfig(internalName)(BiscuitExposePubKeysPluginConfig.format).getOrElse(BiscuitExposePubKeysPluginConfig())
     val data = env.adminExtensions.extension[BiscuitExtension].get.states.allPublicKeyPairs(config.authorizedPublicKeys).map { keypair =>
-      val publicKey = new PublicKey(biscuit.format.schema.Schema.PublicKey.Algorithm.Ed25519, keypair.pubKey)
-      Json.obj("algorithm" -> "ed25519", "key_bytes" -> publicKey.toHex, "key_id" -> keypair.id, "issuer" -> "Otoroshi")
+      val publicKey = new PublicKey(keypair.getCurrentAlgo, keypair.pubKey)
+      Json.obj(
+        "algorithm" -> keypair.algo,
+        "key_bytes" -> publicKey.toHex,
+        "key_id" -> keypair.id,
+        "issuer" -> "Otoroshi"
+      )
     }
-    Right(BackendCallResponse(NgPluginHttpResponse.fromResult(Results.Ok(Json.obj("items" -> data.toList))), None)).vfuture
+    Right(BackendCallResponse(NgPluginHttpResponse.fromResult(
+      Results.Ok(
+        Json.obj(
+          "items" -> data.toList
+        )
+      )
+    ), None)).vfuture
   }
 }

@@ -20,15 +20,26 @@ class BackofficeRoutesSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     /////////                                       test endpoint                                            ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val resp = client.call("GET", s"http://otoroshi.oto.tools:${port}/extensions/cloud-apim/extensions/biscuit/keypairs/_generate",
+    val keypairResp = client.call("POST", s"http://otoroshi.oto.tools:${port}/extensions/cloud-apim/extensions/biscuit/keypairs/_generate",
       Map(
         "Content-Type" -> s"application/json"
-      ), None).awaitf(5.seconds)
-    assertEquals(resp.status, 200, s"verifier route did not respond with 200")
-    assert(resp.json.at("done").isDefined, s"'done' field should be defined")
-    assert(resp.json.at("done").asBoolean, s"request 'done' status should be true")
-    assert(resp.json.at("pubKey").isDefined, "'pubKey' should be defined")
-    assert(resp.json.at("privKey").isDefined, "'privKey' should be defined")
+      ), Some(
+        Json.obj(
+          "algorithm" -> "ED25519"
+        )
+      )).awaitf(5.seconds)
+    assertEquals(keypairResp.status, 200, s"verifier route did not respond with 200")
+    assert(keypairResp.json.at("done").isDefined, s"'done' field should be defined")
+    assert(keypairResp.json.at("done").asBoolean, s"request 'done' status should be true")
+    assert(keypairResp.json.at("pubKey").isDefined, "'pubKey' should be defined")
+    assert(keypairResp.json.at("privKey").isDefined, "'privKey' should be defined")
+
+    val pubKey = keypairResp.json.at("pubKey").asString
+    val algo = keypairResp.json.at("algorithm").asString
+    assertEquals(algo, "Ed25519", "algorithm should be 'Ed25519'")
+
+    val algoPubKey = keypairResp.json.at("algoPubKey").asString
+    assertEquals(algoPubKey, s"${algo.toLowerCase}/${pubKey.toLowerCase}", "algoPubKey should be combination of algorithm and public key")
   }
 
   test("should be able to generate a token with public and private keys") {
