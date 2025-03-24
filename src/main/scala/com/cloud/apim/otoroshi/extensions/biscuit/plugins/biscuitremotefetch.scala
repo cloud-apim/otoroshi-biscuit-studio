@@ -110,6 +110,10 @@ object BiscuitRemoteTokenFetcherConfig {
       "type" -> "text",
       "label" -> "Biscuit insertion field name"
     ),
+    "token_resp_loc" -> Json.obj(
+      "type" -> "text",
+      "label" -> "If response body contains JSON, select the location of the token"
+    )
   ))
 }
 
