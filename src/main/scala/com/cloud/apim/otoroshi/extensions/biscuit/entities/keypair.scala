@@ -24,7 +24,7 @@ case class BiscuitKeyPair(
   algo: String = "ED25519",
   tags: Seq[String] = Seq.empty,
   metadata: Map[String, String] = Map.empty,
-  location: EntityLocation
+  location: EntityLocation = EntityLocation.default
 ) extends EntityLocationSupport {
   def json: JsValue = BiscuitKeyPair.format.writes(this)
 

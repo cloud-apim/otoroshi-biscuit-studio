@@ -347,13 +347,13 @@ object BiscuitExtractorConfig {
 
 case class BiscuitVerifier(
   id: String,
-  name: String,
-  description: String,
+  name: String = "",
+  description: String = "",
   strict: Boolean = true,
   enabled: Boolean = true,
   tags: Seq[String] = Seq.empty,
   metadata: Map[String, String] = Map.empty,
-  location: EntityLocation,
+  location: EntityLocation = EntityLocation.default,
   keypairRef: String = "",
   config: VerifierConfig,
   extractor: BiscuitExtractorConfig,
