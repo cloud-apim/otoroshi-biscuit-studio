@@ -138,13 +138,13 @@ object BiscuitForgeConfig {
 
 case class BiscuitTokenForge(
   id: String,
-  name: String,
+  name: String = "",
   description: String = "",
   keypairRef: String,
   config: BiscuitForgeConfig,
   tags: Seq[String] = Seq.empty,
   metadata: Map[String, String] = Map.empty,
-  location: EntityLocation,
+  location: EntityLocation = EntityLocation.default,
   remoteFactsLoaderRef: Option[String] = None
 ) extends EntityLocationSupport {
   def json: JsValue = BiscuitTokenForge.format.writes(this)

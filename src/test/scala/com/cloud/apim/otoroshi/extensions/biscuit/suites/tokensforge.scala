@@ -1,190 +1,68 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
-import akka.stream.Materializer
-import com.cloud.apim.otoroshi.extensions.biscuit.domains.BiscuitVerifiersUtils
+import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiServerPerSuite
 import com.cloud.apim.otoroshi.extensions.biscuit.entities._
-import com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionSuite, OtoroshiClient}
 import org.biscuitsec.biscuit.crypto.{KeyPair, PublicKey}
 import org.biscuitsec.biscuit.token.Biscuit
-import otoroshi.api.Otoroshi
 import otoroshi.models.EntityLocation
-import otoroshi.next.models._
 import otoroshi.security.IdGenerator
 import otoroshi.utils.syntax.implicits._
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenVerifierPlugin
 import play.api.libs.json.Json
 import reactor.core.publisher.Mono
 
-import java.util.UUID
-import scala.concurrent.ExecutionContext
-import scala.concurrent.duration.{DurationInt, FiniteDuration}
+import scala.concurrent.duration.DurationInt
 import scala.jdk.CollectionConverters._
 
-class TestsTokensForge extends BiscuitExtensionSuite {
-  val port: Int = freePort
-  val entityId = s"biscuit-token_5042ae60-418d-4a92-9d50-57787b8970f5"
-  val keypairID = s"biscuit-keypair_5a2ec0f9-35cd-48b2-9233-c024b5074df3"
-  val tokenDemo = "EpYBCiwKDGJpc2N1aXQtZGVtbwoEMTIzNBgDIgkKBwgKEgMYgAgiCQoHCAYSAxiBCBIkCAASIB1ARKTqCEIC_2wnoCP78zyMUKhdWjEOHGOEHByZEUPkGkCAbpHaQKDBYKpc3GeiF40nZwsANGS-pSU3o9h-glQj3lF0Y1TtouAv6C7ur5siywAr-IR_1FMasRAPfAiXuZgDIiIKIOsz8F2Y43MgQVTVRJchzeDuZk8rRarjdTFLH_0dITub"
-  implicit var ec: ExecutionContext = _
-  implicit var mat: Materializer = _
-  val demoKeyPair = BiscuitKeyPair(
-    id = keypairID,
-    name = "New Biscuit Key Pair",
-    description = "New biscuit KeyPair",
-    metadata = Map.empty,
-    tags = Seq.empty,
-    location = EntityLocation.default,
-    pubKey = "d8667526cc5e2e3fd4822571a68d815f8c8f6128edfcfe6701e7d76219db9e29",
-    privKey = "998b3813a64845ff437acdaebd91bd63f83c6fc7ebdaad03c894b1b6a164f0d2"
-  )
-  val conf = BiscuitForgeConfig(
-    checks = List.empty,
-    facts = Seq(
-      "user(\"biscuit-demo\");",
-      "role(\"1234\");",
-    ),
-    resources = List.empty,
-    rules = List.empty
-  )
-  val biscuitToken = BiscuitTokenForge(
-    id = entityId,
-    name = "New Biscuit Token entity",
-    description = "New biscuit Token entity",
-    metadata = Map.empty,
-    tags = Seq.empty,
-    location = EntityLocation.default,
-    keypairRef = keypairID,
-    config = conf,
-    remoteFactsLoaderRef = None
-  )
-  var otoroshi: Otoroshi = _
-  var client: OtoroshiClient = _
-
-  def printHeader(str: String, what: String): Unit = {
-    println("\n\n-----------------------------------------")
-    println(s"  [${str}] - ${what}")
-    println("-----------------------------------------\n\n")
-  }
-
-  override def beforeAll(): Unit = {
-    otoroshi = startOtoroshiServer(port)
-    client = clientFor(port)
-    ec = otoroshi.executionContext
-    mat = otoroshi.materializer
-  }
-
-  override def afterAll(): Unit = {
-    otoroshi.stop()
-  }
-
-  def testWithVerifier(client: OtoroshiClient, awaitFor: FiniteDuration)(implicit ec: ExecutionContext, mat: Materializer): Unit = {
-    val port = client.port
-
-    val verifierId = s"biscuit-verifier_${UUID.randomUUID().toString}"
-    val routeVerifierId = s"route_${UUID.randomUUID().toString}"
-    val routeDomain = s"verifier-${UUID.randomUUID().toString}.oto.tools"
-
-    val verifier = BiscuitVerifier(
-      id = verifierId,
-      name = "New Biscuit Verifier entity",
-      description = "New biscuit Verifier entity",
+class TestsTokensForge extends BiscuitStudioOneOtoroshiServerPerSuite {
+  test(s"create token from forge entity") {
+    val biscuitKeyPair = new KeyPair()
+    val keypair = BiscuitKeyPair(
+      id = IdGenerator.namedId("biscuit-keypair", otoroshi.env),
+      name = "New Biscuit Key Pair",
+      description = "New biscuit KeyPair",
       metadata = Map.empty,
       tags = Seq.empty,
       location = EntityLocation.default,
-      keypairRef = keypairID,
-      config = VerifierConfig(
-        checks = List.empty,
+      privKey = biscuitKeyPair.toHex,
+      pubKey = biscuitKeyPair.public_key().toHex
+    )
+
+    val forge = BiscuitTokenForge(
+      id = IdGenerator.namedId("biscuit-forge", otoroshi.env),
+      keypairRef = keypair.id,
+      config = BiscuitForgeConfig(
         facts = Seq(
-          "operation(\"read\");",
-          "resource(\"1234\");",
+          "name(\"otoroshi-biscuit-studio-test\")",
+          "user(\"biscuit-test-user\")",
+          "role(\"user\")"
         ),
-        resources = Seq(
-          "/folder1/file1"
-        ),
-        rules = List.empty,
-        policies = Seq(
-          "allow if role(\"1234\");"
-        ),
-        revokedIds = List.empty
-      ),
-      extractor = BiscuitExtractorConfig(
-        "header", "biscuit-header"
+        checks = Seq(
+          "check if server(\"biscuit-server-test\")",
+          "check if operation(\"read\")"
+        )
       )
     )
 
-    BiscuitVerifiersUtils.createVerifierEntity(client)(verifier)
 
-    val routeWithVerifier = NgRoute(
-      location = EntityLocation.default,
-      id = UUID.randomUUID().toString,
-      name = "test verifier route",
-      description = "test verifier route",
-      tags = Seq.empty,
-      metadata = Map.empty,
-      enabled = true,
-      debugFlow = false,
-      capture = false,
-      exportReporting = false,
-      frontend = NgFrontend.empty.copy(domains = Seq(NgDomainAndPath(routeDomain))),
-      backend = NgBackend.empty.copy(targets = Seq(NgTarget.default)),
-      plugins = NgPlugins(Seq(
-        NgPluginInstance(
-          plugin = s"cp:otoroshi.next.plugins.EchoBackend",
-          config = NgPluginInstanceConfig(Json.obj(
-            "limit" -> "524288"
-          ))
-        ),
-        NgPluginInstance(
-          plugin = s"cp:${classOf[BiscuitTokenVerifierPlugin].getName}",
-          config = NgPluginInstanceConfig(Json.obj(
-            "verifier_refs" -> Seq(
-              verifierId
-            ),
-            "enforce" -> true
-          ))
-        )
-      ))
-    )
+    // Create entities
+    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair)
+    await(5.seconds)
 
-    client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertEntity(routeWithVerifier)
-    await(3.seconds)
+    val forgreCreationResp = client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-forges").upsertEntity(forge).awaitf(3.seconds)
 
-    val headers = Map(
-      "biscuit-header" -> tokenDemo
-    )
+    println(s"forgreCreationResp = ${forgreCreationResp.bodyJson}")
 
-    val resp = client.call("GET", s"http://${routeDomain}:${port}", headers, None).awaitf(awaitFor)
-    assertEquals(resp.status, 200, s"verifier route did not respond with 200")
-    client.forEntity("proxy.otoroshi.io", "v1", "routes").deleteRaw(routeVerifierId)
-    client.forBiscuitEntity("biscuit-verifiers").deleteEntity(verifier)
+    assert(forgreCreationResp.created, s"forge entity has not been created")
+    assert(forgreCreationResp.bodyJson.at("config.facts").isDefined, s"configuration facts are missing")
+    assert(forgreCreationResp.bodyJson.at("config.checks").isDefined, s"configuration checks are missing")
+    assert(forgreCreationResp.bodyJson.at("config.facts").as[List[String]].nonEmpty, "list of facts should not be empty")
+    assert(forgreCreationResp.bodyJson.at("config.checks").as[List[String]].nonEmpty, "list of checks should not be empty")
+    assertEquals(forgreCreationResp.bodyJson.at("config.facts").as[List[String]].size, 3, "list of checks should not be empty")
+    assertEquals(forgreCreationResp.bodyJson.at("config.checks").as[List[String]].size, 2, "list of checks should not be empty")
 
-    await(2500.millis)
-  }
-
-  test(s"create token from forge entity") {
-    printHeader(demoKeyPair.name, "Create Keypair")
-    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(demoKeyPair).awaitf(5.seconds)
-
-    printHeader(biscuitToken.name, "Create biscuit token entity")
-
-    client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-forges").upsertEntity(biscuitToken).awaitf(5.seconds)
-
-    printHeader("", "Testing the biscuit entity with a verifier")
-    testWithVerifier(client, 30.seconds)
   }
 
   test(s"create a token forge with remote facts loader entity") {
-    printHeader("", "create a token forge with remote facts loader entity")
-    testForgeWithRemoteFactsEntity(client, 30.seconds)
-  }
-
-  test(s"create a token with forge from API") {
-    printHeader("", "create a token with forge from API")
-    testWithForgeFromApi(client, 30.seconds)
-  }
-
-  def testForgeWithRemoteFactsEntity(client: OtoroshiClient, awaitFor: FiniteDuration)(implicit ec: ExecutionContext, mat: Materializer): Unit = {
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  create API roles route                                        ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -224,11 +102,6 @@ class TestsTokensForge extends BiscuitExtensionSuite {
     val biscuitKeyPair = new KeyPair()
     val keypair = BiscuitKeyPair(
       id = IdGenerator.namedId("biscuit-keypair", otoroshi.env),
-      name = "New Biscuit Key Pair",
-      description = "New biscuit KeyPair",
-      metadata = Map.empty,
-      tags = Seq.empty,
-      location = EntityLocation.default,
       privKey = biscuitKeyPair.toHex,
       pubKey = biscuitKeyPair.public_key().toHex
     )
@@ -273,7 +146,7 @@ class TestsTokensForge extends BiscuitExtensionSuite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  test API Roles route                                          ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    val resp = client.call("POST", s"http://test.oto.tools:${tport}/api/roles", Map("Content-Type" -> "application/json"), Some(Json.obj("foo" -> "bar"))).awaitf(awaitFor)
+    val resp = client.call("POST", s"http://test.oto.tools:${tport}/api/roles", Map("Content-Type" -> "application/json"), Some(Json.obj("foo" -> "bar"))).awaitf(5.seconds)
     assertEquals(resp.status, 200, s"verifier route did not respond with 200")
     assert(resp.json.at("acl").isDefined, s"acl array is not defined")
 
@@ -289,7 +162,7 @@ class TestsTokensForge extends BiscuitExtensionSuite {
       "config" -> forge.config.json,
       "keypair_ref" -> keypair.id,
       "remoteFactsLoaderRef" -> forge.remoteFactsLoaderRef.get,
-    ))).awaitf(awaitFor)
+    ))).awaitf(5.seconds)
     assertEquals(resp2.status, 200, s"verifier route did not respond with 200")
     assert(resp2.json.at("done").isDefined, s"acl array is not defined")
     assert(resp2.json.at("done").asBoolean, s"acl array is not defined")
@@ -306,7 +179,7 @@ class TestsTokensForge extends BiscuitExtensionSuite {
     await(2500.millis)
   }
 
-  def testWithForgeFromApi(client: OtoroshiClient, awaitFor: FiniteDuration)(implicit ec: ExecutionContext, mat: Materializer): Unit = {
+  test(s"create a token with forge from API") {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  setup forge                                                   ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -359,7 +232,7 @@ class TestsTokensForge extends BiscuitExtensionSuite {
         "Content-Type" -> s"application/json",
         "Otoroshi-Client-Id" -> "admin-api-apikey-id",
         "Otoroshi-Client-Secret" -> "admin-api-apikey-secret"
-      ), None).awaitf(awaitFor)
+      ), None).awaitf(5.seconds)
     assertEquals(resp.status, 200, s"verifier route did not respond with 200")
     assert(resp.json.at("token").isDefined, s"token not generated")
 

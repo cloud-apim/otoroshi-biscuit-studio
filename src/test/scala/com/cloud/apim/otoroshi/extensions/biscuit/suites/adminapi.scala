@@ -390,7 +390,7 @@ class AdminAPISuite extends BiscuitStudioOneOtoroshiServerPerSuite {
       extractor = BiscuitExtractorConfig()
     )
 
-    /// Add entities
+    // Create entities
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair)
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair2)
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-forges").upsertEntity(forge)
