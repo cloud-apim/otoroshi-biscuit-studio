@@ -127,7 +127,6 @@ class VerifiersSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     )
 
     val resp = client.call("GET", s"http://${routeDomain}:${port}", headers, None).awaitf(5.seconds)
-    println(s"resp.body = ${resp.json}")
     assertEquals(resp.status, 200, s"verifier route did not respond with 200")
 
     // Teardown
@@ -209,7 +208,6 @@ class VerifiersSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
 
     val resp = client.call("GET", s"http://${routeDomain}:${port}", headers, None).awaitf(5.seconds)
 
-    println(s"resppp : ${resp.body}")
     assertEquals(resp.status, 403, s"verifier should thrown a forbidden error")
 
     // Teardown
@@ -293,7 +291,6 @@ class VerifiersSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
 
     val resp = client.call("GET", s"http://${routeDomain}:${port}", headers, None).awaitf(5.seconds)
 
-    println(s"resppp : ${resp.body}")
     assertEquals(resp.status, 403, s"verifier should thrown a forbidden error")
 
     // Teardown

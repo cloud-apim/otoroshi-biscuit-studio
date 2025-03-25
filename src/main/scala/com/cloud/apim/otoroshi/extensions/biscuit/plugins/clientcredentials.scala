@@ -243,7 +243,6 @@ class ClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
                         )
                       ).vfuture
                       case Right(accessToken) => {
-                        println(accessToken.serialize_b64url())
                         Results
                           .Ok(
                             Json.obj(

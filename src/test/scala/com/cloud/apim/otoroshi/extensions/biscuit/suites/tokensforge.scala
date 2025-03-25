@@ -50,8 +50,6 @@ class TestsTokensForge extends BiscuitStudioOneOtoroshiServerPerSuite {
 
     val forgreCreationResp = client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-forges").upsertEntity(forge).awaitf(3.seconds)
 
-    println(s"forgreCreationResp = ${forgreCreationResp.bodyJson}")
-
     assert(forgreCreationResp.created, s"forge entity has not been created")
     assert(forgreCreationResp.bodyJson.at("config.facts").isDefined, s"configuration facts are missing")
     assert(forgreCreationResp.bodyJson.at("config.checks").isDefined, s"configuration checks are missing")
@@ -68,7 +66,6 @@ class TestsTokensForge extends BiscuitStudioOneOtoroshiServerPerSuite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     val (tport, _) = createTestServerWithRoutes("test", routes => routes.post("/api/roles", (req, response) => {
       req.receive().retain().asString().flatMap { body =>
-        println(body)
         response
           .status(200)
           .addHeader("Content-Type", "application/json")
