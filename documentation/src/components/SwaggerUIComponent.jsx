@@ -4,7 +4,7 @@ import 'swagger-ui-react/swagger-ui.css';
 
 const SwaggerUIComponent = () => {
   return (
-    <SwaggerUI url="/otoroshi-biscuit-studio/openapi.json" />
+    <SwaggerUI url="/otoroshi-biscuit-studio/biscuit-openapi.json" />
   );
 };
 
