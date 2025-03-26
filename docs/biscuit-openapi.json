@@ -1,0 +1,5033 @@
+{
+  "openapi" : "3.0.3",
+  "info" : {
+    "title" : "Otoroshi Admin API",
+    "description" : "Admin API of the Otoroshi reverse proxy",
+    "version" : "16.25.0-dev",
+    "contact" : {
+      "name" : "Otoroshi Team",
+      "email" : "oss@maif.fr"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "externalDocs" : {
+    "url" : "https://www.otoroshi.io",
+    "description" : "Otoroshi website"
+  },
+  "servers" : [ {
+    "url" : "http://otoroshi-api.oto.tools:9999",
+    "description" : "your local otoroshi server"
+  } ],
+  "tags" : [ {
+    "name" : "biscuit.extensions.cloud-apim.com",
+    "description" : "all the operations in the biscuit.extensions.cloud-apim.com group"
+  } ],
+  "paths" : {
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-attenuators/_count" : {
+      "get" : {
+        "tags" : [ "biscuit-attenuator", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Get number of entity of kind BiscuitAttenuator",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitAttenuator.count",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "description" : "Resources count",
+                  "type" : "object",
+                  "properties" : {
+                    "count" : {
+                      "type" : "number",
+                      "description" : "the number of resources"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-rbac/_count" : {
+      "get" : {
+        "tags" : [ "biscuit-rbac", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Get number of entity of kind BiscuitRBAC",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRBAC.count",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "description" : "Resources count",
+                  "type" : "object",
+                  "properties" : {
+                    "count" : {
+                      "type" : "number",
+                      "description" : "the number of resources"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-remote-facts/_bulk" : {
+      "post" : {
+        "tags" : [ "biscuit-remote-facts", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Create multiple BiscuitRemoteFactsLoader at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader.bulk_create",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : false,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "biscuit-remote-facts", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Update multiple BiscuitRemoteFactsLoader at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader.bulk_update",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : false,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "biscuit-remote-facts", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Update (using json-patch) multiple BiscuitRemoteFactsLoader at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader.bulk_patch",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : false,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/BulkPatchBody"
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "biscuit-remote-facts", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Delete multiple BiscuitRemoteFactsLoader at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader.bulk_delete",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-forges/_count" : {
+      "get" : {
+        "tags" : [ "biscuit-forge", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Get number of entity of kind BiscuitForge",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitForge.count",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "description" : "Resources count",
+                  "type" : "object",
+                  "properties" : {
+                    "count" : {
+                      "type" : "number",
+                      "description" : "the number of resources"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs/_bulk" : {
+      "post" : {
+        "tags" : [ "biscuit-keypair", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Create multiple BiscuitKeyPair at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitKeyPair.bulk_create",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : false,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitKeyPair"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "biscuit-keypair", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Update multiple BiscuitKeyPair at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitKeyPair.bulk_update",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : false,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitKeyPair"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "biscuit-keypair", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Update (using json-patch) multiple BiscuitKeyPair at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitKeyPair.bulk_patch",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : false,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/BulkPatchBody"
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "biscuit-keypair", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Delete multiple BiscuitKeyPair at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitKeyPair.bulk_delete",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-attenuators/_template" : {
+      "get" : {
+        "tags" : [ "biscuit-attenuator", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Return a template of a resource of kind BiscuitAttenuator",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitAttenuator.template",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "description" : "Resource of kind BiscuitAttenuator",
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitAttenuator"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs/{id}" : {
+      "get" : {
+        "tags" : [ "biscuit-keypair", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Find resource of kind BiscuitKeyPair by its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitKeyPair.findById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "description" : "Resource of kind BiscuitKeyPair",
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitKeyPair"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "biscuit-keypair", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Updates a specific BiscuitKeyPair using its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitKeyPair.updateById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitKeyPair"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : true,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitKeyPair"
+              }
+            }
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "biscuit-keypair", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Updates (using json-patch) a specific BiscuitKeyPair using its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitKeyPair.pathById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitKeyPair"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : true,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitKeyPair"
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "biscuit-keypair", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Deletes a specific BiscuitKeyPair using its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitKeyPair.deleteById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitKeyPair"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-forges" : {
+      "get" : {
+        "tags" : [ "biscuit-forge", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Find all possible BiscuitForge entities",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitForge.findAll",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitForge"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "biscuit-forge", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Creates a BiscuitForge",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitForge.create",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "201" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitForge"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitForge"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers/_count" : {
+      "get" : {
+        "tags" : [ "biscuit-verifier", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Get number of entity of kind BiscuitVerifier",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitVerifier.count",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "description" : "Resources count",
+                  "type" : "object",
+                  "properties" : {
+                    "count" : {
+                      "type" : "number",
+                      "description" : "the number of resources"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-remote-facts/{id}" : {
+      "get" : {
+        "tags" : [ "biscuit-remote-facts", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Find resource of kind BiscuitRemoteFactsLoader by its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader.findById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "description" : "Resource of kind BiscuitRemoteFactsLoader",
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "biscuit-remote-facts", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Updates a specific BiscuitRemoteFactsLoader using its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader.updateById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : true,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader"
+              }
+            }
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "biscuit-remote-facts", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Updates (using json-patch) a specific BiscuitRemoteFactsLoader using its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader.pathById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : true,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader"
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "biscuit-remote-facts", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Deletes a specific BiscuitRemoteFactsLoader using its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader.deleteById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers/{id}" : {
+      "get" : {
+        "tags" : [ "biscuit-verifier", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Find resource of kind BiscuitVerifier by its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitVerifier.findById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "description" : "Resource of kind BiscuitVerifier",
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitVerifier"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "biscuit-verifier", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Updates a specific BiscuitVerifier using its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitVerifier.updateById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitVerifier"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : true,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitVerifier"
+              }
+            }
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "biscuit-verifier", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Updates (using json-patch) a specific BiscuitVerifier using its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitVerifier.pathById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitVerifier"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : true,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitVerifier"
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "biscuit-verifier", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Deletes a specific BiscuitVerifier using its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitVerifier.deleteById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitVerifier"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-remote-facts/_count" : {
+      "get" : {
+        "tags" : [ "biscuit-remote-facts", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Get number of entity of kind BiscuitRemoteFactsLoader",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader.count",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "description" : "Resources count",
+                  "type" : "object",
+                  "properties" : {
+                    "count" : {
+                      "type" : "number",
+                      "description" : "the number of resources"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-rbac/{id}" : {
+      "get" : {
+        "tags" : [ "biscuit-rbac", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Find resource of kind BiscuitRBAC by its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRBAC.findById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "description" : "Resource of kind BiscuitRBAC",
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRBAC"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "biscuit-rbac", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Updates a specific BiscuitRBAC using its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRBAC.updateById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRBAC"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : true,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRBAC"
+              }
+            }
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "biscuit-rbac", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Updates (using json-patch) a specific BiscuitRBAC using its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRBAC.pathById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRBAC"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : true,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRBAC"
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "biscuit-rbac", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Deletes a specific BiscuitRBAC using its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRBAC.deleteById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRBAC"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-attenuators/{id}" : {
+      "get" : {
+        "tags" : [ "biscuit-attenuator", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Find resource of kind BiscuitAttenuator by its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitAttenuator.findById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "description" : "Resource of kind BiscuitAttenuator",
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitAttenuator"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "biscuit-attenuator", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Updates a specific BiscuitAttenuator using its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitAttenuator.updateById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitAttenuator"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : true,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitAttenuator"
+              }
+            }
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "biscuit-attenuator", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Updates (using json-patch) a specific BiscuitAttenuator using its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitAttenuator.pathById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitAttenuator"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : true,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitAttenuator"
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "biscuit-attenuator", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Deletes a specific BiscuitAttenuator using its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitAttenuator.deleteById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitAttenuator"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-attenuators/_bulk" : {
+      "post" : {
+        "tags" : [ "biscuit-attenuator", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Create multiple BiscuitAttenuator at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitAttenuator.bulk_create",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : false,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitAttenuator"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "biscuit-attenuator", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Update multiple BiscuitAttenuator at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitAttenuator.bulk_update",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : false,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitAttenuator"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "biscuit-attenuator", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Update (using json-patch) multiple BiscuitAttenuator at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitAttenuator.bulk_patch",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : false,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/BulkPatchBody"
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "biscuit-attenuator", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Delete multiple BiscuitAttenuator at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitAttenuator.bulk_delete",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs/_template" : {
+      "get" : {
+        "tags" : [ "biscuit-keypair", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Return a template of a resource of kind BiscuitKeyPair",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitKeyPair.template",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "description" : "Resource of kind BiscuitKeyPair",
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitKeyPair"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-forges/{id}" : {
+      "get" : {
+        "tags" : [ "biscuit-forge", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Find resource of kind BiscuitForge by its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitForge.findById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "description" : "Resource of kind BiscuitForge",
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitForge"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "biscuit-forge", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Updates a specific BiscuitForge using its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitForge.updateById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitForge"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : true,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitForge"
+              }
+            }
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "biscuit-forge", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Updates (using json-patch) a specific BiscuitForge using its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitForge.pathById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitForge"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : true,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitForge"
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "biscuit-forge", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Deletes a specific BiscuitForge using its id",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitForge.deleteById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "The id param of the target entity"
+        } ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitForge"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs" : {
+      "get" : {
+        "tags" : [ "biscuit-keypair", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Find all possible BiscuitKeyPair entities",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitKeyPair.findAll",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitKeyPair"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "biscuit-keypair", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Creates a BiscuitKeyPair",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitKeyPair.create",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "201" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitKeyPair"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitKeyPair"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-attenuators" : {
+      "get" : {
+        "tags" : [ "biscuit-attenuator", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Find all possible BiscuitAttenuator entities",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitAttenuator.findAll",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitAttenuator"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "biscuit-attenuator", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Creates a BiscuitAttenuator",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitAttenuator.create",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "201" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitAttenuator"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitAttenuator"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-keypairs/_count" : {
+      "get" : {
+        "tags" : [ "biscuit-keypair", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Get number of entity of kind BiscuitKeyPair",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitKeyPair.count",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "description" : "Resources count",
+                  "type" : "object",
+                  "properties" : {
+                    "count" : {
+                      "type" : "number",
+                      "description" : "the number of resources"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers" : {
+      "get" : {
+        "tags" : [ "biscuit-verifier", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Find all possible BiscuitVerifier entities",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitVerifier.findAll",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitVerifier"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "biscuit-verifier", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Creates a BiscuitVerifier",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitVerifier.create",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "201" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitVerifier"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitVerifier"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-rbac/_bulk" : {
+      "post" : {
+        "tags" : [ "biscuit-rbac", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Create multiple BiscuitRBAC at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRBAC.bulk_create",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : false,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRBAC"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "biscuit-rbac", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Update multiple BiscuitRBAC at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRBAC.bulk_update",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : false,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRBAC"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "biscuit-rbac", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Update (using json-patch) multiple BiscuitRBAC at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRBAC.bulk_patch",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : false,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/BulkPatchBody"
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "biscuit-rbac", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Delete multiple BiscuitRBAC at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRBAC.bulk_delete",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-rbac/_template" : {
+      "get" : {
+        "tags" : [ "biscuit-rbac", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Return a template of a resource of kind BiscuitRBAC",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRBAC.template",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "description" : "Resource of kind BiscuitRBAC",
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRBAC"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-forges/_template" : {
+      "get" : {
+        "tags" : [ "biscuit-forge", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Return a template of a resource of kind BiscuitForge",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitForge.template",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "description" : "Resource of kind BiscuitForge",
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitForge"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers/_bulk" : {
+      "post" : {
+        "tags" : [ "biscuit-verifier", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Create multiple BiscuitVerifier at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitVerifier.bulk_create",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : false,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitVerifier"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "biscuit-verifier", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Update multiple BiscuitVerifier at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitVerifier.bulk_update",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : false,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitVerifier"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "biscuit-verifier", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Update (using json-patch) multiple BiscuitVerifier at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitVerifier.bulk_patch",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : false,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/BulkPatchBody"
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "biscuit-verifier", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Delete multiple BiscuitVerifier at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitVerifier.bulk_delete",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-remote-facts" : {
+      "get" : {
+        "tags" : [ "biscuit-remote-facts", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Find all possible BiscuitRemoteFactsLoader entities",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader.findAll",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "biscuit-remote-facts", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Creates a BiscuitRemoteFactsLoader",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader.create",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "201" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-remote-facts/_template" : {
+      "get" : {
+        "tags" : [ "biscuit-remote-facts", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Return a template of a resource of kind BiscuitRemoteFactsLoader",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader.template",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "description" : "Resource of kind BiscuitRemoteFactsLoader",
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-forges/_bulk" : {
+      "post" : {
+        "tags" : [ "biscuit-forge", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Create multiple BiscuitForge at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitForge.bulk_create",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : false,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitForge"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "biscuit-forge", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Update multiple BiscuitForge at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitForge.bulk_update",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : false,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitForge"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "biscuit-forge", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Update (using json-patch) multiple BiscuitForge at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitForge.bulk_patch",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : false,
+          "content" : {
+            "application/x-ndjson" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/BulkPatchBody"
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "biscuit-forge", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Delete multiple BiscuitForge at the same time",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitForge.bulk_delete",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/x-ndjson" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponseBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-rbac" : {
+      "get" : {
+        "tags" : [ "biscuit-rbac", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Find all possible BiscuitRBAC entities",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRBAC.findAll",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRBAC"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "biscuit-rbac", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Creates a BiscuitRBAC",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitRBAC.create",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "201" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRBAC"
+                }
+              }
+            }
+          }
+        },
+        "requestBody" : {
+          "description" : "the request body in nd-json format (1 stringified entity per line)",
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitRBAC"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers/_template" : {
+      "get" : {
+        "tags" : [ "biscuit-verifier", "biscuit.extensions.cloud-apim.com" ],
+        "summary" : "Return a template of a resource of kind BiscuitVerifier",
+        "operationId" : "biscuit.extensions.cloud-apim.com.BiscuitVerifier.template",
+        "parameters" : [ ],
+        "security" : [ {
+          "otoroshi_auth" : [ ]
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "You have to provide an Api Key. Api Key can be passed using basic http authentication",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad resource format. Take another look to the swagger, or open an issue",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Resource not found or does not exist",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "description" : "Resource of kind BiscuitVerifier",
+                  "$ref" : "#/components/schemas/biscuit.extensions.cloud-apim.com.BiscuitVerifier"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "biscuitextractorconfig" : {
+        "type" : "object",
+        "properties" : {
+          "extractorType" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "extractorName" : {
+            "type" : "string",
+            "minLength" : 1
+          }
+        },
+        "title" : "Biscuit extractor config",
+        "required" : [ "extractorType", "extractorName" ]
+      },
+      "BulkPatchBody" : {
+        "type" : "object",
+        "description" : "BulkPatchBody object"
+      },
+      "biscuit.extensions.cloud-apim.com.BiscuitRemoteFactsLoader" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "name" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "description" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "enabled" : {
+            "type" : "boolean"
+          },
+          "tags" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "minLength" : 1
+            }
+          },
+          "metadata" : {
+            "type" : "object",
+            "patternProperties" : {
+              ".*" : {
+                "type" : "string",
+                "minLength" : 1
+              }
+            }
+          },
+          "location" : {
+            "$ref" : "#/components/schemas/entitylocation"
+          },
+          "config" : {
+            "$ref" : "#/components/schemas/biscuitremotefactsconfig"
+          }
+        },
+        "title" : "Remote facts loader",
+        "required" : [ "id", "name", "description", "enabled", "tags", "metadata", "location", "config" ]
+      },
+      "verifierconfig" : {
+        "type" : "object",
+        "properties" : {
+          "checks" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "minLength" : 1
+            }
+          },
+          "facts" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "minLength" : 1
+            }
+          },
+          "resources" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "minLength" : 1
+            }
+          },
+          "rules" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "minLength" : 1
+            }
+          },
+          "policies" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "minLength" : 1
+            }
+          },
+          "revokedIds" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "minLength" : 1
+            }
+          },
+          "rbacPolicyRefs" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "minLength" : 1
+            }
+          },
+          "remoteFactsRefs" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "minLength" : 1
+            }
+          }
+        },
+        "title" : "Verifier config",
+        "required" : [ "checks", "facts", "resources", "rules", "policies", "revokedIds", "rbacPolicyRefs", "remoteFactsRefs" ]
+      },
+      "attenuatorconfig" : {
+        "type" : "object",
+        "properties" : {
+          "checks" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "minLength" : 1
+            }
+          }
+        },
+        "title" : "Attenuator config",
+        "required" : [ "checks" ]
+      },
+      "biscuit.extensions.cloud-apim.com.BiscuitAttenuator" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "name" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "description" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "enabled" : {
+            "type" : "boolean"
+          },
+          "tags" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "minLength" : 1
+            }
+          },
+          "metadata" : {
+            "type" : "object",
+            "patternProperties" : {
+              ".*" : {
+                "type" : "string",
+                "minLength" : 1
+              }
+            }
+          },
+          "location" : {
+            "$ref" : "#/components/schemas/entitylocation"
+          },
+          "keypairRef" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "config" : {
+            "$ref" : "#/components/schemas/attenuatorconfig"
+          }
+        },
+        "title" : "Biscuit attenuator",
+        "required" : [ "id", "name", "description", "enabled", "tags", "metadata", "location", "keypairRef", "config" ]
+      },
+      "ngtlsconfig" : {
+        "type" : "object",
+        "properties" : {
+          "certs" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "minLength" : 1
+            }
+          },
+          "trustedCerts" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "minLength" : 1
+            }
+          },
+          "enabled" : {
+            "type" : "boolean"
+          },
+          "loose" : {
+            "type" : "boolean"
+          },
+          "trustAll" : {
+            "type" : "boolean"
+          }
+        },
+        "title" : "Ng tls config",
+        "required" : [ "certs", "trustedCerts", "enabled", "loose", "trustAll" ]
+      },
+      "finiteduration" : {
+        "type" : "object",
+        "properties" : {
+          "length" : {
+            "type" : "number"
+          },
+          "unit" : {
+            "$ref" : "#/components/schemas/timeunit"
+          }
+        },
+        "title" : "Finite duration",
+        "required" : [ "length", "unit" ]
+      },
+      "tenantid" : {
+        "type" : "object",
+        "properties" : {
+          "rawValue" : {
+            "type" : "string",
+            "minLength" : 1
+          }
+        },
+        "title" : "Tenant id",
+        "required" : [ "rawValue" ]
+      },
+      "biscuit.extensions.cloud-apim.com.BiscuitVerifier" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "name" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "description" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "strict" : {
+            "type" : "boolean"
+          },
+          "enabled" : {
+            "type" : "boolean"
+          },
+          "tags" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "minLength" : 1
+            }
+          },
+          "metadata" : {
+            "type" : "object",
+            "patternProperties" : {
+              ".*" : {
+                "type" : "string",
+                "minLength" : 1
+              }
+            }
+          },
+          "location" : {
+            "$ref" : "#/components/schemas/entitylocation"
+          },
+          "keypairRef" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "config" : {
+            "$ref" : "#/components/schemas/verifierconfig"
+          },
+          "extractor" : {
+            "$ref" : "#/components/schemas/biscuitextractorconfig"
+          }
+        },
+        "title" : "Biscuit verifier",
+        "required" : [ "id", "name", "description", "strict", "enabled", "tags", "metadata", "location", "keypairRef", "config", "extractor" ]
+      },
+      "timeunit" : {
+        "type" : "object",
+        "properties" : { },
+        "title" : "Time unit"
+      },
+      "biscuit.extensions.cloud-apim.com.BiscuitForge" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "name" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "description" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "keypairRef" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "config" : {
+            "$ref" : "#/components/schemas/biscuitforgeconfig"
+          },
+          "tags" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "minLength" : 1
+            }
+          },
+          "metadata" : {
+            "type" : "object",
+            "patternProperties" : {
+              ".*" : {
+                "type" : "string",
+                "minLength" : 1
+              }
+            }
+          },
+          "location" : {
+            "$ref" : "#/components/schemas/entitylocation"
+          },
+          "remoteFactsLoaderRef" : {
+            "type" : "string",
+            "minLength" : 1
+          }
+        },
+        "title" : "Biscuit token forge",
+        "required" : [ "id", "name", "description", "keypairRef", "config", "tags", "metadata", "location" ]
+      },
+      "biscuit.extensions.cloud-apim.com.BiscuitKeyPair" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "name" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "description" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "isPublic" : {
+            "type" : "boolean"
+          },
+          "privKey" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "pubKey" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "algo" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "tags" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "minLength" : 1
+            }
+          },
+          "metadata" : {
+            "type" : "object",
+            "patternProperties" : {
+              ".*" : {
+                "type" : "string",
+                "minLength" : 1
+              }
+            }
+          },
+          "location" : {
+            "$ref" : "#/components/schemas/entitylocation"
+          }
+        },
+        "title" : "Biscuit key pair",
+        "required" : [ "id", "name", "description", "isPublic", "privKey", "pubKey", "algo", "tags", "metadata", "location" ]
+      },
+      "ErrorResponse" : {
+        "type" : "object",
+        "description" : "error response"
+      },
+      "entitylocation" : {
+        "type" : "object",
+        "properties" : {
+          "tenant" : {
+            "$ref" : "#/components/schemas/tenantid"
+          },
+          "teams" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/teamid"
+            }
+          }
+        },
+        "title" : "Entity location",
+        "required" : [ "tenant", "teams" ]
+      },
+      "BulkResponseBody" : {
+        "type" : "object",
+        "description" : "BulkResponseBody object"
+      },
+      "teamid" : {
+        "type" : "object",
+        "properties" : {
+          "rawValue" : {
+            "type" : "string",
+            "minLength" : 1
+          }
+        },
+        "title" : "Team id",
+        "required" : [ "rawValue" ]
+      },
+      "biscuitforgeconfig" : {
+        "type" : "object",
+        "properties" : {
+          "checks" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "minLength" : 1
+            }
+          },
+          "facts" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "minLength" : 1
+            }
+          },
+          "resources" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "minLength" : 1
+            }
+          },
+          "rules" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "minLength" : 1
+            }
+          },
+          "enableTtl" : {
+            "type" : "boolean"
+          },
+          "ttl" : {
+            "$ref" : "#/components/schemas/finiteduration"
+          }
+        },
+        "title" : "Biscuit forge config",
+        "required" : [ "checks", "facts", "resources", "rules", "enableTtl", "ttl" ]
+      },
+      "biscuitremotefactsconfig" : {
+        "type" : "object",
+        "properties" : {
+          "apiUrl" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "method" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "headers" : {
+            "type" : "object",
+            "patternProperties" : {
+              ".*" : {
+                "type" : "string",
+                "minLength" : 1
+              }
+            }
+          },
+          "tlsConfig" : {
+            "$ref" : "#/components/schemas/ngtlsconfig"
+          },
+          "timeout" : {
+            "$ref" : "#/components/schemas/finiteduration"
+          }
+        },
+        "title" : "Biscuit remote facts config",
+        "required" : [ "apiUrl", "method", "headers", "tlsConfig", "timeout" ]
+      },
+      "biscuit.extensions.cloud-apim.com.BiscuitRBAC" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "name" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "description" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "strict" : {
+            "type" : "boolean"
+          },
+          "enabled" : {
+            "type" : "boolean"
+          },
+          "tags" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "minLength" : 1
+            }
+          },
+          "metadata" : {
+            "type" : "object",
+            "patternProperties" : {
+              ".*" : {
+                "type" : "string",
+                "minLength" : 1
+              }
+            }
+          },
+          "location" : {
+            "$ref" : "#/components/schemas/entitylocation"
+          },
+          "roles" : {
+            "type" : "object",
+            "patternProperties" : {
+              ".*" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string",
+                  "minLength" : 1
+                }
+              }
+            }
+          }
+        },
+        "title" : "Biscuit rbac policy",
+        "required" : [ "id", "name", "description", "strict", "enabled", "tags", "metadata", "location", "roles" ]
+      }
+    },
+    "securitySchemes" : {
+      "otoroshi_auth" : {
+        "type" : "http",
+        "scheme" : "basic"
+      }
+    }
+  }
+}
