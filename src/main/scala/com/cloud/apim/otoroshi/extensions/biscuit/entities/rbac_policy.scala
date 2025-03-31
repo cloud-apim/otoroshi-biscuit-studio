@@ -85,7 +85,7 @@ object BiscuitRbacPolicy {
         extractIdf = c => datastores.biscuitRbacPolicyDataStore.extractId(c),
         extractIdJsonf = json => json.select("id").asString,
         idFieldNamef = () => "id",
-        tmpl = (v, p) => {
+        tmpl = (v, p, ctx) => {
           BiscuitRbacPolicy(
             id = IdGenerator.namedId("biscuit-rbac-policy", env),
             name = "New biscuit RBAC Policy",

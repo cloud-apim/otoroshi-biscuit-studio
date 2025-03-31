@@ -440,7 +440,7 @@ object BiscuitVerifier {
         extractIdf = c => datastores.biscuitVerifierDataStore.extractId(c),
         extractIdJsonf = json => json.select("id").asString,
         idFieldNamef = () => "id",
-        tmpl = (v, p) => {
+        tmpl = (v, p, ctx) => {
           BiscuitVerifier(
             id = IdGenerator.namedId("biscuit-verifier", env),
             name = "New biscuit verifier",

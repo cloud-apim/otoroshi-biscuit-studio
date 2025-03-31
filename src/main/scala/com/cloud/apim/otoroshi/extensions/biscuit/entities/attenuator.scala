@@ -137,7 +137,7 @@ object BiscuitAttenuator {
         extractIdf = c => datastores.biscuitAttenuatorDataStore.extractId(c),
         extractIdJsonf = json => json.select("id").asString,
         idFieldNamef = () => "id",
-        tmpl = (v, p) => {
+        tmpl = (v, p, ctx) => {
           BiscuitAttenuator(
             id = IdGenerator.namedId("biscuit-attenuator", env),
             name = "New biscuit Attenuator",

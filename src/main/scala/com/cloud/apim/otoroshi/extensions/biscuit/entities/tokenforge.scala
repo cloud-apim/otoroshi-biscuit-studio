@@ -253,7 +253,7 @@ object BiscuitTokenForge {
         extractIdf = c => datastores.biscuitTokenForgeDataStore.extractId(c),
         extractIdJsonf = json => json.select("id").asString,
         idFieldNamef = () => "id",
-        tmpl = (v, p) => {
+        tmpl = (v, p, ctx) => {
           BiscuitTokenForge(
             id = IdGenerator.namedId("biscuit-forge", env),
             name = "New biscuit forge",

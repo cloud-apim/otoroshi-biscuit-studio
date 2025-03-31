@@ -357,7 +357,7 @@ object RemoteFactsLoader {
         extractIdf = c => datastores.biscuitRemoteFactsLoaderDataStore.extractId(c),
         extractIdJsonf = json => json.select("id").asString,
         idFieldNamef = () => "id",
-        tmpl = (v, p) => {
+        tmpl = (v, p, ctx) => {
           RemoteFactsLoader(
             id = IdGenerator.namedId("biscuit-remote-facts", env),
             name = "New biscuit remote facts loader",

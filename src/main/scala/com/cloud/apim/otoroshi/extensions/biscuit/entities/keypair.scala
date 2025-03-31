@@ -93,7 +93,7 @@ object BiscuitKeyPair {
         extractIdf = c => datastores.biscuitKeyPairDataStore.extractId(c),
         extractIdJsonf = json => json.select("id").asString,
         idFieldNamef = () => "id",
-        tmpl = (v, p) => {
+        tmpl = (v, p, ctx) => {
           val biscuitKeyPair = new KeyPair()
           BiscuitKeyPair(
             id = IdGenerator.namedId("biscuit-keypair", env),
