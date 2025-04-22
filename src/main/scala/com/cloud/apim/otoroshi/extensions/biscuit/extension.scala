@@ -124,7 +124,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
   override def enabled: Boolean = env.isDev || configuration.getOptional[Boolean]("enabled").getOrElse(false)
 
   override def start(): Unit = {
-    logger.info("the 'Biscuit Extension' is enabled !")
+    logger.info("the 'Biscuit Extension' is enabled ! ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
     implicit val ev = env
     implicit val ec = env.otoroshiExecutionContext
   }
@@ -251,6 +251,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
               )
             }
           }
+          case _ => ()
         }
 
         Results.Ok(
@@ -1319,7 +1320,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
               val tokensToRevoke = bodyJson.asOpt[Seq[JsValue]].getOrElse(Seq.empty)
               var tokensRevoked = Seq.empty[String]
 
-              tokensToRevoke.map { tok => {
+              tokensToRevoke.foreach { tok =>
                 RevokedToken.format.reads(tok) match {
                   case JsSuccess(token, _) => {
                     if (token.revocationId.nonEmpty) {
@@ -1330,8 +1331,8 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                       )
                     }
                   }
+                  case _ => ()
                 }
-              }
               }
 
               Results.Ok(
