@@ -2,9 +2,9 @@ package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
 import akka.Done
 import com.cloud.apim.otoroshi.extensions.biscuit.entities.BiscuitExtractorConfig
-import org.biscuitsec.biscuit.datalog.SymbolTable
-import org.biscuitsec.biscuit.token.{Biscuit, UnverifiedBiscuit}
+import org.biscuitsec.biscuit.datalog.{RunLimits, SymbolTable}
 import org.biscuitsec.biscuit.token.builder.Term.Str
+import org.biscuitsec.biscuit.token.{Biscuit, UnverifiedBiscuit}
 import org.joda.time.DateTime
 import otoroshi.env.Env
 import otoroshi.models.PrivateAppsUser
@@ -25,20 +25,26 @@ case class BiscuitUserExtractorConfig(
   enforce: Boolean = true,
   extractorType: String = "header",
   extractorName: String = "Authorization",
-  usernameKey: String = "name"
+  userIdKey: String = "user_id",
+  nameKey: String = "name",
+  emailKey: String = "email",
+  validations: JsObject = Json.obj(),
 ) extends NgPluginConfig {
   def json: JsValue = BiscuitUserExtractorConfig.format.writes(this)
 }
 
 object BiscuitUserExtractorConfig {
-  val configFlow: Seq[String] = Seq("keypair_ref", "enforce", "extractor_type", "extractor_name", "username_key")
+  val configFlow: Seq[String] = Seq("keypair_ref", "enforce", "extractor_type", "extractor_name", "email_key", "name_key", "user_id_key", "validations")
   val format = new Format[BiscuitUserExtractorConfig] {
     override def writes(o: BiscuitUserExtractorConfig): JsValue = Json.obj(
       "keypair_ref" -> o.keypairRef,
       "enforce" -> o.enforce,
       "extractor_type" -> o.extractorType,
       "extractor_name" -> o.extractorName,
-      "username_key" -> o.usernameKey
+      "email_key" -> o.emailKey,
+      "name_key" -> o.nameKey,
+      "user_id_key" -> o.userIdKey,
+      "validations" -> o.validations,
     )
 
     override def reads(json: JsValue): JsResult[BiscuitUserExtractorConfig] = Try {
@@ -47,7 +53,10 @@ object BiscuitUserExtractorConfig {
         enforce = json.select("enforce").asOpt[Boolean].getOrElse(true),
         extractorType = json.select("extractor_type").asOpt[String].getOrElse(""),
         extractorName = json.select("extractor_name").asOpt[String].getOrElse(""),
-        usernameKey = json.select("username_key").asOpt[String].getOrElse("")
+        emailKey = json.select("email_key").asOpt[String].orElse(json.select("username_key").asOpt[String]).getOrElse("email"),
+        nameKey = json.select("name_key").asOpt[String].getOrElse("name"),
+        userIdKey = json.select("user_id_key").asOpt[String].getOrElse("user"),
+        validations = json.select("validations").asOpt[JsObject].getOrElse(Json.obj()),
       )
     } match {
       case Failure(exception) => JsError(exception.getMessage)
@@ -87,9 +96,24 @@ object BiscuitUserExtractorConfig {
       "type" -> "text",
       "label" -> "Biscuit field name"
     ),
-    "username_key" -> Json.obj(
+    "email_key" -> Json.obj(
       "type" -> "text",
-      "label" -> "Username biscuit key"
+      "label" -> "User email biscuit key"
+    ),
+    "name_key" -> Json.obj(
+      "type" -> "text",
+      "label" -> "User name biscuit key"
+    ),
+    "user_id_key" -> Json.obj(
+      "type" -> "text",
+      "label" -> "User ID biscuit key"
+    ),
+    "validations" -> Json.obj(
+      "type" -> "json",
+      "label" -> "Additional biscuit validations",
+      "props" -> Json.obj(
+        "editorOnly" -> true,
+      )
     )
   ))
 }
@@ -116,7 +140,7 @@ class BiscuitUserExtractor extends NgPreRouting {
 
   override def categories: Seq[NgPluginCategory] = Seq(NgPluginCategory.Custom("Cloud APIM"), NgPluginCategory.Custom("Biscuit Studio"), NgPluginCategory.AccessControl)
 
-  override def steps: Seq[NgStep] = Seq(NgStep.ValidateAccess)
+  override def steps: Seq[NgStep] = Seq(NgStep.PreRoute)
 
   override def start(env: Env): Future[Unit] = {
     env.adminExtensions.extension[BiscuitExtension].foreach { ext =>
@@ -128,8 +152,8 @@ class BiscuitUserExtractor extends NgPreRouting {
   override def preRoute(
     ctx: NgPreRoutingContext
   )(implicit env: Env, ec: ExecutionContext): Future[Either[NgPreRoutingError, Done]] = {
-
     val config = ctx.cachedConfig(internalName)(BiscuitUserExtractorConfig.format).getOrElse(BiscuitUserExtractorConfig())
+    val ext = env.adminExtensions.extension[BiscuitExtension].get
     env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(config.keypairRef)) match {
       case None => handleError("keypair_ref not found")
       case Some(keypair) => {
@@ -138,12 +162,30 @@ class BiscuitUserExtractor extends NgPreRouting {
             Try(Biscuit.from_b64url(token, keypair.getPubKey)).toEither match {
               case Left(err) => handleError(s"Unable to deserialize Biscuit token : ${err}")
               case Right(biscuitUnverified) =>
-
                 Try(biscuitUnverified.verify(keypair.getPubKey)).toEither match {
                   case Left(err) => handleError(s"Biscuit token is not valid : ${err}")
-                  case Right(biscuitToken) => {
-                    extractIdAndName(ctx, biscuitToken, config)
-                  }
+                  case Right(biscuitToken) =>
+                    val facts = config.validations.select("facts").asOpt[Seq[String]].getOrElse(Seq.empty[String])
+                    val rules = config.validations.select("rules").asOpt[Seq[String]].getOrElse(Seq.empty[String])
+                    val checks = config.validations.select("checks").asOpt[Seq[String]].getOrElse(Seq.empty[String])
+                    val policies = config.validations.select("policies").asOpt[Seq[String]].getOrElse(Seq.empty[String])
+                    if (facts.isEmpty && rules.isEmpty && checks.isEmpty && policies.isEmpty) {
+                      extractIdNameAndEmail(ctx, biscuitToken, config)
+                    } else {
+                      val authorizer = biscuitUnverified.authorizer()
+                      authorizer.set_time()
+                      val maxFacts = ext.configuration.getOptional[Int]("verifier_run_limit.max_facts").getOrElse(1000)
+                      val maxIterations = ext.configuration.getOptional[Int]("verifier_run_limit.max_iterations").getOrElse(100)
+                      val maxTime = java.time.Duration.ofMillis(ext.configuration.getOptional[Long]("verifier_run_limit.max_time").getOrElse(1000))
+                      facts.foreach(str => authorizer.add_fact(str))
+                      rules.foreach(str => authorizer.add_rule(str))
+                      checks.foreach(str => authorizer.add_check(str))
+                      policies.foreach(str => authorizer.add_policy(str))
+                      Try(authorizer.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
+                        case Left(err) => handleError(s"invalid biscuit token: ${err}")
+                        case Right(_) => extractIdNameAndEmail(ctx, biscuitToken, config)
+                      }
+                    }
                 }
             }
           }
@@ -171,16 +213,23 @@ class BiscuitUserExtractor extends NgPreRouting {
           val value: String = fact.predicate().terms().asScala.map(t => symbols.print_term(t)).mkString(", ")
           if (name.isDefined) {
             val cleanValue = value.replaceAll("^\"|\"$", "").replace("\\\"", "\"")
-            finalProfile = finalProfile + (name.get() -> JsString(cleanValue))
+            val cleanName = name.get()
+            finalProfile.value.get(cleanName) match {
+              case None => finalProfile = finalProfile + (name.get() -> JsString(cleanValue))
+              case Some(JsString(str)) => finalProfile = finalProfile + (name.get() -> Json.arr(str, JsString(cleanValue)))
+              case Some(JsArray(arr)) => finalProfile = finalProfile + (name.get() -> JsArray(arr :+ JsString(cleanValue)))
+              case Some(jsv) => finalProfile = finalProfile + (name.get() -> Json.arr(jsv, JsString(cleanValue)))
+            }
           }
         }
       }
     finalProfile
   }
 
-  def extractIdAndName(ctx: NgPreRoutingContext, biscuitToken: Biscuit, config: BiscuitUserExtractorConfig)(implicit env: Env, ec: ExecutionContext): Future[Either[NgPreRoutingError, Done]] = {
-    val otoroshiUserId = biscuitToken.authorizer().query("biscuit_user_id($id) <- user_id($id)")
-    val otoroshiUsername = biscuitToken.authorizer().query(s"biscuit_username($$id) <- ${config.usernameKey}($$id)")
+  def extractIdNameAndEmail(ctx: NgPreRoutingContext, biscuitToken: Biscuit, config: BiscuitUserExtractorConfig)(implicit env: Env, ec: ExecutionContext): Future[Either[NgPreRoutingError, Done]] = {
+    val otoroshiEmail = biscuitToken.authorizer().query(s"biscuit_email($$id) <- ${config.emailKey}($$id)")
+    val otoroshiName = biscuitToken.authorizer().query(s"biscuit_name($$id) <- ${config.nameKey}($$id)")
+    val otoroshiUserId = biscuitToken.authorizer().query(s"biscuit_user_id($$id) <- ${config.userIdKey}($$id)")
 
     val biscuitUserId: Option[String] = {
       Try(otoroshiUserId).toOption
@@ -195,11 +244,11 @@ class BiscuitUserExtractor extends NgPreRouting {
         }
     }
 
-    val biscuitUsername: Option[String] = {
-      Try(otoroshiUsername).toOption
+    val biscuitEmail: Option[String] = {
+      Try(otoroshiEmail).toOption
         .map(_.asScala)
         .flatMap(_.headOption)
-        .filter(_.name() == "biscuit_username")
+        .filter(_.name() == "biscuit_email")
         .map(_.terms().asScala)
         .flatMap(_.headOption)
         .flatMap {
@@ -208,15 +257,27 @@ class BiscuitUserExtractor extends NgPreRouting {
         }
     }
 
+    val biscuitName: Option[String] = {
+      Try(otoroshiName).toOption
+        .map(_.asScala)
+        .flatMap(_.headOption)
+        .filter(_.name() == "biscuit_name")
+        .map(_.terms().asScala)
+        .flatMap(_.headOption)
+        .flatMap {
+          case str: Str => str.getValue.some
+          case _ => None
+        }
+      }
+
 
     val finalProfile = extractBiscuitTokenInfo(biscuitToken)
-    (biscuitUserId, biscuitUsername) match {
-      case (Some(userId), Some(userName)) => {
-
+    (biscuitUserId, biscuitEmail, biscuitName) match {
+      case (userId, Some(userEmail), userName) => {
         val user: PrivateAppsUser = PrivateAppsUser(
-          randomId = IdGenerator.uuid,
-          name = userId,
-          email = userName,
+          randomId = userId.getOrElse(IdGenerator.uuid),
+          name = userName.getOrElse(userEmail),
+          email = userEmail,
           otoroshiData = None,
           profile = finalProfile,
           token = Json.obj("biscuit" -> biscuitToken.serialize_b64url()),
@@ -230,7 +291,6 @@ class BiscuitUserExtractor extends NgPreRouting {
           location = ctx.route.serviceDescriptor.location
         )
         ctx.attrs.put(otoroshi.plugins.Keys.UserKey -> user)
-
         Done.right.vfuture
       }
       case _ => unauthorized(Json.obj("error" -> "unauthorized", "error_description" -> "Bad user extraction, user id or username not valid"))
