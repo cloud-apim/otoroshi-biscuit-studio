@@ -124,7 +124,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
   override def enabled: Boolean = env.isDev || configuration.getOptional[Boolean]("enabled").getOrElse(false)
 
   override def start(): Unit = {
-    logger.info("the 'Biscuit Extension' is enabled ! ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+    logger.info("the 'Biscuit Extension' is enabled !")
     implicit val ev = env
     implicit val ec = env.otoroshiExecutionContext
   }
