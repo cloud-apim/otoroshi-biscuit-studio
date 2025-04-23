@@ -1,7 +1,7 @@
 package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
 import akka.Done
-import com.cloud.apim.otoroshi.extensions.biscuit.entities.BiscuitExtractorConfig
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.{BiscuitExtractorConfig, VerificationContext}
 import org.biscuitsec.biscuit.datalog.{RunLimits, SymbolTable}
 import org.biscuitsec.biscuit.token.builder.Term.Str
 import org.biscuitsec.biscuit.token.{Biscuit, UnverifiedBiscuit}
@@ -29,12 +29,13 @@ case class BiscuitUserExtractorConfig(
   nameKey: String = "name",
   emailKey: String = "email",
   validations: JsObject = Json.obj(),
+  verifierRef: Option[String] = None,
 ) extends NgPluginConfig {
   def json: JsValue = BiscuitUserExtractorConfig.format.writes(this)
 }
 
 object BiscuitUserExtractorConfig {
-  val configFlow: Seq[String] = Seq("keypair_ref", "enforce", "extractor_type", "extractor_name", "email_key", "name_key", "user_id_key", "validations")
+  val configFlow: Seq[String] = Seq("keypair_ref", "enforce", "extractor_type", "extractor_name", "email_key", "name_key", "user_id_key", "verifier_ref", "validations")
   val format = new Format[BiscuitUserExtractorConfig] {
     override def writes(o: BiscuitUserExtractorConfig): JsValue = Json.obj(
       "keypair_ref" -> o.keypairRef,
@@ -45,6 +46,7 @@ object BiscuitUserExtractorConfig {
       "name_key" -> o.nameKey,
       "user_id_key" -> o.userIdKey,
       "validations" -> o.validations,
+      "verifier_ref" -> o.verifierRef,
     )
 
     override def reads(json: JsValue): JsResult[BiscuitUserExtractorConfig] = Try {
@@ -57,6 +59,7 @@ object BiscuitUserExtractorConfig {
         nameKey = json.select("name_key").asOpt[String].getOrElse("name"),
         userIdKey = json.select("user_id_key").asOpt[String].getOrElse("user"),
         validations = json.select("validations").asOpt[JsObject].getOrElse(Json.obj()),
+        verifierRef = json.select("verifier_ref").asOpt[String],
       )
     } match {
       case Failure(exception) => JsError(exception.getMessage)
@@ -93,19 +96,19 @@ object BiscuitUserExtractorConfig {
       ),
     ),
     "extractor_name" -> Json.obj(
-      "type" -> "text",
+      "type" -> "string",
       "label" -> "Biscuit field name"
     ),
     "email_key" -> Json.obj(
-      "type" -> "text",
+      "type" -> "string",
       "label" -> "User email biscuit key"
     ),
     "name_key" -> Json.obj(
-      "type" -> "text",
+      "type" -> "string",
       "label" -> "User name biscuit key"
     ),
     "user_id_key" -> Json.obj(
-      "type" -> "text",
+      "type" -> "string",
       "label" -> "User ID biscuit key"
     ),
     "validations" -> Json.obj(
@@ -114,6 +117,18 @@ object BiscuitUserExtractorConfig {
       "props" -> Json.obj(
         "editorOnly" -> true,
       )
+    ),
+    "verifier_ref" -> Json.obj(
+      "type" -> "select",
+      "label" -> s"Biscuit Verifier",
+      "props" -> Json.obj(
+        "isClearable" -> true,
+        "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers",
+        "optionsTransformer" -> Json.obj(
+          "label" -> "name",
+          "value" -> "id",
+        ),
+      ),
     )
   ))
 }
@@ -161,32 +176,44 @@ class BiscuitUserExtractor extends NgPreRouting {
           case Some(token) => {
             Try(Biscuit.from_b64url(token, keypair.getPubKey)).toEither match {
               case Left(err) => handleError(s"Unable to deserialize Biscuit token : ${err}")
-              case Right(biscuitUnverified) =>
+              case Right(biscuitUnverified) => {
                 Try(biscuitUnverified.verify(keypair.getPubKey)).toEither match {
                   case Left(err) => handleError(s"Biscuit token is not valid : ${err}")
-                  case Right(biscuitToken) =>
-                    val facts = config.validations.select("facts").asOpt[Seq[String]].getOrElse(Seq.empty[String])
-                    val rules = config.validations.select("rules").asOpt[Seq[String]].getOrElse(Seq.empty[String])
-                    val checks = config.validations.select("checks").asOpt[Seq[String]].getOrElse(Seq.empty[String])
-                    val policies = config.validations.select("policies").asOpt[Seq[String]].getOrElse(Seq.empty[String])
-                    if (facts.isEmpty && rules.isEmpty && checks.isEmpty && policies.isEmpty) {
-                      extractIdNameAndEmail(ctx, biscuitToken, config)
-                    } else {
-                      val authorizer = biscuitUnverified.authorizer()
-                      authorizer.set_time()
-                      val maxFacts = ext.configuration.getOptional[Int]("verifier_run_limit.max_facts").getOrElse(1000)
-                      val maxIterations = ext.configuration.getOptional[Int]("verifier_run_limit.max_iterations").getOrElse(100)
-                      val maxTime = java.time.Duration.ofMillis(ext.configuration.getOptional[Long]("verifier_run_limit.max_time").getOrElse(1000))
-                      facts.foreach(str => authorizer.add_fact(str))
-                      rules.foreach(str => authorizer.add_rule(str))
-                      checks.foreach(str => authorizer.add_check(str))
-                      policies.foreach(str => authorizer.add_policy(str))
-                      Try(authorizer.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
-                        case Left(err) => handleError(s"invalid biscuit token: ${err}")
-                        case Right(_) => extractIdNameAndEmail(ctx, biscuitToken, config)
+                  case Right(biscuitToken) => {
+                    config.verifierRef
+                      .map(ref => ext.datastores.biscuitVerifierDataStore.findById(ref))
+                      .getOrElse(None.vfuture) flatMap {
+                        case Some(verifier) => verifier.verify(ctx.request, Some(VerificationContext(ctx.route, ctx.request, None, None)), ctx.attrs).flatMap {
+                          case Left(err) => handleError(s"invalid biscuit token: ${err}")
+                          case Right(_) => extractIdNameAndEmail(ctx, biscuitToken, config)
+                        }
+                        case None => {
+                          val facts = config.validations.select("facts").asOpt[Seq[String]].getOrElse(Seq.empty[String])
+                          val rules = config.validations.select("rules").asOpt[Seq[String]].getOrElse(Seq.empty[String])
+                          val checks = config.validations.select("checks").asOpt[Seq[String]].getOrElse(Seq.empty[String])
+                          val policies = config.validations.select("policies").asOpt[Seq[String]].getOrElse(Seq.empty[String])
+                          if (facts.isEmpty && rules.isEmpty && checks.isEmpty && policies.isEmpty) {
+                            extractIdNameAndEmail(ctx, biscuitToken, config)
+                          } else {
+                            val authorizer = biscuitUnverified.authorizer()
+                            authorizer.set_time()
+                            val maxFacts = ext.configuration.getOptional[Int]("verifier_run_limit.max_facts").getOrElse(1000)
+                            val maxIterations = ext.configuration.getOptional[Int]("verifier_run_limit.max_iterations").getOrElse(100)
+                            val maxTime = java.time.Duration.ofMillis(ext.configuration.getOptional[Long]("verifier_run_limit.max_time").getOrElse(1000))
+                            facts.foreach(str => authorizer.add_fact(str))
+                            rules.foreach(str => authorizer.add_rule(str))
+                            checks.foreach(str => authorizer.add_check(str))
+                            policies.foreach(str => authorizer.add_policy(str))
+                            Try(authorizer.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
+                              case Left(err) => handleError(s"invalid biscuit token: ${err}")
+                              case Right(_) => extractIdNameAndEmail(ctx, biscuitToken, config)
+                            }
+                          }
+                        }
                       }
-                    }
+                  }
                 }
+              }
             }
           }
           case None if config.enforce => unauthorized(Json.obj("error" -> "unauthorized", "error_description" -> "Biscuit not found in request"))
