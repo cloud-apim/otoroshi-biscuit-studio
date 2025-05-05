@@ -115,13 +115,15 @@ object BiscuitUserExtractorConfig {
       "type" -> "json",
       "label" -> "Additional biscuit validations",
       "props" -> Json.obj(
-        "editorOnly" -> true,
+        "editorOnly" -> false,
       )
     ),
     "verifier_ref" -> Json.obj(
       "type" -> "select",
       "label" -> s"Biscuit Verifier",
+      "placeholder" -> "Optional biscuit verifier",
       "props" -> Json.obj(
+        "placeholder" -> "Optional biscuit verifier",
         "isClearable" -> true,
         "optionsFrom" -> s"/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-verifiers",
         "optionsTransformer" -> Json.obj(
