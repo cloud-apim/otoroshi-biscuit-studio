@@ -13,6 +13,7 @@ import otoroshi.models._
 import otoroshi.next.extensions._
 import otoroshi.next.utils.JsonHelpers
 import otoroshi.security.IdGenerator
+import otoroshi.utils.TypedMap
 import otoroshi.utils.cache.types.UnboundedTrieMap
 import otoroshi.utils.syntax.implicits._
 import play.api.Logger
@@ -1392,7 +1393,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                   "backend" -> JsNull,
                   "apikey" -> apk.lightJson,
                   "user" -> JsNull,
-                  "raw_request" -> JsonHelpers.requestToJson(request),
+                  "raw_request" -> JsonHelpers.requestToJson(request, TypedMap.empty),
                   "config" -> Json.obj(),
                   "global_config" -> Json.obj(),
                   "attrs" -> Json.obj(),

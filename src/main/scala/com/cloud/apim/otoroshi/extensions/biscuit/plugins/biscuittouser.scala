@@ -185,7 +185,7 @@ class BiscuitUserExtractor extends NgPreRouting {
                     config.verifierRef
                       .map(ref => ext.datastores.biscuitVerifierDataStore.findById(ref))
                       .getOrElse(None.vfuture) flatMap {
-                        case Some(verifier) => verifier.verify(ctx.request, Some(VerificationContext(ctx.route, ctx.request, None, None)), ctx.attrs).flatMap {
+                        case Some(verifier) => verifier.verify(ctx.request, Some(VerificationContext(ctx.route, ctx.request, None, None, ctx.attrs)), ctx.attrs).flatMap {
                           case Left(err) => handleError(s"invalid biscuit token: ${err}")
                           case Right(_) => extractIdNameAndEmail(ctx, biscuitToken, config)
                         }

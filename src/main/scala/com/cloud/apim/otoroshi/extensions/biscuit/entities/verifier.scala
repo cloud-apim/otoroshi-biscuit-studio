@@ -28,11 +28,11 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.jdk.CollectionConverters._
 import scala.util.{Failure, Success, Try}
 
-case class VerificationContext(route: NgRoute, request: RequestHeader, user: Option[PrivateAppsUser], apikey: Option[ApiKey]) {
+case class VerificationContext(route: NgRoute, request: RequestHeader, user: Option[PrivateAppsUser], apikey: Option[ApiKey], attrs: TypedMap) {
   def json: JsObject = Json.obj(
     "apikey" -> apikey.map(_.lightJson).getOrElse(JsNull).as[JsValue],
     "user" -> user.map(_.lightJson).getOrElse(JsNull).as[JsValue],
-    "request" -> JsonHelpers.requestToJson(request),
+    "request" -> JsonHelpers.requestToJson(request, attrs),
     "route" -> route.json,
   )
 }
