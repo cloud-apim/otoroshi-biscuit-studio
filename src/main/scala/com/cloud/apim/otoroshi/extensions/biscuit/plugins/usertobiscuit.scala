@@ -87,7 +87,7 @@ class UserToBiscuitExtractor extends NgRequestTransformer {
 
   override def categories: Seq[NgPluginCategory] = Seq(NgPluginCategory.Custom("Cloud APIM"), NgPluginCategory.Custom("Biscuit Studio"), NgPluginCategory.Authentication)
 
-  override def steps: Seq[NgStep] = Seq(NgStep.ValidateAccess)
+  override def steps: Seq[NgStep] = Seq(NgStep.TransformRequest)
 
   override def start(env: Env): Future[Unit] = {
     env.adminExtensions.extension[BiscuitExtension].foreach { ext =>
