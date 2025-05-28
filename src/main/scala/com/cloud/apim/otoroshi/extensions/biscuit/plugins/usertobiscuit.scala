@@ -92,6 +92,7 @@ class UserToBiscuitExtractor extends NgRequestTransformer {
   override def start(env: Env): Future[Unit] = {
     env.adminExtensions.extension[BiscuitExtension].foreach { ext =>
       ext.logger.info("the 'Cloud APIM - User to Biscuit Extractor' plugin is available !")
+      
     }
     ().vfuture
   }

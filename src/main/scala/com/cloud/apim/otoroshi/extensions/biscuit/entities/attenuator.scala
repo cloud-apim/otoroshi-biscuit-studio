@@ -86,6 +86,18 @@ case class BiscuitAttenuator(
   def attenuate(biscuitToken: Biscuit)(implicit env: Env): Either[String, Biscuit] = {
     config.attenuate(biscuitToken)
   }
+
+  def attenuateBase64Token(token: String)(implicit env: Env): Either[String, Biscuit] = {
+    env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(keypairRef)) match {
+      case None => Left("keypair_ref not found")
+      case Some(keypair) => {
+        Try(Biscuit.from_b64url(token, keypair.getPubKey)).toEither match {
+          case Left(err) => Left(s"Unable to deserialize Biscuit token : ${err}")
+          case Right(biscuitToken) => attenuate(biscuitToken)
+        }
+      }
+    }
+  }
 }
 
 

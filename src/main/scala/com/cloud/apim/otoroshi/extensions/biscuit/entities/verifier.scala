@@ -370,6 +370,18 @@ case class BiscuitVerifier(
 
   def theTags: Seq[String] = tags
 
+  def verifyBase64Token(token: String, ctxOpt: Option[VerificationContext], attrs: TypedMap)(implicit env: Env, ec: ExecutionContext): Future[Either[String, Unit]] = {
+    env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(keypairRef)) match {
+      case None => Left("keypair_ref not found").vfuture
+      case Some(keypair) => {
+        Try(Biscuit.from_b64url(token, keypair.getPubKey)).toEither match {
+          case Left(err) => Left(s"Unable to deserialize Biscuit token : ${err}").vfuture
+          case Right(biscuitToken) => config.verify(biscuitToken, ctxOpt)
+        }
+      }
+    }
+  }
+
   def verify(req: RequestHeader, ctxOpt: Option[VerificationContext], attrs: TypedMap)(implicit env: Env, ec: ExecutionContext): Future[Either[String, Unit]] = {
     env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(keypairRef)) match {
       case None => Left("keypair_ref not found").vfuture
