@@ -15,20 +15,20 @@ The Otoroshi Biscuit Studio documentation is available here : https://cloud-apim
 Follow this guide in order to get Otoroshi with the Biscuit Studio Extension.
 ### Download Otoroshi
 
-[ ![Download Otoroshi](https://img.shields.io/github/release/MAIF/otoroshi.svg) ](https://github.com/MAIF/otoroshi/releases/download/v17.1.1/otoroshi.jar)
+[ ![Download Otoroshi](https://img.shields.io/github/release/MAIF/otoroshi.svg) ](https://github.com/MAIF/otoroshi/releases/download/v17.3.0/otoroshi.jar)
 
 ```sh
-curl -L -o otoroshi.jar 'https://github.com/MAIF/otoroshi/releases/download/v17.1.1/otoroshi.jar'
+curl -L -o otoroshi.jar 'https://github.com/MAIF/otoroshi/releases/download/v17.3.0/otoroshi.jar'
 ```
 
 ### Download the Biscuit Studio extension
   
-[![Download Otoroshi Biscuit Studio extension](https://img.shields.io/github/release/cloud-apim/otoroshi-biscuit-studio.svg) ](https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/0.0.14/otoroshi-biscuit-studio-0.0.14.jar)
+[![Download Otoroshi Biscuit Studio extension](https://img.shields.io/github/release/cloud-apim/otoroshi-biscuit-studio.svg) ](https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/0.0.15/otoroshi-biscuit-studio-0.0.15.jar)
 
 You can download the latest release of `otoroshi-biscuit-studio` from https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/latest
 
 ```sh
-curl -L -o biscuit-studio-extension.jar 'https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/0.0.14/otoroshi-biscuit-studio-0.0.14.jar'
+curl -L -o biscuit-studio-extension.jar 'https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/download/0.0.15/otoroshi-biscuit-studio-0.0.15.jar'
 ```
 
 ### Run Otoroshi with the Biscuit Studio Extension
