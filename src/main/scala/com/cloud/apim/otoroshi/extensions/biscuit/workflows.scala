@@ -1,8 +1,9 @@
 package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit
 
+import biscuit.format.schema.Schema.PublicKey
+import org.biscuitsec.biscuit.crypto.KeyPair
 import otoroshi.env.Env
 import otoroshi.next.workflow.{WorkflowError, WorkflowFunction, WorkflowRun}
-import otoroshi.utils.TypedMap
 import otoroshi.utils.syntax.implicits._
 import play.api.libs.json._
 
@@ -13,6 +14,18 @@ object WorkflowFunctionsInitializer {
     WorkflowFunction.registerFunction("biscuit.extensions.cloud-apim.com.biscuit_verify", new BiscuitVerifyFunction())
     WorkflowFunction.registerFunction("biscuit.extensions.cloud-apim.com.biscuit_attenuation", new BiscuitAttenuationFunction())
     WorkflowFunction.registerFunction("biscuit.extensions.cloud-apim.com.biscuit_forge", new BiscuitForgeFunction())
+    WorkflowFunction.registerFunction("biscuit.extensions.cloud-apim.com.biscuit_keypair_gen", new BiscuitKeypairGenFunction())
+  }
+}
+
+class BiscuitKeypairGenFunction extends WorkflowFunction {
+  override def callWithRun(args: JsObject)(implicit env: Env, ec: ExecutionContext, wfr: WorkflowRun): Future[Either[WorkflowError, JsValue]] = {
+    val alg = PublicKey.Algorithm.valueOf(args.select("alg").asOptString.getOrElse("ED25519"))
+    val kp = KeyPair.generate(alg)
+    Json.obj(
+      "public_key" -> kp.public_key().toHex.toUpperCase,
+      "private_key" -> kp.toHex.toUpperCase,
+    ).rightf
   }
 }
 
