@@ -4,7 +4,7 @@
 
 ![](/images/otoroshi-biscuit-studio-logo.png)
 
-The Otoroshi Biscuit Studio is set of Otoroshi plugins to use Biscuit Tokens into your Gateway.
+The Otoroshi Biscuit Studio is set of [Otoroshi](https://github.com/MAIF/otoroshi) plugins to use Biscuit Tokens into your Gateway.
 
 ## Reference Documentation
 
