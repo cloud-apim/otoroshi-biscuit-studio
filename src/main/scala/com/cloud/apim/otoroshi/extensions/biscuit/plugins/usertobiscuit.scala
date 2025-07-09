@@ -136,9 +136,19 @@ class UserToBiscuitExtractor extends NgRequestTransformer {
                 case "authorization: biscuit" => ("Authorization", "Biscuit ")
                 case _ => (config.extractorHeaderName.trim, "")
               }
-              finalRequest.copy(
-                headers = finalRequest.headers ++ Map(headerName -> s"${prefix}${token.serialize_b64url()}")
-              ).right.vfuture
+              val tokB64 = token.serialize_b64url()
+              val context = ctx.attrs.get(otoroshi.plugins.Keys.ElCtxKey).getOrElse(Map.empty)
+              if (headerName.isEmpty) {
+                val newContext = context ++ Map("user_to_biscuit_token" -> tokB64)
+                ctx.attrs.put(otoroshi.plugins.Keys.ElCtxKey -> newContext)
+                finalRequest.right.vfuture
+              } else {
+                val newContext = context ++ Map(headerName -> tokB64, "user_to_biscuit_token" -> tokB64)
+                ctx.attrs.put(otoroshi.plugins.Keys.ElCtxKey -> newContext)
+                finalRequest.copy(
+                  headers = finalRequest.headers ++ Map(headerName -> s"${prefix}${tokB64}")
+                ).right.vfuture
+              }
             }
           }
         }

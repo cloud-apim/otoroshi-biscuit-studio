@@ -56,9 +56,8 @@ case class BiscuitForgeConfig(
 
       authority_builder.add_fact(fact("auth_method", Seq(string("user")).asJava))
 
-      user.tags.foreach { tag => {
+      user.tags.foreach { tag =>
         authority_builder.add_fact(fact("user_tag", Seq(string(tag)).asJava))
-      }
       }
 
       user.metadata.foreach {
