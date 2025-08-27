@@ -10,7 +10,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 const config = {
   title: 'Otoroshi Biscuit Studio',
   tagline: 'A set of Otoroshi plugins to integrate Biscuit Tokens',
-  favicon: 'img/otoroshi-biscuit-studio-logo.png',
+  favicon: 'img/otoroshi-biscuit-studio-logo-no-bg-no-text.png',
 
   // Set the production url of your site here
   url: 'https://cloud-apim.github.io',
@@ -58,7 +58,7 @@ const config = {
         title: 'Otoroshi Biscuit Studio',
         logo: {
           alt: 'otoroshi-biscuit-studio Logo',
-          src: 'img/otoroshi-biscuit-studio-logo.png',
+          src: 'img/otoroshi-biscuit-studio-logo-no-bg-no-text.png',
         },
         items: [
           {

@@ -11574,7 +11574,7 @@ const FeatureList=[{title:'Biscuit Verifiers',Svg:(__webpack_require__(3773)/* [
 var index_module = __webpack_require__(4569);
 var index_module_default = /*#__PURE__*/__webpack_require__.n(index_module);
 ;// ./src/pages/index.js
-function HomepageHeader(){const{siteConfig}=(0,useDocusaurusContext/* default */.A)();return/*#__PURE__*/(0,jsx_runtime.jsx)("header",{className:(0,clsx/* default */.A)('hero hero--primary',(index_module_default()).heroBanner),children:/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{className:"container",children:[/*#__PURE__*/(0,jsx_runtime.jsx)(Heading/* default */.A,{as:"h1",className:"hero__title",children:siteConfig.title}),/*#__PURE__*/(0,jsx_runtime.jsx)("p",{className:"hero__subtitle",children:siteConfig.tagline}),/*#__PURE__*/(0,jsx_runtime.jsx)("img",{src:(__webpack_require__(6486)/* ["default"] */ .A),alt:"Otoroshi Biscuit Studio Logo",style:{width:250}}),/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:(index_module_default()).buttons,children:/*#__PURE__*/(0,jsx_runtime.jsx)("a",{className:"button button--secondary button--lg",href:"https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/latest",target:"_blank",children:"Download latest version"})})]})});}function Home(){const{siteConfig}=(0,useDocusaurusContext/* default */.A)();return/*#__PURE__*/(0,jsx_runtime.jsxs)(Layout/* default */.A,{title:`Hello from ${siteConfig.title}`,description:"Description will go into a meta tag in <head />",children:[/*#__PURE__*/(0,jsx_runtime.jsx)(HomepageHeader,{}),/*#__PURE__*/(0,jsx_runtime.jsx)("main",{children:/*#__PURE__*/(0,jsx_runtime.jsx)(HomepageFeatures,{})})]});}
+function HomepageHeader(){const{siteConfig}=(0,useDocusaurusContext/* default */.A)();return/*#__PURE__*/(0,jsx_runtime.jsx)("header",{className:(0,clsx/* default */.A)('hero hero--primary',(index_module_default()).heroBanner),children:/*#__PURE__*/(0,jsx_runtime.jsxs)("div",{className:"container",children:[/*#__PURE__*/(0,jsx_runtime.jsx)(Heading/* default */.A,{as:"h1",className:"hero__title",children:siteConfig.title}),/*#__PURE__*/(0,jsx_runtime.jsx)("p",{className:"hero__subtitle",children:siteConfig.tagline}),/*#__PURE__*/(0,jsx_runtime.jsx)("img",{src:(__webpack_require__(8298)/* ["default"] */ .A),alt:"Otoroshi Biscuit Studio Logo",style:{width:250}}),/*#__PURE__*/(0,jsx_runtime.jsx)("div",{className:(index_module_default()).buttons,children:/*#__PURE__*/(0,jsx_runtime.jsx)("a",{className:"button button--secondary button--lg",href:"https://github.com/cloud-apim/otoroshi-biscuit-studio/releases/latest",target:"_blank",children:"Download latest version"})})]})});}function Home(){const{siteConfig}=(0,useDocusaurusContext/* default */.A)();return/*#__PURE__*/(0,jsx_runtime.jsxs)(Layout/* default */.A,{title:`Hello from ${siteConfig.title}`,description:"Description will go into a meta tag in <head />",children:[/*#__PURE__*/(0,jsx_runtime.jsx)(HomepageHeader,{}),/*#__PURE__*/(0,jsx_runtime.jsx)("main",{children:/*#__PURE__*/(0,jsx_runtime.jsx)(HomepageFeatures,{})})]});}
 
 /***/ }),
 
@@ -16893,14 +16893,14 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
 /***/ }),
 
-/***/ 6486:
+/***/ 8298:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/images/otoroshi-biscuit-studio-logo-832d2c758cfaf87cd496ba3f56142186.png");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/images/otoroshi-biscuit-studio-logo-no-bg-no-text-1ef2be496df77d28b7247feaef03a46b.png");
 
 /***/ }),
 
@@ -17167,7 +17167,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   "title": "Otoroshi Biscuit Studio",
   "tagline": "A set of Otoroshi plugins to integrate Biscuit Tokens",
-  "favicon": "img/otoroshi-biscuit-studio-logo.png",
+  "favicon": "img/otoroshi-biscuit-studio-logo-no-bg-no-text.png",
   "url": "https://cloud-apim.github.io",
   "baseUrl": "/otoroshi-biscuit-studio/",
   "organizationName": "cloud-apim",
@@ -17201,7 +17201,7 @@ __webpack_require__.r(__webpack_exports__);
       "title": "Otoroshi Biscuit Studio",
       "logo": {
         "alt": "otoroshi-biscuit-studio Logo",
-        "src": "img/otoroshi-biscuit-studio-logo.png"
+        "src": "img/otoroshi-biscuit-studio-logo-no-bg-no-text.png"
       },
       "items": [
         {
