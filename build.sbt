@@ -7,11 +7,16 @@ ThisBuild / organizationName := "Cloud-APIM"
 
 Test / parallelExecution := false
 
+lazy val scalaExclusion  = Seq(
+  ExclusionRule(organization = "scala"),
+  ExclusionRule(organization = "org.scala-lang"),
+)
+
 lazy val root = (project in file("."))
   .settings(
     name := "otoroshi-biscuit-studio",
     libraryDependencies ++= Seq(
-      "fr.maif" %% "otoroshi" % "17.3.2" % "provided",
+      "fr.maif" %% "otoroshi" % "17.5.0" % "provided" excludeAll (scalaExclusion: _*),
       "org.biscuitsec" % "biscuit" % "4.0.1", // biscuit spec 3.2
       munit % Test
     ),
