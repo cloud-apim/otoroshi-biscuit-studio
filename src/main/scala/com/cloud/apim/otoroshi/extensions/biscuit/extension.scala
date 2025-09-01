@@ -887,10 +887,59 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |    s.setAttribute("type", "module")
              |    s.setAttribute("src", "/extensions/assets/cloud-apim/extensions/biscuit/biscuit.js")
              |
-             |    document.body.appendChild(s)
+             |    document.body.appendChild(s);
              |
              |    return {
              |      id: extensionId,
+             |      testerAuthorizations: [
+             |        {
+             |          name: "Biscuits",
+             |          valueExtractor: (req) => req.biscuitForgeRef,
+             |          optionsTransformer: (arr) => {
+             |            return arr.map((item) => ({
+             |              value: item.id,
+             |              label: item.name,
+             |            }))
+             |          },
+             |          fetchOptions: () => {
+             |            return fetch('/bo/api/proxy/apis/biscuit.extensions.cloud-apim.com/v1/biscuit-forges', {
+             |              method: 'GET',
+             |              credentials: 'include',
+             |            }).then(r => r.json());
+             |          },
+             |          onChange: (biscuitForgeRef, req) => {
+             |           if (!biscuitForgeRef) {
+             |             const filteredHeaders = Object.fromEntries(
+             |               Object.entries(req.headers).filter(([_, header]) => !header.biscuitForgeRef)
+             |             );
+             |             return {
+             |               ...req,
+             |               biscuitForgeRef: null,
+             |               headers: filteredHeaders
+             |             };
+             |           } else {
+             |             const filteredHeaders = Object.fromEntries(
+             |               Object.entries(req.headers).filter(([_, header]) => !header.biscuitForgeRef)
+             |             );
+             |             return fetch('/bo/api/proxy/api/extensions/biscuit/biscuit-forges/' + biscuitForgeRef + '/_generate', {
+             |               method: 'POST',
+             |               credentials: 'include',
+             |               headers: {
+             |                 'Content-Type': 'application/json',
+             |               },
+             |               body: '{}',
+             |             }).then(r => r.json()).then(r => {
+             |               filteredHeaders[Date.now()] = { key:'Authorization',  value: 'Biscuit ' + r.token, checked: true, biscuitForgeRef };
+             |               return {
+             |                 ...req,
+             |                 biscuitForgeRef,
+             |                 headers: filteredHeaders
+             |               };
+             |             });
+             |            }
+             |          }
+             |        }
+             |      ],
              |      categories:[{
              |        title: 'Biscuit Studio',
              |        description: 'All the features provided the Cloud APIM Biscuit Studio extension',
