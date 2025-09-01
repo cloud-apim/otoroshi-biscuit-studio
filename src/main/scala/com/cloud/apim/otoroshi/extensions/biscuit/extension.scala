@@ -101,6 +101,7 @@ class BiscuitExtensionState(env: Env) {
 class BiscuitExtension(val env: Env) extends AdminExtension {
 
   lazy val states = new BiscuitExtensionState(env)
+  lazy val biscuitToolingPages = getResourceCode("cloudapim/extensions/biscuit/BiscuitTooling.js")
   lazy val biscuitKeyPairPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitKeyPairPage.js")
   lazy val biscuitVerifiersPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitVerifiersPage.js")
   lazy val biscuitAttenuatorsPage = getResourceCode("cloudapim/extensions/biscuit/BiscuitAttenuatorPage.js")
@@ -873,6 +874,7 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |    const LazyCodeInput = dependencies.Components.Inputs.LazyCodeInput;
              |    const BackOfficeServices = dependencies.BackOfficeServices;
              |
+             |    ${biscuitToolingPages}
              |    ${biscuitKeyPairPage}
              |    ${biscuitVerifiersPage}
              |    ${biscuitAttenuatorsPage}
@@ -942,6 +944,28 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          display: () => true,
              |          icon: () => 'fa-ban'
              |        },
+             |
+             |        {
+             |          title: 'Inspector playground',
+             |          description: 'Inspector a biscuit token',
+             |          link: '/extensions/cloud-apim/biscuit/tooling/inspector',
+             |          display: () => true,
+             |          icon: () => 'fa-laptop-code'
+             |        },
+             |        {
+             |          title: 'Attenuator playground',
+             |          description: 'Attenuate a biscuit token',
+             |          link: '/extensions/cloud-apim/biscuit/tooling/attenuator',
+             |          display: () => true,
+             |          icon: () => 'fa-less-than'
+             |        },
+             |        {
+             |          title: 'Datalog playground',
+             |          description: 'Test datalog policies',
+             |          link: '/extensions/cloud-apim/biscuit/tooling/datalog',
+             |          display: () => true,
+             |          icon: () => 'fa-code'
+             |        },
              |        ]
              |      }],
              |      features: [
@@ -994,6 +1018,28 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          display: () => true,
              |          icon: () => 'fa-ban'
              |        },
+             |
+             |        {
+             |          title: 'Inspector playgrounf',
+             |          description: 'Inspector a biscuit token',
+             |          link: '/extensions/cloud-apim/biscuit/tooling/inspector',
+             |          display: () => true,
+             |          icon: () => 'fa-laptop-code'
+             |        },
+             |        {
+             |          title: 'Attenuator playground',
+             |          description: 'Attenuate a biscuit token',
+             |          link: '/extensions/cloud-apim/biscuit/tooling/attenuator',
+             |          display: () => true,
+             |          icon: () => 'fa-less-than'
+             |        },
+             |        {
+             |          title: 'Datalog playground',
+             |          description: 'Test datalog policies',
+             |          link: '/extensions/cloud-apim/biscuit/tooling/datalog',
+             |          display: () => true,
+             |          icon: () => 'fa-code'
+             |        },
              |      ],
              |      sidebarItems: [
              |        {
@@ -1037,6 +1083,25 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |          text: 'All your Biscuit Revoked tokens',
              |          path: '/extensions/cloud-apim/biscuit/revoked-tokens',
              |          icon: 'fa-ban'
+             |        },
+             |
+             |        {
+             |          title: 'Inspector playground',
+             |          text: 'Inspector a biscuit token',
+             |          path: '/extensions/cloud-apim/biscuit/tooling/inspector',
+             |          icon: 'fa-laptop-code'
+             |        },
+             |        {
+             |          title: 'Attenuator playground',
+             |          text: 'Attenuate a biscuit token',
+             |          path: '/extensions/cloud-apim/biscuit/tooling/attenuator',
+             |          icon: 'fa-less-than'
+             |        },
+             |        {
+             |          title: 'Datalog playground',
+             |          text: 'Test datalog policies',
+             |          path: '/extensions/cloud-apim/biscuit/tooling/datalog',
+             |          icon: 'fa-code'
              |        },
              |      ],
              |      searchItems: [
@@ -1098,6 +1163,25 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
              |        },
              |      ],
              |      routes: [
+             |        {
+             |          path: '/extensions/cloud-apim/biscuit/tooling/inspector',
+             |          component: (props) => {
+             |            return React.createElement(TokenInspector, props, null)
+             |          }
+             |        },
+             |        {
+             |          path: '/extensions/cloud-apim/biscuit/tooling/datalog',
+             |          component: (props) => {
+             |            return React.createElement(DatalogPlayground, props, null)
+             |          }
+             |        },
+             |        {
+             |          path: '/extensions/cloud-apim/biscuit/tooling/attenuator',
+             |          component: (props) => {
+             |            return React.createElement(TokenAttenuator, props, null)
+             |          }
+             |        },
+             |
              |        {
              |          path: '/extensions/cloud-apim/biscuit/keypairs/:taction/:titem',
              |          component: (props) => {
