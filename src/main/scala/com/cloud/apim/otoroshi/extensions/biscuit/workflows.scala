@@ -12,9 +12,9 @@ import scala.concurrent.{ExecutionContext, Future}
 object WorkflowFunctionsInitializer {
   def initDefaults(): Unit = {
     WorkflowFunction.registerFunction("extensions.cloud-apim.com.biscuit.biscuit_verify", new BiscuitVerifyFunction())
-    WorkflowFunction.registerFunction("extensions.cloud-apim.com.biscuit.biscuit_attenuation", new BiscuitAttenuationFunction())
+    WorkflowFunction.registerFunction("extensions.cloud-apim.com.biscuit.biscuit_attenuate", new BiscuitAttenuationFunction())
     WorkflowFunction.registerFunction("extensions.cloud-apim.com.biscuit.biscuit_forge", new BiscuitForgeFunction())
-    WorkflowFunction.registerFunction("extensions.cloud-apim.com.biscuit.biscuit_keypair_gen", new BiscuitKeypairGenFunction())
+    WorkflowFunction.registerFunction("extensions.cloud-apim.com.biscuit.biscuit_keypair_generate", new BiscuitKeypairGenFunction())
   }
 }
 
