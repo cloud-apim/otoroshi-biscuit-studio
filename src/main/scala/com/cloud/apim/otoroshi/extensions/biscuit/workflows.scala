@@ -55,7 +55,10 @@ class BiscuitKeypairGenFunction extends WorkflowFunction {
     )
   ))
   override def callWithRun(args: JsObject)(implicit env: Env, ec: ExecutionContext, wfr: WorkflowRun): Future[Either[WorkflowError, JsValue]] = {
-    val alg = PublicKey.Algorithm.valueOf(args.select("alg").asOptString.getOrElse("ED25519"))
+    val alg = args.select("alg").asOptString.getOrElse("ED25519").toLowerCase() match {
+      case "ed25519" => PublicKey.Algorithm.Ed25519
+      case _ => PublicKey.Algorithm.Ed25519
+    }
     val kp = KeyPair.generate(alg)
     Json.obj(
       "public_key" -> kp.public_key().toHex.toUpperCase,
