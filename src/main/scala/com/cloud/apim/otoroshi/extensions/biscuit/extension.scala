@@ -22,6 +22,7 @@ import play.api.mvc.{RequestHeader, Result, Results}
 
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{ExecutionContext, Future}
+import scala.jdk.CollectionConverters._
 import scala.util.Try
 
 class BiscuitExtensionDatastores(env: Env, extensionId: AdminExtensionId) {
@@ -1535,9 +1536,11 @@ class BiscuitExtension(val env: Env) extends AdminExtension {
                 forge.forgeToken(remoteCtx).flatMap {
                   case Left(err) => handleError(err, isAdminApiRoute = true)
                   case Right(token) => {
+                    val token_ids: Seq[String] = token.revocation_identifiers().asScala.map(_.toHex)
                     Results.Ok(
                       Json.obj(
-                        "token" -> token.serialize_b64url()
+                        "token" -> token.serialize_b64url(),
+                        "token_revocation_ids" -> token_ids
                       )
                     ).vfuture
                   }
