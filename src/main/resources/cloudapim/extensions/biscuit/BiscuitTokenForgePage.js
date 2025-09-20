@@ -37,7 +37,7 @@ class BiscuitTokenForge extends Component {
 				transformer: (item) => ({ label: item.name, value: item.id }),
 			},
 		},
-		"config.enableTtl": {
+		"config.enable_ttl": {
 			type: "bool",
 			props: { label: "Enable TTL" },
 		},
@@ -178,7 +178,7 @@ class BiscuitTokenForge extends Component {
 		"<<<KeyPair",
 		"keypair_ref",
 		"<<<TTL (time to live)",
-		"config.enableTtl",
+		"config.enable_ttl",
 		"config.ttl",
 		">>>Facts",
 		"config.facts",
