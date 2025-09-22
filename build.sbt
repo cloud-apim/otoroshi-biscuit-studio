@@ -25,6 +25,7 @@ lazy val root = (project in file("."))
       "fr.maif" %% "otoroshi" % "17.5.1" % "provided" excludeAll (scalaExclusion: _*),
       "org.biscuitsec" % "biscuit" % "4.0.1", // biscuit spec 3.2
       "com.arakelian" % "java-jq" % "1.3.0" % Test excludeAll (excludesJackson: _*),
+      "org.scala-lang" % "scala-reflect" % "2.12.13" % Test,
       munit % Test
     ),
     assembly / test  := {},
