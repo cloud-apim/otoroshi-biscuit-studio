@@ -207,7 +207,7 @@ class PluginsChainSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     assertEquals(respAttenuatorRouteCallBadToken.status, 403, s"bad generated token - should throw forbidden error")
 
     assert(respAttenuatorRouteCallBadToken.json.at("Otoroshi-Error").isDefined, s"'Otoroshi-Error' should be defined")
-    assert(respAttenuatorRouteCallBadToken.json.at("Otoroshi-Error").asString.contains("FailedLogic"), s"'Otoroshi-Error' should contains 'FailedLogic' error")
+    assert(respAttenuatorRouteCallBadToken.json.at("Otoroshi-Error").asString.contains("Biscuit token is not valid"), s"'Otoroshi-Error' should contains 'Biscuit token is not valid' error")
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                       call the route WITH GOOD TOKEN - token should be verified and attenuated          ///////////
