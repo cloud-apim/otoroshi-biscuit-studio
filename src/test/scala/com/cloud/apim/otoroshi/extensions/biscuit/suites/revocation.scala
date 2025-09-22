@@ -143,6 +143,6 @@ class RevocationSuite extends BiscuitStudioOneOtoroshiClusterPerSuite {
 
     assertEquals(respCallVerifier.status, 403, s"verifier route should be forbidden")
     assert(respCallVerifier.json.at("Otoroshi-Error").isDefined, s"error message should be defined")
-    assertEquals(respCallVerifier.json.at("Otoroshi-Error").as[String], "Token is revoked", s"error message should be Token is revoked")
+    assertEquals(respCallVerifier.json.at("Otoroshi-Error").as[String], "Biscuit token is not valid", s"error message should be Biscuit token is not valid")
   }
 }
