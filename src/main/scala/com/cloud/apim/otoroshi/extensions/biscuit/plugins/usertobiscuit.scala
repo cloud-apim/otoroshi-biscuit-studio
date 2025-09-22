@@ -101,7 +101,7 @@ class UserToBiscuitExtractor extends NgRequestTransformer {
     val config = ctx.cachedConfig(internalName)(UserToBiscuitExtractorConfig.format).getOrElse(UserToBiscuitExtractorConfig())
     if (ctx.user.isDefined) {
       env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitTokenForge(config.forgeRef)) match {
-        case None => Left(Results.InternalServerError(Json.obj("error" -> "forge_ref not found"))).vfuture
+        case None => Left(Results.BadGateway(Json.obj("error" -> "forge_ref not found"))).vfuture
         case Some(forge) => {
           val strForge = forge.json.stringify
           val finalForge = if (strForge.contains("${")) {

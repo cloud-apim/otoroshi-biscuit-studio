@@ -198,10 +198,10 @@ class BiscuitRemoteTokenFetcherPlugin extends NgRequestTransformer {
     // Apply EL on config
     val config = BiscuitRemoteTokenFetcherConfig.format.reads(config_raw.json.stringify.evaluateEl(ctx.attrs).parseJson).asOpt.getOrElse(config_raw)
     fetchToken(config, ctx).flatMap{
-      case Left(err) => Left(Results.BadRequest(s"unable to fetch token from remote - ${err}")).vfuture
+      case Left(err) => Left(Results.BadGateway(s"unable to fetch token from remote - ${err}")).vfuture
       case Right(tokenOpt) => {
         tokenOpt match {
-          case None => Left(Results.BadRequest("token not found from remote API fetcher")).vfuture
+          case None => Left(Results.BadGateway("token not found from remote API fetcher")).vfuture
           case Some(token) => {
             val context = ctx.attrs.get(otoroshi.plugins.Keys.ElCtxKey).getOrElse(Map.empty)
             val newContext = context ++ Map("remote_fetched_biscuit" -> token)

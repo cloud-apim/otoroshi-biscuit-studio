@@ -134,9 +134,9 @@ class BiscuitApiKeyBridgePlugin extends NgPreRouting {
             Try(Biscuit.from_b64url(token, keypair.getPubKey)).toEither match {
               case Left(err) => handleError(s"Unable to deserialize Biscuit token : ${err}")
               case Right(biscuitUnverified) =>
-
                 Try(biscuitUnverified.verify(keypair.getPubKey)).toEither match {
-                  case Left(err) => handleError(s"Biscuit token is not valid : ${err}")
+                  case Left(err) =>
+                    handleError(s"Biscuit token is not valid: ${err}")
                   case Right(biscuitToken) => {
                     extractApiKey(ctx, biscuitToken, config)
                   }
@@ -185,6 +185,9 @@ class BiscuitApiKeyBridgePlugin extends NgPreRouting {
     NgPreRoutingErrorWithResult(Results.Unauthorized(error)).leftf
   }
 
-  def handleError(message: String): Future[Either[NgPreRoutingError, Done]] =
-    NgPreRoutingErrorWithResult(Results.InternalServerError(Json.obj("error" -> message))).leftf
+  def handleError(message: String): Future[Either[NgPreRoutingError, Done]] = {
+    logger.error(message)
+    NgPreRoutingErrorWithResult(Results.Unauthorized(Json.obj("error" -> "Biscuit token is not valid"))).leftf
+  }
+
 }

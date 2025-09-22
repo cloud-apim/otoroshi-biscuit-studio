@@ -139,9 +139,10 @@ class BiscuitTokenVerifierPlugin extends NgAccessValidator {
   }
 
   def forbidden(ctx: NgAccessContext, msg: Seq[String] = Seq.empty)(implicit env: Env, ec: ExecutionContext): Future[NgAccess] = {
+    logger.error(s"forbidden biscuit access: ${msg.mkString(", ")}")
     Errors
       .craftResponseResult(
-        msg.mkString(", "),
+        "Biscuit token is not valid",
         Results.Forbidden,
         ctx.request,
         None,

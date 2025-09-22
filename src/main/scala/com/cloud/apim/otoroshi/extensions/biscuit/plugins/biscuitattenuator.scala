@@ -155,16 +155,16 @@ class BiscuitTokenAttenuatorPlugin extends NgRequestTransformer {
     val config = ctx.cachedConfig(internalName)(BiscuitAttenuatorConfig.format).getOrElse(BiscuitAttenuatorConfig())
 
     env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitAttenuator(config.attenuatorRef)) match {
-      case None => Left(Results.InternalServerError(Json.obj("error" -> "attenuator_ref not found in your plugin configuration"))).vfuture
+      case None => Left(Results.BadGateway(Json.obj("error" -> "attenuator_ref not found in your plugin configuration"))).vfuture
       case Some(attenuator) => {
         // Verify if the remoteFacts is enabled and the entity reference is provided
         if (config.enableRemoteFacts && config.remoteFactsRef.nonEmpty) {
           env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitRemoteFactsLoader(config.remoteFactsRef)) match {
-            case None => Left(Results.InternalServerError(Json.obj("error" -> "remote_facts_ref not found in your plugin configuration"))).vfuture
+            case None => Left(Results.BadGateway(Json.obj("error" -> "remote_facts_ref not found in your plugin configuration"))).vfuture
             case Some(remoteFactsEntity) => {
               if (remoteFactsEntity.config.apiUrl.nonEmpty && remoteFactsEntity.config.headers.nonEmpty) {
                 remoteFactsEntity.config.getRemoteFacts(ctx.json.asObject ++ Json.obj("phase" -> "access", "plugin" -> "biscuit_attenuator")).flatMap {
-                  case Left(error) => Left(Results.InternalServerError(Json.obj("error" -> s"Unable to get remote facts: ${error}"))).vfuture
+                  case Left(error) => Left(Results.BadGateway(Json.obj("error" -> s"Unable to get remote facts: ${error}"))).vfuture
                   case Right(factsData) => {
                     val attenuatorConfigWithRemoteFacts = attenuator.config.copy(checks = attenuator.config.checks ++ factsData.checks)
 
@@ -172,7 +172,7 @@ class BiscuitTokenAttenuatorPlugin extends NgRequestTransformer {
                   }
                 }
               } else {
-                Left(Results.InternalServerError(Json.obj("error" -> "bad remoteFacts entity configuration"))).vfuture
+                Left(Results.BadGateway(Json.obj("error" -> "bad remoteFacts entity configuration"))).vfuture
               }
             }
           }
@@ -185,24 +185,28 @@ class BiscuitTokenAttenuatorPlugin extends NgRequestTransformer {
 
   def doAttenuation(ctx: NgTransformerRequestContext, config: BiscuitAttenuatorConfig, attenuator: BiscuitAttenuator, attenuatorConfig: AttenuatorConfig)(implicit env: Env, ec: ExecutionContext, mat: Materializer): Future[Either[Result, NgPluginHttpRequest]] = {
     env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(attenuator.keypairRef)) match {
-      case None => Left(Results.InternalServerError(Json.obj("error" -> "keypair entity not found"))).vfuture
+      case None => Left(Results.BadGateway(Json.obj("error" -> "keypair entity not found"))).vfuture
       case Some(keypair) => {
         val publicKey = new PublicKey(keypair.getCurrentAlgo, keypair.pubKey)
         BiscuitExtractorConfig(config.extractorType, config.extractorName).extractToken(ctx.request, ctx.user, ctx.attrs) match {
-          case None => Left(Results.InternalServerError(Json.obj("error" -> "token not found from header"))).vfuture
+          case None => Left(Results.BadRequest(Json.obj("error" -> "token not found from header"))).vfuture
           case Some(token) => {
             Try(Biscuit.from_b64url(token, publicKey)).toEither match {
-              case Left(error) => Left(Results.InternalServerError(Json.obj("error" -> s"Unable to deserialize biscuit token - ${error}"))).vfuture
+              case Left(error) =>
+                logger.error(s"Unable to deserialize biscuit token - ${error}")
+                Left(Results.BadRequest(Json.obj("error" -> "Biscuit token is not valid"))).vfuture
               case Right(biscuitUnverified) =>
                 Try(biscuitUnverified.verify(publicKey)).toEither match {
-                  case Left(error) => Left(Results.InternalServerError(Json.obj("error" -> s"Unable to verify biscuit token - token is not valid : ${error}"))).vfuture
+                  case Left(error) =>
+                    logger.error(s"Unable to verify biscuit token - token is not valid : ${error}")
+                    Left(Results.BadRequest(Json.obj("error" -> "Biscuit token is not valid"))).vfuture
                   case Right(biscuitToken) => {
                     AttenuatorConfig(attenuatorConfig.checks).attenuate(biscuitToken) match {
-                      case Left(err) => Left(Results.InternalServerError(Json.obj("error" -> s"Unable to generate an attenuated biscuit token : ${err}"))).vfuture
+                      case Left(err) =>
+                        logger.error(s"Unable to generate an attenuated biscuit token : ${err}")
+                        Left(Results.BadRequest(Json.obj("error" -> "Biscuit token is not valid"))).vfuture
                       case Right(attenuatedToken) => {
-
                         var finalRequest = ctx.otoroshiRequest
-
                         config.extractorType match {
                           case "header" => finalRequest = finalRequest.copy(headers = finalRequest.headers.filterNot(_._1.toLowerCase() == config.extractorName.toLowerCase()))
                           case "query" => {
@@ -215,7 +219,6 @@ class BiscuitTokenAttenuatorPlugin extends NgRequestTransformer {
                             finalRequest = finalRequest.copy(cookies = ctx.otoroshiRequest.cookies.filterNot(_.name.toLowerCase() == config.extractorName.toLowerCase()))
                           }
                         }
-
                         config.tokenReplaceLoc match {
                           case "header" => finalRequest.copy(headers = finalRequest.headers ++ Map(config.tokenReplaceName -> s"biscuit:${attenuatedToken.serialize_b64url()}")).right.vfuture
                           case "query" => {
