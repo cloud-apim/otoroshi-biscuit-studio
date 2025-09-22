@@ -331,7 +331,6 @@ class BiscuitUserExtractor extends NgPreRouting {
   }
 
   def handleError(message: String): Future[Either[NgPreRoutingError, Done]] = {
-    logger.error(message)
     NgPreRoutingErrorWithResult(Results.Unauthorized(Json.obj("error" -> "Biscuit token is not valid"))).leftf
   }
 }

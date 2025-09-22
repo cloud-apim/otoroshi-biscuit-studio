@@ -136,7 +136,9 @@ class TestBiscuitUserExtractorPlugin extends BiscuitStudioOneOtoroshiServerPerSu
           plugin = s"cp:${classOf[BiscuitUserExtractor].getName}",
           config = NgPluginInstanceConfig(Json.obj(
             "keypair_ref" -> keypair.id,
-            "username_key" -> "username"
+            "email_key" -> "username",
+            "name_key" -> "user_id",
+            "user_id_key" -> "user_id",
           ))
         )
       ))
