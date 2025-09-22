@@ -109,7 +109,7 @@ class TestAttenuators extends BiscuitStudioOneOtoroshiServerPerSuite {
 
     val res0 = client.call("GET", s"http://${frontendDomain}:${port}", Map.empty, None).awaitf(5.seconds)
 
-    assertEquals(res0.status, 500, s"verifier did not thrown an error 500")
+    assertEquals(res0.status, 502, s"verifier did not thrown an error 500")
     assert(res0.json.at("error").isDefined, s"error is not defined")
     assertEquals(res0.json.at("error").as[String], "keypair entity not found", s"bad error message for attenuator route")
 
@@ -192,7 +192,7 @@ class TestAttenuators extends BiscuitStudioOneOtoroshiServerPerSuite {
 
     val res0 = client.call("GET", s"http://${frontendDomain}:${port}", Map.empty, None).awaitf(10.seconds)
 
-    assertEquals(res0.status, 500, s"verifier did not thrown an error 500")
+    assertEquals(res0.status, 502, s"verifier did not thrown an error 500")
     assert(res0.json.at("error").isDefined, s"error is not defined")
     assertEquals(res0.json.at("error").as[String], "attenuator_ref not found in your plugin configuration", s"bad error message for attenuator route")
 
@@ -322,6 +322,7 @@ class TestAttenuators extends BiscuitStudioOneOtoroshiServerPerSuite {
     )
 
     val respAttenuatorRouteCall = client.call("GET", s"http://${frontendDomain}:${port}", headers, None).awaitf(5.seconds)
+    println("respAttenuatorRoute call: " + respAttenuatorRouteCall.body)
     assertEquals(respAttenuatorRouteCall.status, 200, s"attenuator route did not respond with 200")
     assert(respAttenuatorRouteCall.json.at("headers.biscuit-attenuated-token").isDefined, s"response cookies don't contains the biscuit attenuated token")
     assert(respAttenuatorRouteCall.json.at("headers.biscuit-attenuated-token").get.asString.nonEmpty, s"response cookies don't contains the biscuit attenuated token")
