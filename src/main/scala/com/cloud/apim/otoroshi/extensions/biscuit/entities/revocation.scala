@@ -42,6 +42,7 @@ object RevokedToken {
 }
 
 class RevocationDatastore()(implicit env: Env) {
+  
   def list()(implicit ec: ExecutionContext): Future[Seq[RevokedToken]] = {
     val ext = env.adminExtensions.extension[BiscuitExtension].get
     val key = s"${env.storageRoot}:extensions:${ext.id.cleanup}:biscuit:revocation-list:*"
@@ -57,14 +58,14 @@ class RevocationDatastore()(implicit env: Env) {
   }
 
   def existsAny(ids: Seq[String])(implicit ec: ExecutionContext): Future[Boolean] = {
-    list().map { rtokens =>
-      val lid = ULID.random()
-      val revokedTokens = rtokens.map(_.revocationId)
-      println(s"[${lid}] Trying to find the following revoked ids: " + ids.mkString(", "))
-      println(s"[${lid}] Existing revoked ids: " + revokedTokens.mkString(", "))
-      val found = revokedTokens.filter(i => ids.contains(i))
-      println(s"[${lid}] found ${found.size}: ${found.mkString(", ")}")
-    }
+    // list().map { rtokens =>
+    //   val lid = ULID.random()
+    //   val revokedTokens = rtokens.map(_.revocationId)
+    //   println(s"[${lid}] Trying to find the following revoked ids: " + ids.mkString(", "))
+    //   println(s"[${lid}] Existing revoked ids: " + revokedTokens.mkString(", "))
+    //   val found = revokedTokens.filter(i => ids.contains(i))
+    //   println(s"[${lid}] found ${found.size}: ${found.mkString(", ")}")
+    // }
     def next(remainingIds: Seq[String]): Future[Boolean] = {
       if (remainingIds.isEmpty) {
         Future(false)
