@@ -206,9 +206,16 @@ class BiscuitUserExtractor extends NgPreRouting {
                             rules.foreach(str => authorizer.add_rule(str))
                             checks.foreach(str => authorizer.add_check(str))
                             policies.foreach(str => authorizer.add_policy(str))
-                            Try(authorizer.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
-                              case Left(err) => handleError(s"invalid biscuit token: ${err}")
-                              case Right(_) => extractIdNameAndEmail(ctx, biscuitToken, config)
+                            val listOfTokenRevocationIds = biscuitToken.revocation_identifiers().asScala.map(_.toHex).toList
+                            env.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.existsAny(listOfTokenRevocationIds).flatMap { existAnyRevokedToken =>
+                              if (existAnyRevokedToken) {
+                                handleError("Token is revoked")
+                              } else {
+                                Try(authorizer.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
+                                  case Left(err) => handleError(s"invalid biscuit token: ${err}")
+                                  case Right(_) => extractIdNameAndEmail(ctx, biscuitToken, config)
+                                }
+                              }
                             }
                           }
                         }
