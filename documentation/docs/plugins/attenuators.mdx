@@ -12,7 +12,7 @@ After validation, a new block is appended to enforce additional restrictions, su
 
 Once the token is attenuated, the request can be "cleaned" by removing the original token from its initial location. 
 
-The newly attenuated token can then be injected into the desired location, whether headers, cookies, or query parameters. 
+The newly attenuated token can then be injected into the desired location, whether headers, cookies, or query parameters. You can also use the expression language to get the token using the expression `${ctx.attenuated_biscuit}`
 
 This approach ensures secure, context-aware token usage while maintaining flexibility across various layers of your application.
 

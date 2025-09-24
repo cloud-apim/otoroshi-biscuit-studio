@@ -6,7 +6,8 @@ import Terminal from '@site/src/components/Terminal';
 
 # User to Biscuit Token Plugin
 
-This plugin enables seamless authentication by extracting the user identity from the request context, generating a Biscuit Token, and injecting it into the request as a valid authentication token. 
+This plugin enables seamless authentication by generating a Biscuit Token from the current connected user (from Otoroshi auth. modules), and injecting it into the request as a valid authentication token.
+The generated token can also be used from the expression language using the following expression `${ctx.user_to_biscuit_token}`
 
 ## How It Works
 

@@ -207,6 +207,9 @@ class BiscuitTokenAttenuatorPlugin extends NgRequestTransformer {
                         logger.error(s"Unable to generate an attenuated biscuit token : ${err}")
                         Left(Results.BadRequest(Json.obj("error" -> "Biscuit token is not valid"))).vfuture
                       case Right(attenuatedToken) => {
+                        val context = ctx.attrs.get(otoroshi.plugins.Keys.ElCtxKey).getOrElse(Map.empty)
+                        val newContext = context ++ Map("attenuated_biscuit" -> attenuatedToken.serialize_b64url())
+                        ctx.attrs.put(otoroshi.plugins.Keys.ElCtxKey -> newContext)
                         var finalRequest = ctx.otoroshiRequest
                         config.extractorType match {
                           case "header" => finalRequest = finalRequest.copy(headers = finalRequest.headers.filterNot(_._1.toLowerCase() == config.extractorName.toLowerCase()))
