@@ -2,6 +2,7 @@ package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
 import akka.stream.Materializer
 import akka.util.ByteString
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.BiscuitForgeConfig
 import org.joda.time.DateTime
 import otoroshi.env.Env
 import otoroshi.models.{ApiKey, EntityIdentifier, ServiceGroupIdentifier}
@@ -219,7 +220,8 @@ class ClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
                       "error_description" -> s"forge not found"
                     )
                   ).vfuture
-                  case Some(forge) => {
+                  case Some(_forge) => {
+                    val forge = _forge.copy(config = BiscuitForgeConfig.format.reads(_forge.config.json.stringify.evaluateEl(ctx.attrs).parseJson).get)
                     val newForge = forge.copy(
                       config = forge.config.copy(
                         facts = forge.config.facts ++ Seq(s"""client_id("${clientId}")""", s"""client_name("${apiKey.clientName}")""")

@@ -1,11 +1,11 @@
 package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
-import com.cloud.apim.otoroshi.extensions.biscuit.entities.{BiscuitVerifier, VerificationContext}
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.{BiscuitVerifier, VerificationContext, VerifierConfig}
 import otoroshi.env.Env
 import otoroshi.gateway.Errors
 import otoroshi.next.plugins.api.NgAccess.NgAllowed
 import otoroshi.next.plugins.api._
-import otoroshi.utils.syntax.implicits.{BetterJsValue, BetterSyntax}
+import otoroshi.utils.syntax.implicits._
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.BiscuitExtension
 import play.api.Logger
 import play.api.libs.json._
@@ -100,7 +100,11 @@ class BiscuitTokenVerifierPlugin extends NgAccessValidator {
     env.adminExtensions.extension[BiscuitExtension] match {
       case None => NgAccess.NgDenied(Results.InternalServerError(Json.obj("error" -> "extension not found"))).vfuture
       case Some(ext) => {
-        val verifiers = config.verifierRefs.flatMap(id => ext.states.biscuitVerifier(id))
+        val verifiers = config.verifierRefs.flatMap { id =>
+          ext.states.biscuitVerifier(id).map { verifier =>
+            verifier.copy(config = VerifierConfig.format.reads(verifier.config.json.stringify.evaluateEl(ctx.attrs).parseJson).get)
+          }
+        }
         var hasFailed = false
         var errors = Seq.empty[String]
 

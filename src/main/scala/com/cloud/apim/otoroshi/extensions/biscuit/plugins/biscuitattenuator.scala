@@ -1,12 +1,12 @@
 package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
 import akka.stream.Materializer
-import com.cloud.apim.otoroshi.extensions.biscuit.entities.{AttenuatorConfig, BiscuitAttenuator, BiscuitExtractorConfig}
+import com.cloud.apim.otoroshi.extensions.biscuit.entities._
 import org.biscuitsec.biscuit.crypto.PublicKey
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.env.Env
 import otoroshi.next.plugins.api._
-import otoroshi.utils.syntax.implicits.{BetterJsReadable, BetterJsValue, BetterSyntax}
+import otoroshi.utils.syntax.implicits._
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.BiscuitExtension
 import play.api.Logger
 import play.api.libs.json._
@@ -156,18 +156,19 @@ class BiscuitTokenAttenuatorPlugin extends NgRequestTransformer {
 
     env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitAttenuator(config.attenuatorRef)) match {
       case None => Left(Results.BadGateway(Json.obj("error" -> "attenuator_ref not found in your plugin configuration"))).vfuture
-      case Some(attenuator) => {
+      case Some(_attenuator) => {
+        val attenuator = _attenuator.copy(config = AttenuatorConfig.format.reads(_attenuator.config.json.stringify.evaluateEl(ctx.attrs).parseJson).get)
         // Verify if the remoteFacts is enabled and the entity reference is provided
         if (config.enableRemoteFacts && config.remoteFactsRef.nonEmpty) {
           env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitRemoteFactsLoader(config.remoteFactsRef)) match {
             case None => Left(Results.BadGateway(Json.obj("error" -> "remote_facts_ref not found in your plugin configuration"))).vfuture
             case Some(remoteFactsEntity) => {
-              if (remoteFactsEntity.config.apiUrl.nonEmpty && remoteFactsEntity.config.headers.nonEmpty) {
-                remoteFactsEntity.config.getRemoteFacts(ctx.json.asObject ++ Json.obj("phase" -> "access", "plugin" -> "biscuit_attenuator")).flatMap {
+              if (remoteFactsEntity.config.apiUrl.nonEmpty) {
+                val rconfig = BiscuitRemoteFactsConfig.format.reads(remoteFactsEntity.config.json.stringify.evaluateEl(ctx.attrs).parseJson).get
+                rconfig.getRemoteFacts(ctx.json.asObject ++ Json.obj("phase" -> "access", "plugin" -> "biscuit_attenuator")).flatMap {
                   case Left(error) => Left(Results.BadGateway(Json.obj("error" -> s"Unable to get remote facts: ${error}"))).vfuture
                   case Right(factsData) => {
                     val attenuatorConfigWithRemoteFacts = attenuator.config.copy(checks = attenuator.config.checks ++ factsData.checks)
-
                     doAttenuation(ctx, config, attenuator, attenuatorConfigWithRemoteFacts)
                   }
                 }

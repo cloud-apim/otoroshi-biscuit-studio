@@ -1,7 +1,7 @@
 package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
 import akka.Done
-import com.cloud.apim.otoroshi.extensions.biscuit.entities.{BiscuitExtractorConfig, VerificationContext}
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.{BiscuitExtractorConfig, VerificationContext, VerifierConfig}
 import org.biscuitsec.biscuit.datalog.{RunLimits, SymbolTable}
 import org.biscuitsec.biscuit.token.builder.Term.Str
 import org.biscuitsec.biscuit.token.{Biscuit, UnverifiedBiscuit}
@@ -10,7 +10,7 @@ import otoroshi.env.Env
 import otoroshi.models.PrivateAppsUser
 import otoroshi.next.plugins.api._
 import otoroshi.security.IdGenerator
-import otoroshi.utils.syntax.implicits.{BetterJsValue, BetterSyntax}
+import otoroshi.utils.syntax.implicits._
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.BiscuitExtension
 import play.api.Logger
 import play.api.libs.json._
@@ -169,7 +169,8 @@ class BiscuitUserExtractor extends NgPreRouting {
   override def preRoute(
     ctx: NgPreRoutingContext
   )(implicit env: Env, ec: ExecutionContext): Future[Either[NgPreRoutingError, Done]] = {
-    val config = ctx.cachedConfig(internalName)(BiscuitUserExtractorConfig.format).getOrElse(BiscuitUserExtractorConfig())
+    val _config = ctx.cachedConfig(internalName)(BiscuitUserExtractorConfig.format).getOrElse(BiscuitUserExtractorConfig())
+    val config = BiscuitUserExtractorConfig.format.reads(_config.json.stringify.evaluateEl(ctx.attrs).parseJson).get
     val ext = env.adminExtensions.extension[BiscuitExtension].get
     env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(config.keypairRef)) match {
       case None => handleError("keypair_ref not found")
@@ -182,44 +183,45 @@ class BiscuitUserExtractor extends NgPreRouting {
                 Try(biscuitUnverified.verify(keypair.getPubKey)).toEither match {
                   case Left(err) => handleError(s"Biscuit token is not valid : ${err}")
                   case Right(biscuitToken) => {
-                    config.verifierRef
-                      .map(ref => ext.datastores.biscuitVerifierDataStore.findById(ref))
-                      .getOrElse(None.vfuture) flatMap {
-                        case Some(verifier) => verifier.verify(ctx.request, Some(VerificationContext(ctx.route, ctx.request, None, None, ctx.attrs)), ctx.attrs).flatMap {
+                    config.verifierRef.flatMap(ref => ext.states.biscuitVerifier(ref)) match {
+                      case Some(_verifier) => {
+                        val verifier = _verifier.copy(config = VerifierConfig.format.reads(_verifier.config.json.stringify.evaluateEl(ctx.attrs).parseJson).get)
+                        verifier.verify(ctx.request, Some(VerificationContext(ctx.route, ctx.request, None, None, ctx.attrs)), ctx.attrs).flatMap {
                           case Left(err) => handleError(s"invalid biscuit token: ${err}")
                           case Right(_) => extractIdNameAndEmail(ctx, biscuitToken, config)
                         }
-                        case None => {
-                          val facts = config.validations.select("facts").asOpt[Seq[String]].getOrElse(Seq.empty[String])
-                          val rules = config.validations.select("rules").asOpt[Seq[String]].getOrElse(Seq.empty[String])
-                          val checks = config.validations.select("checks").asOpt[Seq[String]].getOrElse(Seq.empty[String])
-                          val policies = config.validations.select("policies").asOpt[Seq[String]].getOrElse(Seq.empty[String])
-                          if (facts.isEmpty && rules.isEmpty && checks.isEmpty && policies.isEmpty) {
-                            extractIdNameAndEmail(ctx, biscuitToken, config)
-                          } else {
-                            val authorizer = biscuitUnverified.authorizer()
-                            authorizer.set_time()
-                            val maxFacts = ext.configuration.getOptional[Int]("verifier_run_limit.max_facts").getOrElse(1000)
-                            val maxIterations = ext.configuration.getOptional[Int]("verifier_run_limit.max_iterations").getOrElse(100)
-                            val maxTime = java.time.Duration.ofMillis(ext.configuration.getOptional[Long]("verifier_run_limit.max_time").getOrElse(1000))
-                            facts.foreach(str => authorizer.add_fact(str))
-                            rules.foreach(str => authorizer.add_rule(str))
-                            checks.foreach(str => authorizer.add_check(str))
-                            policies.foreach(str => authorizer.add_policy(str))
-                            val listOfTokenRevocationIds = biscuitToken.revocation_identifiers().asScala.map(_.toHex).toList
-                            env.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.existsAny(listOfTokenRevocationIds).flatMap { existAnyRevokedToken =>
-                              if (existAnyRevokedToken) {
-                                handleError("Token is revoked")
-                              } else {
-                                Try(authorizer.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
-                                  case Left(err) => handleError(s"invalid biscuit token: ${err}")
-                                  case Right(_) => extractIdNameAndEmail(ctx, biscuitToken, config)
-                                }
+                      }
+                      case None => {
+                        val facts = config.validations.select("facts").asOpt[Seq[String]].getOrElse(Seq.empty[String])
+                        val rules = config.validations.select("rules").asOpt[Seq[String]].getOrElse(Seq.empty[String])
+                        val checks = config.validations.select("checks").asOpt[Seq[String]].getOrElse(Seq.empty[String])
+                        val policies = config.validations.select("policies").asOpt[Seq[String]].getOrElse(Seq.empty[String])
+                        if (facts.isEmpty && rules.isEmpty && checks.isEmpty && policies.isEmpty) {
+                          extractIdNameAndEmail(ctx, biscuitToken, config)
+                        } else {
+                          val authorizer = biscuitUnverified.authorizer()
+                          authorizer.set_time()
+                          val maxFacts = ext.configuration.getOptional[Int]("verifier_run_limit.max_facts").getOrElse(1000)
+                          val maxIterations = ext.configuration.getOptional[Int]("verifier_run_limit.max_iterations").getOrElse(100)
+                          val maxTime = java.time.Duration.ofMillis(ext.configuration.getOptional[Long]("verifier_run_limit.max_time").getOrElse(1000))
+                          facts.foreach(str => authorizer.add_fact(str))
+                          rules.foreach(str => authorizer.add_rule(str))
+                          checks.foreach(str => authorizer.add_check(str))
+                          policies.foreach(str => authorizer.add_policy(str))
+                          val listOfTokenRevocationIds = biscuitToken.revocation_identifiers().asScala.map(_.toHex).toList
+                          env.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.existsAny(listOfTokenRevocationIds).flatMap { existAnyRevokedToken =>
+                            if (existAnyRevokedToken) {
+                              handleError("Token is revoked")
+                            } else {
+                              Try(authorizer.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
+                                case Left(err) => handleError(s"invalid biscuit token: ${err}")
+                                case Right(_) => extractIdNameAndEmail(ctx, biscuitToken, config)
                               }
                             }
                           }
                         }
                       }
+                    }
                   }
                 }
               }
