@@ -4453,6 +4453,622 @@
           }
         }
       }
+    },
+    "/api/extensions/biscuit/keypairs/_generate": {
+      "post": {
+        "tags": [
+          "biscuit-admin-api"
+        ],
+        "summary": "Generate a biscuit Keypair",
+        "description": "Generate a biscuit Keypair",
+        "operationId": "generateKeypair",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "algorithm": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Keypair successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "algorithm": {
+                      "type": "string"
+                    },
+                    "pubKey": {
+                      "type": "string"
+                    },
+                    "privKey": {
+                      "type": "string"
+                    },
+                    "algoPubKey": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/api/extensions/biscuit/tokens/_generate": {
+      "post": {
+        "tags": [
+          "biscuit-admin-api"
+        ],
+        "summary": "Generate a biscuit token",
+        "description": "Generate a biscuit token from public/private keys or from a keypair reference.",
+        "operationId": "generateTokenFromBody",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "pubKey": { "type": "string", "description": "Public key (hex)." },
+                      "privKey": { "type": "string", "description": "Private key (hex)." },
+                      "config": {
+                        "type": "object",
+                        "properties": {
+                          "checks": { "type": "array", "items": { "type": "string" } },
+                          "facts": { "type": "array", "items": { "type": "string" } },
+                          "resources": { "type": "array", "items": { "type": "string" } },
+                          "rules": { "type": "array", "items": { "type": "string" } },
+                          "enable_ttl": { "type": "boolean" },
+                          "ttl": { "type": "integer", "format": "int64", "description": "TTL in milliseconds when enable_ttl is true." }
+                        },
+                        "required": []
+                      },
+                      "remoteFactsLoaderRef": { "type": "string", "nullable": true }
+                    },
+                    "required": ["pubKey", "privKey", "config"]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "keypair_ref": { "type": "string", "description": "Reference to a stored keypair." },
+                      "config": {
+                        "type": "object",
+                        "properties": {
+                          "checks": { "type": "array", "items": { "type": "string" } },
+                          "facts": { "type": "array", "items": { "type": "string" } },
+                          "resources": { "type": "array", "items": { "type": "string" } },
+                          "rules": { "type": "array", "items": { "type": "string" } },
+                          "enable_ttl": { "type": "boolean" },
+                          "ttl": { "type": "integer", "format": "int64", "description": "TTL in milliseconds when enable_ttl is true." }
+                        },
+                        "required": []
+                      },
+                      "remoteFactsLoaderRef": { "type": "string", "nullable": true }
+                    },
+                    "required": ["keypair_ref", "config"]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pubKey": { "type": "string" },
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/api/extensions/biscuit/biscuit-forges/:id/_generate": {
+      "post": {
+        "tags": [
+          "biscuit-admin-api"
+        ],
+        "summary": "Generate a biscuit token from a forge entity",
+        "description": "Generate a biscuit token from a forge entity",
+        "operationId": "generateBiscuitFromForge",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the forge entity."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Token successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    },
+                    "token_revocation_ids": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unable to create the Token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/api/extensions/biscuit/tokens/_verify": {
+      "post": {
+        "tags": [
+          "biscuit-admin-api"
+        ],
+        "summary": "Verify a biscuit token",
+        "description": "Verify a biscuit token",
+        "operationId": "verifyBiscuitTokenFromBody",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "config": {
+                    "type": "object",
+                    "properties": {
+                      "checks": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "facts": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "resources": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "rules": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "policies": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "rbac_refs": { "type": "array", "items": { "type": "string" } },
+                      "revoked_ids": { "type": "array", "items": { "type": "string" } },
+                      "remote_facts_refs": { "type": "array", "items": { "type": "string" } }
+                    }
+                  },
+                  "keypair_ref": {
+                    "type": "string"
+                  },
+                  "token": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Checked successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "error message"}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/api/extensions/biscuit/biscuit-verifiers/:id/_verify": {
+      "post": {
+        "tags": [
+          "biscuit-admin-api"
+        ],
+        "summary": "Verify a biscuit token from a verifier entity",
+        "description": "Verify a biscuit token from a verifier entity",
+        "operationId": "verifierTokenFromVerifierEntity",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the verifier entity."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": { "type": "string", "description": "Token to verify (base64url)." }
+                },
+                "required": ["token"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Verifier token created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unable to verify the Token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/api/extensions/biscuit/biscuit-attenuators/:id/_attenuate": {
+      "post": {
+        "tags": [
+          "biscuit-admin-api"
+        ],
+        "summary": "Attenuate a biscuit token from an attenuator entity",
+        "description": "Attenuate a biscuit token from an attenuator entity",
+        "operationId": "attenuateTokenFromAttenuatorEntity",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the attenuator entity."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Attenuated token created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "message": { "type": "string" },
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unable to create the Token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/api/extensions/biscuit/tokens/_attenuate": {
+      "post": {
+        "tags": [
+          "biscuit-admin-api"
+        ],
+        "summary": "Attenuate a Biscuit Token",
+        "description": "Attenuate a Biscuit token from provided public and private keys or a keypair reference.",
+        "operationId": "attenuateToken",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "pubKey": { "type": "string", "description": "Public key (hex)." },
+                      "privKey": { "type": "string", "description": "Private key (hex)." },
+                      "token": { "type": "string", "description": "Token to attenuate (base64url)." },
+                      "checks": { "type": "array", "items": { "type": "string" } }
+                    },
+                    "required": ["pubKey", "privKey", "token", "checks"]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "keypair_ref": { "type": "string", "description": "Reference to a stored keypair." },
+                      "token": { "type": "string", "description": "Token to attenuate (base64url)." },
+                      "checks": { "type": "array", "items": { "type": "string" } }
+                    },
+                    "required": ["keypair_ref", "token", "checks"]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "message": { "type": "string" },
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unable to create the Token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/api/extensions/biscuit/tokens/revocation/_revoke": {
+      "post": {
+        "tags": [
+          "biscuit-admin-api"
+        ],
+        "summary": "Revoke a biscuit token",
+        "description": "Revoke a biscuit token",
+        "operationId": "postRevokeToken",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string", "description": "Revocation identifier to add." },
+                    "reason": { "type": "string" },
+                    "revocation_date": { "type": "string", "format": "date-time" }
+                  },
+                  "required": ["id"]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Revocation processed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total_revoked": { "type": "integer" },
+                    "revoked": { "type": "array", "items": { "type": "string" } },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/api/extensions/biscuit/tokens/revocation/_all": {
+      "get": {
+        "tags": [
+          "biscuit-admin-api"
+        ],
+        "summary": "Get the list of all Revoked Tokens",
+        "description": "Get the list of all Revoked Tokens",
+        "operationId": "getRevokedTokens",
+        "responses": {
+          "200": {
+            "description": "Got all biscuit revoked tokens.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tokens": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "string" },
+                          "reason": { "type": "string" },
+                          "revocation_date": { "type": "string", "format": "date-time" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
     }
   },
   "components" : {
