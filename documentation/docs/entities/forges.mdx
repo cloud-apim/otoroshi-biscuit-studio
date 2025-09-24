@@ -8,6 +8,13 @@ import Terminal from '@site/src/components/Terminal';
 
 ![](/img/undraw_settings.svg)
 
+The "forge" entity is a central component of the extension, specifically designed for the creation of "Biscuit" tokens. This generation process relies on the use of a pre-existing cryptographic key pair, thus guaranteeing the authenticity and security of the produced Biscuits.
+
+Beyond simple generation, the forge offers capabilities for enriching and customizing Biscuits. It is possible to integrate a set of "facts," which are attributes or data associated with the Biscuit. These facts can be added manually by an operator or automatically via a "remote facts loader." The latter allows information to be retrieved from external sources, automating and standardizing the addition of contextual data to Biscuits.
+
+Furthermore, the forge allows for the definition and application of "rules" and "checks." Rules are conditional logics that can influence the generation or validity of Biscuits, for example, by imposing certain conditions on the facts included. Checks, on the other hand, are mechanisms that ensure the conformity of the generated Biscuits with predefined criteria. They can relate to data integrity, the presence of specific facts, or compliance with certain security policies. The integration of these rules and checks directly within the forge ensures that each Biscuit produced is not only valid but also compliant with the operational and security requirements of the application.
+
+
 ## Prerequisites
 
 - A [Biscuit KeyPair](/docs/entities/keypairs)
