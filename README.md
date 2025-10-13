@@ -68,4 +68,4 @@ This project was funded by the French Government under the France 2030 plan, ope
 
 <img src="https://presse.bpifrance.fr/wp-content/uploads/2025/06/13dd09b1598e84ec026a9181fe6988a3-l.jpg" width="200" height="100" />
 
-<img src="https://hopital-europeen.fr/sites/default/files/wysiwyg/etiquette_France_Relance_UE.png" width="200" height="100" />
+<img src="https://cloud-apim.github.io/otoroshi-biscuit-studio/img/etiquette.png" width="200" height="100" />
