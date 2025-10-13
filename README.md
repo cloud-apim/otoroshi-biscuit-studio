@@ -62,7 +62,7 @@ Default Otoroshi UI credentials : admin / password
 
 ## Funding
 
-This project was funded by the French Government under the France 2030 plan, operated by Cap Digital and Bpifrance, and is supported by the European Union – NextGenerationEU.
+This project was funded by the French Government under the [France 2030 plan](https://www.economie.gouv.fr/france-2030), operated by [Cap Digital](https://www.capdigital.com/) and [Bpifrance](https://www.bpifrance.fr/), and is supported by the European Union – [NextGenerationEU](https://next-generation-eu.europa.eu/).
 
 <img src="https://www.info.gouv.fr/upload/media/organization/0001/01/sites_default_files_contenu_illustration_2022_03_logotype-blanc.jpg" width="100" height="100" />
 
