@@ -39,6 +39,17 @@ export default function Home() {
       <main>
         <HomepageFeatures />
       </main>
+      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+        <h3>Funding</h3>
+        <p>
+          This project was funded by the French Government under the France 2030 plan, operated by Cap Digital and Bpifrance, and is supported by the European Union – NextGenerationEU.
+        </p>
+        <div>
+          <img src="https://www.info.gouv.fr/upload/media/organization/0001/01/sites_default_files_contenu_illustration_2022_03_logotype-blanc.jpg" width="100" height="100" />
+          <img src="https://presse.bpifrance.fr/wp-content/uploads/2025/06/13dd09b1598e84ec026a9181fe6988a3-l.jpg" width="200" height="100" />
+          <img src="https://hopital-europeen.fr/sites/default/files/wysiwyg/etiquette_France_Relance_UE.png" width="200" height="100" />
+        </div>
+      </div>
     </Layout>
   );
 }
