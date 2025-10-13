@@ -42,7 +42,7 @@ export default function Home() {
       <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
         <h3>Funding</h3>
         <p>
-          This project was funded by the French Government under the France 2030 plan, operated by Cap Digital and Bpifrance, and is supported by the European Union – NextGenerationEU.
+          This project was funded by the French Government under the <a href="https://www.economie.gouv.fr/france-2030">France 2030 plan</a>, operated by <a ref="https://www.capdigital.com/">Cap Digital</a> and <a href="https://www.bpifrance.fr/">Bpifrance</a>, and is supported by the European Union – <a href="https://next-generation-eu.europa.eu/">NextGenerationEU</a>.
         </p>
         <div>
           <img src="https://www.info.gouv.fr/upload/media/organization/0001/01/sites_default_files_contenu_illustration_2022_03_logotype-blanc.jpg" width="100" height="100" />
