@@ -232,7 +232,7 @@ class BiscuitTokenForge extends Component {
 				rowNavigation: true,
 				extractKey: (item) => item.id,
 				export: true,
-				kubernetesKind: "BiscuitForge",
+				kubernetesKind: "biscuit.extensions.cloud-apim.com/BiscuitForge",
 			},
 			null
 		);

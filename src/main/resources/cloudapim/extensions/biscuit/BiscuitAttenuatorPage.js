@@ -160,7 +160,7 @@ class BiscuitAttenuatorPage extends Component {
         rowNavigation: true,
         extractKey: (item) => item.id,
         export: true,
-        kubernetesKind: "BiscuitAttenuator",
+        kubernetesKind: "biscuit.extensions.cloud-apim.com/BiscuitAttenuator",
       },
       null
     );

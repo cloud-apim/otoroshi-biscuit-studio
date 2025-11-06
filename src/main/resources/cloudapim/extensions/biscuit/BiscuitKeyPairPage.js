@@ -150,7 +150,7 @@ class BiscuitKeyPairPage extends Component {
         rowNavigation: true,
         extractKey: (item) => item.id,
         export: true,
-        kubernetesKind: "BiscuitKeyPair",
+        kubernetesKind: "biscuit.extensions.cloud-apim.com/BiscuitKeyPair",
       },
       null
     );

@@ -300,7 +300,7 @@ class BiscuitVerifiersPage extends Component {
         rowNavigation: true,
         extractKey: (item) => item.id,
         export: true,
-        kubernetesKind: "BiscuitVerifier",
+        kubernetesKind: "biscuit.extensions.cloud-apim.com/BiscuitVerifier",
       },
       null
     );

@@ -197,7 +197,7 @@ class BiscuitRemoteFactsLoaderPage extends Component {
         rowNavigation: true,
         extractKey: (item) => item.id,
         export: true,
-        kubernetesKind: "BiscuitRemoteFactsLoader",
+        kubernetesKind: "biscuit.extensions.cloud-apim.com/BiscuitRemoteFactsLoader",
       },
       null
     );

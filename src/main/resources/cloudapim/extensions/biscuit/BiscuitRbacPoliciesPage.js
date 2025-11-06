@@ -119,7 +119,7 @@ class BiscuitRbacPoliciesPage extends Component {
 				rowNavigation: true,
 				extractKey: (item) => item.id,
 				export: true,
-				kubernetesKind: "BiscuitRBAC",
+				kubernetesKind: "biscuit.extensions.cloud-apim.com/BiscuitRBAC",
 			},
 			null
 		);
