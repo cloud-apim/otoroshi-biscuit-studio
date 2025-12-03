@@ -22,7 +22,7 @@ lazy val root = (project in file("."))
   .settings(
     name := "otoroshi-biscuit-studio",
     libraryDependencies ++= Seq(
-      "fr.maif" %% "otoroshi" % "17.9.1" % "provided" excludeAll (scalaExclusion: _*),
+      "fr.maif" %% "otoroshi" % "17.9.2" % "provided" excludeAll (scalaExclusion: _*),
       "org.biscuitsec" % "biscuit" % "4.0.1", // biscuit spec 3.2
       "com.arakelian" % "java-jq" % "1.3.0" % Test excludeAll (excludesJackson: _*),
       "org.scala-lang" % "scala-reflect" % "2.12.13" % Test,
