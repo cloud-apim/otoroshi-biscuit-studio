@@ -110,8 +110,13 @@ const config = {
           },
           {
             href: 'https://blog.cloud-apim.com',
-            label: 'Cloud APIM Blog', 
+            label: 'Cloud APIM Blog',
             position: 'right'
+          },
+          {
+            href: 'https://maif.github.io/otoroshi/manual/index.html',
+            label: 'Otoroshi',
+            position: 'right',
           },
         ],
       },
@@ -158,6 +163,10 @@ const config = {
               {
                 label: 'GitHub',
                 href: 'https://github.com/cloud-apim/otoroshi-biscuit-studio',
+              },
+              {
+                label: 'Otoroshi',
+                href: 'https://maif.github.io/otoroshi/manual/index.html',
               },
             ],
           },
