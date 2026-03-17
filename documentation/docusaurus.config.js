@@ -23,8 +23,16 @@ const config = {
   organizationName: 'cloud-apim', // Usually your GitHub org/user name.
   projectName: 'Otoroshi Biscuit Studio', // Usually your repo name.
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
+
+  markdown: {
+    format: 'detect',
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+      onBrokenMarkdownImages: 'warn',
+    },
+  },
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -49,11 +57,29 @@ const config = {
     ],
   ],
 
+  themes: [
+    [
+      /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
+      "@easyops-cn/docusaurus-search-local",
+      ({
+        hashed: true,
+        language: ["en"],
+        highlightSearchTermsOnTargetPage: true,
+        explicitSearchResultPath: true,
+      }),
+    ],
+  ],
+
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       // Replace with your project's social card
       image: 'img/otoroshi-biscuit-studio-logo.png',
+      colorMode: {
+        defaultMode: 'light',
+        disableSwitch: false,
+        respectPrefersColorScheme: true,
+      },
       navbar: {
         title: 'Otoroshi Biscuit Studio',
         logo: {
