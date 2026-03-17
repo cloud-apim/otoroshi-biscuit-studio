@@ -1,1 +1,0 @@
-(self.webpackChunkotoroshi_biscuit_studio_documentation=self.webpackChunkotoroshi_biscuit_studio_documentation||[]).push([[741],{5741:()=>{}}]);
