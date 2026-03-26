@@ -1,3 +1,4 @@
+nvm use 24
 cd ./documentation
 rm -rf ./node-modules
 npm install

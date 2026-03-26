@@ -178,16 +178,19 @@ class BiscuitUserExtractor extends NgPreRouting {
         BiscuitExtractorConfig(config.extractorType, config.extractorName).extractToken(ctx.request, None, ctx.attrs) match {
           case Some(token) => {
             Try(Biscuit.from_b64url(token, keypair.getPubKey)).toEither match {
-              case Left(err) => handleError(s"Unable to deserialize Biscuit token : ${err}")
+              case Left(err) if config.enforce => handleError(s"Unable to deserialize Biscuit token : ${err}")
+              case Left(_) if !config.enforce => Done.right.vfuture
               case Right(biscuitUnverified) => {
                 Try(biscuitUnverified.verify(keypair.getPubKey)).toEither match {
-                  case Left(err) => handleError(s"Biscuit token is not valid : ${err}")
+                  case Left(err) if config.enforce => handleError(s"Biscuit token is not valid : ${err}")
+                  case Left(_) if !config.enforce => Done.right.vfuture
                   case Right(biscuitToken) => {
                     config.verifierRef.flatMap(ref => ext.states.biscuitVerifier(ref)) match {
                       case Some(_verifier) => {
                         val verifier = _verifier.copy(config = VerifierConfig.format.reads(_verifier.config.json.stringify.evaluateEl(ctx.attrs).parseJson).get)
                         verifier.verify(ctx.request, Some(VerificationContext(ctx.route, ctx.request, None, None, ctx.attrs)), ctx.attrs).flatMap {
-                          case Left(err) => handleError(s"invalid biscuit token: ${err}")
+                          case Left(err) if config.enforce => handleError(s"invalid biscuit token: ${err}")
+                          case Left(_) if !config.enforce => Done.right.vfuture
                           case Right(_) => extractIdNameAndEmail(ctx, biscuitToken, config)
                         }
                       }
@@ -210,11 +213,14 @@ class BiscuitUserExtractor extends NgPreRouting {
                           policies.foreach(str => authorizer.add_policy(str))
                           val listOfTokenRevocationIds = biscuitToken.revocation_identifiers().asScala.map(_.toHex).toList
                           env.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.existsAny(listOfTokenRevocationIds).flatMap { existAnyRevokedToken =>
-                            if (existAnyRevokedToken) {
+                            if (existAnyRevokedToken && config.enforce) {
                               handleError("Token is revoked")
+                            } else if (existAnyRevokedToken && !config.enforce) {
+                              Done.right.vfuture
                             } else {
                               Try(authorizer.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
-                                case Left(err) => handleError(s"invalid biscuit token: ${err}")
+                                case Left(err) if config.enforce => handleError(s"invalid biscuit token: ${err}")
+                                case Left(_) if !config.enforce => Done.right.vfuture
                                 case Right(_) => extractIdNameAndEmail(ctx, biscuitToken, config)
                               }
                             }
@@ -331,7 +337,8 @@ class BiscuitUserExtractor extends NgPreRouting {
         ctx.attrs.put(otoroshi.plugins.Keys.UserKey -> user)
         Done.right.vfuture
       }
-      case _ => unauthorized(Json.obj("error" -> "unauthorized", "error_description" -> "Bad user extraction, user id or username not valid"))
+      case _ if config.enforce => unauthorized(Json.obj("error" -> "unauthorized", "error_description" -> "Bad user extraction, user id or username not valid"))
+      case _ if !config.enforce => Done.right.vfuture
     }
   }
 
@@ -340,6 +347,6 @@ class BiscuitUserExtractor extends NgPreRouting {
   }
 
   def handleError(message: String): Future[Either[NgPreRoutingError, Done]] = {
-    NgPreRoutingErrorWithResult(Results.Unauthorized(Json.obj("error" -> "Biscuit token is not valid"))).leftf
+    NgPreRoutingErrorWithResult(Results.Unauthorized(Json.obj("error" -> message))).leftf
   }
 }
