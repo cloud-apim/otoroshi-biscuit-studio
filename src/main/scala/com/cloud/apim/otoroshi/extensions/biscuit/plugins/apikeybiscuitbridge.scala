@@ -2,6 +2,7 @@ package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
 import akka.Done
 import com.cloud.apim.otoroshi.extensions.biscuit.entities.BiscuitExtractorConfig
+import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils
 import org.biscuitsec.biscuit.token.Biscuit
 import org.biscuitsec.biscuit.token.builder.Term.Str
 import otoroshi.env.Env
@@ -18,6 +19,8 @@ import scala.util.{Failure, Success, Try}
 
 case class BiscuitApiKeyBridgeConfig(
   keypairRef: String = "",
+  pubKey: Option[String] = None,
+  pubKeyAlg: Option[String] = None,
   enforce: Boolean = true,
   extractorType: String = "header",
   extractorName: String = "Authorization",
@@ -31,6 +34,8 @@ object BiscuitApiKeyBridgeConfig {
   val format = new Format[BiscuitApiKeyBridgeConfig] {
     override def writes(o: BiscuitApiKeyBridgeConfig): JsValue = Json.obj(
       "keypair_ref" -> o.keypairRef,
+      "pub_key" -> o.pubKey,
+      "pub_key_alg" -> o.pubKeyAlg,
       "enforce" -> o.enforce,
       "extractor_type" -> o.extractorType,
       "extractor_name" -> o.extractorName,
@@ -40,6 +45,8 @@ object BiscuitApiKeyBridgeConfig {
     override def reads(json: JsValue): JsResult[BiscuitApiKeyBridgeConfig] = Try {
       BiscuitApiKeyBridgeConfig(
         keypairRef = json.select("keypair_ref").asOpt[String].getOrElse(""),
+        pubKey = json.select("pub_key").asOpt[String],
+        pubKeyAlg = json.select("pub_key_alg").asOpt[String],
         enforce = json.select("enforce").asOpt[Boolean].getOrElse(true),
         extractorType = json.select("extractor_type").asOpt[String].getOrElse(""),
         extractorName = json.select("extractor_name").asOpt[String].getOrElse(""),
@@ -63,6 +70,15 @@ object BiscuitApiKeyBridgeConfig {
           "value" -> "id",
         ),
       ),
+    ),
+    "pub_key" -> Json.obj(
+      "type" -> "string",
+      "label" -> "Biscuit public key"
+    ),
+    "pub_key_alg" -> Json.obj(
+      "type" -> "string",
+      "label" -> "Biscuit public alg.",
+      "placeholder" -> "default: ED25519"
     ),
     "enforce" -> Json.obj(
       "type" -> "bool",
@@ -126,15 +142,19 @@ class BiscuitApiKeyBridgePlugin extends NgPreRouting {
   )(implicit env: Env, ec: ExecutionContext): Future[Either[NgPreRoutingError, Done]] = {
 
     val config = ctx.cachedConfig(internalName)(BiscuitApiKeyBridgeConfig.format).getOrElse(BiscuitApiKeyBridgeConfig())
-    env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(config.keypairRef)) match {
-      case None => handleError("keypair_ref not found")
-      case Some(keypair) => {
+    val pubKey: Option[org.biscuitsec.biscuit.crypto.PublicKey] = env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(config.keypairRef)) match {
+      case None => config.pubKey.flatMap(pk => Try(new org.biscuitsec.biscuit.crypto.PublicKey(BiscuitUtils.getAlgo(config.pubKeyAlg.getOrElse("ED25519")), pk)).toOption)
+      case Some(keypair) => keypair.getPubKey.some
+    }
+    pubKey match {
+      case None => handleError("No public key found for biscuit validation")
+      case Some(pk) => {
         BiscuitExtractorConfig(config.extractorType, config.extractorName).extractToken(ctx.request, None, ctx.attrs) match {
           case Some(token) => {
-            Try(Biscuit.from_b64url(token, keypair.getPubKey)).toEither match {
+            Try(Biscuit.from_b64url(token, pk)).toEither match {
               case Left(err) => handleError(s"Unable to deserialize Biscuit token : ${err}")
               case Right(biscuitUnverified) =>
-                Try(biscuitUnverified.verify(keypair.getPubKey)).toEither match {
+                Try(biscuitUnverified.verify(pk)).toEither match {
                   case Left(err) =>
                     handleError(s"Biscuit token is not valid: ${err}")
                   case Right(biscuitToken) => {

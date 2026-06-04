@@ -115,6 +115,11 @@ object BiscuitUserExtractorConfig {
       "type" -> "string",
       "label" -> "Biscuit public key"
     ),
+    "pub_key_alg" -> Json.obj(
+      "type" -> "string",
+      "label" -> "Biscuit public alg.",
+      "placeholder" -> "default: ED25519"
+    ),
     "name_key" -> Json.obj(
       "type" -> "string",
       "label" -> "User name biscuit key"
