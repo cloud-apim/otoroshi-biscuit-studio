@@ -2,10 +2,12 @@ package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
 import akka.Done
 import com.cloud.apim.otoroshi.extensions.biscuit.entities.{BiscuitExtractorConfig, VerificationContext, VerifierConfig}
+import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils
 import org.biscuitsec.biscuit.datalog.{RunLimits, SymbolTable}
 import org.biscuitsec.biscuit.token.builder.Term.Str
 import org.biscuitsec.biscuit.token.{Biscuit, UnverifiedBiscuit}
 import org.joda.time.DateTime
+import org.opensaml.xmlsec.signature.PublicKey
 import otoroshi.env.Env
 import otoroshi.models.PrivateAppsUser
 import otoroshi.next.plugins.api._
@@ -22,6 +24,8 @@ import scala.util.{Failure, Success, Try}
 
 case class BiscuitUserExtractorConfig(
   keypairRef: String = "",
+  pubKey: Option[String] = None,
+  pubKeyAlg: Option[String] = None,
   enforce: Boolean = true,
   extractorType: String = "header",
   extractorName: String = "Authorization",
@@ -35,10 +39,12 @@ case class BiscuitUserExtractorConfig(
 }
 
 object BiscuitUserExtractorConfig {
-  val configFlow: Seq[String] = Seq("keypair_ref", "enforce", "extractor_type", "extractor_name", "email_key", "name_key", "user_id_key", "verifier_ref", "validations")
+  val configFlow: Seq[String] = Seq("keypair_ref", "pub_key", "pub_key_alg", "enforce", "extractor_type", "extractor_name", "email_key", "name_key", "user_id_key", "verifier_ref", "validations")
   val format = new Format[BiscuitUserExtractorConfig] {
     override def writes(o: BiscuitUserExtractorConfig): JsValue = Json.obj(
       "keypair_ref" -> o.keypairRef,
+      "pub_key" -> o.pubKey,
+      "pub_key_alg" -> o.pubKeyAlg,
       "enforce" -> o.enforce,
       "extractor_type" -> o.extractorType,
       "extractor_name" -> o.extractorName,
@@ -52,6 +58,8 @@ object BiscuitUserExtractorConfig {
     override def reads(json: JsValue): JsResult[BiscuitUserExtractorConfig] = Try {
       BiscuitUserExtractorConfig(
         keypairRef = json.select("keypair_ref").asOpt[String].getOrElse(""),
+        pubKey = json.select("pub_key").asOpt[String],
+        pubKeyAlg = json.select("pub_key_alg").asOpt[String],
         enforce = json.select("enforce").asOpt[Boolean].getOrElse(true),
         extractorType = json.select("extractor_type").asOpt[String].getOrElse(""),
         extractorName = json.select("extractor_name").asOpt[String].getOrElse(""),
@@ -102,6 +110,10 @@ object BiscuitUserExtractorConfig {
     "email_key" -> Json.obj(
       "type" -> "string",
       "label" -> "User email biscuit key"
+    ),
+    "pub_key" -> Json.obj(
+      "type" -> "string",
+      "label" -> "Biscuit public key"
     ),
     "name_key" -> Json.obj(
       "type" -> "string",
@@ -172,16 +184,20 @@ class BiscuitUserExtractor extends NgPreRouting {
     val _config = ctx.cachedConfig(internalName)(BiscuitUserExtractorConfig.format).getOrElse(BiscuitUserExtractorConfig())
     val config = BiscuitUserExtractorConfig.format.reads(_config.json.stringify.evaluateEl(ctx.attrs).parseJson).get
     val ext = env.adminExtensions.extension[BiscuitExtension].get
-    env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(config.keypairRef)) match {
-      case None => handleError("keypair_ref not found")
-      case Some(keypair) => {
+    val pubKey: Option[org.biscuitsec.biscuit.crypto.PublicKey] = env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(config.keypairRef)) match {
+      case None => config.pubKey.flatMap(pk => Try(new org.biscuitsec.biscuit.crypto.PublicKey(BiscuitUtils.getAlgo(config.pubKeyAlg.getOrElse("ED25519")), pk)).toOption)
+      case Some(keypair) => keypair.getPubKey.some
+    }
+    pubKey match {
+      case None => handleError("No public key found for biscuit validation")
+      case Some(pubKey) => {
         BiscuitExtractorConfig(config.extractorType, config.extractorName).extractToken(ctx.request, None, ctx.attrs) match {
           case Some(token) => {
-            Try(Biscuit.from_b64url(token, keypair.getPubKey)).toEither match {
+            Try(Biscuit.from_b64url(token, pubKey)).toEither match {
               case Left(err) if config.enforce => handleError(s"Unable to deserialize Biscuit token : ${err}")
               case Left(_) if !config.enforce => Done.right.vfuture
               case Right(biscuitUnverified) => {
-                Try(biscuitUnverified.verify(keypair.getPubKey)).toEither match {
+                Try(biscuitUnverified.verify(pubKey)).toEither match {
                   case Left(err) if config.enforce => handleError(s"Biscuit token is not valid : ${err}")
                   case Left(_) if !config.enforce => Done.right.vfuture
                   case Right(biscuitToken) => {
