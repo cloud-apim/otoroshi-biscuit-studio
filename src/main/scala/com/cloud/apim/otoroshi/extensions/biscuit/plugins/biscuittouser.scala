@@ -7,7 +7,6 @@ import org.biscuitsec.biscuit.datalog.{RunLimits, SymbolTable}
 import org.biscuitsec.biscuit.token.builder.Term.Str
 import org.biscuitsec.biscuit.token.{Biscuit, UnverifiedBiscuit}
 import org.joda.time.DateTime
-import org.opensaml.xmlsec.signature.PublicKey
 import otoroshi.env.Env
 import otoroshi.models.PrivateAppsUser
 import otoroshi.next.plugins.api._
@@ -66,7 +65,9 @@ object BiscuitUserExtractorConfig {
         emailKey = json.select("email_key").asOpt[String].orElse(json.select("username_key").asOpt[String]).getOrElse("email"),
         nameKey = json.select("name_key").asOpt[String].getOrElse("name"),
         userIdKey = json.select("user_id_key").asOpt[String].getOrElse("user"),
-        validations = json.select("validations").asOpt[JsObject].getOrElse(Json.obj()),
+        validations = json.select("validations").asOpt[JsObject]
+          .orElse(json.select("validations").asOpt[String].flatMap(s => Try(Json.parse(s).asObject).toOption))
+          .getOrElse(Json.obj()),
         verifierRef = json.select("verifier_ref").asOpt[String],
       )
     } match {
@@ -129,7 +130,7 @@ object BiscuitUserExtractorConfig {
       "label" -> "User ID biscuit key"
     ),
     "validations" -> Json.obj(
-      "type" -> "json",
+      "type" -> "monaco-json",
       "label" -> "Additional biscuit validations",
       "props" -> Json.obj(
         "editorOnly" -> false,
@@ -216,12 +217,21 @@ class BiscuitUserExtractor extends NgPreRouting {
                         }
                       }
                       case None => {
+                        val listOfTokenRevocationIds = biscuitToken.revocation_identifiers().asScala.map(_.toHex).toList
                         val facts = config.validations.select("facts").asOpt[Seq[String]].getOrElse(Seq.empty[String])
                         val rules = config.validations.select("rules").asOpt[Seq[String]].getOrElse(Seq.empty[String])
                         val checks = config.validations.select("checks").asOpt[Seq[String]].getOrElse(Seq.empty[String])
                         val policies = config.validations.select("policies").asOpt[Seq[String]].getOrElse(Seq.empty[String])
                         if (facts.isEmpty && rules.isEmpty && checks.isEmpty && policies.isEmpty) {
-                          extractIdNameAndEmail(ctx, biscuitToken, config)
+                          env.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.existsAny(listOfTokenRevocationIds).flatMap { existAnyRevokedToken =>
+                            if (existAnyRevokedToken && config.enforce) {
+                              handleError("Token is revoked")
+                            } else if (existAnyRevokedToken && !config.enforce) {
+                              Done.right.vfuture
+                            } else {
+                              extractIdNameAndEmail(ctx, biscuitToken, config)
+                            }
+                          }
                         } else {
                           val authorizer = biscuitUnverified.authorizer()
                           authorizer.set_time()
@@ -232,7 +242,6 @@ class BiscuitUserExtractor extends NgPreRouting {
                           rules.foreach(str => authorizer.add_rule(str))
                           checks.foreach(str => authorizer.add_check(str))
                           policies.foreach(str => authorizer.add_policy(str))
-                          val listOfTokenRevocationIds = biscuitToken.revocation_identifiers().asScala.map(_.toHex).toList
                           env.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.existsAny(listOfTokenRevocationIds).flatMap { existAnyRevokedToken =>
                             if (existAnyRevokedToken && config.enforce) {
                               handleError("Token is revoked")
@@ -241,7 +250,7 @@ class BiscuitUserExtractor extends NgPreRouting {
                             } else {
                               Try(authorizer.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
                                 case Left(err) if config.enforce => handleError(s"invalid biscuit token: ${err}")
-                                case Left(_) if !config.enforce => Done.right.vfuture
+                                case Left(_) if !config.enforce =>  Done.right.vfuture
                                 case Right(_) => extractIdNameAndEmail(ctx, biscuitToken, config)
                               }
                             }
