@@ -1,19 +1,19 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiServerPerSuite
-import com.cloud.apim.otoroshi.extensions.biscuit.entities._
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.*
 import org.biscuitsec.biscuit.crypto.KeyPair
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.models.EntityLocation
-import otoroshi.next.models._
+import otoroshi.next.models.*
 import otoroshi.security.IdGenerator
-import otoroshi.utils.syntax.implicits._
+import otoroshi.utils.syntax.implicits.*
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenAttenuatorPlugin
 import play.api.libs.json.Json
 
 import java.util.UUID
 import scala.concurrent.duration.DurationInt
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 
 class TestAttenuators extends BiscuitStudioOneOtoroshiServerPerSuite {
 
@@ -580,7 +580,6 @@ class TestAttenuators extends BiscuitStudioOneOtoroshiServerPerSuite {
 
     assertEquals(respForgeToken.status, 200, s"verifier route did not respond with 200")
     assert(respForgeToken.json.at("token").isDefined, s"token not generated")
-
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                   call the route with attenuator                               ///////////

@@ -5,9 +5,9 @@ import com.cloud.apim.otoroshi.extensions.biscuit.entities.{BiscuitExtractorConf
 import org.biscuitsec.biscuit.crypto.KeyPair
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.models.EntityLocation
-import otoroshi.next.models._
+import otoroshi.next.models.*
 import otoroshi.security.IdGenerator
-import otoroshi.utils.syntax.implicits._
+import otoroshi.utils.syntax.implicits.*
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenVerifierPlugin
 import play.api.libs.json.Json
 
@@ -397,14 +397,6 @@ class VerifiersSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
   test(s"testing token revoked") {
 
     val biscuitKeyPair = new KeyPair()
-
-    val keypair = BiscuitKeyPair(
-      id = IdGenerator.namedId("biscuit-keypair", otoroshi.env),
-      location = EntityLocation.default,
-      privKey = biscuitKeyPair.toHex,
-      pubKey = biscuitKeyPair.public_key().toHex,
-      isPublic = true
-    )
 
     val biscuitToken = Biscuit.builder(biscuitKeyPair)
       .add_authority_fact("user(\"test\")")

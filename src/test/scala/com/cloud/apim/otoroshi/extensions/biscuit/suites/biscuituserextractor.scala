@@ -1,15 +1,15 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiServerPerSuite
-import com.cloud.apim.otoroshi.extensions.biscuit.entities._
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.*
 import org.biscuitsec.biscuit.crypto.KeyPair
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.models.EntityLocation
 import otoroshi.next.models.{NgBackend, NgDomainAndPath, NgFrontend, NgPluginInstance, NgPluginInstanceConfig, NgPlugins, NgRoute, NgTarget}
 import otoroshi.next.plugins.UserProfileEndpoint
 import otoroshi.security.IdGenerator
-import otoroshi.utils.syntax.implicits._
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.{BiscuitTokenAttenuatorPlugin, BiscuitUserExtractor}
+import otoroshi.utils.syntax.implicits.*
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitUserExtractor
 import play.api.libs.json.Json
 
 import java.util.UUID
@@ -106,7 +106,6 @@ class TestBiscuitUserExtractorPlugin extends BiscuitStudioOneOtoroshiServerPerSu
 
     val encodedGoodBiscuit = Biscuit.from_b64url(goodToken, publicKeyFormatted)
     assertEquals(encodedGoodBiscuit.authorizer().facts().size(), forge.config.facts.length + forge.config.resources.length, s"token doesn't contain all facts")
-
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                      create the route with the 'Biscuit User Extractor' plugin                 ///////////

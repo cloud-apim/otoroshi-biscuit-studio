@@ -1,13 +1,13 @@
 package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
-import akka.stream.Materializer
+import org.apache.pekko.stream.Materializer
 import com.cloud.apim.otoroshi.extensions.biscuit.entities.BiscuitTokenForge
 import otoroshi.el.GlobalExpressionLanguage
 import otoroshi.env.Env
-import otoroshi.next.plugins.api._
-import otoroshi.utils.syntax.implicits._
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.BiscuitExtension
-import play.api.libs.json._
+import otoroshi.next.plugins.api.*
+import otoroshi.utils.syntax.implicits.*
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.biscuitExtensionOpt
+import play.api.libs.json.*
 import play.api.mvc.{Result, Results}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -90,17 +90,17 @@ class UserToBiscuitExtractor extends NgRequestTransformer {
   override def steps: Seq[NgStep] = Seq(NgStep.TransformRequest)
 
   override def start(env: Env): Future[Unit] = {
-    env.adminExtensions.extension[BiscuitExtension].foreach { ext =>
+    env.biscuitExtensionOpt.foreach { ext =>
       ext.logger.info("the 'Cloud APIM - User to Biscuit Extractor' plugin is available !")
       
     }
     ().vfuture
   }
 
-  override def transformRequest(ctx: NgTransformerRequestContext)(implicit env: Env, ec: ExecutionContext, mat: Materializer): Future[Either[Result, NgPluginHttpRequest]] = {
+  override def transformRequest(ctx: NgTransformerRequestContext)(using env: Env, ec: ExecutionContext, mat: Materializer): Future[Either[Result, NgPluginHttpRequest]] = {
     val config = ctx.cachedConfig(internalName)(UserToBiscuitExtractorConfig.format).getOrElse(UserToBiscuitExtractorConfig())
     if (ctx.user.isDefined) {
-      env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitTokenForge(config.forgeRef)) match {
+      env.biscuitExtensionOpt.flatMap(_.states.biscuitTokenForge(config.forgeRef)) match {
         case None => Left(Results.BadGateway(Json.obj("error" -> "forge_ref not found"))).vfuture
         case Some(forge) => {
           val strForge = forge.json.stringify
@@ -121,7 +121,7 @@ class UserToBiscuitExtractor extends NgRequestTransformer {
             forge
           }
           finalForge.forgeToken(Json.obj(), if (config.automaticFacts) ctx.user else None).flatMap {
-            case Left(err) => ctx.otoroshiRequest.right.vfuture
+            case Left(_) => ctx.otoroshiRequest.right.vfuture
             case Right(token) => {
               val finalRequest = ctx.otoroshiRequest
               val lowerName = config.extractorHeaderName.toLowerCase().trim

@@ -1,19 +1,19 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiServerPerSuite
-import com.cloud.apim.otoroshi.extensions.biscuit.entities._
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.*
 import org.biscuitsec.biscuit.crypto.KeyPair
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.models.EntityLocation
 import otoroshi.next.models.{NgBackend, NgDomainAndPath, NgFrontend, NgPluginInstance, NgPluginInstanceConfig, NgPlugins, NgRoute, NgTarget}
 import otoroshi.security.IdGenerator
-import otoroshi.utils.syntax.implicits._
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.{BiscuitExposePubKeysPluginConfig, BiscuitTokenAttenuatorPlugin, BiscuitTokenVerifierPlugin, ExposeBiscuitPublicKeysPlugin}
+import otoroshi.utils.syntax.implicits.*
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.{BiscuitTokenAttenuatorPlugin, BiscuitTokenVerifierPlugin}
 import play.api.libs.json.Json
 
 import java.util.UUID
 import scala.concurrent.duration.DurationInt
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 
 class PluginsChainSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
   test("should be able to chain a verifier and attenuator plugins") {
@@ -181,7 +181,6 @@ class PluginsChainSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
 
     assertEquals(encodedBadToken.authorizer().facts().size(), goodForge.config.facts.length, s"token doesn't contain all facts")
     assertEquals(encodedBadToken.authorizer().checks().asScala.flatMap(_._2.asScala).size, goodForge.config.checks.length, s"token doesn't contain all checks")
-
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  test biscuit creation from GOOD forge                              ///////////

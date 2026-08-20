@@ -1,12 +1,12 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiServerPerSuite
-import com.cloud.apim.otoroshi.extensions.biscuit.entities._
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.*
 import org.biscuitsec.biscuit.crypto.KeyPair
 import otoroshi.models.{ApiKey, EntityLocation, RouteIdentifier}
-import otoroshi.next.models._
+import otoroshi.next.models.*
 import otoroshi.security.IdGenerator
-import otoroshi.utils.syntax.implicits._
+import otoroshi.utils.syntax.implicits.*
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.{BiscuitTokenVerifierPlugin, ClientCredentialBiscuitTokenEndpoint}
 import play.api.libs.json.Json
 import reactor.core.publisher.Mono
@@ -20,7 +20,7 @@ class ClientcredentialsSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  setup                                                         ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    val (tport, _) = createTestServerWithRoutes("test", routes => routes.get("/api", (req, response) => {
+    val (tport, _) = createTestServerWithRoutes("test", routes => routes.get("/api", (_, response) => {
       response
         .status(200)
         .addHeader("Content-Type", "application/json")

@@ -4,9 +4,9 @@ import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiServer
 import com.cloud.apim.otoroshi.extensions.biscuit.entities.{BiscuitExtractorConfig, BiscuitForgeConfig, BiscuitKeyPair, BiscuitTokenForge}
 import org.biscuitsec.biscuit.crypto.{KeyPair, PublicKey}
 import otoroshi.models.{ApiKey, EntityLocation, RouteIdentifier}
-import otoroshi.next.models._
+import otoroshi.next.models.*
 import otoroshi.security.IdGenerator
-import otoroshi.utils.syntax.implicits._
+import otoroshi.utils.syntax.implicits.*
 import play.api.libs.json.Json
 import reactor.core.publisher.Mono
 import org.biscuitsec.biscuit.token.Biscuit
@@ -21,7 +21,7 @@ class BiscuitApiKeyBridgeSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  setup                                                         ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    val (tport, _) = createTestServerWithRoutes("test-apikey-biscuit-bridge", routes => routes.get("/api", (req, response) => {
+    val (tport, _) = createTestServerWithRoutes("test-apikey-biscuit-bridge", routes => routes.get("/api", (_, response) => {
       response
         .status(200)
         .addHeader("Content-Type", "application/json")
@@ -63,7 +63,6 @@ class BiscuitApiKeyBridgeSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
       ),
       remoteFactsLoaderRef = None
     )
-
 
     // forge2 : forge to create wrong token with unexisting apikey
     val forge2 = BiscuitTokenForge(
@@ -161,7 +160,6 @@ class BiscuitApiKeyBridgeSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     client.forEntity("proxy.otoroshi.io", "v1", "routes").upsertEntity(routeApi)
 
     await(2.seconds)
-
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  generated good token                                                      ///////////

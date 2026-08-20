@@ -7,8 +7,8 @@ import otoroshi.next.extensions.AdminExtensionId
 import otoroshi.security.IdGenerator
 import otoroshi.storage.{BasicStore, RedisLike, RedisLikeStore}
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionDatastores, BiscuitExtensionState}
-import play.api.libs.json._
-import otoroshi.utils.syntax.implicits._
+import play.api.libs.json.*
+import otoroshi.utils.syntax.implicits.*
 
 import scala.util.{Failure, Success, Try}
 
@@ -35,7 +35,6 @@ case class BiscuitRbacPolicy(
 
   def theTags: Seq[String] = tags
 }
-
 
 object BiscuitRbacPolicy {
   val format = new Format[BiscuitRbacPolicy] {
@@ -85,7 +84,7 @@ object BiscuitRbacPolicy {
         extractIdf = c => datastores.biscuitRbacPolicyDataStore.extractId(c),
         extractIdJsonf = json => json.select("id").asString,
         idFieldNamef = () => "id",
-        tmpl = (v, p, ctx) => {
+        tmpl = (_, _, _) => {
           BiscuitRbacPolicy(
             id = IdGenerator.namedId("biscuit-rbac-policy", env),
             name = "New biscuit RBAC Policy",
@@ -121,7 +120,7 @@ class KvBiscuitRbacPolicyDataStore(extensionId: AdminExtensionId, redisCli: Redi
     with RedisLikeStore[BiscuitRbacPolicy] {
   override def fmt: Format[BiscuitRbacPolicy] = BiscuitRbacPolicy.format
 
-  override def redisLike(implicit env: Env): RedisLike = redisCli
+  override def redisLike(using env: Env): RedisLike = redisCli
 
   override def key(id: String): String = s"${_env.storageRoot}:extensions:${extensionId.cleanup}:biscuit:rbac-policy:$id"
 

@@ -4,8 +4,8 @@ import biscuit.format.schema.Schema.PublicKey
 import org.biscuitsec.biscuit.crypto.KeyPair
 import otoroshi.env.Env
 import otoroshi.next.workflow.{WorkflowError, WorkflowFunction, WorkflowRun}
-import otoroshi.utils.syntax.implicits._
-import play.api.libs.json._
+import otoroshi.utils.syntax.implicits.*
+import play.api.libs.json.*
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -54,7 +54,7 @@ class BiscuitKeypairGenFunction extends WorkflowFunction {
       "alg" -> "ED25519"
     )
   ))
-  override def callWithRun(args: JsObject)(implicit env: Env, ec: ExecutionContext, wfr: WorkflowRun): Future[Either[WorkflowError, JsValue]] = {
+  override def callWithRun(args: JsObject)(using env: Env, ec: ExecutionContext, wfr: WorkflowRun): Future[Either[WorkflowError, JsValue]] = {
     val alg = args.select("alg").asOptString.getOrElse("ED25519").toLowerCase() match {
       case "ed25519" => PublicKey.Algorithm.Ed25519
       case _ => PublicKey.Algorithm.Ed25519
@@ -112,14 +112,14 @@ class BiscuitVerifyFunction extends WorkflowFunction {
       "token" -> "token"
     )
   ))
-  override def callWithRun(args: JsObject)(implicit env: Env, ec: ExecutionContext, wfr: WorkflowRun): Future[Either[WorkflowError, JsValue]] = {
+  override def callWithRun(args: JsObject)(using env: Env, ec: ExecutionContext, wfr: WorkflowRun): Future[Either[WorkflowError, JsValue]] = {
     val verifier = args.select("verifier").asString
     val token = args.select("token").asString
-    val extension = env.adminExtensions.extension[BiscuitExtension].get
+    val extension = env.biscuitExtension
     extension.states.biscuitVerifier(verifier) match {
       case None => WorkflowError(s"biscuit verifier not found", Some(Json.obj("verifier_id" -> verifier)), None).leftf
       case Some(verifier) => {
-        verifier.verifyBase64Token(token, None, wfr.attrs)
+        verifier.verifyBase64Token(token, None)
           .map {
             case Left(error) => Json.obj("success" -> false, "error" -> error).right
             case Right(_) => Json.obj("success" -> true, "error" -> JsNull).right
@@ -175,10 +175,10 @@ class BiscuitAttenuationFunction extends WorkflowFunction {
       "token" -> "token"
     )
   ))
-  override def call(args: JsObject)(implicit env: Env, ec: ExecutionContext): Future[Either[WorkflowError, JsValue]] = {
+  override def call(args: JsObject)(using env: Env, ec: ExecutionContext): Future[Either[WorkflowError, JsValue]] = {
     val attenuator = args.select("attenuator").asString
     val token = args.select("token").asString
-    val extension = env.adminExtensions.extension[BiscuitExtension].get
+    val extension = env.biscuitExtension
     extension.states.biscuitAttenuator(attenuator) match {
       case None => WorkflowError(s"biscuit attenuator not found", Some(Json.obj("attenuator_id" -> attenuator)), None).leftf
       case Some(attenuator) => {
@@ -228,9 +228,9 @@ class BiscuitForgeFunction extends WorkflowFunction {
       "forge" -> "forge_id"
     )
   ))
-  override def call(args: JsObject)(implicit env: Env, ec: ExecutionContext): Future[Either[WorkflowError, JsValue]] = {
+  override def call(args: JsObject)(using env: Env, ec: ExecutionContext): Future[Either[WorkflowError, JsValue]] = {
     val forge = args.select("forge").asString
-    val extension = env.adminExtensions.extension[BiscuitExtension].get
+    val extension = env.biscuitExtension
     extension.states.biscuitTokenForge(forge) match {
       case None => WorkflowError(s"biscuit forge not found", Some(Json.obj("forge_id" -> forge)), None).leftf
       case Some(forge) => {

@@ -4,9 +4,9 @@ import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiServer
 import com.cloud.apim.otoroshi.extensions.biscuit.entities.BiscuitKeyPair
 import org.biscuitsec.biscuit.crypto.KeyPair
 import otoroshi.models.EntityLocation
-import otoroshi.next.models._
+import otoroshi.next.models.*
 import otoroshi.security.IdGenerator
-import otoroshi.utils.syntax.implicits._
+import otoroshi.utils.syntax.implicits.*
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.{BiscuitExposePubKeysPluginConfig, ExposeBiscuitPublicKeysPlugin}
 import play.api.libs.json.{JsObject, Json}
 
@@ -91,7 +91,6 @@ class TestBiscuitExpositionKpPlugin extends BiscuitStudioOneOtoroshiServerPerSui
     await(5.seconds)
   }
 
-
   test("should be able to expose public keypairs with specifying keys in plugin configuration") {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  setup                                                         ///////////
@@ -158,7 +157,6 @@ class TestBiscuitExpositionKpPlugin extends BiscuitStudioOneOtoroshiServerPerSui
       )))
     )
 
-
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair3)
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair4)
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair5)
@@ -171,8 +169,6 @@ class TestBiscuitExpositionKpPlugin extends BiscuitStudioOneOtoroshiServerPerSui
 
     val res0 = client.call("GET", s"http://test-keypairs2.oto.tools:${port}/.well-known/biscuit-web-keys", Map.empty, None).awaitf(30.seconds)
     assertEquals(res0.status, 200, "status should be 200")
-
-
 
     assertEquals(res0.status, 200, "status should be 200")
     assert(res0.json.select("items").asOpt[List[JsObject]].nonEmpty, "array of keypairs should not be empty")
