@@ -1,6 +1,5 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.entities
 
-import akka.util.ByteString
 import com.github.blemale.scaffeine.Scaffeine
 import otoroshi.api.{GenericResourceAccessApiWithState, Resource, ResourceVersion}
 import otoroshi.env.Env
@@ -9,9 +8,10 @@ import otoroshi.next.extensions.AdminExtensionId
 import otoroshi.next.models.NgTlsConfig
 import otoroshi.security.IdGenerator
 import otoroshi.storage.{BasicStore, RedisLike, RedisLikeStore}
-import otoroshi.utils.syntax.implicits._
+import otoroshi.utils.syntax.implicits.*
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionDatastores, BiscuitExtensionState}
-import play.api.libs.json._
+import play.api.libs.json.*
+import play.api.libs.ws.WSBodyWritables.given
 
 import scala.concurrent.duration.{DurationInt, DurationLong, FiniteDuration}
 import scala.concurrent.{ExecutionContext, Future}
@@ -19,7 +19,7 @@ import scala.util.{Failure, Success, Try}
 
 object RemoteReads {
 
-  implicit val rolesReads: Reads[List[Role]] = Reads { json =>
+  given rolesReads: Reads[List[Role]] = Reads { json =>
     (json \ "roles").validateOpt[List[Map[String, List[String]]]].map {
       case Some(roles) =>
         roles.flatMap(_.toList.map { case (name, permissions) =>
@@ -29,14 +29,14 @@ object RemoteReads {
     }
   }
 
-  implicit val revokedIdsReads: Reads[List[BiscuitrevokedId]] = Reads { json =>
+  given revokedIdsReads: Reads[List[BiscuitrevokedId]] = Reads { json =>
     (json \ "revoked").validateOpt[List[String]].map {
-      case Some(ids) => ids.map(BiscuitrevokedId)
+      case Some(ids) => ids.map(BiscuitrevokedId.apply)
       case None => List.empty
     }
   }
 
-  implicit val factsReads: Reads[List[Fact]] = Reads { json =>
+  given factsReads: Reads[List[Fact]] = Reads { json =>
     (json \ "facts").validateOpt[List[Map[String, String]]].map {
       case Some(facts) =>
         facts.flatMap { fact =>
@@ -49,7 +49,7 @@ object RemoteReads {
     }
   }
 
-  implicit val aclReads: Reads[List[ACL]] = Reads { json =>
+  given aclReads: Reads[List[ACL]] = Reads { json =>
     (json \ "acl").validateOpt[List[Map[String, String]]].map {
       case Some(acls) =>
         acls.flatMap { acl =>
@@ -63,7 +63,7 @@ object RemoteReads {
     }
   }
 
-  implicit val userRolesReads: Reads[List[UserRole]] = Reads { json =>
+  given userRolesReads: Reads[List[UserRole]] = Reads { json =>
     (json \ "user_roles").validateOpt[List[Map[String, JsValue]]].map {
       case Some(userRoles) =>
         userRoles.flatMap { userRole =>
@@ -135,8 +135,6 @@ object RemoteFactsData {
   }
 }
 
-
-
 case class BiscuitRemoteFactsConfig(
   apiUrl: String = "",
   method: String = "POST",
@@ -147,7 +145,7 @@ case class BiscuitRemoteFactsConfig(
 
   def json: JsValue = BiscuitRemoteFactsConfig.format.writes(this)
 
-  def getRemoteFacts(ctx: JsValue)(implicit env: Env, ec: ExecutionContext): Future[Either[String, RemoteFactsData]] = {
+  def getRemoteFacts(ctx: JsValue)(using env: Env, ec: ExecutionContext): Future[Either[String, RemoteFactsData]] = {
     val withBody = method == "POST" || method == "PUT" || method == "PATCH"
     val key = apiUrl // TODO: find a way to cache even with context
 
@@ -155,7 +153,7 @@ case class BiscuitRemoteFactsConfig(
       env.MtlsWs
         .url(apiUrl, tlsConfig.legacy)
         .withHttpHeaders(
-          headers.toSeq: _*
+          headers.toSeq*
         )
         .withMethod(method)
         .applyOnIf(withBody) { builder =>
@@ -173,12 +171,11 @@ case class BiscuitRemoteFactsConfig(
               val userRolesResult = (resp.json \ "user_roles").validate[List[Map[String, JsValue]]].getOrElse(List.empty)
               val checksResult = (resp.json \ "checks").validate[List[String]].getOrElse(List.empty)
 
-
               val roles = rolesResult.flatMap(_.toList.map { case (name, permissions) =>
                 Role(name, permissions)
               })
 
-              val revokedIds = revokedResult.map(BiscuitrevokedId)
+              val revokedIds = revokedResult.map(BiscuitrevokedId.apply)
 
               val facts = factsResult.flatMap { fact =>
                 for {
@@ -210,7 +207,6 @@ case class BiscuitRemoteFactsConfig(
               val userRoleFacts = userRoles.map { userRole =>
                 s"""user_roles(${userRole.id}, "${userRole.name}", [${userRole.roles.map(r => s""""$r"""").mkString(", ")}])"""
               }
-
 
               val revokedIdsRemote = revokedIds.map(_.id)
               val factsStrings = facts.map(fact => s"""${fact.name}("${fact.value}")""")
@@ -253,7 +249,7 @@ case class BiscuitRemoteFactsConfig(
 }
 
 object BiscuitRemoteFactsConfig {
-  val cache = Scaffeine().maximumSize(10000).build[String, RemoteFactsData]
+  val cache = Scaffeine().maximumSize(10000).build[String, RemoteFactsData]()
   val format = new Format[BiscuitRemoteFactsConfig] {
     override def writes(o: BiscuitRemoteFactsConfig): JsValue = {
       Json.obj(
@@ -303,7 +299,7 @@ case class RemoteFactsLoader(
 
   def theTags: Seq[String] = tags
 
-  def loadFacts(ctx: JsValue = JsNull)(implicit env: Env, ec: ExecutionContext): Future[Either[String, RemoteFactsData]] = {
+  def loadFacts(ctx: JsValue = JsNull)(using env: Env, ec: ExecutionContext): Future[Either[String, RemoteFactsData]] = {
     config.getRemoteFacts(ctx).flatMap {
       case Left(err) => Left(s"unable to get remote facts ${err}").vfuture
       case Right(facts) => Right(facts).vfuture
@@ -335,7 +331,7 @@ object RemoteFactsLoader {
           enabled = (json \ "enabled").asOpt[Boolean].getOrElse(true),
           metadata = (json \ "metadata").asOpt[Map[String, String]].getOrElse(Map.empty),
           tags = (json \ "tags").asOpt[Seq[String]].getOrElse(Seq.empty[String]),
-          config = json.select("config").asOpt(BiscuitRemoteFactsConfig.format).getOrElse(BiscuitRemoteFactsConfig())
+          config = json.select("config").asOpt(using BiscuitRemoteFactsConfig.format).getOrElse(BiscuitRemoteFactsConfig())
         )
       } match {
         case Failure(e) => JsError(e.getMessage)
@@ -357,7 +353,7 @@ object RemoteFactsLoader {
         extractIdf = c => datastores.biscuitRemoteFactsLoaderDataStore.extractId(c),
         extractIdJsonf = json => json.select("id").asString,
         idFieldNamef = () => "id",
-        tmpl = (v, p, ctx) => {
+        tmpl = (_, _, _) => {
           RemoteFactsLoader(
             id = IdGenerator.namedId("biscuit-remote-facts", env),
             name = "New biscuit remote facts loader",
@@ -394,7 +390,7 @@ class KvBiscuitRemoteFactsLoaderDataStore(extensionId: AdminExtensionId, redisCl
     with RedisLikeStore[RemoteFactsLoader] {
   override def fmt: Format[RemoteFactsLoader] = RemoteFactsLoader.format
 
-  override def redisLike(implicit env: Env): RedisLike = redisCli
+  override def redisLike(using env: Env): RedisLike = redisCli
 
   override def key(id: String): String = s"${_env.storageRoot}:extensions:${extensionId.cleanup}:biscuit:remote-facts:$id"
 

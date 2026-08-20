@@ -1,7 +1,6 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.utils
 
 import org.biscuitsec.biscuit.token.Biscuit
-import otoroshi.env.Env
 import play.api.libs.typedmap.TypedKey
 
 object BiscuitUtils {
@@ -23,21 +22,21 @@ object BiscuitUtils {
     }
   }
 
-  def handleBiscuitErrors(error: org.biscuitsec.biscuit.error.Error)(implicit env: Env): String = {
+  def handleBiscuitErrors(error: org.biscuitsec.biscuit.error.Error): String = {
     error match {
-      case err: org.biscuitsec.biscuit.error.Error.FormatError.UnknownPublicKey => {
+      case _: org.biscuitsec.biscuit.error.Error.FormatError.UnknownPublicKey => {
         s"Biscuit FormatError - UnknownPublicKey"
       }
 
-      case err: org.biscuitsec.biscuit.error.Error.FormatError.Signature => {
+      case _: org.biscuitsec.biscuit.error.Error.FormatError.Signature => {
         s"Biscuit FormatError - Signature"
       }
 
-      case err: org.biscuitsec.biscuit.error.Error.FormatError.SealedSignature => {
+      case _: org.biscuitsec.biscuit.error.Error.FormatError.SealedSignature => {
         s"Biscuit FormatError - SealedSignature"
       }
 
-      case err: org.biscuitsec.biscuit.error.Error.FormatError.EmptyKeys => {
+      case _: org.biscuitsec.biscuit.error.Error.FormatError.EmptyKeys => {
         s"Biscuit FormatError - EmptyKeys"
       }
 
@@ -61,7 +60,7 @@ object BiscuitUtils {
         s"InvalidBlockIndex - expected:  ${err.expected} found: ${err.found}"
       }
 
-      case err: org.biscuitsec.biscuit.error.Error.MissingSymbols => {
+      case _: org.biscuitsec.biscuit.error.Error.MissingSymbols => {
         s"Biscuit MissingSymbols"
       }
 
@@ -69,15 +68,15 @@ object BiscuitUtils {
         s"Biscuit Language Error ${err.langError}"
       }
 
-      case err: org.biscuitsec.biscuit.error.Error.TooManyFacts => {
+      case _: org.biscuitsec.biscuit.error.Error.TooManyFacts => {
         s"Biscuit TooManyFacts"
       }
 
-      case err: org.biscuitsec.biscuit.error.Error.TooManyIterations => {
+      case _: org.biscuitsec.biscuit.error.Error.TooManyIterations => {
         s"Biscuit TooManyIterations"
       }
 
-      case err: org.biscuitsec.biscuit.error.Error.Timeout => {
+      case _: org.biscuitsec.biscuit.error.Error.Timeout => {
         s"Biscuit Timeout"
       }
 
@@ -85,11 +84,11 @@ object BiscuitUtils {
         s"Biscuit Execution Error - ${err.toString}"
       }
 
-      case err: org.biscuitsec.biscuit.error.Error.InvalidType => {
+      case _: org.biscuitsec.biscuit.error.Error.InvalidType => {
         s"Biscuit InvalidType"
       }
 
-      case err: org.biscuitsec.biscuit.error.Error.InternalError => {
+      case _: org.biscuitsec.biscuit.error.Error.InternalError => {
         "Biscuit InternalError"
       }
 

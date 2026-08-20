@@ -1,14 +1,14 @@
 package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
-import akka.stream.Materializer
+import org.apache.pekko.stream.Materializer
 import otoroshi.env.Env
 import otoroshi.next.models.NgTlsConfig
-import otoroshi.next.plugins.api._
-import otoroshi.utils.syntax.implicits._
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.BiscuitExtension
-import play.api.Logger
-import play.api.libs.json._
+import otoroshi.next.plugins.api.*
+import otoroshi.utils.syntax.implicits.*
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.biscuitExtensionOpt
+import play.api.libs.json.*
 import play.api.libs.ws.DefaultWSCookie
+import play.api.libs.ws.WSBodyWritables.given
 import play.api.mvc.{Result, Results}
 
 import scala.concurrent.duration.{DurationInt, DurationLong, FiniteDuration}
@@ -46,8 +46,8 @@ object BiscuitRemoteTokenFetcherConfig {
       "token_replace_name" -> o.tokenReplaceName,
       "token_resp_loc" -> o.tokenRespLoc,
       "otoroshi_ctx" -> o.includeOtoroshiContext,
-    ).applyOnWithOpt(o.body) {
-      case (obj, body) => obj ++ Json.obj("api_body" -> body)
+    ).applyOnWithOpt(o.body) { (obj, body) =>
+      obj ++ Json.obj("api_body" -> body)
     }
 
     override def reads(json: JsValue): JsResult[BiscuitRemoteTokenFetcherConfig] = Try {
@@ -131,8 +131,6 @@ object BiscuitRemoteTokenFetcherConfig {
 
 class BiscuitRemoteTokenFetcherPlugin extends NgRequestTransformer {
 
-  private val logger = Logger("biscuit-remote-token-fetcher-plugin")
-
   override def description: Option[String] = "Plugin to fetch a remote token".some
 
   override def core: Boolean = false
@@ -154,13 +152,13 @@ class BiscuitRemoteTokenFetcherPlugin extends NgRequestTransformer {
   override def name: String = "Cloud APIM - Biscuit Remote Tokens Fetcher"
 
   override def start(env: Env): Future[Unit] = {
-    env.adminExtensions.extension[BiscuitExtension].foreach { ext =>
+    env.biscuitExtensionOpt.foreach { ext =>
       ext.logger.info("the 'Biscuit Remote Tokens Fetcher' plugin is available !")
     }
     ().vfuture
   }
 
-  private def fetchToken(config: BiscuitRemoteTokenFetcherConfig, ctx: NgTransformerRequestContext)(implicit env: Env, ec: ExecutionContext, mat: Materializer): Future[Either[String, Option[String]]] = {
+  private def fetchToken(config: BiscuitRemoteTokenFetcherConfig, ctx: NgTransformerRequestContext)(using env: Env, ec: ExecutionContext): Future[Either[String, Option[String]]] = {
     val withBody = config.method.toUpperCase == "POST" || config.method.toUpperCase  == "PUT" || config.method.toUpperCase  == "PATCH"
     val useOtoroshiBody = withBody && config.includeOtoroshiContext
     val useUserBody = withBody && !config.includeOtoroshiContext && config.body.isDefined
@@ -174,7 +172,7 @@ class BiscuitRemoteTokenFetcherPlugin extends NgRequestTransformer {
       .applyOnIf(!useOtoroshiBody && useUserBody) { builder =>
         builder.withBody(config.body.get)
       }
-      .withHttpHeaders(headers.toSeq: _*)
+      .withHttpHeaders(headers.toSeq*)
       .withRequestTimeout(config.timeout)
       .execute()
       .map { resp =>
@@ -193,7 +191,7 @@ class BiscuitRemoteTokenFetcherPlugin extends NgRequestTransformer {
       }
   }
 
-  override def transformRequest(ctx: NgTransformerRequestContext)(implicit env: Env, ec: ExecutionContext, mat: Materializer): Future[Either[Result, NgPluginHttpRequest]] = {
+  override def transformRequest(ctx: NgTransformerRequestContext)(using env: Env, ec: ExecutionContext, mat: Materializer): Future[Either[Result, NgPluginHttpRequest]] = {
     val config_raw = ctx.cachedConfig(internalName)(BiscuitRemoteTokenFetcherConfig.format).getOrElse(BiscuitRemoteTokenFetcherConfig())
     // Apply EL on config
     val config = BiscuitRemoteTokenFetcherConfig.format.reads(config_raw.json.stringify.evaluateEl(ctx.attrs).parseJson).asOpt.getOrElse(config_raw)

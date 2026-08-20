@@ -1,17 +1,18 @@
 package com.cloud.apim.otoroshi.extensions.biscuit
 
-import akka.actor.ActorSystem
-import akka.stream.Materializer
-import akka.stream.scaladsl.{Framing, Sink, Source}
-import akka.util.ByteString
+import org.apache.pekko.actor.ActorSystem
+import org.apache.pekko.stream.Materializer
+import org.apache.pekko.stream.scaladsl.Source
+import org.apache.pekko.util.ByteString
 import com.typesafe.config.ConfigFactory
 import otoroshi.api.Otoroshi
 import otoroshi.env.Env
 import otoroshi.models.Entity
-import otoroshi.utils.syntax.implicits._
+import otoroshi.utils.syntax.implicits.*
 import play.api.Configuration
-import play.api.libs.json.{JsObject, JsValue}
+import play.api.libs.json.JsValue
 import play.api.libs.ws.ahc.{AhcWSClient, AhcWSClientConfig}
+import play.api.libs.ws.WSBodyWritables.given
 import play.api.libs.ws.{WSClient, WSClientConfig, WSConfigParser, WSResponse}
 import play.core.server.ServerConfig
 import reactor.netty.DisposableServer
@@ -21,14 +22,15 @@ import java.net.ServerSocket
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.util.Base64
+import scala.compiletime.uninitialized
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.concurrent.{Await, ExecutionContext, Future, Promise}
 import scala.util.{Random, Try}
 
 object Utils {
 
-  private lazy implicit val actorSystem: ActorSystem = ActorSystem(s"test-actor-system")
-  private lazy implicit val materializer: Materializer = Materializer(actorSystem)
+  private given actorSystem: ActorSystem = ActorSystem(s"test-actor-system")
+  private given materializer: Materializer = Materializer(actorSystem)
 
   val wsClientInstance: WSClient = {
     val parser: WSConfigParser = new WSConfigParser(
@@ -299,22 +301,22 @@ object Utils {
       config.copy(
         wsClientConfig = wsClientConfig
       )
-    )(materializer)
+    )(using materializer)
   }
 
   def await(duration: FiniteDuration): Unit = {
-    val p = Promise[Unit]
+    val p = Promise[Unit]()
     actorSystem.scheduler.scheduleOnce(duration) {
       p.trySuccess(())
-    }(actorSystem.dispatcher)
+    }(using actorSystem.dispatcher)
     Await.result(p.future, duration + 1.second)
   }
 
-  def awaitF(duration: FiniteDuration)(implicit system: ActorSystem): Future[Unit] = {
-    val p = Promise[Unit]
+  def awaitF(duration: FiniteDuration)(using system: ActorSystem): Future[Unit] = {
+    val p = Promise[Unit]()
     system.scheduler.scheduleOnce(duration) {
       p.trySuccess(())
-    }(actorSystem.dispatcher)
+    }(using actorSystem.dispatcher)
     p.future
   }
 
@@ -328,7 +330,7 @@ object Utils {
   }
 
   def startOtoroshi(port: Int = freePort, extandableConfig: Option[String]): Otoroshi = {
-    implicit val ec = actorSystem.dispatcher
+    given ec: ExecutionContext = actorSystem.dispatcher
     val cfg =
       s"""
          |include "application.conf"
@@ -367,7 +369,7 @@ object Utils {
           .withRequestTimeout(1.second)
           .get()
           .map(r => r.status)
-          .recover { case e =>
+          .recover { case _ =>
             0
           }
       }
@@ -389,7 +391,7 @@ object Utils {
 case class OtoroshiClient(port: Int, client: WSClient, ec: ExecutionContext, mat: Materializer) {
 
   def call(method: String, url: String, headers: Map[String, String], body: Option[JsValue]): Future[WSResponse] = {
-    client.url(url).withMethod(method).withHttpHeaders(headers.toSeq: _*).applyOnWithOpt(body) {
+    client.url(url).withMethod(method).withHttpHeaders(headers.toSeq*).applyOnWithOpt(body) {
       case (builder, body) => builder.withBody(body)
     }.execute()
   }
@@ -408,7 +410,7 @@ case class OtoroshiEntityClient(client: OtoroshiClient, group: String, version: 
     call("POST", None, Some(body))
   }
 
-  def upsertRaw(id: String, body: JsValue): Future[OtoroshiResponse] = {
+  def upsertRaw(body: JsValue): Future[OtoroshiResponse] = {
     call("POST", None, Some(body))
   }
 
@@ -426,11 +428,11 @@ case class OtoroshiEntityClient(client: OtoroshiClient, group: String, version: 
   }
 
   def raw_call(method: String, url: String, headers: Map[String, String], body: Option[JsValue]): Future[OtoroshiResponse] = {
-    client.client.url(url).withMethod(method).withHttpHeaders(headers.toSeq: _*).applyOnWithOpt(body) {
+    client.client.url(url).withMethod(method).withHttpHeaders(headers.toSeq*).applyOnWithOpt(body) {
       case (builder, body) => builder.withBody(body)
     }.execute().map { resp =>
       OtoroshiResponse(client, group, pluralName, method, url, headers, body, resp)
-    }(client.ec)
+    }(using client.ec)
   }
 
   def deleteRaw(id: String): Future[OtoroshiResponse] = {
@@ -457,7 +459,7 @@ case class OtoroshiResponse(client: OtoroshiClient, group: String, pluralName: S
 
   def success: Boolean = resp.status > 199 && resp.status < 300
 
-  def headers: Map[String, String] = resp.headers.mapValues(_.last)
+  def headers: Map[String, String] = resp.headers.view.mapValues(_.last).toMap
 
   def body: ByteString = resp.bodyAsBytes
 
@@ -504,13 +506,12 @@ class BiscuitExtensionSuite extends munit.FunSuite {
 
 class BiscuitStudioOneOtoroshiServerPerSuite extends BiscuitExtensionSuite {
 
-
   val port: Int = freePort
-  var otoroshi: Otoroshi = _
-  var client: OtoroshiClient = _
-  implicit var ec: ExecutionContext = _
-  implicit var mat: Materializer = _
-  implicit var env: Env = _
+  var otoroshi: Otoroshi = uninitialized
+  var client: OtoroshiClient = uninitialized
+  implicit var ec: ExecutionContext = uninitialized
+  implicit var mat: Materializer = uninitialized
+  implicit var env: Env = uninitialized
 
   override def beforeAll(): Unit = {
     otoroshi = startOtoroshiServer(port)
@@ -536,17 +537,17 @@ class BiscuitStudioOneOtoroshiClusterPerSuite extends BiscuitExtensionSuite {
   val leaderPort: Int = freePort
   val workerPort: Int = freePort
   val workerPort2: Int = freePort
-  var otoroshiLeader: Otoroshi = _
-  var otoroshiWorker: Otoroshi = _
-  var otoroshiWorker2: Otoroshi = _
-  var leaderClient: OtoroshiClient = _
-  var workerClient: OtoroshiClient = _
-  var workerClient2: OtoroshiClient = _
-  implicit var ec: ExecutionContext = _
-  implicit var mat: Materializer = _
-  implicit var env: Env = _
-  implicit var envWorker: Env = _
-  implicit var envWorker2: Env = _
+  var otoroshiLeader: Otoroshi = uninitialized
+  var otoroshiWorker: Otoroshi = uninitialized
+  var otoroshiWorker2: Otoroshi = uninitialized
+  var leaderClient: OtoroshiClient = uninitialized
+  var workerClient: OtoroshiClient = uninitialized
+  var workerClient2: OtoroshiClient = uninitialized
+  implicit var ec: ExecutionContext = uninitialized
+  implicit var mat: Materializer = uninitialized
+  implicit var env: Env = uninitialized
+  implicit var envWorker: Env = uninitialized
+  implicit var envWorker2: Env = uninitialized
 
   val cfgLeader =
   s"""
@@ -593,10 +594,10 @@ class BiscuitStudioOneOtoroshiClusterPerSuite extends BiscuitExtensionSuite {
 class BiscuitStudioOneOtoroshiServerPerTest extends BiscuitExtensionSuite {
 
   val port: Int = freePort
-  var otoroshi: Otoroshi = _
-  var client: OtoroshiClient = _
-  implicit var ec: ExecutionContext = _
-  implicit var mat: Materializer = _
+  var otoroshi: Otoroshi = uninitialized
+  var client: OtoroshiClient = uninitialized
+  implicit var ec: ExecutionContext = uninitialized
+  implicit var mat: Materializer = uninitialized
 
   override def beforeEach(context: BeforeEach): Unit = {
     otoroshi = startOtoroshiServer(port)

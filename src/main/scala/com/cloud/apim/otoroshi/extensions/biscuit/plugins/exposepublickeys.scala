@@ -1,13 +1,13 @@
 package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
-import akka.stream.Materializer
+import org.apache.pekko.stream.Materializer
 import org.biscuitsec.biscuit.crypto.PublicKey
 import otoroshi.env.Env
-import otoroshi.next.plugins.api._
+import otoroshi.next.plugins.api.*
 import otoroshi.next.proxy.NgProxyEngineError
-import otoroshi.utils.syntax.implicits._
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.BiscuitExtension
-import play.api.libs.json._
+import otoroshi.utils.syntax.implicits.*
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{biscuitExtension, biscuitExtensionOpt}
+import play.api.libs.json.*
 import play.api.mvc.Results
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -72,15 +72,15 @@ class ExposeBiscuitPublicKeysPlugin extends NgBackendCall {
   override def useDelegates: Boolean = false
 
   override def start(env: Env): Future[Unit] = {
-    env.adminExtensions.extension[BiscuitExtension].foreach { ext =>
+    env.biscuitExtensionOpt.foreach { ext =>
       ext.logger.info("the 'Biscuit - Expose Biscuit public keys plugin' plugin is available !")
     }
     ().vfuture
   }
 
-  override def callBackend(ctx: NgbBackendCallContext, delegates: () => Future[Either[NgProxyEngineError, BackendCallResponse]])(implicit env: Env, ec: ExecutionContext, mat: Materializer): Future[Either[NgProxyEngineError, BackendCallResponse]] = {
+  override def callBackend(ctx: NgbBackendCallContext, delegates: () => Future[Either[NgProxyEngineError, BackendCallResponse]])(using env: Env, ec: ExecutionContext, mat: Materializer): Future[Either[NgProxyEngineError, BackendCallResponse]] = {
     val config = ctx.cachedConfig(internalName)(BiscuitExposePubKeysPluginConfig.format).getOrElse(BiscuitExposePubKeysPluginConfig())
-    val data = env.adminExtensions.extension[BiscuitExtension].get.states.allPublicKeyPairs(config.authorizedPublicKeys).map { keypair =>
+    val data = env.biscuitExtension.states.allPublicKeyPairs(config.authorizedPublicKeys).map { keypair =>
       val publicKey = new PublicKey(keypair.getCurrentAlgo, keypair.pubKey)
       Json.obj(
         "algorithm" -> keypair.algo,

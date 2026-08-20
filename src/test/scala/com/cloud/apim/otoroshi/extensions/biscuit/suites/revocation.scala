@@ -7,8 +7,8 @@ import otoroshi.models.EntityLocation
 import otoroshi.next.models.{NgBackend, NgDomainAndPath, NgFrontend, NgPluginInstance, NgPluginInstanceConfig, NgPlugins, NgRoute, NgTarget}
 import otoroshi.security.IdGenerator
 import otoroshi.utils.syntax.implicits.{BetterFuture, BetterJsValue}
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.BiscuitExtension
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.{BiscuitTokenAttenuatorPlugin, BiscuitTokenVerifierPlugin}
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.biscuitExtension
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitTokenVerifierPlugin
 import play.api.libs.json.Json
 
 import java.util.UUID
@@ -36,14 +36,13 @@ class RevocationSuite extends BiscuitStudioOneOtoroshiClusterPerSuite {
         "Otoroshi-Client-Secret" -> "admin-api-apikey-secret"
       ), revokedTokenBody).awaitf(5.seconds)
 
-
     assertEquals(resRevocation.status, 200, "status should be 200")
     assert(resRevocation.json.at("total_revoked").isDefined, "total_revoked should be defined")
     assertEquals(resRevocation.json.at("total_revoked").as[Int], 1, "total_revoked nb should be 1")
 
-    val prevLeader = env.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.exists(revocationId).awaitf(2.seconds)
-    val revTokenWrk1Prev = envWorker.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.exists(revocationId).awaitf(2.seconds)
-    val revTokenWrk2Prev = envWorker2.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.exists(revocationId).awaitf(2.seconds)
+    val prevLeader = env.biscuitExtension.datastores.biscuitRevocationDataStore.exists(revocationId).awaitf(2.seconds)
+    val revTokenWrk1Prev = envWorker.biscuitExtension.datastores.biscuitRevocationDataStore.exists(revocationId).awaitf(2.seconds)
+    val revTokenWrk2Prev = envWorker2.biscuitExtension.datastores.biscuitRevocationDataStore.exists(revocationId).awaitf(2.seconds)
 
     assert(prevLeader, "leader SHOULD get the revoked token before revocation distribution")
     assert(!revTokenWrk1Prev, "worker 1 should NOT get the revoked token before revocation distribution")
@@ -51,8 +50,8 @@ class RevocationSuite extends BiscuitStudioOneOtoroshiClusterPerSuite {
 
     await(15.seconds)
 
-    val revTokenWrk1 = envWorker.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.exists(revocationId).awaitf(2.seconds)
-    val revTokenWrk2 = envWorker2.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.exists(revocationId).awaitf(2.seconds)
+    val revTokenWrk1 = envWorker.biscuitExtension.datastores.biscuitRevocationDataStore.exists(revocationId).awaitf(2.seconds)
+    val revTokenWrk2 = envWorker2.biscuitExtension.datastores.biscuitRevocationDataStore.exists(revocationId).awaitf(2.seconds)
 
     assert(revTokenWrk1, "worker 1 should get the revoked token")
     assert(revTokenWrk2, "worker 2 should get the revoked token")

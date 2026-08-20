@@ -1,20 +1,20 @@
 package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
-import akka.Done
+import org.apache.pekko.Done
 import com.cloud.apim.otoroshi.extensions.biscuit.entities.BiscuitExtractorConfig
 import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils
 import org.biscuitsec.biscuit.token.Biscuit
 import org.biscuitsec.biscuit.token.builder.Term.Str
 import otoroshi.env.Env
-import otoroshi.next.plugins.api._
+import otoroshi.next.plugins.api.*
 import otoroshi.utils.syntax.implicits.{BetterJsValue, BetterSyntax}
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.BiscuitExtension
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.biscuitExtensionOpt
 import play.api.Logger
-import play.api.libs.json._
+import play.api.libs.json.*
 import play.api.mvc.Results
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.jdk.CollectionConverters.{asScalaBufferConverter, asScalaSetConverter}
+import scala.jdk.CollectionConverters.*
 import scala.util.{Failure, Success, Try}
 
 case class BiscuitApiKeyBridgeConfig(
@@ -131,7 +131,7 @@ class BiscuitApiKeyBridgePlugin extends NgPreRouting {
   override def steps: Seq[NgStep] = Seq(NgStep.ValidateAccess)
 
   override def start(env: Env): Future[Unit] = {
-    env.adminExtensions.extension[BiscuitExtension].foreach { ext =>
+    env.biscuitExtensionOpt.foreach { ext =>
       ext.logger.info("the 'Biscuit - token/apikey bridge' plugin is available !")
     }
     ().vfuture
@@ -139,10 +139,10 @@ class BiscuitApiKeyBridgePlugin extends NgPreRouting {
 
   override def preRoute(
     ctx: NgPreRoutingContext
-  )(implicit env: Env, ec: ExecutionContext): Future[Either[NgPreRoutingError, Done]] = {
+  )(using env: Env, ec: ExecutionContext): Future[Either[NgPreRoutingError, Done]] = {
 
     val config = ctx.cachedConfig(internalName)(BiscuitApiKeyBridgeConfig.format).getOrElse(BiscuitApiKeyBridgeConfig())
-    val pubKey: Option[org.biscuitsec.biscuit.crypto.PublicKey] = env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(config.keypairRef)) match {
+    val pubKey: Option[org.biscuitsec.biscuit.crypto.PublicKey] = env.biscuitExtensionOpt.flatMap(_.states.keypair(config.keypairRef)) match {
       case None => config.pubKey.flatMap(pk => Try(new org.biscuitsec.biscuit.crypto.PublicKey(BiscuitUtils.getAlgo(config.pubKeyAlg.getOrElse("ED25519")), pk)).toOption)
       case Some(keypair) => keypair.getPubKey.some
     }
@@ -163,14 +163,13 @@ class BiscuitApiKeyBridgePlugin extends NgPreRouting {
                 }
             }
           }
-          case None if config.enforce => unauthorized(Json.obj("error" -> "unauthorized", "error_description" -> "Biscuit not found in request"))
-          case None if !config.enforce => Done.right.vfuture
+          case None => if (config.enforce) unauthorized(Json.obj("error" -> "unauthorized", "error_description" -> "Biscuit not found in request")) else Done.right.vfuture
         }
       }
     }
   }
 
-  def extractApiKey(ctx: NgPreRoutingContext, biscuitToken: Biscuit, config: BiscuitApiKeyBridgeConfig)(implicit env: Env, ec: ExecutionContext): Future[Either[NgPreRoutingError, Done]] = {
+  def extractApiKey(ctx: NgPreRoutingContext, biscuitToken: Biscuit, config: BiscuitApiKeyBridgeConfig)(using env: Env, ec: ExecutionContext): Future[Either[NgPreRoutingError, Done]] = {
     val otoroshiClientID = biscuitToken.authorizer().query(s"api_key_client_id($$id) <- ${config.clientIdKey}($$id)")
 
     val client_id: Option[String] = Try(otoroshiClientID).toOption

@@ -1,15 +1,15 @@
 package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
-import akka.stream.Materializer
-import com.cloud.apim.otoroshi.extensions.biscuit.entities._
+import org.apache.pekko.stream.Materializer
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.*
 import org.biscuitsec.biscuit.crypto.PublicKey
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.env.Env
-import otoroshi.next.plugins.api._
-import otoroshi.utils.syntax.implicits._
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.BiscuitExtension
+import otoroshi.next.plugins.api.*
+import otoroshi.utils.syntax.implicits.*
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.biscuitExtensionOpt
 import play.api.Logger
-import play.api.libs.json._
+import play.api.libs.json.*
 import play.api.libs.ws.DefaultWSCookie
 import play.api.mvc.{Result, Results}
 
@@ -145,22 +145,22 @@ class BiscuitTokenAttenuatorPlugin extends NgRequestTransformer {
   override def name: String = "Cloud APIM - Biscuit Tokens Attenuator"
 
   override def start(env: Env): Future[Unit] = {
-    env.adminExtensions.extension[BiscuitExtension].foreach { ext =>
+    env.biscuitExtensionOpt.foreach { ext =>
       ext.logger.info("the 'Biscuit Attenuator' plugin is available !")
     }
     ().vfuture
   }
 
-  override def transformRequest(ctx: NgTransformerRequestContext)(implicit env: Env, ec: ExecutionContext, mat: Materializer): Future[Either[Result, NgPluginHttpRequest]] = {
+  override def transformRequest(ctx: NgTransformerRequestContext)(using env: Env, ec: ExecutionContext, mat: Materializer): Future[Either[Result, NgPluginHttpRequest]] = {
     val config = ctx.cachedConfig(internalName)(BiscuitAttenuatorConfig.format).getOrElse(BiscuitAttenuatorConfig())
 
-    env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitAttenuator(config.attenuatorRef)) match {
+    env.biscuitExtensionOpt.flatMap(_.states.biscuitAttenuator(config.attenuatorRef)) match {
       case None => Left(Results.BadGateway(Json.obj("error" -> "attenuator_ref not found in your plugin configuration"))).vfuture
       case Some(_attenuator) => {
         val attenuator = _attenuator.copy(config = AttenuatorConfig.format.reads(_attenuator.config.json.stringify.evaluateEl(ctx.attrs).parseJson).get)
         // Verify if the remoteFacts is enabled and the entity reference is provided
         if (config.enableRemoteFacts && config.remoteFactsRef.nonEmpty) {
-          env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitRemoteFactsLoader(config.remoteFactsRef)) match {
+          env.biscuitExtensionOpt.flatMap(_.states.biscuitRemoteFactsLoader(config.remoteFactsRef)) match {
             case None => Left(Results.BadGateway(Json.obj("error" -> "remote_facts_ref not found in your plugin configuration"))).vfuture
             case Some(remoteFactsEntity) => {
               if (remoteFactsEntity.config.apiUrl.nonEmpty) {
@@ -184,8 +184,8 @@ class BiscuitTokenAttenuatorPlugin extends NgRequestTransformer {
     }
   }
 
-  def doAttenuation(ctx: NgTransformerRequestContext, config: BiscuitAttenuatorConfig, attenuator: BiscuitAttenuator, attenuatorConfig: AttenuatorConfig)(implicit env: Env, ec: ExecutionContext, mat: Materializer): Future[Either[Result, NgPluginHttpRequest]] = {
-    env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(attenuator.keypairRef)) match {
+  def doAttenuation(ctx: NgTransformerRequestContext, config: BiscuitAttenuatorConfig, attenuator: BiscuitAttenuator, attenuatorConfig: AttenuatorConfig)(using env: Env): Future[Either[Result, NgPluginHttpRequest]] = {
+    env.biscuitExtensionOpt.flatMap(_.states.keypair(attenuator.keypairRef)) match {
       case None => Left(Results.BadGateway(Json.obj("error" -> "keypair entity not found"))).vfuture
       case Some(keypair) => {
         val publicKey = new PublicKey(keypair.getCurrentAlgo, keypair.pubKey)

@@ -1,17 +1,17 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiServerPerSuite
-import com.cloud.apim.otoroshi.extensions.biscuit.entities._
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.*
 import org.biscuitsec.biscuit.crypto.KeyPair
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.models.EntityLocation
 import otoroshi.security.IdGenerator
-import otoroshi.utils.syntax.implicits._
+import otoroshi.utils.syntax.implicits.*
 import play.api.libs.json.Json
 import reactor.core.publisher.Mono
 
 import scala.concurrent.duration.DurationInt
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 
 class BackofficeRoutesSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
 
@@ -179,7 +179,7 @@ class BackofficeRoutesSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     val routeAPIPath = "/api/facts"
 
     val (tport, _) = createTestServerWithRoutes(domainAPIPrefix, routes => routes.post(routeAPIPath, (req, response) => {
-      req.receive().retain().asString().flatMap { body =>
+      req.receive().retain().asString().flatMap { _ =>
         response
           .status(200)
           .addHeader("Content-Type", "application/json")
@@ -340,7 +340,7 @@ class BackofficeRoutesSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     val routeAPIPath = "/api/facts"
 
     val (tport, _) = createTestServerWithRoutes(domainAPIPrefix, routes => routes.post(routeAPIPath, (req, response) => {
-      req.receive().retain().asString().flatMap { body =>
+      req.receive().retain().asString().flatMap { _ =>
         response
           .status(200)
           .addHeader("Content-Type", "application/json")

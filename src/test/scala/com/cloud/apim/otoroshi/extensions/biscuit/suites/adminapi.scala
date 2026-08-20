@@ -1,15 +1,15 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiServerPerSuite
-import com.cloud.apim.otoroshi.extensions.biscuit.entities._
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.*
 import org.biscuitsec.biscuit.crypto.KeyPair
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.models.EntityLocation
 import otoroshi.security.IdGenerator
-import otoroshi.utils.syntax.implicits._
+import otoroshi.utils.syntax.implicits.*
 import play.api.libs.json.Json
 
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 import scala.concurrent.duration.DurationInt
 
 class AdminAPISuite extends BiscuitStudioOneOtoroshiServerPerSuite {
@@ -241,7 +241,6 @@ class AdminAPISuite extends BiscuitStudioOneOtoroshiServerPerSuite {
 
     assert(tokenResp.json.at("token").isDefined, "token should be successfully generated")
 
-
     val genToken = tokenResp.json.at("token").asString
     val encodedBiscuit = Biscuit.from_b64url(genToken, publicKeyFormatted)
 
@@ -429,7 +428,6 @@ class AdminAPISuite extends BiscuitStudioOneOtoroshiServerPerSuite {
 
     assert(respBadVerifierKeypairRef.json.at("error").isDefined, "error for bad verifier with bad checks should be defined")
     assertEquals(respBadVerifierKeypairRef.json.at("error").asString, "Biscuit FormatError - Signature", "error for bad verifier with bad checks should be defined")
-
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  test BAD biscuit verifier checks                              ///////////

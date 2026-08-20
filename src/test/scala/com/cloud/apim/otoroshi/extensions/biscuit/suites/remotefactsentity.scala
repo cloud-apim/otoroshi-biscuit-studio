@@ -1,21 +1,21 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiServerPerSuite
-import com.cloud.apim.otoroshi.extensions.biscuit.entities._
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.*
 import org.biscuitsec.biscuit.crypto.KeyPair
 import org.biscuitsec.biscuit.token.Biscuit
 import org.joda.time.DateTime
 import otoroshi.models.EntityLocation
-import otoroshi.next.models._
+import otoroshi.next.models.*
 import otoroshi.security.IdGenerator
-import otoroshi.utils.syntax.implicits._
+import otoroshi.utils.syntax.implicits.*
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.{BiscuitTokenAttenuatorPlugin, BiscuitTokenVerifierPlugin}
 import play.api.libs.json.Json
 import reactor.core.publisher.Mono
 
 import java.util.UUID
 import scala.concurrent.duration.DurationInt
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 
 class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
 
@@ -24,7 +24,7 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
     /////////                                  create the API                                                ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     val (tport1, _) = createTestServerWithRoutes("test-api", routes => routes.post("/api/facts", (req, response) => {
-      req.receive().retain().asString().flatMap { body =>
+      req.receive().retain().asString().flatMap { _ =>
         response
           .status(200)
           .addHeader("Content-Type", "application/json")
@@ -96,7 +96,7 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
     val routeAPIPath = "/api/checks"
 
     val (tport, _) = createTestServerWithRoutes(domainAPIPrefix, routes => routes.post(routeAPIPath, (req, response) => {
-      req.receive().retain().asString().flatMap { body =>
+      req.receive().retain().asString().flatMap { _ =>
         response
           .status(200)
           .addHeader("Content-Type", "application/json")
@@ -118,7 +118,7 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
     val domainAPIForgePrefix = "test-api-forge"
     val routeAPIForgePath = "/api/facts"
     val (forgeApiPort, _) = createTestServerWithRoutes(domainAPIForgePrefix, routes => routes.post(routeAPIForgePath, (req, response) => {
-      req.receive().retain().asString().flatMap { body =>
+      req.receive().retain().asString().flatMap { _ =>
         response
           .status(200)
           .addHeader("Content-Type", "application/json")
@@ -308,7 +308,6 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
 
     await(3.seconds)
 
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  test remote facts API for verifier                            ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -339,7 +338,6 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
     await(2500.millis)
   }
 
-
   test("should be able to forge and attenuate a token with remote facts from entity") {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  create the 'Remote Facts' API for attenuator                  ///////////
@@ -348,7 +346,7 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
     val routeAPIPath = "/api/checks"
 
     val (tport, _) = createTestServerWithRoutes(domainAPIPrefix, routes => routes.post(routeAPIPath, (req, response) => {
-      req.receive().retain().asString().flatMap { body =>
+      req.receive().retain().asString().flatMap { _ =>
         response
           .status(200)
           .addHeader("Content-Type", "application/json")
@@ -369,7 +367,7 @@ class TestRemoteFactsEntity extends BiscuitStudioOneOtoroshiServerPerSuite {
     val domainAPIForgePrefix = "test-api-forge"
     val routeAPIForgePath = "/api/facts"
     val (forgeApiPort, _) = createTestServerWithRoutes(domainAPIForgePrefix, routes => routes.post(routeAPIForgePath, (req, response) => {
-      req.receive().retain().asString().flatMap { body =>
+      req.receive().retain().asString().flatMap { _ =>
         response
           .status(200)
           .addHeader("Content-Type", "application/json")

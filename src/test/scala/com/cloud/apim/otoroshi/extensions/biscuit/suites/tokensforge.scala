@@ -1,17 +1,17 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiServerPerSuite
-import com.cloud.apim.otoroshi.extensions.biscuit.entities._
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.*
 import org.biscuitsec.biscuit.crypto.{KeyPair, PublicKey}
 import org.biscuitsec.biscuit.token.Biscuit
 import otoroshi.models.EntityLocation
 import otoroshi.security.IdGenerator
-import otoroshi.utils.syntax.implicits._
+import otoroshi.utils.syntax.implicits.*
 import play.api.libs.json.Json
 import reactor.core.publisher.Mono
 
 import scala.concurrent.duration.DurationInt
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 
 class TestsTokensForge extends BiscuitStudioOneOtoroshiServerPerSuite {
   test(s"create token from forge entity") {
@@ -43,7 +43,6 @@ class TestsTokensForge extends BiscuitStudioOneOtoroshiServerPerSuite {
       )
     )
 
-
     // Create entities
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair)
     await(5.seconds)
@@ -65,7 +64,7 @@ class TestsTokensForge extends BiscuitStudioOneOtoroshiServerPerSuite {
     /////////                                  create API roles route                                        ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     val (tport, _) = createTestServerWithRoutes("test", routes => routes.post("/api/roles", (req, response) => {
-      req.receive().retain().asString().flatMap { body =>
+      req.receive().retain().asString().flatMap { _ =>
         response
           .status(200)
           .addHeader("Content-Type", "application/json")
@@ -218,7 +217,6 @@ class TestsTokensForge extends BiscuitStudioOneOtoroshiServerPerSuite {
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-keypairs").upsertEntity(keypair)
     client.forEntity("biscuit.extensions.cloud-apim.com", "v1", "biscuit-forges").upsertEntity(forge)
     await(2500.millis)
-
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  test API                                                      ///////////

@@ -9,9 +9,9 @@ import otoroshi.models.{EntityLocation, EntityLocationSupport}
 import otoroshi.next.extensions.AdminExtensionId
 import otoroshi.security.IdGenerator
 import otoroshi.storage.{BasicStore, RedisLike, RedisLikeStore}
-import otoroshi.utils.syntax.implicits._
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtension, BiscuitExtensionDatastores, BiscuitExtensionState}
-import play.api.libs.json._
+import otoroshi.utils.syntax.implicits.*
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionDatastores, BiscuitExtensionState, biscuitExtensionOpt}
+import play.api.libs.json.*
 
 import scala.util.{Failure, Success, Try}
 
@@ -21,7 +21,7 @@ case class AttenuatorConfig(
 
   def json: JsValue = AttenuatorConfig.format.writes(this)
 
-  def attenuate(biscuitToken: Biscuit)(implicit env: Env): Either[String, Biscuit] = {
+  def attenuate(biscuitToken: Biscuit): Either[String, Biscuit] = {
     val block = biscuitToken.create_block()
     checks
       .map(_.trim.stripSuffix(";"))
@@ -33,7 +33,7 @@ case class AttenuatorConfig(
     Try(biscuitToken.attenuate(block)).toEither match {
       case Left(err: org.biscuitsec.biscuit.error.Error) =>
         Left(handleBiscuitErrors(err))
-      case Left(err) =>
+      case Left(_) =>
         Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError()))
       case Right(biscuitToken) => Right(biscuitToken)
     }
@@ -83,12 +83,12 @@ case class BiscuitAttenuator(
 
   def theTags: Seq[String] = tags
 
-  def attenuate(biscuitToken: Biscuit)(implicit env: Env): Either[String, Biscuit] = {
+  def attenuate(biscuitToken: Biscuit): Either[String, Biscuit] = {
     config.attenuate(biscuitToken)
   }
 
-  def attenuateBase64Token(token: String)(implicit env: Env): Either[String, Biscuit] = {
-    env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(keypairRef)) match {
+  def attenuateBase64Token(token: String)(using env: Env): Either[String, Biscuit] = {
+    env.biscuitExtensionOpt.flatMap(_.states.keypair(keypairRef)) match {
       case None => Left("keypair_ref not found")
       case Some(keypair) => {
         Try(Biscuit.from_b64url(token, keypair.getPubKey)).toEither match {
@@ -99,7 +99,6 @@ case class BiscuitAttenuator(
     }
   }
 }
-
 
 object BiscuitAttenuator {
   val format = new Format[BiscuitAttenuator] {
@@ -149,7 +148,7 @@ object BiscuitAttenuator {
         extractIdf = c => datastores.biscuitAttenuatorDataStore.extractId(c),
         extractIdJsonf = json => json.select("id").asString,
         idFieldNamef = () => "id",
-        tmpl = (v, p, ctx) => {
+        tmpl = (_, _, _) => {
           BiscuitAttenuator(
             id = IdGenerator.namedId("biscuit-attenuator", env),
             name = "New biscuit Attenuator",
@@ -179,7 +178,7 @@ class KvBiscuitAttenuatorDataStore(extensionId: AdminExtensionId, redisCli: Redi
     with RedisLikeStore[BiscuitAttenuator] {
   override def fmt: Format[BiscuitAttenuator] = BiscuitAttenuator.format
 
-  override def redisLike(implicit env: Env): RedisLike = redisCli
+  override def redisLike(using env: Env): RedisLike = redisCli
 
   override def key(id: String): String = s"${_env.storageRoot}:extensions:${extensionId.cleanup}:biscuit:attenuators:$id"
 

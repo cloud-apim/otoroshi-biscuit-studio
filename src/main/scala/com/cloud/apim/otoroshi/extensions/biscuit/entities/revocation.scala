@@ -1,11 +1,10 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.entities
 
-import io.azam.ulidj.ULID
 import org.joda.time.DateTime
 import otoroshi.env.Env
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.BiscuitExtension
-import otoroshi.utils.syntax.implicits._
-import play.api.libs.json._
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.biscuitExtension
+import otoroshi.utils.syntax.implicits.*
+import play.api.libs.json.*
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
@@ -41,23 +40,23 @@ object RevokedToken {
   }
 }
 
-class RevocationDatastore()(implicit env: Env) {
+class RevocationDatastore()(using env: Env) {
   
-  def list()(implicit ec: ExecutionContext): Future[Seq[RevokedToken]] = {
-    val ext = env.adminExtensions.extension[BiscuitExtension].get
+  def list()(using ec: ExecutionContext): Future[Seq[RevokedToken]] = {
+    val ext = env.biscuitExtension
     val key = s"${env.storageRoot}:extensions:${ext.id.cleanup}:biscuit:revocation-list:*"
     env.datastores.rawDataStore.allMatching(key).map { seq =>
       seq.map(_.utf8String.parseJson.asObject).map(rvk => RevokedToken.format.reads(rvk).getOrElse(RevokedToken()))
     }
   }
 
-  def exists(id: String)(implicit ec: ExecutionContext): Future[Boolean] = {
-    val ext = env.adminExtensions.extension[BiscuitExtension].get
+  def exists(id: String)(using ec: ExecutionContext): Future[Boolean] = {
+    val ext = env.biscuitExtension
     val key = s"${env.storageRoot}:extensions:${ext.id.cleanup}:biscuit:revocation-list:$id"
     env.datastores.rawDataStore.exists(key)
   }
 
-  def existsAny(ids: Seq[String])(implicit ec: ExecutionContext): Future[Boolean] = {
+  def existsAny(ids: Seq[String])(using ec: ExecutionContext): Future[Boolean] = {
     // list().map { rtokens =>
     //   val lid = ULID.random()
     //   val revokedTokens = rtokens.map(_.revocationId)
@@ -83,8 +82,8 @@ class RevocationDatastore()(implicit env: Env) {
     next(ids)
   }
 
-  def add(id: String, reason: Option[String])(implicit ec: ExecutionContext): Future[Unit] = {
-    val ext = env.adminExtensions.extension[BiscuitExtension].get
+  def add(id: String, reason: Option[String])(using ec: ExecutionContext): Future[Unit] = {
+    val ext = env.biscuitExtension
     val key = s"${env.storageRoot}:extensions:${ext.id.cleanup}:biscuit:revocation-list:$id"
     val theReason = reason.getOrElse("unknown")
     env.datastores.rawDataStore.set(

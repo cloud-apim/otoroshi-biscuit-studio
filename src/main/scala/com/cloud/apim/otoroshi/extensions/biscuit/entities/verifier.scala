@@ -1,6 +1,6 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.entities
 
-import akka.stream.scaladsl.Source
+import org.apache.pekko.stream.scaladsl.Source
 import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils
 import com.cloud.apim.otoroshi.extensions.biscuit.utils.BiscuitUtils.{handleBiscuitErrors, readOrWrite}
 import org.biscuitsec.biscuit.datalog.RunLimits
@@ -18,14 +18,13 @@ import otoroshi.security.IdGenerator
 import otoroshi.storage.{BasicStore, RedisLike, RedisLikeStore}
 import otoroshi.utils.TypedMap
 import otoroshi.utils.http.RequestImplicits.EnhancedRequestHeader
-import otoroshi.utils.syntax.implicits._
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtension, BiscuitExtensionDatastores, BiscuitExtensionState}
-import play.api.Logger
-import play.api.libs.json._
+import otoroshi.utils.syntax.implicits.*
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionDatastores, BiscuitExtensionState, biscuitExtension, biscuitExtensionOpt}
+import play.api.libs.json.*
 import play.api.mvc.RequestHeader
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 import scala.util.{Failure, Success, Try}
 
 case class VerificationContext(route: NgRoute, request: RequestHeader, user: Option[PrivateAppsUser], apikey: Option[ApiKey], attrs: TypedMap) {
@@ -47,9 +46,8 @@ case class VerifierConfig(
   rbacPolicyRefs: Seq[String] = Seq.empty,
   remoteFactsRefs: Seq[String] = Seq.empty,
 ) {
-  private val logger = Logger("otoroshi-biscuit-studio-verifier")
   def json: JsValue = VerifierConfig.format.writes(this)
-  def verify(biscuitToken: Biscuit, ctxOpt: Option[VerificationContext])(implicit env: Env, ec: ExecutionContext): Future[Either[String, Unit]] = {
+  def verify(biscuitToken: Biscuit, ctxOpt: Option[VerificationContext])(using env: Env, ec: ExecutionContext): Future[Either[String, Unit]] = {
 
     val verifier = biscuitToken.authorizer()
     verifier.set_time()
@@ -156,7 +154,7 @@ case class VerifierConfig(
 
     if (rbacPolicyRefs.nonEmpty) {
       rbacPolicyRefs.foreach { rbacPolicyRef =>
-        env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitRbacPolicy(rbacPolicyRef)) match {
+        env.biscuitExtensionOpt.flatMap(_.states.biscuitRbacPolicy(rbacPolicyRef)) match {
           case None => ()
           case Some(rbacPolicyConf) => {
             val rbacConf = rbacPolicyConf.roles
@@ -174,13 +172,13 @@ case class VerifierConfig(
     } else {
       Source(remoteFactsRefs.toList)
         .mapAsync(1) { remoteFactsRef =>
-          env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitRemoteFactsLoader(remoteFactsRef)) match {
+          env.biscuitExtensionOpt.flatMap(_.states.biscuitRemoteFactsLoader(remoteFactsRef)) match {
             case None => RemoteFactsData().vfuture // TODO: log error though
             case Some(remoteFactsEntity) => {
               if (remoteFactsEntity.config.apiUrl.nonEmpty && remoteFactsEntity.config.headers.nonEmpty) {
                 val jsonCtx = ctxOpt.map(_.json.asObject).getOrElse(Json.obj()) ++ Json.obj("phase" -> "access", "plugin" -> "biscuit_verifier")
                 remoteFactsEntity.config.getRemoteFacts(jsonCtx).map {
-                  case Left(err) => {
+                  case Left(_) => {
                     RemoteFactsData()
                   }
                   case Right(factsData) => factsData
@@ -191,7 +189,7 @@ case class VerifierConfig(
             }
           }
         }
-        .runFold(RemoteFactsData())(_.merge(_))(env.otoroshiMaterializer)
+        .runFold(RemoteFactsData())(_.merge(_))(using env.otoroshiMaterializer)
     }
 
     remoteFactsF.flatMap { remoteFacts =>
@@ -212,7 +210,7 @@ case class VerifierConfig(
 
       val listOfTokenRevocationIds = biscuitToken.revocation_identifiers().asScala.map(_.toHex).toList
 
-      env.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.existsAny(listOfTokenRevocationIds).flatMap { existAnyRevokedToken =>
+      env.biscuitExtension.datastores.biscuitRevocationDataStore.existsAny(listOfTokenRevocationIds).flatMap { existAnyRevokedToken =>
         if (existAnyRevokedToken) {
           Left("Token is revoked").vfuture
         } else {
@@ -222,15 +220,15 @@ case class VerifierConfig(
           if (revocationList.exists(rvk => tokenRevocationList.contains(rvk))) {
             Left("Token is revoked").vfuture
           } else {
-            val maxFacts = env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[Int]("verifier_run_limit.max_facts").getOrElse(1000)
-            val maxIterations = env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[Int]("verifier_run_limit.max_iterations").getOrElse(100)
-            val maxTime = java.time.Duration.ofMillis(env.adminExtensions.extension[BiscuitExtension].get.configuration.getOptional[Long]("verifier_run_limit.max_time").getOrElse(1000))
+            val maxFacts = env.biscuitExtension.configuration.getOptional[Int]("verifier_run_limit.max_facts").getOrElse(1000)
+            val maxIterations = env.biscuitExtension.configuration.getOptional[Int]("verifier_run_limit.max_iterations").getOrElse(100)
+            val maxTime = java.time.Duration.ofMillis(env.biscuitExtension.configuration.getOptional[Long]("verifier_run_limit.max_time").getOrElse(1000))
             // Perform authorization
             if (verifier.policies().isEmpty) {
               Try(verifier.allow().authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
                 case Left(err: org.biscuitsec.biscuit.error.Error) =>
                   Left(handleBiscuitErrors(err)).vfuture
-                case Left(err) =>
+                case Left(_) =>
                   Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError())).vfuture
                 case Right(_) =>
                   Right(()).vfuture
@@ -239,7 +237,7 @@ case class VerifierConfig(
               Try(verifier.authorize(new RunLimits(maxFacts, maxIterations, maxTime))).toEither match {
                 case Left(err: org.biscuitsec.biscuit.error.Error) =>
                   Left(handleBiscuitErrors(err)).vfuture
-                case Left(err) =>
+                case Left(_) =>
                   Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError())).vfuture
                 case Right(_) =>
                   Right(()).vfuture
@@ -369,8 +367,8 @@ case class BiscuitVerifier(
 
   def theTags: Seq[String] = tags
 
-  def verifyBase64Token(token: String, ctxOpt: Option[VerificationContext], attrs: TypedMap)(implicit env: Env, ec: ExecutionContext): Future[Either[String, Unit]] = {
-    env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(keypairRef)) match {
+  def verifyBase64Token(token: String, ctxOpt: Option[VerificationContext])(using env: Env, ec: ExecutionContext): Future[Either[String, Unit]] = {
+    env.biscuitExtensionOpt.flatMap(_.states.keypair(keypairRef)) match {
       case None => Left("keypair_ref not found").vfuture
       case Some(keypair) => {
         Try(Biscuit.from_b64url(token, keypair.getPubKey)).toEither match {
@@ -381,8 +379,8 @@ case class BiscuitVerifier(
     }
   }
 
-  def verify(req: RequestHeader, ctxOpt: Option[VerificationContext], attrs: TypedMap)(implicit env: Env, ec: ExecutionContext): Future[Either[String, Unit]] = {
-    env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.keypair(keypairRef)) match {
+  def verify(req: RequestHeader, ctxOpt: Option[VerificationContext], attrs: TypedMap)(using env: Env, ec: ExecutionContext): Future[Either[String, Unit]] = {
+    env.biscuitExtensionOpt.flatMap(_.states.keypair(keypairRef)) match {
       case None => Left("keypair_ref not found").vfuture
       case Some(keypair) => {
         extractor.extractToken(req, ctxOpt.flatMap(_.user), attrs) match {
@@ -428,8 +426,8 @@ object BiscuitVerifier {
           strict = (json \ "strict").asOpt[Boolean].getOrElse(true),
           metadata = (json \ "metadata").asOpt[Map[String, String]].getOrElse(Map.empty),
           tags = (json \ "tags").asOpt[Seq[String]].getOrElse(Seq.empty[String]),
-          config = json.select("config").asOpt(VerifierConfig.format).getOrElse(VerifierConfig()),
-          extractor = json.select("extractor").asOpt(BiscuitExtractorConfig.format).getOrElse(BiscuitExtractorConfig()),
+          config = json.select("config").asOpt(using VerifierConfig.format).getOrElse(VerifierConfig()),
+          extractor = json.select("extractor").asOpt(using BiscuitExtractorConfig.format).getOrElse(BiscuitExtractorConfig()),
         )
       } match {
         case Failure(e) => JsError(e.getMessage)
@@ -451,7 +449,7 @@ object BiscuitVerifier {
         extractIdf = c => datastores.biscuitVerifierDataStore.extractId(c),
         extractIdJsonf = json => json.select("id").asString,
         idFieldNamef = () => "id",
-        tmpl = (v, p, ctx) => {
+        tmpl = (_, _, _) => {
           BiscuitVerifier(
             id = IdGenerator.namedId("biscuit-verifier", env),
             name = "New biscuit verifier",
@@ -481,7 +479,7 @@ class KvBiscuitVerifierDataStore(extensionId: AdminExtensionId, redisCli: RedisL
     with RedisLikeStore[BiscuitVerifier] {
   override def fmt: Format[BiscuitVerifier] = BiscuitVerifier.format
 
-  override def redisLike(implicit env: Env): RedisLike = redisCli
+  override def redisLike(using env: Env): RedisLike = redisCli
 
   override def key(id: String): String = s"${_env.storageRoot}:extensions:${extensionId.cleanup}:biscuit:verifiers:$id"
 

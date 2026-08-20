@@ -9,18 +9,18 @@ import org.biscuitsec.biscuit.token.builder.parser.Parser
 import org.joda.time.DateTime
 import otoroshi.api.{GenericResourceAccessApiWithState, Resource, ResourceVersion}
 import otoroshi.env.Env
-import otoroshi.models._
+import otoroshi.models.*
 import otoroshi.next.extensions.AdminExtensionId
 import otoroshi.security.IdGenerator
-import otoroshi.storage._
-import otoroshi.utils.syntax.implicits._
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtension, BiscuitExtensionDatastores, BiscuitExtensionState}
-import play.api.libs.json._
+import otoroshi.storage.*
+import otoroshi.utils.syntax.implicits.*
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.{BiscuitExtensionDatastores, BiscuitExtensionState, biscuitExtension}
+import play.api.libs.json.*
 
 import java.security.SecureRandom
 import scala.concurrent.duration.{DurationLong, FiniteDuration}
 import scala.concurrent.{ExecutionContext, Future}
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 import scala.util.{Failure, Success, Try}
 
 case class BiscuitForgeConfig(
@@ -33,7 +33,7 @@ case class BiscuitForgeConfig(
 ) {
   def json: JsValue = BiscuitForgeConfig.format.writes(this)
 
-  def createToken(privKeyValue: String, userOpt: Option[PrivateAppsUser] = None)(implicit env: Env): Either[String, Biscuit] = {
+  def createToken(privKeyValue: String, userOpt: Option[PrivateAppsUser] = None): Either[String, Biscuit] = {
 
     val keypair = new KeyPair(privKeyValue)
     val rng = new SecureRandom()
@@ -64,7 +64,6 @@ case class BiscuitForgeConfig(
         case (key, value) => authority_builder.add_fact(fact("user_metadata", Seq(string(key), string(value)).asJava))
       }
     }
-
 
     // Resources
     config.resources
@@ -98,7 +97,7 @@ case class BiscuitForgeConfig(
     Try(Biscuit.make(rng, keypair, authority_builder.build())).toEither match {
       case Left(err: org.biscuitsec.biscuit.error.Error) =>
         Left(handleBiscuitErrors(err))
-      case Left(err) =>
+      case Left(_) =>
         Left(handleBiscuitErrors(new org.biscuitsec.biscuit.error.Error.InternalError()))
       case Right(biscuitToken) => Right(biscuitToken)
     }
@@ -158,8 +157,8 @@ case class BiscuitTokenForge(
 
   def theTags: Seq[String] = tags
 
-  def forgeToken(remoteFactsCtx: JsValue = JsNull, userOpt: Option[PrivateAppsUser] = None)(implicit env: Env, ec: ExecutionContext): Future[Either[String, Biscuit]] = {
-    env.adminExtensions.extension[BiscuitExtension].get.states.keypair(keypairRef) match {
+  def forgeToken(remoteFactsCtx: JsValue = JsNull, userOpt: Option[PrivateAppsUser] = None)(using env: Env, ec: ExecutionContext): Future[Either[String, Biscuit]] = {
+    env.biscuitExtension.states.keypair(keypairRef) match {
       case None => Left("keypair entity not found").vfuture
       case Some(kp) => {
         if (kp.pubKey.isEmpty || kp.privKey.isEmpty) {
@@ -173,7 +172,7 @@ case class BiscuitTokenForge(
               }
             }
             case Some(remoteFactsRef) => {
-              env.adminExtensions.extension[BiscuitExtension].get.states.biscuitRemoteFactsLoader(remoteFactsRef) match {
+              env.biscuitExtension.states.biscuitRemoteFactsLoader(remoteFactsRef) match {
                 case None => Left("remote facts entity not found").vfuture
                 case Some(remoteFacts) => {
                   remoteFacts.loadFacts(remoteFactsCtx).flatMap {
@@ -185,7 +184,7 @@ case class BiscuitTokenForge(
                       )
 
                       finalConfig.createToken(kp.privKey, userOpt) match {
-                        case Left(err) => Left("unable to forge token").vfuture
+                        case Left(_) => Left("unable to forge token").vfuture
                         case Right(token) => Right(token).vfuture
                       }
                     }
@@ -199,7 +198,7 @@ case class BiscuitTokenForge(
     }
   }
 
-  def createToken(privKeyValue: String, userOpt: Option[PrivateAppsUser] = None)(implicit env: Env): Either[String, Biscuit] = {
+  def createToken(privKeyValue: String, userOpt: Option[PrivateAppsUser] = None): Either[String, Biscuit] = {
     config.createToken(privKeyValue, userOpt)
   }
 }
@@ -229,7 +228,7 @@ object BiscuitTokenForge {
           keypairRef = (json \ "keypair_ref").asOpt[String].getOrElse("--"),
           metadata = (json \ "metadata").asOpt[Map[String, String]].getOrElse(Map.empty),
           tags = (json \ "tags").asOpt[Seq[String]].getOrElse(Seq.empty[String]),
-          config = json.select("config").asOpt(BiscuitForgeConfig.format).getOrElse(BiscuitForgeConfig()),
+          config = json.select("config").asOpt(using BiscuitForgeConfig.format).getOrElse(BiscuitForgeConfig()),
           remoteFactsLoaderRef = json.select("remote_facts_ref").asOpt[String]
         )
       } match {
@@ -252,7 +251,7 @@ object BiscuitTokenForge {
         extractIdf = c => datastores.biscuitTokenForgeDataStore.extractId(c),
         extractIdJsonf = json => json.select("id").asString,
         idFieldNamef = () => "id",
-        tmpl = (v, p, ctx) => {
+        tmpl = (_, _, _) => {
           BiscuitTokenForge(
             id = IdGenerator.namedId("biscuit-forge", env),
             name = "New biscuit forge",
@@ -282,7 +281,7 @@ class KvBiscuitTokenForgeDataStore(extensionId: AdminExtensionId, redisCli: Redi
     with RedisLikeStore[BiscuitTokenForge] {
   override def fmt: Format[BiscuitTokenForge] = BiscuitTokenForge.format
 
-  override def redisLike(implicit env: Env): RedisLike = redisCli
+  override def redisLike(using env: Env): RedisLike = redisCli
 
   override def key(id: String): String = s"${_env.storageRoot}:extensions:${extensionId.cleanup}:biscuit:forge:$id"
 

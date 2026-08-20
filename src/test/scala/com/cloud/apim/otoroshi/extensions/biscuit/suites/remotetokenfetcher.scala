@@ -1,10 +1,10 @@
 package com.cloud.apim.otoroshi.extensions.biscuit.suites
 
 import com.cloud.apim.otoroshi.extensions.biscuit.BiscuitStudioOneOtoroshiServerPerSuite
-import com.cloud.apim.otoroshi.extensions.biscuit.entities._
+import com.cloud.apim.otoroshi.extensions.biscuit.entities.*
 import otoroshi.models.EntityLocation
-import otoroshi.next.models._
-import otoroshi.utils.syntax.implicits._
+import otoroshi.next.models.*
+import otoroshi.utils.syntax.implicits.*
 import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins.BiscuitRemoteTokenFetcherPlugin
 import play.api.libs.json.Json
 import reactor.core.publisher.Mono
@@ -18,7 +18,7 @@ class RemoteTokenFetcherSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  setup                                                         ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    val (tokenApiPort, _) = createTestServerWithRoutes("test", routes => routes.get("/api/token", (req, response) => {
+    val (tokenApiPort, _) = createTestServerWithRoutes("test", routes => routes.get("/api/token", (_, response) => {
       response
         .status(200)
         .sendString(Mono.just(
@@ -84,7 +84,7 @@ class RemoteTokenFetcherSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  setup                                                         ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    val (tokenApiPort, _) = createTestServerWithRoutes("test", routes => routes.get("/api/token", (req, response) => {
+    val (tokenApiPort, _) = createTestServerWithRoutes("test", routes => routes.get("/api/token", (_, response) => {
       response
         .status(200)
         .addHeader("Content-Type", "application/json")
@@ -155,7 +155,7 @@ class RemoteTokenFetcherSuite extends BiscuitStudioOneOtoroshiServerPerSuite {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////                                  setup                                                         ///////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    val (tokenApiPort, _) = createTestServerWithRoutes("test", routes => routes.get("/api/token", (req, response) => {
+    val (tokenApiPort, _) = createTestServerWithRoutes("test", routes => routes.get("/api/token", (_, response) => {
       response
         .status(200)
         .sendString(Mono.just(

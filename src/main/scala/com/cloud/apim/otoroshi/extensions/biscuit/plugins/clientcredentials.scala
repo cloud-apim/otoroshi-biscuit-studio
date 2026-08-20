@@ -1,16 +1,16 @@
 package otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.plugins
 
-import akka.stream.Materializer
-import akka.util.ByteString
+import org.apache.pekko.stream.Materializer
+import org.apache.pekko.util.ByteString
 import com.cloud.apim.otoroshi.extensions.biscuit.entities.BiscuitForgeConfig
 import org.joda.time.DateTime
 import otoroshi.env.Env
 import otoroshi.models.{ApiKey, EntityIdentifier, ServiceGroupIdentifier}
-import otoroshi.next.plugins.api._
+import otoroshi.next.plugins.api.*
 import otoroshi.next.proxy.NgProxyEngineError
-import otoroshi.utils.syntax.implicits._
-import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.BiscuitExtension
-import play.api.libs.json._
+import otoroshi.utils.syntax.implicits.*
+import otoroshi_plugins.com.cloud.apim.otoroshi.extensions.biscuit.biscuitExtensionOpt
+import play.api.libs.json.*
 import play.api.mvc.{Result, Results}
 import play.core.parsers.FormUrlEncodedParser
 
@@ -128,14 +128,14 @@ class ClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
 
   private def handleBody(
     ctx: NgbBackendCallContext
-  )(f: Map[String, String] => Future[Result])(implicit env: Env, ec: ExecutionContext): Future[Result] = {
-    implicit val mat = env.otoroshiMaterializer
+  )(f: Map[String, String] => Future[Result])(using env: Env, ec: ExecutionContext): Future[Result] = {
+    given mat: Materializer = env.otoroshiMaterializer
     val charset      = ctx.rawRequest.charset.getOrElse("UTF-8")
     ctx.request.body.runFold(ByteString.empty)(_ ++ _).flatMap { bodyRaw =>
       ctx.request.headers.get("Content-Type") match {
         case Some(ctype) if ctype.toLowerCase().contains("application/x-www-form-urlencoded") => {
           val urlEncodedString         = bodyRaw.utf8String
-          val body                     = FormUrlEncodedParser.parse(urlEncodedString, charset).mapValues(_.head)
+          val body                     = FormUrlEncodedParser.parse(urlEncodedString, charset).view.mapValues(_.head).toMap
           val map: Map[String, String] = body ++ ctx.request.headers
             .get("Authorization")
             .filter(_.startsWith("Basic "))
@@ -192,7 +192,7 @@ class ClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
     ccfb: ClientCredentialBiscuitTokenEndpointBody,
     conf: ClientCredentialBiscuitTokenEndpointConfig,
     ctx: NgbBackendCallContext
-  )(implicit env: Env, ec: ExecutionContext): Future[Result] =
+  )(using env: Env, ec: ExecutionContext): Future[Result] =
     ccfb match {
       case ClientCredentialBiscuitTokenEndpointBody(
       "client_credentials",
@@ -213,7 +213,7 @@ class ClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
                 )
               ).vfuture
               case Some(ref) => {
-                env.adminExtensions.extension[BiscuitExtension].flatMap(_.states.biscuitTokenForge(ref)) match {
+                env.biscuitExtensionOpt.flatMap(_.states.biscuitTokenForge(ref)) match {
                   case None =>  Results.NotFound(
                     Json.obj(
                       "error"             -> "not_found",
@@ -232,8 +232,8 @@ class ClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
                         resources = apiKey.metadata.filter(_._1.startsWith("biscuit_resource_")).map(t => s"""resource(${t._2})""").toSeq,
                         rules = apiKey.metadata.filter(_._1.startsWith("biscuit_rule_")).values.toSeq,
                       )
-                    ).applyOnWithOpt(aud) {
-                      case(forge, aud) => forge.copy(
+                    ).applyOnWithOpt(aud) { (forge, aud) =>
+                      forge.copy(
                         config = forge.config.copy(facts = forge.config.facts ++ Seq(s"""aud("${aud}")"""))
                       )
                     }
@@ -301,7 +301,7 @@ class ClientCredentialBiscuitTokenEndpoint extends NgBackendCall {
             config,
             ctx
           )
-        case e                                                                   =>
+        case _                                                                   =>
           ctx.request.headers
             .get("Authorization")
             .filter(_.startsWith("Basic "))
