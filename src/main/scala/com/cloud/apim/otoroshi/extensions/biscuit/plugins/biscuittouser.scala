@@ -217,7 +217,7 @@ class BiscuitUserExtractor extends NgPreRouting {
                         val checks = config.validations.select("checks").asOpt[Seq[String]].getOrElse(Seq.empty[String])
                         val policies = config.validations.select("policies").asOpt[Seq[String]].getOrElse(Seq.empty[String])
                         if (facts.isEmpty && rules.isEmpty && checks.isEmpty && policies.isEmpty) {
-                          env.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.existsAny(listOfTokenRevocationIds).flatMap { existAnyRevokedToken =>
+                          ext.datastores.biscuitRevocationDataStore.existsAny(listOfTokenRevocationIds).flatMap { existAnyRevokedToken =>
                             if (existAnyRevokedToken && config.enforce) {
                               handleError("Token is revoked")
                             } else if (existAnyRevokedToken && !config.enforce) {
@@ -236,7 +236,7 @@ class BiscuitUserExtractor extends NgPreRouting {
                           rules.foreach(str => authorizer.add_rule(str))
                           checks.foreach(str => authorizer.add_check(str))
                           policies.foreach(str => authorizer.add_policy(str))
-                          env.adminExtensions.extension[BiscuitExtension].get.datastores.biscuitRevocationDataStore.existsAny(listOfTokenRevocationIds).flatMap { existAnyRevokedToken =>
+                          ext.datastores.biscuitRevocationDataStore.existsAny(listOfTokenRevocationIds).flatMap { existAnyRevokedToken =>
                             if (existAnyRevokedToken && config.enforce) {
                               handleError("Token is revoked")
                             } else if (existAnyRevokedToken && !config.enforce) {
